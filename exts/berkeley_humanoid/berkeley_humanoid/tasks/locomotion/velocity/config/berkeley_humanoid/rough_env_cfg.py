@@ -12,6 +12,7 @@ from berkeley_humanoid.tasks.locomotion.velocity.velocity_env_cfg import \
 # Pre-defined configs
 ##
 from berkeley_humanoid.assets.berkeley_humanoid import BERKELEY_HUMANOID_CFG
+from berkeley_humanoid.assets.unitree import G1_CFG, H1_CFG
 
 
 @configclass
@@ -25,6 +26,20 @@ class BerkeleyHumanoidRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         self.observations.policy.height_scan = None
         self.scene.height_scanner = None
+
+
+@configclass
+class H1RoughEnvCfg(LocomotionVelocityRoughEnvCfg):
+    def __post_init__(self):
+        # post init of parent
+        super().__post_init__()
+        self.scene.robot = H1_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+        self.rewards.flat_orientation_l2.weight = -0.5
+        self.rewards.dof_pos_limits.weight = -1.0
+
+        self.observations.policy.height_scan = None
+        self.scene.height_scanner = None
+
 
 @configclass
 class BerkeleyHumanoidRoughEnvCfg_PLAY(BerkeleyHumanoidRoughEnvCfg):

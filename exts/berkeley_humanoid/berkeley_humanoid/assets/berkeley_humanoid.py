@@ -9,6 +9,7 @@ from omni.isaac.lab.assets.articulation import ArticulationCfg
 
 from berkeley_humanoid.assets import ISAAC_ASSET_DIR
 
+
 BERKELEY_HUMANOID_HXX_ACTUATOR_CFG = IdentifiedActuatorCfg(
     joint_names_expr=[".*HR", ".*HAA"],
     effort_limit=20.0,
