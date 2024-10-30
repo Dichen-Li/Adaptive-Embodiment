@@ -52,15 +52,15 @@ gym.register(
 )
 
 
-# gym.register(
-#     id="Isaac-Humanoid-Direct-v0",
-#     entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": rough_env_cfg.H1RoughEnvCfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:BerkeleyHumanoidRoughPPORunnerCfg",
-#     },
-# )
+gym.register(
+    id="H1-Manager-Flat-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": rough_env_cfg.H1RoughEnvCfg,
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:BerkeleyHumanoidRoughPPORunnerCfg",
+    },
+)
 
 # gym.register(
 #     id="Isaac-H1-Direct-v0",
