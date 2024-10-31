@@ -68,7 +68,7 @@ class LocomotionEnv(DirectRLEnv):
         self.command_generator = RandomCommands(self, self.cfg.x_vel_range, self.cfg.y_vel_range, self.cfg.yaw_vel_range)
         self.prev_actions = None
 
-        # manually resolve config to obtain ground-contact joint indices
+        # configs needed for
         self.reward_cfgs = {
             'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
             'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
@@ -76,6 +76,8 @@ class LocomotionEnv(DirectRLEnv):
             'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
             'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"])
         }
+        for cfg in self.reward_cfgs.values():
+            cfg.resolve(self.scene)
 
     def _setup_scene(self):
         """
