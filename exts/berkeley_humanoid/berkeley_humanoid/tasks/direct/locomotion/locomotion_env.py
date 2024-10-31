@@ -23,6 +23,7 @@ from omni.isaac.lab.sensors import ContactSensor
 def normalize_angle(x):
     return torch.atan2(torch.sin(x), torch.cos(x))
 
+
 def track_vel_exp(curr, target, std=math.sqrt(0.25)):
     """
     Adapted from
@@ -35,31 +36,6 @@ def track_vel_exp(curr, target, std=math.sqrt(0.25)):
     )
     lin_vel_error = torch.exp(-lin_vel_error / std ** 2)  # 0.25
     return lin_vel_error
-
-
-# def feet_air_time(env: RLTaskEnv, command_name: str, sensor_cfg: SceneEntityCfg, threshold_min: float,
-#                   threshold_max: float) -> torch.Tensor:
-#     """Reward long steps taken by the feet using L2-kernel.
-#
-#     This function rewards the agent for taking steps that are longer than a threshold. This helps ensure
-#     that the robot lifts its feet off the ground and takes steps. The reward is computed as the sum of
-#     the time for which the feet are in the air.
-#
-#     If the commands are small (i.e. the agent is not supposed to take a step), then the reward is zero.
-#     """
-#     # extract the used quantities (to enable type-hinting)
-#     contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
-#     # compute the reward
-#     first_contact = contact_sensor.compute_first_contact(env.step_dt)[:, sensor_cfg.body_ids]
-#     last_air_time = contact_sensor.data.last_air_time[:, sensor_cfg.body_ids]
-#     # negative reward for small steps
-#     air_time = (last_air_time - threshold_min) * first_contact
-#     # no reward for large steps
-#     air_time = torch.clamp(air_time, max=threshold_max - threshold_min)
-#     reward = torch.sum(air_time, dim=1)
-#     # no reward for zero command
-#     reward *= torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1) > 0.1
-#     return reward
 
 
 class LocomotionEnv(DirectRLEnv):
@@ -90,7 +66,16 @@ class LocomotionEnv(DirectRLEnv):
 
         # some transfered stuff
         self.command_generator = RandomCommands(self, self.cfg.x_vel_range, self.cfg.y_vel_range, self.cfg.yaw_vel_range)
+        self.prev_actions = None
 
+        # manually resolve config to obtain ground-contact joint indices
+        self.reward_cfgs = {
+            'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
+            'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
+            'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
+            'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+            'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"])
+        }
 
     def _setup_scene(self):
         """
@@ -108,7 +93,7 @@ class LocomotionEnv(DirectRLEnv):
         # clone, filter, and replicate
         self.scene.clone_environments(copy_from_source=False)
         self.scene.filter_collisions(global_prim_paths=[self.cfg.terrain.prim_path])
-        # add articultion to scene
+        # add articulation to scene
         self.scene.articulations["robot"] = self.robot
 
         # add lights
@@ -116,6 +101,7 @@ class LocomotionEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
     def _pre_physics_step(self, actions: torch.Tensor):
+        self.prev_actions = self.actions.clone()    # record the prev action
         self.actions = actions.clone()
 
     def _apply_action(self):
@@ -159,29 +145,44 @@ class LocomotionEnv(DirectRLEnv):
         )
 
     def _get_observations(self) -> dict:
-        # sample velocity commands, each of shape (num_envs, 1)
+        base_lin_vel = self.robot.data.root_lin_vel_b
+        base_ang_vel = self.robot.data.root_ang_vel_b
+        projected_gravity_b = self.robot.data.projected_gravity_b
         self.target_x_vel, self.target_y_vel, self.target_yaw_vel = self.command_generator.get_next_command()
+        joint_pos_rel = self.robot.data.joint_pos
+        joint_vel_rel = self.robot.data.joint_vel
+        actions = self.actions  # actions at prev step
 
         obs = torch.cat(
-            (
-                self.target_x_vel,
-                self.target_y_vel,
-                self.target_yaw_vel,
-                self.torso_position[:, 2].view(-1, 1),
-                self.vel_loc,
-                self.angvel_loc * self.cfg.angular_velocity_scale,
-                normalize_angle(self.yaw).unsqueeze(-1),
-                normalize_angle(self.roll).unsqueeze(-1),
-                normalize_angle(self.angle_to_target).unsqueeze(-1),
-                self.up_proj.unsqueeze(-1),
-                self.heading_proj.unsqueeze(-1),
-                self.dof_pos_scaled,
-                self.dof_vel * self.cfg.dof_vel_scale,
-                self.actions,
-            ),
-            dim=-1,
+            [base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
+             self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1
         )
+
+        # import ipdb; ipdb.set_trace()
+        # obs = torch.cat(
+        #     (
+        #         self.target_x_vel,
+        #         self.target_y_vel,
+        #         self.target_yaw_vel,
+        #         lin_vel,
+        #         ang_vel,
+        #         self.torso_position[:, 2].view(-1, 1),
+        #         self.vel_loc,
+        #         self.angvel_loc * self.cfg.angular_velocity_scale,
+        #         normalize_angle(self.yaw).unsqueeze(-1),
+        #         normalize_angle(self.roll).unsqueeze(-1),
+        #         normalize_angle(self.angle_to_target).unsqueeze(-1),
+        #         self.up_proj.unsqueeze(-1),
+        #         self.heading_proj.unsqueeze(-1),
+        #         self.dof_pos_scaled,
+        #         self.dof_vel * self.cfg.dof_vel_scale,
+        #         self.actions,
+        #     ),
+        #     dim=-1,
+        # )
+
         observations = {"policy": obs}
+
         return observations
 
     def get_feet_air_time_reward(self, sensor_cfg, threshold_min, threshold_max):
@@ -213,14 +214,42 @@ class LocomotionEnv(DirectRLEnv):
         reward = torch.sum(body_vel.norm(dim=-1) * contacts, dim=1)
         return reward
 
+    def get_undesired_contacts(self, sensor_cfg, threshold) -> torch.Tensor:
+        """Penalize undesired contacts as the number of violations that are above a threshold."""
+        # # create sensor cfg
+        # sensor_cfg = SceneEntityCfg(sensor_name, body_names=body_names)
+        # sensor_cfg.resolve(self.scene)
+        # extract the used quantities (to enable type-hinting)
+        contact_sensor: ContactSensor = self.scene.sensors[sensor_cfg.name]
+        # check if contact force is above threshold
+        net_contact_forces = contact_sensor.data.net_forces_w_history
+        is_contact = torch.max(torch.norm(net_contact_forces[:, :, sensor_cfg.body_ids], dim=-1), dim=1)[0] > threshold
+        # sum over contacts for each environment
+        return torch.sum(is_contact, dim=1)
+
+    def get_joint_deviation_l1(self, asset_cfg) -> torch.Tensor:
+        """Penalize joint positions that deviate from the default one."""
+        # # create asset cfg
+        # asset_cfg = SceneEntityCfg(asset_name, joint_names=joint_names)
+        # asset_cfg.resolve(self.scene)
+        # extract the used quantities (to enable type-hinting)
+        asset: Articulation = self.scene[asset_cfg.name]
+        # compute out of limits constraints
+        angle = asset.data.joint_pos[:, asset_cfg.joint_ids] - asset.data.default_joint_pos[:, asset_cfg.joint_ids]
+        return torch.sum(torch.abs(angle), dim=1)
+
+    # @torch.jit.script
     def _get_rewards(self) -> torch.Tensor:
+        # return torch.zeros(4096).to(self.device)
+        # start_block = time.time()
+        # init_time = start_block
 
         # get linear and angular vel in world frame
         lin_vel, ang_vel = self.robot.data.root_lin_vel_b, self.robot.data.root_ang_vel_b
 
         # task reward, check velocity
-        lin_vel_xy_reward = track_vel_exp(lin_vel[:, :2], ang_vel[:, :2])
-        ang_vel_z_reward = track_vel_exp(lin_vel[:, 1:], ang_vel[:, :1])
+        track_lin_vel_xy_exp = track_vel_exp(lin_vel[:, :2], ang_vel[:, :2])
+        track_ang_vel_z_exp = track_vel_exp(lin_vel[:, 1:], ang_vel[:, :1])
 
         # penalties
         # penalize linear velocity in z axis
@@ -228,50 +257,69 @@ class LocomotionEnv(DirectRLEnv):
         # penalize angular velocity in xy axis
         ang_vel_xy_l2 = (ang_vel[:, :2] ** 2).sum(1)
 
-        # manually resolve config to obtain ground-contact joint indices
-        contact_sensor_cfg = SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link")
-        contact_sensor_cfg.resolve(self.scene)
+        # penalize joint torques
+        joint_torques_l2 = torch.sum(torch.square(self.robot.data.applied_torque), dim=1)
+        # penalize action change rate
+        action_rate_l2 = torch.sum(torch.square(self.actions - self.prev_actions), dim=1)
 
         # compute reward that encourage large strides
-        feet_air_reward = self.get_feet_air_time_reward(
-            contact_sensor_cfg,
+        feet_air_time = self.get_feet_air_time_reward(
+            self.reward_cfgs['feet_ground_contact_cfg'],
             threshold_min=0.2, threshold_max=0.5
         )
 
         # manually resolve config to find body parts that touch the ground
-        asset_cfg = SceneEntityCfg("robot", body_names=".*ankle_roll_link")
-        asset_cfg.resolve(self.scene)
+        # asset_cfg = SceneEntityCfg("robot", body_names=".*ankle_roll_link")
+        # asset_cfg.resolve(self.scene)
 
         # compute reward that disencourages sliding
-        slide_reward = self.get_feet_slide_reward(contact_sensor_cfg, asset_cfg)
+        feet_slide = self.get_feet_slide_reward(self.reward_cfgs['feet_ground_contact_cfg'],
+                                                self.reward_cfgs['feet_ground_asset_cfg'])
 
-        # TODO: undesired_contacts, joint_deviation_hip, joint_deviation_knee,
+        # undesired contacts
+        undesired_contacts = self.get_undesired_contacts(self.reward_cfgs['undesired_contact_cfg'],
+                                                         threshold=1.0)
 
-        # self.cfg.rewards
-        total_reward = compute_rewards(
-            self.actions,
-            self.reset_terminated,
-            self.cfg.up_weight,
-            self.cfg.heading_weight,
-            self.heading_proj,
-            self.up_proj,
-            self.dof_vel,
-            self.dof_pos_scaled,
-            self.potentials,
-            self.prev_potentials,
-            self.cfg.actions_cost_scale,
-            self.cfg.energy_cost_scale,
-            self.cfg.dof_vel_scale,
-            self.cfg.death_cost,
-            self.cfg.alive_reward_scale,
-            self.motor_effort_ratio,
-        )
+        # compute deviation for hip
+        joint_deviation_hip = self.get_joint_deviation_l1(self.reward_cfgs['joint_hip_cfg'])
+
+        # compute deviation for knee
+        joint_deviation_knee = self.get_joint_deviation_l1(self.reward_cfgs['joint_knee_cfg'])
+
+        # # self.cfg.rewards
+        # total_reward = compute_rewards(
+        #     self.actions,
+        #     self.reset_terminated,
+        #     self.cfg.up_weight,
+        #     self.cfg.heading_weight,
+        #     self.heading_proj,
+        #     self.up_proj,
+        #     self.dof_vel,
+        #     self.dof_pos_scaled,
+        #     self.potentials,
+        #     self.prev_potentials,
+        #     self.cfg.actions_cost_scale,
+        #     self.cfg.energy_cost_scale,
+        #     self.cfg.dof_vel_scale,
+        #     self.cfg.death_cost,
+        #     self.cfg.alive_reward_scale,
+        #     self.motor_effort_ratio,
+        # )
 
         # total_reward = (total_reward + lin_vel_xy_reward + ang_vel_z_reward * 0.5 + lin_vel_z_l2 * -2.0
         #                 + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
 
-        total_reward = (total_reward + lin_vel_z_l2 * -2.0
-                        + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
+        # total_reward = (total_reward + lin_vel_z_l2 * -2.0
+        #                 + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
+
+        total_reward = (track_lin_vel_xy_exp * 1.0 + track_ang_vel_z_exp * 0.5
+                        + lin_vel_z_l2 * -2.0 + ang_vel_xy_l2 * -0.05
+                        + joint_torques_l2 * -1e-5 + action_rate_l2 * -0.01
+                        + feet_air_time * 2.0 + feet_slide * -0.25
+                        + undesired_contacts * -0.1 + joint_deviation_hip * -0.1
+                        + joint_deviation_knee * -0.01)
+
+        # print(f'total time: {time.time() - init_time}')
 
         return total_reward
 
@@ -303,59 +351,59 @@ class LocomotionEnv(DirectRLEnv):
         self._compute_intermediate_values()
 
 
-# @torch.jit.script
-def compute_rewards(
-    actions: torch.Tensor,
-    reset_terminated: torch.Tensor,
-    up_weight: float,
-    heading_weight: float,
-    heading_proj: torch.Tensor,
-    up_proj: torch.Tensor,
-    dof_vel: torch.Tensor,
-    dof_pos_scaled: torch.Tensor,
-    potentials: torch.Tensor,
-    prev_potentials: torch.Tensor,
-    actions_cost_scale: float,
-    energy_cost_scale: float,
-    dof_vel_scale: float,
-    death_cost: float,
-    alive_reward_scale: float,
-    motor_effort_ratio: torch.Tensor,
-):
-    heading_weight_tensor = torch.ones_like(heading_proj) * heading_weight
-    heading_reward = torch.where(heading_proj > 0.8, heading_weight_tensor, heading_weight * heading_proj / 0.8)
-
-    # aligning up axis of robot and environment
-    up_reward = torch.zeros_like(heading_reward)
-    up_reward = torch.where(up_proj > 0.93, up_reward + up_weight, up_reward)
-
-    # energy penalty for movement
-    actions_cost = torch.sum(actions**2, dim=-1)
-    electricity_cost = torch.sum(
-        torch.abs(actions * dof_vel * dof_vel_scale) * motor_effort_ratio.unsqueeze(0),
-        dim=-1,
-    )
-
-    # dof at limit cost
-    dof_at_limit_cost = torch.sum(dof_pos_scaled > 0.98, dim=-1)
-
-    # reward for duration of staying alive
-    alive_reward = torch.ones_like(potentials) * alive_reward_scale
-    progress_reward = potentials - prev_potentials
-
-    total_reward = (
-        progress_reward
-        + alive_reward
-        + up_reward
-        + heading_reward
-        - actions_cost_scale * actions_cost
-        - energy_cost_scale * electricity_cost
-        - dof_at_limit_cost
-    )
-
-    # adjust reward for fallen agents
-    total_reward = torch.where(reset_terminated, torch.ones_like(total_reward) * death_cost, total_reward)
-    return total_reward
+# # @torch.jit.script
+# def compute_rewards(
+#     actions: torch.Tensor,
+#     reset_terminated: torch.Tensor,
+#     up_weight: float,
+#     heading_weight: float,
+#     heading_proj: torch.Tensor,
+#     up_proj: torch.Tensor,
+#     dof_vel: torch.Tensor,
+#     dof_pos_scaled: torch.Tensor,
+#     potentials: torch.Tensor,
+#     prev_potentials: torch.Tensor,
+#     actions_cost_scale: float,
+#     energy_cost_scale: float,
+#     dof_vel_scale: float,
+#     death_cost: float,
+#     alive_reward_scale: float,
+#     motor_effort_ratio: torch.Tensor,
+# ):
+#     heading_weight_tensor = torch.ones_like(heading_proj) * heading_weight
+#     heading_reward = torch.where(heading_proj > 0.8, heading_weight_tensor, heading_weight * heading_proj / 0.8)
+#
+#     # aligning up axis of robot and environment
+#     up_reward = torch.zeros_like(heading_reward)
+#     up_reward = torch.where(up_proj > 0.93, up_reward + up_weight, up_reward)
+#
+#     # energy penalty for movement
+#     actions_cost = torch.sum(actions**2, dim=-1)
+#     electricity_cost = torch.sum(
+#         torch.abs(actions * dof_vel * dof_vel_scale) * motor_effort_ratio.unsqueeze(0),
+#         dim=-1,
+#     )
+#
+#     # dof at limit cost
+#     dof_at_limit_cost = torch.sum(dof_pos_scaled > 0.98, dim=-1)
+#
+#     # reward for duration of staying alive
+#     alive_reward = torch.ones_like(potentials) * alive_reward_scale
+#     progress_reward = potentials - prev_potentials
+#
+#     total_reward = (
+#         progress_reward
+#         + alive_reward
+#         + up_reward
+#         + heading_reward
+#         - actions_cost_scale * actions_cost
+#         - energy_cost_scale * electricity_cost
+#         - dof_at_limit_cost
+#     )
+#
+#     # adjust reward for fallen agents
+#     total_reward = torch.where(reset_terminated, torch.ones_like(total_reward) * death_cost, total_reward)
+#     return total_reward
 
 
 @torch.jit.script
