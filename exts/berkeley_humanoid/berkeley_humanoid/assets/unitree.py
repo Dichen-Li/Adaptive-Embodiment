@@ -183,8 +183,8 @@ from berkeley_humanoid.assets import ISAAC_ASSET_DIR
 # import ipdb; ipdb.set_trace()
 H1_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Unitree/H1/h1_without_hand.usd",
-        # usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/H1/h1.usd",
+        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Unitree/H1/h1_without_hand.usd",
+        usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/H1/h1.usd",
         activate_contact_sensors=True,
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,
