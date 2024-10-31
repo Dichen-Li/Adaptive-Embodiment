@@ -38,6 +38,7 @@ from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 # from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR, ISAACLAB_NUCLEUS_DIR
 from omni.isaac.lab.sensors import ContactSensor
 
+
 @configclass
 class G1EnvCfg(DirectRLEnvCfg):
     # env
@@ -117,10 +118,8 @@ class G1EnvCfg(DirectRLEnvCfg):
     yaw_vel_range = (-1.0, 1.0)
 
 
-
-
 class G1DirectEnv(LocomotionEnv):
-    cfg: H1EnvCfg
+    cfg: G1EnvCfg
 
     def __init__(self, cfg: G1EnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)
