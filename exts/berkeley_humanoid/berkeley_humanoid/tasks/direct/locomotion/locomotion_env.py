@@ -19,6 +19,8 @@ from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
 from omni.isaac.lab.managers import SceneEntityCfg
 from omni.isaac.lab.sensors import ContactSensor
 
+from .joint_position_controller import JointPositionAction
+
 
 def normalize_angle(x):
     return torch.atan2(torch.sin(x), torch.cos(x))
@@ -30,11 +32,8 @@ def track_vel_exp(curr, target, std=math.sqrt(0.25)):
     https://isaac-sim.github.io/IsaacLab/main/_modules/omni/isaac/lab/envs/mdp/rewards.html#track_lin_vel_xy_exp
     Reward tracking of velocity commands using exponential kernel.
     """
-    lin_vel_error = torch.sum(
-        torch.square(curr - target),
-        dim=1,
-    )
-    lin_vel_error = torch.exp(-lin_vel_error / std ** 2)  # 0.25
+    lin_vel_error = torch.sum(torch.square(curr - target), dim=1)
+    lin_vel_error = torch.exp(-lin_vel_error / std ** 2)
     return lin_vel_error
 
 
@@ -45,9 +44,9 @@ class LocomotionEnv(DirectRLEnv):
         super().__init__(cfg, render_mode, **kwargs)
 
         self.action_scale = self.cfg.action_scale
-        self.joint_gears = torch.tensor(self.cfg.joint_gears, dtype=torch.float32, device=self.sim.device)
-        self.motor_effort_ratio = torch.ones_like(self.joint_gears, device=self.sim.device)
-        self._joint_dof_idx, _ = self.robot.find_joints(".*")
+        # self.joint_gears = torch.tensor(self.cfg.joint_gears, dtype=torch.float32, device=self.sim.device)
+        # self.motor_effort_ratio = torch.ones_like(self.joint_gears, device=self.sim.device)
+        self._joint_dof_idx, _ = self.robot.find_joints(self.cfg.controlled_joints)
 
         self.potentials = torch.zeros(self.num_envs, dtype=torch.float32, device=self.sim.device)
         self.prev_potentials = torch.zeros_like(self.potentials)
@@ -65,19 +64,31 @@ class LocomotionEnv(DirectRLEnv):
         self.basis_vec1 = self.up_vec.clone()
 
         # some transfered stuff
-        self.command_generator = RandomCommands(self, self.cfg.x_vel_range, self.cfg.y_vel_range, self.cfg.yaw_vel_range)
+        self.command_generator = RandomCommands(self, self.cfg.x_vel_range, self.cfg.y_vel_range,
+                                                self.cfg.yaw_vel_range, self.cfg.resampling_interval)
         self.prev_actions = None
 
         # configs needed for
+        # self.reward_cfgs = {
+        #     'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
+        #     'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
+        #     'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
+        #     'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+        #     'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"])
+        # }
         self.reward_cfgs = {
-            'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
-            'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
-            'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
-            'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-            'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"])
+            'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*faa"),
+            'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*faa"),
+            'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*hfe", ".*haa"]),
+            'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*HR", ".*HAA"]),
+            'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*KFE"]),
+            'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso')
         }
         for cfg in self.reward_cfgs.values():
             cfg.resolve(self.scene)
+
+        self.controller = JointPositionAction(self, self.cfg.action_scale,
+                                              use_default_offset=self.cfg.controller_use_offset)
 
     def _setup_scene(self):
         """
@@ -104,11 +115,12 @@ class LocomotionEnv(DirectRLEnv):
 
     def _pre_physics_step(self, actions: torch.Tensor):
         self.prev_actions = self.actions.clone()    # record the prev action
-        self.actions = actions.clone()
+        self.actions = self.controller.process_action(actions).clone()
 
     def _apply_action(self):
-        forces = self.action_scale * self.joint_gears * self.actions
-        self.robot.set_joint_effort_target(forces, joint_ids=self._joint_dof_idx)
+        # forces = self.action_scale * self.joint_gears * self.actions
+        # self.robot.set_joint_effort_target(forces, joint_ids=self._joint_dof_idx)
+        self.robot.set_joint_position_target(self.actions, joint_ids=self._joint_dof_idx)
 
     def _compute_intermediate_values(self):
         self.torso_position, self.torso_rotation = self.robot.data.root_pos_w, self.robot.data.root_quat_w
@@ -151,8 +163,8 @@ class LocomotionEnv(DirectRLEnv):
         base_ang_vel = self.robot.data.root_ang_vel_b
         projected_gravity_b = self.robot.data.projected_gravity_b
         self.target_x_vel, self.target_y_vel, self.target_yaw_vel = self.command_generator.get_next_command()
-        joint_pos_rel = self.robot.data.joint_pos
-        joint_vel_rel = self.robot.data.joint_vel
+        joint_pos_rel = self.robot.data.joint_pos - self.robot.data.default_joint_pos
+        joint_vel_rel = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         actions = self.actions  # actions at prev step
 
         obs = torch.cat(
@@ -227,6 +239,7 @@ class LocomotionEnv(DirectRLEnv):
         net_contact_forces = contact_sensor.data.net_forces_w_history
         is_contact = torch.max(torch.norm(net_contact_forces[:, :, sensor_cfg.body_ids], dim=-1), dim=1)[0] > threshold
         # sum over contacts for each environment
+        #TODO: check if the returned data type (Long) makes sense for this reward
         return torch.sum(is_contact, dim=1)
 
     def get_joint_deviation_l1(self, asset_cfg) -> torch.Tensor:
@@ -250,8 +263,9 @@ class LocomotionEnv(DirectRLEnv):
         lin_vel, ang_vel = self.robot.data.root_lin_vel_b, self.robot.data.root_ang_vel_b
 
         # task reward, check velocity
-        track_lin_vel_xy_exp = track_vel_exp(lin_vel[:, :2], ang_vel[:, :2])
-        track_ang_vel_z_exp = track_vel_exp(lin_vel[:, 1:], ang_vel[:, :1])
+        track_lin_vel_xy_exp = track_vel_exp(lin_vel[:, :2],
+                                             torch.cat([self.target_x_vel, self.target_y_vel], dim=1))
+        track_ang_vel_z_exp = track_vel_exp(lin_vel[:, 1:], self.target_yaw_vel[:, :1])
 
         # penalties
         # penalize linear velocity in z axis
@@ -314,12 +328,27 @@ class LocomotionEnv(DirectRLEnv):
         # total_reward = (total_reward + lin_vel_z_l2 * -2.0
         #                 + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
 
-        total_reward = (track_lin_vel_xy_exp * 1.0 + track_ang_vel_z_exp * 0.5
-                        + lin_vel_z_l2 * -2.0 + ang_vel_xy_l2 * -0.05
-                        + joint_torques_l2 * -1e-5 + action_rate_l2 * -0.01
-                        + feet_air_time * 2.0 + feet_slide * -0.25
-                        + undesired_contacts * -0.1 + joint_deviation_hip * -0.1
-                        + joint_deviation_knee * -0.01)
+        # total_reward = (track_lin_vel_xy_exp * 1.0 + track_ang_vel_z_exp * 0.5
+        #                 + lin_vel_z_l2 * -2.0 + ang_vel_xy_l2 * -0.05
+        #                 + joint_torques_l2 * -1e-5 + action_rate_l2 * -0.01
+        #                 + feet_air_time * 2.0 + feet_slide * -0.25
+        #                 + undesired_contacts * -0.1 + joint_deviation_hip * -0.1
+        #                 + joint_deviation_knee * -0.01)
+
+        self.reward_dict = {
+            'track_lin_vel_xy_exp': track_lin_vel_xy_exp * 1.0 * 2,
+            'track_ang_vel_z_exp': track_ang_vel_z_exp * 0.5 * 2,
+            'lin_vel_z_l2': lin_vel_z_l2 * -2.0,
+            'ang_vel_xy_l2': ang_vel_xy_l2 * -0.05,
+            'joint_torques_l2': joint_torques_l2 * -1e-5,
+            'action_rate_l2': action_rate_l2 * -0.01,
+            'feet_air_time': feet_air_time * 2.0,
+            'feet_slide': feet_slide * -0.25,
+            'undesired_contacts': undesired_contacts * -0.1,
+            'joint_deviation_hip': joint_deviation_hip * -0.1,
+            'joint_deviation_knee': joint_deviation_knee * -0.01
+        }
+        total_reward = sum(self.reward_dict.values())
 
         # print(f'total time: {time.time() - init_time}')
 
@@ -328,7 +357,12 @@ class LocomotionEnv(DirectRLEnv):
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         self._compute_intermediate_values()
         time_out = self.episode_length_buf >= self.max_episode_length - 1
-        died = self.torso_position[:, 2] < self.cfg.termination_height
+        # died = self.torso_position[:, 2] < self.cfg.termination_height
+        # judge based on illegal contact
+        illegal_contact_cfg = self.reward_cfgs['illegal_contact_cfg']
+        contact_sensor = self.scene.sensors[illegal_contact_cfg.name]
+        net_contact_forces = contact_sensor.data.net_forces_w_history
+        died = torch.any(torch.max(torch.norm(net_contact_forces[:, :, illegal_contact_cfg.body_ids], dim=-1), dim=1)[0] > 1.0, dim=1)
         return died, time_out
 
     def _reset_idx(self, env_ids: torch.Tensor | None):
