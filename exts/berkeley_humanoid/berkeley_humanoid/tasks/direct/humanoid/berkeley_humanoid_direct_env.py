@@ -96,7 +96,8 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
     x_vel_range = (-1.0, 1.0)
     y_vel_range = (-1.0, 1.0)
     yaw_vel_range = (-1.0, 1.0)
-    resampling_interval = 10
+    resampling_interval = 10 / (dt * decimation)   # time before the command is changed in sec
+    # dt * decimation is actually the time duration that corresponds to one env step
 
     # controller
     controller_use_offset = True
