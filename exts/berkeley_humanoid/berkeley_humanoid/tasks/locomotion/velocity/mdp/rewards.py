@@ -25,7 +25,6 @@ def feet_air_time(env: RLTaskEnv, command_name: str, sensor_cfg: SceneEntityCfg,
 
     If the commands are small (i.e. the agent is not supposed to take a step), then the reward is zero.
     """
-    import ipdb; ipdb.set_trace()
     # extract the used quantities (to enable type-hinting)
     contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]  # 'contact_forces'
     # compute the reward
