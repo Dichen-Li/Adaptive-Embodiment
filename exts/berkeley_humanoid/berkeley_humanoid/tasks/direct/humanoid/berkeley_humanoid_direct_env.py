@@ -12,6 +12,7 @@ from omni.isaac.lab.scene import InteractiveSceneCfg
 from omni.isaac.lab.sim import SimulationCfg
 from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
+from omni.isaac.lab.managers import SceneEntityCfg
 
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
@@ -103,6 +104,16 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
     controller_use_offset = True
     action_scale = 0.5
     controlled_joints = ".*"
+
+    # reward configs
+    reward_cfgs = {
+        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*faa"),
+        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*faa"),
+        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*hfe", ".*haa"]),
+        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*HR", ".*HAA"]),
+        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*KFE"]),
+        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso')
+    }
 
 
 class BerkeleyHumanoidDirectEnv(LocomotionEnv):
