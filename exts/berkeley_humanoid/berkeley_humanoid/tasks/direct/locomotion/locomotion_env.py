@@ -69,21 +69,7 @@ class LocomotionEnv(DirectRLEnv):
         self.prev_actions = None
 
         # configs needed for
-        # self.reward_cfgs = {
-        #     'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
-        #     'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
-        #     'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
-        #     'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-        #     'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"])
-        # }
-        self.reward_cfgs = {
-            'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*faa"),
-            'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*faa"),
-            'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*hfe", ".*haa"]),
-            'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*HR", ".*HAA"]),
-            'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*KFE"]),
-            'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso')
-        }
+        self.reward_cfgs = self.cfg.reward_cfgs
         for cfg in self.reward_cfgs.values():
             cfg.resolve(self.scene)
 
@@ -201,7 +187,7 @@ class LocomotionEnv(DirectRLEnv):
 
     def get_feet_air_time_reward(self, sensor_cfg, threshold_min, threshold_max):
         """
-        Encouarage taking large strides by rewarding long air time
+        Encourage taking large strides by rewarding long air time
         """
         # extract the used quantities (to enable type-hinting)
         contact_sensor: ContactSensor = self.scene.sensors[sensor_cfg.name]
