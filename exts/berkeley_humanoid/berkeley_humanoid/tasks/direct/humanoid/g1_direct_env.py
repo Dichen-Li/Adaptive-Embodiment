@@ -16,27 +16,7 @@ from omni.isaac.lab.utils import configclass
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
 from berkeley_humanoid.assets.unitree import G1_CFG
-import berkeley_humanoid.tasks.locomotion.velocity.mdp as mdp
-
-
-import math
-# import omni.isaac.lab.sim as sim_utils
-# from omni.isaac.lab.assets import ArticulationCfg, AssetBaseCfg
-# from omni.isaac.lab.envs import ManagerBasedRLEnvCfg
-# from omni.isaac.lab.managers import CurriculumTermCfg as CurrTerm
-# from omni.isaac.lab.managers import ObservationGroupCfg as ObsGroup
-# from omni.isaac.lab.managers import ObservationTermCfg as ObsTerm
-# from omni.isaac.lab.managers import EventTermCfg as EventTerm
-# from omni.isaac.lab.managers import RewardTermCfg as RewTerm
-# from omni.isaac.lab.managers import SceneEntityCfg
-# from omni.isaac.lab.managers import TerminationTermCfg as DoneTerm
-# from omni.isaac.lab.scene import InteractiveSceneCfg
 from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
-# from omni.isaac.lab.terrains import TerrainImporterCfg
-# from omni.isaac.lab.utils import configclass
-# from omni.isaac.lab.utils.noise import AdditiveUniformNoiseCfg as Unoise
-# from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR, ISAACLAB_NUCLEUS_DIR
-from omni.isaac.lab.sensors import ContactSensor
 
 
 @configclass
@@ -116,6 +96,7 @@ class G1EnvCfg(DirectRLEnvCfg):
     x_vel_range = (-1.0, 1.0)
     y_vel_range = (-1.0, 1.0)
     yaw_vel_range = (-1.0, 1.0)
+    resampling_interval = 10
 
 
 class G1DirectEnv(LocomotionEnv):
