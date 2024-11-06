@@ -82,7 +82,7 @@ class G1EnvCfg(DirectRLEnvCfg):
         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link", ".*elbow.*"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint", '.*elbow.*', '.*shoulder.*']),
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=['torso_link', 'head_link',
                                                                             '.*elbow.*', '.*shoulder.*'])
