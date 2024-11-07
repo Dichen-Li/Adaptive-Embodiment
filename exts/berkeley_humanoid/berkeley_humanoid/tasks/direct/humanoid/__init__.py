@@ -14,11 +14,24 @@ from .humanoid_env import HumanoidEnv, HumanoidEnvCfg
 from .h1_direct_env import H1DirectEnv, H1EnvCfg
 from .g1_direct_env import G1DirectEnv, G1EnvCfg
 from .go2_direct_env import Go2DirectEnv, Go2EnvCfg
+from .gen_dog_direct_env import GenDirectEnv, GenEnvCfg
 from .berkeley_humanoid_direct_env import BerkeleyHumanoidDirectEnv, BerkeleyHumanoidEnvCfg
 
 ##
 # Register Gym environments.
 ##
+
+gym.register(
+    id="GenDog2-Direct-v0",
+    entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": GenEnvCfg,
+        "rl_games_cfg_entry_point": f"{agents.__name__}:rl_games_ppo_cfg.yaml",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
+        "skrl_cfg_entry_point": f"{agents.__name__}:skrl_ppo_cfg.yaml",
+    },
+)
 
 gym.register(
     id="Go2-Direct-v0",
