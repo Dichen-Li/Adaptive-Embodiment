@@ -15,10 +15,11 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import (
 @configclass
 class HumanoidPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     num_steps_per_env = 24
-    max_iterations = 15000
+    max_iterations = 10000
     save_interval = 200
-    # experiment_name = "h1_direct"
-    experiment_name = "berkeley_reproduce"
+    # experiment_name = "g1_direct_v3"
+    experiment_name = "gen_dog_2"
+    # experiment_name = "berkeley_reproduce"
     # experiment_name = "humanoid_direct"
     empirical_normalization = False
     policy = RslRlPpoActorCriticCfg(
