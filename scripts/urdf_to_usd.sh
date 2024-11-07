@@ -15,4 +15,3 @@ ${ISAAC_LAB_PATH}/isaaclab.sh -p ${ISAAC_LAB_PATH}/source/standalone/tools/conve
   "$URDF_PATH" \
   "$USD_PATH" \
   --make-instanceable
-  --headless
