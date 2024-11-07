@@ -138,8 +138,8 @@ from berkeley_humanoid.assets import ISAAC_ASSET_DIR
 
 GO2_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        # usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/Go2/go2.usd",
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Unitree/Go2/go2.usd",
+        usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/Go2/go2.usd",
+        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Unitree/Go2/go2.usd",   # we can't use it because the Prop folder that contains instantiable mesh is missing; warning thrown
         activate_contact_sensors=True,
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,
