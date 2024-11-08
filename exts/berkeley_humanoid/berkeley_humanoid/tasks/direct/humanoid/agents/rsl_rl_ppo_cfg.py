@@ -18,7 +18,7 @@ class HumanoidPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     max_iterations = 10000
     save_interval = 200
     # experiment_name = "g1_direct_v3"
-    experiment_name = "gen_dog_2"
+    experiment_name = "standard"
     # experiment_name = "berkeley_reproduce"
     # experiment_name = "humanoid_direct"
     empirical_normalization = False
@@ -42,3 +42,33 @@ class HumanoidPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         desired_kl=0.01,
         max_grad_norm=1.0,
     )
+
+"""
+The name of the following Cfg must be {id}PPORunnerCfg
+where id is the gym registry id used for trigger the task
+This is for consistency with __init__.py 
+"""
+
+@configclass
+class GenDogPPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog"
+
+@configclass
+class GenDog1PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog1"
+
+@configclass
+class GenDog2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog2"
+
+@configclass
+class GenDog3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog3"
+
+@configclass
+class GenDog4PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog4"
+
+@configclass
+class GenDog5PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog5"
