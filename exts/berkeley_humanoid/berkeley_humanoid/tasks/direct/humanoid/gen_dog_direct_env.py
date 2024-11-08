@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from dataclasses import MISSING
+
 import omni.isaac.lab.sim as sim_utils
 from omni.isaac.lab.assets import ArticulationCfg
 from omni.isaac.lab.envs import DirectRLEnvCfg
@@ -16,12 +18,15 @@ from omni.isaac.lab.managers import SceneEntityCfg
 
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
-from berkeley_humanoid.assets.generated import GENDOG2_CFG
+from berkeley_humanoid.assets.generated import *
 from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 
 
 @configclass
 class GenEnvCfg(DirectRLEnvCfg):
+    """
+    A parent config class that will be inherited by robot-specific config classes
+    """
     seed = 42
 
     # env
@@ -52,7 +57,7 @@ class GenEnvCfg(DirectRLEnvCfg):
                                                      replicate_physics=True)
 
     # robot
-    robot: ArticulationCfg = GENDOG2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
+    robot: ArticulationCfg = MISSING
 
     # sensor for reward calculation
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
@@ -80,6 +85,34 @@ class GenEnvCfg(DirectRLEnvCfg):
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
                                                                             ".*thigh.*", ".*calf.*"])
     }
+
+    def __init__(self, robot_cfg, **kwargs):
+        super().__init__(**kwargs)
+        self.robot = robot_cfg  # Set the specific robot configuration
+
+@configclass
+class GenDogCfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG_CFG
+
+@configclass
+class GenDog1Cfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG1_CFG
+
+@configclass
+class GenDog2Cfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG2_CFG
+
+@configclass
+class GenDog3Cfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG3_CFG
+
+@configclass
+class GenDog4Cfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG4_CFG
+
+@configclass
+class GenDog5Cfg(GenEnvCfg):
+    robot: ArticulationCfg = GEN_DOG5_CFG
 
 
 class GenDirectEnv(LocomotionEnv):
