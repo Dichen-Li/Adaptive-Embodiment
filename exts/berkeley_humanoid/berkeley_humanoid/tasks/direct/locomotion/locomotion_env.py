@@ -218,11 +218,13 @@ class LocomotionEnv(DirectRLEnv):
 
     def get_feet_slide_reward(self, sensor_cfg, asset_cfg):
         """
-        Penalize feet sliding
+        Penalize feet sliding, where sliding is defined by the leg having contact AND velocity
+        This means that it does not penalize contact that has no velocity, e.g., in-place rotation
         """
         contact_sensor: ContactSensor = self.scene.sensors[sensor_cfg.name]
         contacts = contact_sensor.data.net_forces_w_history[:, :, sensor_cfg.body_ids, :].norm(dim=-1).max(dim=1)[0] > 1.0
         asset = self.scene[asset_cfg.name]
+        # sliding is characterized by having contact AND the body part has velocity
         body_vel = asset.data.body_lin_vel_w[:, asset_cfg.body_ids, :2]
         reward = torch.sum(body_vel.norm(dim=-1) * contacts, dim=1)
         return reward
