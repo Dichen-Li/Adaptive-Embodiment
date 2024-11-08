@@ -322,8 +322,8 @@ class LocomotionEnv(DirectRLEnv):
             'feet_air_time': feet_air_time * 2.0,
             'feet_slide': feet_slide * -0.25,
             'undesired_contacts': undesired_contacts * -0.1,
-            'joint_deviation_hip': joint_deviation_hip * -0.1 * 5,
-            'joint_deviation_knee': joint_deviation_knee * -0.01
+            'joint_deviation_hip': joint_deviation_hip * -0.1 * 5 * 0.2,
+            'joint_deviation_knee': joint_deviation_knee * -0.01 * 0.2
         }
         total_reward = sum(self.reward_dict.values())
 
