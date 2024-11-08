@@ -77,7 +77,8 @@ class GenEnvCfg(DirectRLEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*", ".*thigh.*"])
+        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
+                                                                            ".*thigh.*", ".*calf.*"])
     }
 
 
