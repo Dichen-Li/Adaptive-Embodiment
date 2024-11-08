@@ -14,46 +14,121 @@ from omni.isaac.lab.utils.assets import ISAACLAB_NUCLEUS_DIR
 
 from berkeley_humanoid.assets import ISAAC_ASSET_DIR
 
+rigid_props = sim_utils.RigidBodyPropertiesCfg(
+    disable_gravity=False,
+    retain_accelerations=False,
+    linear_damping=0.0,
+    angular_damping=0.0,
+    max_linear_velocity=1000.0,
+    max_angular_velocity=1000.0,
+    max_depenetration_velocity=1.0,
+)
+activate_contact_sensors = True
+articulation_props = sim_utils.ArticulationRootPropertiesCfg(
+    enabled_self_collisions=False, solver_position_iteration_count=4, solver_velocity_iteration_count=0
+)
+init_state = ArticulationCfg.InitialStateCfg(
+    pos=(0.0, 0.0, 0.6),
+    joint_pos={".*": 0.0},
+    # joint_pos={
+    #     ".*hip.*joint": 0.0,
+    #     ".*knee.*joint": 1.0,
+    #     ".*thigh.*joint": -0.3
+    # },
+    joint_vel={".*": 0.0},
+)
+soft_joint_pos_limit_factor = 0.9
+actuators = {
+    "base_legs": DCMotorCfg(
+        joint_names_expr=[".*joint"],
+        effort_limit=23.5,
+        saturation_effort=23.5,
+        velocity_limit=30.0,
+        stiffness=25.0,
+        damping=0.5,
+        friction=0.0,
+    ),
+}
+prim_path = "/World/envs/env_.*/Robot"
 
-GENDOG2_CFG = ArticulationCfg(
+"""
+Robot CFG files
+"""
+
+GEN_DOG_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        # usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/Go2/go2.usd",
-        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_0.usd",
-        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/spot.usd",
-        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_0_no_collision.usd",
-        # usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/Go2/go2.usd",
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_2.usd",
-        # usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated-Ablation/1-leg-inertia/gendog_0_no_collision_1_leg_inertia.usd",
-        activate_contact_sensors=True,
-        rigid_props=sim_utils.RigidBodyPropertiesCfg(
-            disable_gravity=False,
-            retain_accelerations=False,
-            linear_damping=0.0,
-            angular_damping=0.0,
-            max_linear_velocity=1000.0,
-            max_angular_velocity=1000.0,
-            max_depenetration_velocity=1.0,
-        ),
-        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
-            enabled_self_collisions=False, solver_position_iteration_count=4, solver_velocity_iteration_count=0
-        ),
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
     ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1),
-        joint_pos={".*": 0.0},
-        joint_vel={".*": 0.0},
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG1_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_1/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
     ),
-    soft_joint_pos_limit_factor=0.9,
-    actuators={
-        "base_legs": DCMotorCfg(
-            joint_names_expr=[".*joint"],
-            # joint_names_expr=[".*_hip_joint", ".*_thigh_joint", ".*_knee_.*joint"],
-            effort_limit=23.5,
-            saturation_effort=23.5,
-            velocity_limit=30.0,
-            stiffness=25.0,
-            damping=0.5,
-            friction=0.0,
-        ),
-    },
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG2_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_2/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG3_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_3/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG4_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_4/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG5_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_5/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
 )
