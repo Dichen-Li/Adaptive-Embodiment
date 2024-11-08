@@ -197,18 +197,23 @@ class LocomotionEnv(DirectRLEnv):
         """
         Encourage taking large strides by rewarding long air time
         """
-        # extract the used quantities (to enable type-hinting)
         contact_sensor: ContactSensor = self.scene.sensors[sensor_cfg.name]
-        # compute the reward
+        # check if contact is made in the past self.step_dt second
         first_contact = contact_sensor.compute_first_contact(self.step_dt)[:, sensor_cfg.body_ids]
+        # check time spent in the air before last contact (in sec)
         last_air_time = contact_sensor.data.last_air_time[:, sensor_cfg.body_ids]
-        # negative reward for small steps
+        # negative reward for small steps to discourage the behavior
+        # note that we only compute reward for legs that make contact recently
+        # so that we don't repeatedly compute reward for every step
+        # for example, if a leg keeps staying in the air, this long air time will only
+        # be penalized after it gets in contact with ground next time
         air_time = (last_air_time - threshold_min) * first_contact
         # no reward for large steps
-        air_time = torch.clamp(air_time, max=threshold_max - threshold_min)
+        air_time = torch.clamp(air_time, max=threshold_max-threshold_min)
         reward = torch.sum(air_time, dim=1)
-        # # no reward for zero command
-        # reward *= torch.norm(self.command_manager.get_command(command_name)[:, :2], dim=1) > 0.1
+        # no reward for zero command
+        command = torch.cat([self.target_x_vel, self.target_y_vel, self.target_yaw_vel], dim=1)
+        reward *= torch.norm(command[:, :2], dim=1) > 0.1
         return reward
 
     def get_feet_slide_reward(self, sensor_cfg, asset_cfg):
