@@ -100,8 +100,12 @@ class LocomotionEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
     def _pre_physics_step(self, actions: torch.Tensor):
+        # import ipdb; ipdb.set_trace()
+        # actions = torch.zeros_like(actions)
         self.prev_actions = self.actions.clone()    # record the prev action
         self.actions = self.controller.process_action(actions).clone()
+        # assert self.actions.any().item() is False
+        # assert self.robot.data.joint_pos.any().item() is False
 
     def _apply_action(self):
         # forces = self.action_scale * self.joint_gears * self.actions
@@ -152,13 +156,17 @@ class LocomotionEnv(DirectRLEnv):
         joint_pos_rel = self.robot.data.joint_pos - self.robot.data.default_joint_pos
         joint_vel_rel = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         actions = self.actions  # actions at prev step
+        # base_lin_vel, base_ang_vel, joint_pos_rel, joint_vel_rel could explode
 
         obs = torch.cat(
             [base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
              self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1
         )
 
-        # import ipdb; ipdb.set_trace()
+        # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
+        #      self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions]):
+        #     print(i, x.max())
+
         # obs = torch.cat(
         #     (
         #         self.target_x_vel,
@@ -270,10 +278,6 @@ class LocomotionEnv(DirectRLEnv):
             threshold_min=0.2, threshold_max=0.5
         )
 
-        # manually resolve config to find body parts that touch the ground
-        # asset_cfg = SceneEntityCfg("robot", body_names=".*ankle_roll_link")
-        # asset_cfg.resolve(self.scene)
-
         # compute reward that disencourages sliding
         feet_slide = self.get_feet_slide_reward(self.reward_cfgs['feet_ground_contact_cfg'],
                                                 self.reward_cfgs['feet_ground_asset_cfg'])
@@ -308,19 +312,6 @@ class LocomotionEnv(DirectRLEnv):
         #     self.motor_effort_ratio,
         # )
 
-        # total_reward = (total_reward + lin_vel_xy_reward + ang_vel_z_reward * 0.5 + lin_vel_z_l2 * -2.0
-        #                 + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
-
-        # total_reward = (total_reward + lin_vel_z_l2 * -2.0
-        #                 + ang_vel_xy_l2 * -0.05 + feet_air_reward * 2.0 - slide_reward * 0.25)
-
-        # total_reward = (track_lin_vel_xy_exp * 1.0 + track_ang_vel_z_exp * 0.5
-        #                 + lin_vel_z_l2 * -2.0 + ang_vel_xy_l2 * -0.05
-        #                 + joint_torques_l2 * -1e-5 + action_rate_l2 * -0.01
-        #                 + feet_air_time * 2.0 + feet_slide * -0.25
-        #                 + undesired_contacts * -0.1 + joint_deviation_hip * -0.1
-        #                 + joint_deviation_knee * -0.01)
-
         self.reward_dict = {
             'track_lin_vel_xy_exp': track_lin_vel_xy_exp * 1.0 * 2,
             'track_ang_vel_z_exp': track_ang_vel_z_exp * 0.5 * 2,
@@ -337,6 +328,8 @@ class LocomotionEnv(DirectRLEnv):
         total_reward = sum(self.reward_dict.values())
 
         # print(f'total time: {time.time() - init_time}')
+        # print('reward', {k: v.mean() for k, v in self.reward_dict.items()})
+        # import ipdb; ipdb.set_trace()
 
         return total_reward
 
