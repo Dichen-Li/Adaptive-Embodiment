@@ -66,9 +66,9 @@ class GenEnvCfg(DirectRLEnvCfg):
     asset_name = "robot"
 
     # Velocity command ranges
-    x_vel_range = (-1.0, 1.0)
-    y_vel_range = (-1.0, 1.0)
-    yaw_vel_range = (-1.0, 1.0)
+    x_vel_range = (-2.0, 2.0)
+    y_vel_range = (-2.0, 2.0)
+    yaw_vel_range = (-1.5, 1.5)
     resampling_interval = 10 / (dt * decimation)
 
     # controller
@@ -76,6 +76,7 @@ class GenEnvCfg(DirectRLEnvCfg):
     action_scale = 0.5
     controlled_joints = ".*"
 
+    # reward configurations
     reward_cfgs = {
         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
