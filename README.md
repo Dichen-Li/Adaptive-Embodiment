@@ -1,58 +1,29 @@
-# Berkeley Humanoid Traning Code
+## Environment setup
+Set up the environment following the README in the original repo `README-OLD.md`. 
 
-[![IsaacSim](https://img.shields.io/badge/IsaacSim-4.0.0-silver.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
-[![Isaac Lab](https://img.shields.io/badge/IsaacLab-1.0.0-silver)](https://isaac-sim.github.io/IsaacLab)
-[![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://docs.python.org/3/whatsnew/3.10.html)
-[![Linux platform](https://img.shields.io/badge/platform-linux--64-orange.svg)](https://releases.ubuntu.com/20.04/)
-
-## Overview
-
-This repository shows the training code for Berkeley Humanoid with IsaacLab.
-
-## Publications
-
-If you use this work in an academic context, please consider citing the following publications:
-
-    @misc{2407.21781,
-    Author = {Qiayuan Liao and Bike Zhang and Xuanyu Huang and Xiaoyu Huang and Zhongyu Li and Koushil Sreenath},
-    Title = {Berkeley Humanoid: A Research Platform for Learning-based Control},
-    Year = {2024},
-    Eprint = {arXiv:2407.21781},
-    }
-
-### Installation
-
-- Install Isaac Lab, see
-  the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html). **Please use
-  [IsaacLab v1.0.0 with IsaacSim 4.0.0](https://github.com/isaac-sim/IsaacLab/blob/3ad18a8e1a5c166ad1a22f105d47a5c578de68d7/docs/source/setup/installation/pip_installation.rst)**.
-
-- Using a python interpreter that has Isaac sLab installed, install the library
-
+## How to add robot
+0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
+Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
+```angular2html
+sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
+sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
 ```
-cd exts/berkeley_humanoid
-python -m pip install -e .
+1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
+2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
+3. Add training env configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
+4. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+
+## How to batch training (sequential training)
+Do the following:
+```angular2html
+bash scripts/train_batch.sh --tasks GenDog GenDog1 GenDog2 GenDog3 GenDog4 GenDog5
 ```
-
-## Run
-
-Training an agent with RSL-RL on Velocity-Rough-Berkeley-Humanoid-v0:
-
+where `--tasks` is used to specify task IDs. It is personally recommended to direct the program output to an `.out` file
+for future reference, e.g., 
+```angular2html
+bash scripts/train_batch.sh --tasks GenDog GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > train5.out
 ```
-# run script for training
-${ISAAC_LAB_PATH}/isaaclab.sh -p scripts/rsl_rl/train.py --task Velocity-Rough-Berkeley-Humanoid-v0
-# run script for playing
-${ISAAC_LAB_PATH}/isaaclab.sh -p scripts/rsl_rl/play.py --task Velocity-Rough-Berkeley-Humanoid-Play-v0
-```
+Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
+such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
 
-## FAQ
-**Q: Why doesn't the maximum torque of each joint match the values in the paper?**
-
-**A:** The maximum torque is limited for safety reasons.
-
-**Q: Where is the joint armature from?**
-
-**A:** From CAD system.
-
-**Q: Why does the friction of each joint so large?**
-
-**A:** The motor we used has large cogging torque, we include it in the friction of the actuator model.
+Happy training! 
