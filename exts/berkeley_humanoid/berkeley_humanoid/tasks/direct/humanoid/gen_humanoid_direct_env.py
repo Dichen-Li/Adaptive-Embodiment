@@ -18,7 +18,7 @@ from omni.isaac.lab.managers import SceneEntityCfg
 
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
-from berkeley_humanoid.assets.generated import GEN_HUMANOID_CFG
+from berkeley_humanoid.assets.generated import *
 from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 
 
@@ -81,7 +81,8 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint", ".*elbow.*joint", ".*shoulder.*joint",
+                                                              ".*torso.*joint"]),
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*head.*", ".*torso.*",
                                                                             ".*arm.*", ".*calf.*"])
@@ -91,29 +92,30 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
         super().__init__(**kwargs)
         self.robot = robot_cfg  # Set the specific robot configuration
 
-@configclass
-class GenHumanoidCfg(GenHumanoidEnvCfg):
-    robot: ArticulationCfg = GEN_HUMANOID_CFG
 
-# @configclass
-# class GenDog1Cfg(GenHumanoidEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG1_CFG
-#
-# @configclass
-# class GenDog2Cfg(GenHumanoidEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG2_CFG
-#
-# @configclass
-# class GenDog3Cfg(GenHumanoidEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG3_CFG
-#
-# @configclass
-# class GenDog4Cfg(GenHumanoidEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG4_CFG
-#
-# @configclass
-# class GenDog5Cfg(GenHumanoidEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG5_CFG
+@configclass
+class GenHumanoid1Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID1_CFG
+
+@configclass
+class GenHumanoid2Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID2_CFG
+
+@configclass
+class GenHumanoid3Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID3_CFG
+
+@configclass
+class GenHumanoid4Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID4_CFG
+
+@configclass
+class GenHumanoid5Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID5_CFG
+
+@configclass
+class GenHumanoid6Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID6_CFG
 
 
 class GenHumanoidDirectEnv(LocomotionEnv):

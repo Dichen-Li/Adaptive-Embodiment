@@ -53,14 +53,19 @@ Due to the large number of configs, ideally we want to automate the process
 """
 
 id_entry_pair = {
-    "GenDog": GenDogCfg,
     "GenDog1": GenDog1Cfg,
     "GenDog2": GenDog2Cfg,
     "GenDog3": GenDog3Cfg,
     "GenDog4": GenDog4Cfg,
     "GenDog5": GenDog5Cfg,
-    "GenHumanoid": GenHumanoidCfg
+    "GenHumanoid1": GenHumanoid1Cfg,
+    "GenHumanoid2": GenHumanoid2Cfg,
+    "GenHumanoid3": GenHumanoid3Cfg,
+    "GenHumanoid4": GenHumanoid4Cfg,
+    "GenHumanoid5": GenHumanoid5Cfg,
+    "GenHumanoid6": GenHumanoid6Cfg,
 }
+
 
 for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
@@ -73,63 +78,3 @@ for id, env_cfg_entry_point in id_entry_pair.items():
             "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
         },
     )
-
-# gym.register(
-#     id="GenDog",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDogCfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
-#
-# gym.register(
-#     id="GenDog1",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDog1Cfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
-#
-# gym.register(
-#     id="GenDog2",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDog2Cfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
-#
-# gym.register(
-#     id="GenDog3",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDog3Cfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
-#
-# gym.register(
-#     id="GenDog4",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDog4Cfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
-#
-# gym.register(
-#     id="GenDog5",
-#     entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
-#     disable_env_checker=True,
-#     kwargs={
-#         "env_cfg_entry_point": GenDog5Cfg,
-#         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
-#     },
-# )
