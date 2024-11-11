@@ -18,12 +18,12 @@ from omni.isaac.lab.managers import SceneEntityCfg
 
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
-from berkeley_humanoid.assets.generated import *
+from berkeley_humanoid.assets.generated import GEN_HUMANOID_CFG
 from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 
 
 @configclass
-class GenDogEnvCfg(DirectRLEnvCfg):
+class GenHumanoidEnvCfg(DirectRLEnvCfg):
     """
     A parent config class that will be inherited by robot-specific config classes
     """
@@ -33,7 +33,7 @@ class GenDogEnvCfg(DirectRLEnvCfg):
     episode_length_s = 20.0
     decimation = 4
     dt = 0.005
-    action_space = 12
+    action_space = 15
     observation_space = 69
 
     # simulation
@@ -83,8 +83,8 @@ class GenDogEnvCfg(DirectRLEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
-                                                                            ".*thigh.*", ".*calf.*"])
+        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*head.*", ".*torso.*",
+                                                                            ".*arm.*", ".*calf.*"])
     }
 
     def __init__(self, robot_cfg, **kwargs):
@@ -92,32 +92,32 @@ class GenDogEnvCfg(DirectRLEnvCfg):
         self.robot = robot_cfg  # Set the specific robot configuration
 
 @configclass
-class GenDogCfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_CFG
+class GenHumanoidCfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_CFG
 
-@configclass
-class GenDog1Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG1_CFG
+# @configclass
+# class GenDog1Cfg(GenHumanoidEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG1_CFG
+#
+# @configclass
+# class GenDog2Cfg(GenHumanoidEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG2_CFG
+#
+# @configclass
+# class GenDog3Cfg(GenHumanoidEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG3_CFG
+#
+# @configclass
+# class GenDog4Cfg(GenHumanoidEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG4_CFG
+#
+# @configclass
+# class GenDog5Cfg(GenHumanoidEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG5_CFG
 
-@configclass
-class GenDog2Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG2_CFG
 
-@configclass
-class GenDog3Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG3_CFG
+class GenHumanoidDirectEnv(LocomotionEnv):
+    cfg: GenHumanoidEnvCfg
 
-@configclass
-class GenDog4Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG4_CFG
-
-@configclass
-class GenDog5Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG5_CFG
-
-
-class GenDirectEnv(LocomotionEnv):
-    cfg: GenDogEnvCfg
-
-    def __init__(self, cfg: GenDogEnvCfg, render_mode: str | None = None, **kwargs):
+    def __init__(self, cfg: GenHumanoidEnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)

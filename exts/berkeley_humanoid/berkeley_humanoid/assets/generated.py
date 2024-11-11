@@ -27,7 +27,7 @@ activate_contact_sensors = True
 articulation_props = sim_utils.ArticulationRootPropertiesCfg(
     enabled_self_collisions=False, solver_position_iteration_count=4, solver_velocity_iteration_count=0
 )
-init_state = ArticulationCfg.InitialStateCfg(
+init_state_dog = ArticulationCfg.InitialStateCfg(
     pos=(0.0, 0.0, 0.6),
     joint_pos={".*": 0.0},
     # joint_pos={
@@ -62,7 +62,7 @@ GEN_DOG_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
     prim_path=prim_path
@@ -75,7 +75,7 @@ GEN_DOG1_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
     prim_path=prim_path
@@ -88,7 +88,7 @@ GEN_DOG2_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
     prim_path=prim_path
@@ -101,7 +101,7 @@ GEN_DOG3_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
     prim_path=prim_path
@@ -114,7 +114,7 @@ GEN_DOG4_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
     prim_path=prim_path
@@ -127,8 +127,95 @@ GEN_DOG5_CFG = ArticulationCfg(
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
-    init_state=init_state,
+    init_state=init_state_dog,
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
     actuators=actuators,
+    prim_path=prim_path
+)
+
+init_state_humanoid = ArticulationCfg.InitialStateCfg(
+    pos=(0.0, 0.0, 1.6),
+    joint_pos={".*": 0.0},
+    # joint_pos={
+    #     ".*hip.*joint": 0.0,
+    #     ".*knee.*joint": 1.0,
+    #     ".*thigh.*joint": -0.3
+    # },
+    joint_vel={".*": 0.0},
+)
+actuators_humanoid = {
+    "legs": ImplicitActuatorCfg(
+        joint_names_expr=[
+            ".*_hip_yaw_joint",
+            ".*_hip_roll_joint",
+            ".*_hip_pitch_joint",
+            ".*_knee_joint",
+            "torso_joint",
+        ],
+        effort_limit=300,
+        velocity_limit=100.0,
+        stiffness={
+            ".*_hip_yaw_joint": 150.0,
+            ".*_hip_roll_joint": 150.0,
+            ".*_hip_pitch_joint": 200.0,
+            ".*_knee_joint": 200.0,
+            "torso_joint": 200.0,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.0,
+            ".*_hip_roll_joint": 5.0,
+            ".*_hip_pitch_joint": 5.0,
+            ".*_knee_joint": 5.0,
+            "torso_joint": 5.0,
+        },
+        armature={
+            ".*_hip_yaw_joint": 0.01,
+            ".*_hip_roll_joint": 0.01,
+            ".*_hip_pitch_joint": 0.01,
+            ".*_knee_joint": 0.01,
+            "torso_joint": 0.01,
+        },
+    ),
+    "feet": ImplicitActuatorCfg(
+        joint_names_expr=[
+            ".*_ankle_joint"
+        ],
+        effort_limit=20,
+        stiffness=20.0,
+        damping=2.0,
+        armature=0.01,
+    ),
+    "arms": ImplicitActuatorCfg(
+        joint_names_expr=[
+            ".*_shoulder_joint",
+            ".*_elbow_joint",
+        ],
+        effort_limit=300,
+        velocity_limit=100.0,
+        stiffness={
+            ".*_shoulder_joint": 40.0,
+            ".*_elbow_joint": 40.0,
+        },
+        damping={
+            ".*_shoulder_joint": 10.0,
+            ".*_elbow_joint": 10.0,
+        },
+        armature={
+            ".*_shoulder_joint": 0.01,
+            ".*_elbow_joint": 0.01,
+        },
+    ),
+}
+
+GEN_HUMANOID_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
     prim_path=prim_path
 )
