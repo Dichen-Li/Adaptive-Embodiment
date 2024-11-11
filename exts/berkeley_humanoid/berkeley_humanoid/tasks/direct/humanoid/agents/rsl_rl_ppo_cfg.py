@@ -15,7 +15,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import (
 @configclass
 class HumanoidPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     num_steps_per_env = 24
-    max_iterations = 10000
+    max_iterations = 4000
     save_interval = 200
     # experiment_name = "g1_direct_v3"
     experiment_name = "standard"
@@ -49,9 +49,6 @@ where id is the gym registry id used for trigger the task
 This is for consistency with __init__.py 
 """
 
-@configclass
-class GenDogPPORunnerCfg(HumanoidPPORunnerCfg):
-    experiment_name = "GenDog"
 
 @configclass
 class GenDog1PPORunnerCfg(HumanoidPPORunnerCfg):
@@ -72,3 +69,27 @@ class GenDog4PPORunnerCfg(HumanoidPPORunnerCfg):
 @configclass
 class GenDog5PPORunnerCfg(HumanoidPPORunnerCfg):
     experiment_name = "GenDog5"
+
+@configclass
+class GenHumanoid1PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid1"
+
+@configclass
+class GenHumanoid2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid2"
+
+@configclass
+class GenHumanoid3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid3"
+
+@configclass
+class GenHumanoid4PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid4"
+
+@configclass
+class GenHumanoid5PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid5"
+
+@configclass
+class GenHumanoid6PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoid6"
