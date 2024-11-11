@@ -251,7 +251,6 @@ class LocomotionEnv(DirectRLEnv):
         # extract the used quantities (to enable type-hinting)
         asset: Articulation = self.scene[asset_cfg.name]
         # compute out of limits constraints
-        import ipdb; ipdb.set_trace()
         angle = asset.data.joint_pos[:, asset_cfg.joint_ids] - asset.data.default_joint_pos[:, asset_cfg.joint_ids]
         return torch.sum(torch.abs(angle), dim=1)
 
@@ -340,7 +339,7 @@ class LocomotionEnv(DirectRLEnv):
             'undesired_contacts': undesired_contacts * -0.1,
             'joint_deviation_hip': joint_deviation_hip * -0.1 * 5 * 0.2,
             'joint_deviation_knee': joint_deviation_knee * -0.01 * 0.2,
-            'vertical_reward': vertical_reward
+            'vertical_reward': vertical_reward * 0.05
         }
         total_reward = sum(self.reward_dict.values())
 
