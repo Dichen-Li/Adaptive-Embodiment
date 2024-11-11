@@ -254,10 +254,9 @@ class LocomotionEnv(DirectRLEnv):
         angle = asset.data.joint_pos[:, asset_cfg.joint_ids] - asset.data.default_joint_pos[:, asset_cfg.joint_ids]
         return torch.sum(torch.abs(angle), dim=1)
 
-    def get_vertical_reward(self):
-        """Encourage the robot to stay vertical"""
-        up_reward = 1.0 - torch.abs(1.0 - self.up_proj)
-        return up_reward
+    def get_vertical_deviation_l1(self):
+        """Computes the deviation from vertical direction using L1 metric"""
+        return torch.abs(1.0 - self.up_proj)
 
     # @torch.jit.script
     def _get_rewards(self) -> torch.Tensor:
@@ -304,8 +303,8 @@ class LocomotionEnv(DirectRLEnv):
         # compute deviation for knee
         joint_deviation_knee = self.get_joint_deviation_l1(self.reward_cfgs['joint_knee_cfg'])
 
-        # compute devaition frmo the vertical line
-        vertical_reward = self.get_vertical_reward()
+        # compute deviation from the vertical direction
+        vertical_reward = self.get_vertical_deviation_l1()
 
         # # self.cfg.rewards
         # total_reward = compute_rewards(
@@ -339,7 +338,7 @@ class LocomotionEnv(DirectRLEnv):
             'undesired_contacts': undesired_contacts * -0.1,
             'joint_deviation_hip': joint_deviation_hip * -0.1 * 5 * 0.2,
             'joint_deviation_knee': joint_deviation_knee * -0.01 * 0.2,
-            'vertical_reward': vertical_reward * 0.05
+            'vertical_reward': vertical_reward * -0.1
         }
         total_reward = sum(self.reward_dict.values())
 
