@@ -10,6 +10,12 @@ Do the following:
 ```angular2html
 bash scripts/train_batch.sh --tasks GenDog GenDog1 GenDog2 GenDog3 GenDog4 GenDog5
 ```
-where `--tasks` is used to specify task IDs
+where `--tasks` is used to specify task IDs. It is personally recommended to direct the program output to an `.out` file
+for future reference, e.g., 
+```angular2html
+bash scripts/train_batch.sh --tasks GenDog GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > train5.out
+```
+Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
+such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
 
 Happy training! 
