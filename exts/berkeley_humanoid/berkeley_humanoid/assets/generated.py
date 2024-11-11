@@ -55,19 +55,6 @@ prim_path = "/World/envs/env_.*/Robot"
 Robot CFG files
 """
 
-GEN_DOG_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=init_state_dog,
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
 GEN_DOG1_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
         usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_1/robot.usd",
@@ -207,9 +194,74 @@ actuators_humanoid = {
     ),
 }
 
-GEN_HUMANOID_CFG = ArticulationCfg(
+GEN_HUMANOID1_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_1/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID2_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_2/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID3_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_3/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID4_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_4/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID5_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_5/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_humanoid,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID6_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_6/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,

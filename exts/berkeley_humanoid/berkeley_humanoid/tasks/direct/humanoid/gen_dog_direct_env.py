@@ -91,9 +91,6 @@ class GenDogEnvCfg(DirectRLEnvCfg):
         super().__init__(**kwargs)
         self.robot = robot_cfg  # Set the specific robot configuration
 
-@configclass
-class GenDogCfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_CFG
 
 @configclass
 class GenDog1Cfg(GenDogEnvCfg):
