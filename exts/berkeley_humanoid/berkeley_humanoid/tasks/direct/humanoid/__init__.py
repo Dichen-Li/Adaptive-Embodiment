@@ -24,6 +24,26 @@ from .berkeley_humanoid_direct_env import BerkeleyHumanoidDirectEnv, BerkeleyHum
 
 # register standard robot envs
 gym.register(
+    id="Go2-Direct-v0",
+    entry_point="berkeley_humanoid.tasks.direct.humanoid:Go2DirectEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": Go2EnvCfg,
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="G1-Direct-v0",
+    entry_point="berkeley_humanoid.tasks.direct.humanoid:G1DirectEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": G1EnvCfg,
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:HumanoidPPORunnerCfg",
+    },
+)
+
+gym.register(
     id="H1-Direct-v0",
     entry_point="berkeley_humanoid.tasks.direct.humanoid:H1DirectEnv",
     disable_env_checker=True,
@@ -53,6 +73,7 @@ Due to the large number of configs, ideally we want to automate the process
 """
 
 id_entry_pair = {
+    "GenDog0": GenDog0Cfg,
     "GenDog1": GenDog1Cfg,
     "GenDog2": GenDog2Cfg,
     "GenDog3": GenDog3Cfg,
