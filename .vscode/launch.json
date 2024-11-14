@@ -10,7 +10,7 @@
             "python": "/home/research/anaconda3/envs/isaac_lab/bin/python",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}/scripts/rsl_rl/train.py",
+            "program": "${workspaceFolder}/scripts/rsl_rl/play_record.py",
             "console": "integratedTerminal",
             "args":["--task","GenDog1"]
         }
