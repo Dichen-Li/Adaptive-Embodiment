@@ -93,6 +93,10 @@ class GenDogEnvCfg(DirectRLEnvCfg):
 
 
 @configclass
+class GenDog0Cfg(GenDogEnvCfg):
+    robot: ArticulationCfg = GEN_DOG0_CFG
+
+@configclass
 class GenDog1Cfg(GenDogEnvCfg):
     robot: ArticulationCfg = GEN_DOG1_CFG
 
