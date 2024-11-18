@@ -49,6 +49,10 @@ where id is the gym registry id used for trigger the task
 This is for consistency with __init__.py 
 """
 
+@configclass
+class GenDog0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDog0-v6"
+    # experiment_name = "GenDog0"
 
 @configclass
 class GenDog1PPORunnerCfg(HumanoidPPORunnerCfg):
