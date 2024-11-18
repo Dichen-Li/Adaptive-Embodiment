@@ -164,12 +164,14 @@ GO2_CFG = ArticulationCfg(
             "R[L,R]_thigh_joint": 1.0,
             ".*_calf_joint": -1.5,
         },
+        # joint_pos={".*": 0.0},
         joint_vel={".*": 0.0},
     ),
     soft_joint_pos_limit_factor=0.9,
     actuators={
         "base_legs": DCMotorCfg(
-            joint_names_expr=[".*_hip_joint", ".*_thigh_joint", ".*_calf_joint"],
+            # joint_names_expr=[".*_hip_joint", ".*_thigh_joint", ".*_calf_joint"],
+            joint_names_expr=[".*joint"],
             effort_limit=23.5,
             saturation_effort=23.5,
             velocity_limit=30.0,
