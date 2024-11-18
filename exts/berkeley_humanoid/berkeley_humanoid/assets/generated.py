@@ -28,8 +28,17 @@ articulation_props = sim_utils.ArticulationRootPropertiesCfg(
     enabled_self_collisions=False, solver_position_iteration_count=4, solver_velocity_iteration_count=0
 )
 init_state_dog = ArticulationCfg.InitialStateCfg(
-    pos=(0.0, 0.0, 0.6),
-    joint_pos={".*": 0.0},
+    pos=(0.0, 0.0, 0.4),
+    # joint_pos={".*": 0.0},
+    joint_pos={
+        ".*_left_hip_pitch_joint": 0.1,
+        ".*_right_hip_pitch_joint": -0.1,
+        "front_left_thigh_joint": 0.8,
+        "front_right_thigh_joint": 0.8,
+        "rear_left_thigh_joint": 1.0,
+        "rear_right_thigh_joint": 1.0,
+        ".*_knee_joint": -1.5,
+    },
     # joint_pos={
     #     ".*hip.*joint": 0.0,
     #     ".*knee.*joint": 1.0,
@@ -54,6 +63,19 @@ prim_path = "/World/envs/env_.*/Robot"
 """
 Robot CFG files
 """
+
+GEN_DOG0_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_0_v6/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=init_state_dog,
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
 
 GEN_DOG1_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
