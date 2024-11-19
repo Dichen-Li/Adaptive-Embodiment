@@ -97,3 +97,63 @@ class GenHumanoid5PPORunnerCfg(HumanoidPPORunnerCfg):
 @configclass
 class GenHumanoid6PPORunnerCfg(HumanoidPPORunnerCfg):
     experiment_name = "GenHumanoid6"
+
+@configclass
+class GenDogF0R0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF0R0"
+
+@configclass
+class GenDogF0R1PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF0R1"
+
+@configclass
+class GenDogF1R0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF1R0"
+
+@configclass
+class GenDogF2R2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF2R2"
+
+@configclass
+class GenDogF2R3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF2R3"
+
+@configclass
+class GenDogF3R2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogF3R2"
+
+@configclass
+class GenDogOriginal0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal0"
+
+@configclass
+class GenDogOriginal1PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal1"
+
+@configclass
+class GenDogOriginal2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal2"
+
+@configclass
+class GenDogOriginal3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal3"
+
+@configclass
+class GenDogOriginal4PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal4"
+
+@configclass
+class GenDogOriginal5PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal5"
+
+@configclass
+class GenDogOriginal6PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal6"
+
+@configclass
+class GenDogOriginal7PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal7"
+
+@configclass
+class GenDogOriginal8PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenDogOriginal8"

@@ -85,8 +85,22 @@ id_entry_pair = {
     "GenHumanoid4": GenHumanoid4Cfg,
     "GenHumanoid5": GenHumanoid5Cfg,
     "GenHumanoid6": GenHumanoid6Cfg,
+    "GenDogF0R0": GenDogF0R0KneeJoint0Cfg,
+    "GenDogF0R1": GenDogF0R1KneeJoint0Cfg,
+    "GenDogF1R0": GenDogF1R0KneeJoint0Cfg,
+    "GenDogF2R2": GenDogF2R2KneeJoint0Cfg,
+    "GenDogF2R3": GenDogF2R3KneeJoint0Cfg,
+    "GenDogF3R2": GenDogF3R2KneeJoint0Cfg,
+    "GenDogOriginal0": GenDogOriginalJoint0Cfg,
+    "GenDogOriginal1": GenDogOriginalJoint1Cfg,
+    "GenDogOriginal2": GenDogOriginalJoint2Cfg,
+    "GenDogOriginal3": GenDogOriginalJoint3Cfg,
+    "GenDogOriginal4": GenDogOriginalJoint4Cfg,
+    "GenDogOriginal5": GenDogOriginalJoint5Cfg,
+    "GenDogOriginal6": GenDogOriginalJoint6Cfg,
+    "GenDogOriginal7": GenDogOriginalJoint7Cfg,
+    "GenDogOriginal8": GenDogOriginalJoint8Cfg,
 }
-
 
 for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
