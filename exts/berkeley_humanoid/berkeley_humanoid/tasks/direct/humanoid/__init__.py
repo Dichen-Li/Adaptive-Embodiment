@@ -113,3 +113,30 @@ for id, env_cfg_entry_point in id_entry_pair.items():
             "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
         },
     )
+
+"""
+Register customized humanoid configs.
+Due to the large number of configs, ideally we want to automate the process
+"""
+
+id_entry_pair = {
+    "GenHumanoidOriginalJoint0": GenHumanoidOriginalJoint0Cfg,
+    "GenHumanoidOriginalJoint1": GenHumanoidOriginalJoint1Cfg,
+    "GenHumanoidOriginalJoint2": GenHumanoidOriginalJoint2Cfg,
+    "GenHumanoidOriginalJoint3": GenHumanoidOriginalJoint3Cfg,
+    "GenHumanoidOriginalJoint4": GenHumanoidOriginalJoint4Cfg,
+    "GenHumanoidOriginalJoint5": GenHumanoidOriginalJoint5Cfg,
+    "GenHumanoidOriginalJoint6": GenHumanoidOriginalJoint6Cfg,
+}
+
+for id, env_cfg_entry_point in id_entry_pair.items():
+    rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
+    gym.register(
+        id=id,
+        entry_point="berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv",
+        disable_env_checker=True,
+        kwargs={
+            "env_cfg_entry_point": env_cfg_entry_point,
+            "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
+        },
+    )

@@ -157,3 +157,31 @@ class GenDogOriginal7PPORunnerCfg(HumanoidPPORunnerCfg):
 @configclass
 class GenDogOriginal8PPORunnerCfg(HumanoidPPORunnerCfg):
     experiment_name = "GenDogOriginal8"
+
+@configclass
+class GenHumanoidOriginalJoint0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint0"
+
+@configclass
+class GenHumanoidOriginalJoint1PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint1"
+
+@configclass
+class GenHumanoidOriginalJoint2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint2"
+
+@configclass
+class GenHumanoidOriginalJoint3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint3"
+
+@configclass
+class GenHumanoidOriginalJoint4PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint4"
+
+@configclass
+class GenHumanoidOriginalJoint5PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint5"
+
+@configclass
+class GenHumanoidOriginalJoint6PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidOriginalJoint6"

@@ -142,8 +142,161 @@ GEN_DOG5_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
+
+# Add robot configurations dynamically using code
+def create_robot_config(name):
+    return ArticulationCfg(
+        spawn=sim_utils.UsdFileCfg(
+            usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/{name}/robot.usd",
+            activate_contact_sensors=activate_contact_sensors,
+            rigid_props=rigid_props,
+            articulation_props=articulation_props,
+        ),
+        init_state=init_state_humanoid if "humanoid" in name else init_state_dog,
+        soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+        actuators=actuators_humanoid if "humanoid" in name else actuators,
+        prim_path=prim_path,
+    )
+
+# Mapping robot file names to canonical CFG names
+robot_name_map = {
+    # "gen_dog_f0r0_knee_joint_0": "GEN_DOG_F0R0_CFG",
+    "gen_dog_f0r1_knee_joint_0": "GEN_DOG_F0R1_CFG",
+    "gen_dog_f1r0_knee_joint_0": "GEN_DOG_F1R0_CFG",
+    "gen_dog_f2r2_knee_joint_0": "GEN_DOG_F2R2_CFG",
+    "gen_dog_f2r3_knee_joint_0": "GEN_DOG_F2R3_CFG",
+    "gen_dog_f3r2_knee_joint_0": "GEN_DOG_F3R2_CFG",
+    "gen_dog_original_joint_0": "GEN_DOG_ORIGINAL_0_CFG",
+    # "gen_dog_original_joint_1": "GEN_DOG_ORIGINAL_1_CFG",
+    # "gen_dog_original_joint_2": "GEN_DOG_ORIGINAL_2_CFG",
+    "gen_dog_original_joint_3": "GEN_DOG_ORIGINAL_3_CFG",
+    "gen_dog_original_joint_4": "GEN_DOG_ORIGINAL_4_CFG",
+    # "gen_dog_original_joint_5": "GEN_DOG_ORIGINAL_5_CFG",
+    "gen_dog_original_joint_6": "GEN_DOG_ORIGINAL_6_CFG",
+    "gen_dog_original_joint_7": "GEN_DOG_ORIGINAL_7_CFG",
+    "gen_dog_original_joint_8": "GEN_DOG_ORIGINAL_8_CFG",
+}
+
+# Dynamically generate the CFG objects
+for robot_file_name, cfg_name in robot_name_map.items():
+    globals()[cfg_name] = create_robot_config(robot_file_name)
+
+# F0R0 is kind of different, as it has no knee joints
+GEN_DOG_F0R0_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_f0r0_knee_joint_0/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.5),
+        # joint_pos={".*": 0.0},
+        joint_pos={
+            ".*_left_hip_pitch_joint": 0.1,
+            ".*_right_hip_pitch_joint": -0.1,
+            "front_left_thigh_joint": 0.8,
+            "front_right_thigh_joint": 0.8,
+            "rear_left_thigh_joint": 1.0,
+            "rear_right_thigh_joint": 1.0,
+            # ".*_knee_joint": -1.5,
+        },
+        # joint_pos={
+        #     ".*hip.*joint": 0.0,
+        #     ".*knee.*joint": 1.0,
+        #     ".*thigh.*joint": -0.3
+        # },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_ORIGINAL_1_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_original_joint_1/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.0),
+        # joint_pos={".*": 0.0},
+        joint_pos={
+            ".*_left_hip_pitch_joint": 0.1,
+            ".*_right_hip_pitch_joint": -0.1,
+            "front_left_thigh_joint": 0.8,
+            "front_right_thigh_joint": 0.8,
+            "rear_left_thigh_joint": 1.0,
+            "rear_right_thigh_joint": 1.0,
+            ".*_knee_joint": -1.5,
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_ORIGINAL_2_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_original_joint_2/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.15),
+        # joint_pos={".*": 0.0},
+        joint_pos={
+            ".*_left_hip_pitch_joint": 0.1,
+            ".*_right_hip_pitch_joint": -0.1,
+            "front_left_thigh_joint": 0.8,
+            "front_right_thigh_joint": 0.8,
+            "rear_left_thigh_joint": 1.0,
+            "rear_right_thigh_joint": 1.0,
+            ".*_knee_joint": -1.5,
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_ORIGINAL_5_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_original_joint_5/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.6),
+        # joint_pos={".*": 0.0},
+        joint_pos={
+            ".*_left_hip_pitch_joint": 0.1,
+            ".*_right_hip_pitch_joint": -0.1,
+            "front_left_thigh_joint": 0.8,
+            "front_right_thigh_joint": 0.8,
+            "rear_left_thigh_joint": 1.0,
+            "rear_right_thigh_joint": 1.0,
+            ".*_knee_joint": -1.5,
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+"""
+Generated humanoids
+"""
+
 init_state_humanoid = ArticulationCfg.InitialStateCfg(
-    pos=(0.0, 0.0, 1.6),
+    pos=(0.0, 0.0, 1.5),
     joint_pos={".*": 0.0},
     # joint_pos={
     #     ".*hip.*joint": 0.0,
@@ -294,72 +447,121 @@ GEN_HUMANOID6_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-# Add robot configurations dynamically using code
-def create_robot_config(name):
-    return ArticulationCfg(
-        spawn=sim_utils.UsdFileCfg(
-            usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/{name}/robot.usd",
-            activate_contact_sensors=activate_contact_sensors,
-            rigid_props=rigid_props,
-            articulation_props=articulation_props,
-        ),
-        init_state=init_state_humanoid if "humanoid" in name else init_state_dog,
-        soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-        actuators=actuators_humanoid if "humanoid" in name else actuators,
-        prim_path=prim_path,
-    )
-
-# Mapping robot file names to canonical CFG names
-robot_name_map = {
-    # "gen_dog_f0r0_knee_joint_0": "GEN_DOG_F0R0_CFG",
-    "gen_dog_f0r1_knee_joint_0": "GEN_DOG_F0R1_CFG",
-    "gen_dog_f1r0_knee_joint_0": "GEN_DOG_F1R0_CFG",
-    "gen_dog_f2r2_knee_joint_0": "GEN_DOG_F2R2_CFG",
-    "gen_dog_f2r3_knee_joint_0": "GEN_DOG_F2R3_CFG",
-    "gen_dog_f3r2_knee_joint_0": "GEN_DOG_F3R2_CFG",
-    "gen_dog_original_joint_0": "GEN_DOG_ORIGINAL_0_CFG",
-    "gen_dog_original_joint_1": "GEN_DOG_ORIGINAL_1_CFG",
-    "gen_dog_original_joint_2": "GEN_DOG_ORIGINAL_2_CFG",
-    "gen_dog_original_joint_3": "GEN_DOG_ORIGINAL_3_CFG",
-    "gen_dog_original_joint_4": "GEN_DOG_ORIGINAL_4_CFG",
-    "gen_dog_original_joint_5": "GEN_DOG_ORIGINAL_5_CFG",
-    "gen_dog_original_joint_6": "GEN_DOG_ORIGINAL_6_CFG",
-    "gen_dog_original_joint_7": "GEN_DOG_ORIGINAL_7_CFG",
-    "gen_dog_original_joint_8": "GEN_DOG_ORIGINAL_8_CFG",
-}
-
-# Dynamically generate the CFG objects
-for robot_file_name, cfg_name in robot_name_map.items():
-    globals()[cfg_name] = create_robot_config(robot_file_name)
-
-# F0R0 is kind of different, as it has no knee joints
-GEN_DOG_F0R0_CFG = ArticulationCfg(
+GEN_HUMANOID_ORIGINAL_JOINT_0_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_dog_f0r0_knee_joint_0/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_0/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.5),
-        # joint_pos={".*": 0.0},
-        joint_pos={
-            ".*_left_hip_pitch_joint": 0.1,
-            ".*_right_hip_pitch_joint": -0.1,
-            "front_left_thigh_joint": 0.8,
-            "front_right_thigh_joint": 0.8,
-            "rear_left_thigh_joint": 1.0,
-            "rear_right_thigh_joint": 1.0,
-            # ".*_knee_joint": -1.5,
-        },
-        # joint_pos={
-        #     ".*hip.*joint": 0.0,
-        #     ".*knee.*joint": 1.0,
-        #     ".*thigh.*joint": -0.3
-        # },
+        pos=(0.0, 0.0, 1.4),
+        joint_pos={".*": 0.0},
         joint_vel={".*": 0.0},
     ),
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_1_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_1/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 2.1),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_2_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_2/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.12),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_3_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_3/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.4),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_4_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_4/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.4),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_5_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_5/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.8),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_ORIGINAL_JOINT_6_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_original_joint_6/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.1),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
     prim_path=prim_path
 )

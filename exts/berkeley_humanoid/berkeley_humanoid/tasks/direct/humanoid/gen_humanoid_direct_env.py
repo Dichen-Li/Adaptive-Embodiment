@@ -117,9 +117,36 @@ class GenHumanoid5Cfg(GenHumanoidEnvCfg):
 class GenHumanoid6Cfg(GenHumanoidEnvCfg):
     robot: ArticulationCfg = GEN_HUMANOID6_CFG
 
-
 class GenHumanoidDirectEnv(LocomotionEnv):
     cfg: GenHumanoidEnvCfg
 
     def __init__(self, cfg: GenHumanoidEnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)
+
+@configclass
+class GenHumanoidOriginalJoint0Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_0_CFG
+
+@configclass
+class GenHumanoidOriginalJoint1Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_1_CFG
+
+@configclass
+class GenHumanoidOriginalJoint2Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_2_CFG
+
+@configclass
+class GenHumanoidOriginalJoint3Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_3_CFG
+
+@configclass
+class GenHumanoidOriginalJoint4Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_4_CFG
+
+@configclass
+class GenHumanoidOriginalJoint5Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_5_CFG
+
+@configclass
+class GenHumanoidOriginalJoint6Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_6_CFG
