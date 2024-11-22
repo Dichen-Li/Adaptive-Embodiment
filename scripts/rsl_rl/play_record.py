@@ -3,27 +3,21 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Script to play a checkpoint of an RL agent from RSL-RL and record motion data."""
+"""Script to play a checkpoint if an RL agent from RSL-RL."""
 
 """Launch Isaac Sim Simulator first."""
 
 import argparse
-import pandas as pd
-import os
-import torch
-import gymnasium as gym
 
 from omni.isaac.lab.app import AppLauncher
 
 # local imports
 import cli_args  # isort: skip
 
-import csv
-
 # add argparse arguments
-parser = argparse.ArgumentParser(description="Play an RL agent with RSL-RL and record motion data.")
-parser.add_argument("--video", action="store_true", default=True, help="Record videos during training.")
-parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
+parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
+parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
+parser.add_argument("--video_length", type=int, default=20, help="Length of the recorded video (in steps).")
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
@@ -45,6 +39,11 @@ simulation_app = app_launcher.app
 
 """Rest everything follows."""
 
+
+import gymnasium as gym
+import os
+import torch
+
 from rsl_rl.runners import OnPolicyRunner
 
 # Import extensions to set up environment tasks
@@ -56,7 +55,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, R
 
 
 def main():
-    """Play with RSL-RL agent and record motion data."""
+    """Play with RSL-RL agent."""
     # parse configuration
     env_cfg = parse_env_cfg(
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
@@ -99,22 +98,24 @@ def main():
     export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
     export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
 
-    checkpoint_interval = 100  # Adjust this value as needed
-    print("[INFO] Starting simulation with data recording.")
-    # Initialize CSV file for data recording
-    csv_file_path = "motion_data.csv"
-    with open(csv_file_path, mode="w", newline="") as csv_file:
-        writer = csv.writer(csv_file)
-        # Define header based on parsed data structure
-        writer.writerow(["timestamp",
-                         "position_x", "position_y", "position_z",
-                         "orientation_x", "orientation_y", "orientation_z", "orientation_w",
-                         "linear_velocity_x", "linear_velocity_y", "linear_velocity_z",
-                         "angular_velocity_x", "angular_velocity_y", "angular_velocity_z",
-                         *["joint_position_" + str(i) for i in range(1, 13)],
-                         *["joint_velocity_" + str(i) for i in range(1, 13)],
-                         *["sensor_" + str(i) for i in range(1, 12)],
-                         "action"])
+    import h5py
+    h5py_timestep = 0
+    h5py_record_length = 200
+    # Define the file path
+    h5py_record_root_path = os.path.join(log_dir, "h5py_record")
+    if not os.path.exists(h5py_record_root_path):
+        os.makedirs(h5py_record_root_path)
+        print(f"Directory '{h5py_record_root_path}' created.")
+    h5py_record_file_path = os.path.join(h5py_record_root_path, "obs_actions.h5")
+    with h5py.File(h5py_record_file_path, "a") as f:
+    # Create datasets if they do not exist
+        if "observations" not in f:
+            obs_shape = env.observation_space.shape
+            f.create_dataset("observations", shape=(0,) + obs_shape, maxshape=(None,) + obs_shape, dtype="float32")
+        if "actions" not in f:
+            action_shape = env.action_space.shape
+            f.create_dataset("actions", shape=(0,) + action_shape, maxshape=(None,) + action_shape, dtype="float32")
+    
     # reset environment
     obs, _ = env.get_observations()
     timestep = 0
@@ -124,43 +125,26 @@ def main():
         with torch.inference_mode():
             # agent stepping
             actions = policy(obs)
-            
-            obs, _ = env.get_observations()
 
-            position = obs[0:3]
-            orientation = obs[3:7]
-            linear_velocity = obs[7:10]
-            angular_velocity = obs[10:13]
-            joint_positions = obs[13:25]
-            joint_velocities = obs[25:37]
-            sensors = obs[37:48]
-            timestamp = timestep * 1  # Ensure `env.dt` is defined for timestep duration
+            with h5py.File(h5py_record_file_path, "a") as f:
+                # Append the current observation and action to the HDF5 file
+                f["observations"].resize((f["observations"].shape[0] + 1,) + obs.shape)
+                f["actions"].resize((f["actions"].shape[0] + 1,) + actions.shape)
+                f["observations"][-1] = obs.cpu().numpy()
+                f["actions"][-1] = actions.cpu().numpy()
 
-            with open(csv_file_path, mode="a", newline="") as csv_file:
-                writer = csv.writer(csv_file)
-                writer.writerow([
-                    timestamp,
-                    *position,
-                    *orientation,
-                    *linear_velocity,
-                    *angular_velocity,
-                    *joint_positions,
-                    *joint_velocities,
-                    *sensors,
-                    actions.cpu().numpy().tolist()  # Convert actions to list if it's a tensor
-                ])
-            
-            # Env stepping
+            # env stepping
             obs, _, _, _ = env.step(actions)
-
-            
+        
+        h5py_timestep += 1
+        if h5py_timestep == h5py_record_length:
+                break
+        
+        if args_cli.video:
             timestep += 1
-
-
-        # Exit the loop if video length is reached
-        if args_cli.video and timestep == args_cli.video_length:
-            break
-
+            # Exit the play loop after recording one video
+            if timestep == args_cli.video_length:
+                break
 
     # close the simulator
     env.close()
