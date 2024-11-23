@@ -80,7 +80,7 @@ class GenDogEnvCfg(DirectRLEnvCfg):
     reward_cfgs = {
         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
+        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*", ".*thigh.*", ".*trunk.*"]),
         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
