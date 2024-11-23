@@ -14,8 +14,8 @@ from .humanoid_env import HumanoidEnv, HumanoidEnvCfg
 from .h1_direct_env import H1DirectEnv, H1EnvCfg
 from .g1_direct_env import G1DirectEnv, G1EnvCfg
 from .go2_direct_env import Go2DirectEnv, Go2EnvCfg
-from .gen_dog_direct_env import *
-from .gen_humanoid_direct_env import *
+from .gen_quadrupeds_env import *
+from .gen_humanoid_env import *
 from .berkeley_humanoid_direct_env import BerkeleyHumanoidDirectEnv, BerkeleyHumanoidEnvCfg
 
 ##
