@@ -565,3 +565,116 @@ GEN_HUMANOID_ORIGINAL_JOINT_6_CFG = ArticulationCfg(
     actuators=actuators_humanoid,
     prim_path=prim_path
 )
+
+GEN_HUMANOID_L0R0_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_l0r0_knee_joint_0/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.9 + 0.4),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators={
+        "legs": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_hip_yaw_joint",
+                ".*_hip_roll_joint",
+                ".*_hip_pitch_joint",
+                # ".*_knee_joint",
+                "torso_joint",
+            ],
+            effort_limit=300,
+            velocity_limit=100.0,
+            stiffness={
+                ".*_hip_yaw_joint": 150.0,
+                ".*_hip_roll_joint": 150.0,
+                ".*_hip_pitch_joint": 200.0,
+                # ".*_knee_joint": 200.0,
+                "torso_joint": 200.0,
+            },
+            damping={
+                ".*_hip_yaw_joint": 5.0,
+                ".*_hip_roll_joint": 5.0,
+                ".*_hip_pitch_joint": 5.0,
+                # ".*_knee_joint": 5.0,
+                "torso_joint": 5.0,
+            },
+            armature={
+                ".*_hip_yaw_joint": 0.01,
+                ".*_hip_roll_joint": 0.01,
+                ".*_hip_pitch_joint": 0.01,
+                # ".*_knee_joint": 0.01,
+                "torso_joint": 0.01,
+            },
+        ),
+        "feet": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_ankle_joint"
+            ],
+            effort_limit=20,
+            stiffness=20.0,
+            damping=2.0,
+            armature=0.01,
+        ),
+        "arms": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_shoulder_joint",
+                ".*_elbow_joint",
+            ],
+            effort_limit=300,
+            velocity_limit=100.0,
+            stiffness={
+                ".*_shoulder_joint": 40.0,
+                ".*_elbow_joint": 40.0,
+            },
+            damping={
+                ".*_shoulder_joint": 10.0,
+                ".*_elbow_joint": 10.0,
+            },
+            armature={
+                ".*_shoulder_joint": 0.01,
+                ".*_elbow_joint": 0.01,
+            },
+        ),
+    },
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_L2R2_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_l2r2_knee_joint_0_new/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.6),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)
+
+GEN_HUMANOID_L3R3_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/Generated/gen_humanoid_l3r3_knee_joint_0_new/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 1.8),
+        joint_pos={".*": 0.0},
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators_humanoid,
+    prim_path=prim_path
+)

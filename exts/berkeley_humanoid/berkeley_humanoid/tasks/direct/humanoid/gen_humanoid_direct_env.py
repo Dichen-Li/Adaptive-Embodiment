@@ -66,9 +66,9 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
     asset_name = "robot"
 
     # Velocity command ranges
-    x_vel_range = (-1.0, 1.0)
-    y_vel_range = (-1.0, 1.0)
-    yaw_vel_range = (-1.0, 1.0)
+    x_vel_range = (-1.0, 1.0)   # (0.7, 0.7)
+    y_vel_range = (-1.0, 1.0)   # (-0.7, -0.7)
+    yaw_vel_range = (-1.0, 1.0)   # (0, 0)
     resampling_interval = 10 / (dt * decimation)
 
     # controller
@@ -150,3 +150,29 @@ class GenHumanoidOriginalJoint5Cfg(GenHumanoidEnvCfg):
 @configclass
 class GenHumanoidOriginalJoint6Cfg(GenHumanoidEnvCfg):
     robot: ArticulationCfg = GEN_HUMANOID_ORIGINAL_JOINT_6_CFG
+
+@configclass
+class GenHumanoidL0R0Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_L0R0_CFG
+    action_space = 13
+    # reward configurations
+    reward_cfgs = {
+        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
+        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
+        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
+        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint", ".*elbow.*joint", ".*shoulder.*joint",
+                                                              ".*torso.*joint"]),
+        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[]),
+        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*head.*", ".*torso.*",
+                                                                            ".*arm.*", ".*calf.*"])
+    }
+
+@configclass
+class GenHumanoidL2R2Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_L2R2_CFG
+    action_space = 17
+
+@configclass
+class GenHumanoidL3R3Cfg(GenHumanoidEnvCfg):
+    robot: ArticulationCfg = GEN_HUMANOID_L3R3_CFG
+    action_space = 19

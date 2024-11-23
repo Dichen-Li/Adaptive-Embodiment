@@ -127,6 +127,9 @@ id_entry_pair = {
     "GenHumanoidOriginalJoint4": GenHumanoidOriginalJoint4Cfg,
     "GenHumanoidOriginalJoint5": GenHumanoidOriginalJoint5Cfg,
     "GenHumanoidOriginalJoint6": GenHumanoidOriginalJoint6Cfg,
+    "GenHumanoidL0R0": GenHumanoidL0R0Cfg,
+    "GenHumanoidL2R2": GenHumanoidL2R2Cfg,
+    "GenHumanoidL3R3": GenHumanoidL3R3Cfg
 }
 
 for id, env_cfg_entry_point in id_entry_pair.items():

@@ -185,3 +185,15 @@ class GenHumanoidOriginalJoint5PPORunnerCfg(HumanoidPPORunnerCfg):
 @configclass
 class GenHumanoidOriginalJoint6PPORunnerCfg(HumanoidPPORunnerCfg):
     experiment_name = "GenHumanoidOriginalJoint6"
+
+@configclass
+class GenHumanoidL0R0PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidL0R0"
+
+@configclass
+class GenHumanoidL2R2PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidL2R2New"
+
+@configclass
+class GenHumanoidL3R3PPORunnerCfg(HumanoidPPORunnerCfg):
+    experiment_name = "GenHumanoidL3R3New"
