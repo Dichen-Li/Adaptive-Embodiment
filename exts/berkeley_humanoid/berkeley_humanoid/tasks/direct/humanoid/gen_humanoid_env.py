@@ -18,7 +18,7 @@ from omni.isaac.lab.managers import SceneEntityCfg
 
 from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 from omni.isaac.lab.managers import RewardTermCfg as RewTerm
-from berkeley_humanoid.assets.generated import *
+from berkeley_humanoid.assets.gen_humanoids import *
 from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 
 
