@@ -3,7 +3,7 @@ This codebase was built upon the Berkeley Humanoid project, so you might see som
 was implemented from scratch in the direct environment style (see [here](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/task_workflows.html) for an introduction
 to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is closer to Mujoco and the older Isaac Gym). 
 
-### Installation
+## Installation
 
 - Install Isaac Lab, see
   the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
