@@ -6,7 +6,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import (
     RslRlPpoAlgorithmCfg,
 )
 
-from berkeley_humanoid.tasks.direct.humanoid.agents.rsl_rl_ppo_cfg import HumanoidPPORunnerCfg
+from berkeley_humanoid.tasks.direct.environments.agents.rsl_rl_ppo_cfg import HumanoidPPORunnerCfg
 
 
 @configclass

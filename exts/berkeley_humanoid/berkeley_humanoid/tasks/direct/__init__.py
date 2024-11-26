@@ -7,4 +7,4 @@
 Direct workflow environments.
 """
 
-from .humanoid import *
+from .environments import *
