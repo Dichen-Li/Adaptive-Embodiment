@@ -63,7 +63,7 @@ python scripts/rsl_rl/play.py --task GenDog1
 ```
 It will load the best checkpoint in the latest run the evaluation. 
 
-## How to batch training (sequential training of multiple robots)
+## How to train multiple robots in seqence 
 Do the following:
 ```angular2html
 bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5
