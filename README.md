@@ -54,6 +54,8 @@ If you do not wish to have the visualization open, which could slow down trainin
 python scripts/rsl_rl/train.py --task GenDog1 --headless
 ```
 
+File `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments/__init__.py` contains all the task names that we can run. For example, for `GenBot1k`, we can run `Gendog{i}` where `i` could range from `0` to `307`. 
+
 ### Test the learned policy
 Run
 ```angular2html
