@@ -9,6 +9,7 @@ def generate_code(base_dir, output_file):
     robot_folders = sorted(
         [os.path.join(base_dir, f) for f in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, f))]
     )
+    robot_folder_name = os.path.basename(base_dir)
 
     # Open output file for writing the generated code
     with open(output_file, 'w') as f_out:
@@ -38,12 +39,12 @@ def generate_code(base_dir, output_file):
             drop_height = train_cfg.get("drop_height", 0.5)
             joint_positions = train_cfg.get("nominal_joint_positions", {})
             joint_positions_str = ",\n            ".join(
-                f'"{k}": {v}' for k, v in joint_positions.items()
+                f'"{k}": {v:.2f}' for k, v in joint_positions.items()
             )
 
             # Use the folder name to construct USD path
             folder_name = os.path.basename(robot_folder)  # Get the actual folder name
-            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v0/gen_dogs/{folder_name}/usd_file/robot.usd'
+            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v0/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
 
             # Generate code block
             code_block = f"""
@@ -55,7 +56,7 @@ def generate_code(base_dir, output_file):
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, {drop_height}),
+        pos=(0.0, 0.0, {drop_height:.2f}),
         joint_pos={{
             {joint_positions_str}
         }},
