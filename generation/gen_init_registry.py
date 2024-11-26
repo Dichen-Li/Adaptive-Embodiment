@@ -1,9 +1,9 @@
 import os
+import json
 
-
-def generate_robot_registration_with_custom_names(base_dir, output_file):
+def generate_robot_registration_with_consistent_names(base_dir, output_file):
     """
-    Reads robot folders in base_dir and generates robot config registration code with simplified names.
+    Reads robot folders and train_cfg.json files in base_dir and generates robot config registration code with consistent names.
     """
     # Collect and sort robot folders
     robot_folders = sorted(
@@ -19,22 +19,38 @@ def generate_robot_registration_with_custom_names(base_dir, output_file):
         # Initialize the id_entry_pair dictionary
         f_out.write("id_entry_pair = {\n")
 
-        for idx, _ in enumerate(robot_folders, start=1):
-            # Generate the robot ID in the format GEN_DOG_1K_{i}
-            robot_id = f"GenDog1K{idx}"
+        for robot_folder in robot_folders:
+            # Define paths to train_cfg.json
+            train_cfg_path = os.path.join(base_dir, robot_folder, "train_cfg.json")
 
-            # Assign a simple name for the configuration class
-            cfg_name = f"GenDog1K{idx}Cfg"
+            # Skip folders without train_cfg.json
+            if not os.path.exists(train_cfg_path):
+                print(f"Skipping {robot_folder}: Missing train_cfg.json")
+                continue
 
-            # Add entry to the dictionary
-            f_out.write(f'    "{robot_id}": {cfg_name},\n')
+            # Read train_cfg.json
+            with open(train_cfg_path, 'r') as f:
+                train_cfg = json.load(f)
+
+            # Extract robot name from train_cfg.json
+            robot_name = train_cfg.get("robot_name", None)
+            if not robot_name:
+                print(f"Skipping {robot_folder}: 'robot_name' not found in train_cfg.json.")
+                continue
+
+            # Process names
+            processed_robot_name = robot_name.replace("_", "").capitalize()  # CamelCase for the id
+            class_name = robot_name.replace("_", "").capitalize() + "Cfg"  # CamelCase class name
+
+            # Add entry to the id_entry_pair dictionary
+            f_out.write(f'    "{processed_robot_name}": {class_name},\n')
 
         # Close the id_entry_pair dictionary
         f_out.write("}\n\n")
 
         # Write the registration loop
         f_out.write("for id, env_cfg_entry_point in id_entry_pair.items():\n")
-        f_out.write("    rsl_rl_cfg_entry_point = f\"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id}PPORunnerCfg\"\n")
+        f_out.write("    rsl_rl_cfg_entry_point = f\"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg\"\n")
         f_out.write("    gym.register(\n")
         f_out.write("        id=id,\n")
         f_out.write("        entry_point=\"berkeley_humanoid.tasks.direct.humanoid:GenDirectEnv\",\n")
@@ -49,6 +65,6 @@ def generate_robot_registration_with_custom_names(base_dir, output_file):
 
 
 # Example usage
-base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
 output_file = "generated_robot_registration.py"  # Output file for the generated registration code
-generate_robot_registration_with_custom_names(base_dir, output_file)
+generate_robot_registration_with_consistent_names(base_dir, output_file)

@@ -26,22 +26,30 @@ def generate_code(base_dir, output_file):
             with open(train_cfg_path, 'r') as f:
                 train_cfg = json.load(f)
 
+            # Extract robot_name; raise an error if it's missing
+            robot_name = train_cfg.get("robot_name")
+            if not robot_name:
+                raise ValueError(f"'robot_name' is missing in train_cfg.json for folder: {robot_folder}")
+
+            # Generate CFG name
+            cfg_name = f"{robot_name.upper()}_CFG"  # Consistent CFG naming
+
             # Extract relevant values
             drop_height = train_cfg.get("drop_height", 0.5)
-            action_space = train_cfg.get("action_space", 0)
             joint_positions = train_cfg.get("nominal_joint_positions", {})
             joint_positions_str = ",\n            ".join(
                 f'"{k}": {v}' for k, v in joint_positions.items()
             )
 
-            # Generate configuration name
-            cfg_name = f"GEN_DOG_1K_{idx}_CFG"
+            # Use the folder name to construct USD path
+            folder_name = os.path.basename(robot_folder)  # Get the actual folder name
+            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v0/gen_dogs/{folder_name}/usd_file/robot.usd'
 
             # Generate code block
             code_block = f"""
 {cfg_name} = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{usd_file_path}",
+        usd_path=f"{usd_path}",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -60,9 +68,12 @@ def generate_code(base_dir, output_file):
 """
             # Write to output file
             f_out.write(code_block)
-            print(f"Generated configuration for: {robot_folder}")
+            print(f"Generated configuration for: {robot_name}")
+
+    print(f"Successfully processed {len(robot_folders)} robot folders.")
+
 
 # Example usage
-base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
-output_file = "gen_quadrupeds_1k.py"  # Output file for the generated code
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
+output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)
