@@ -15,6 +15,54 @@ cd exts/berkeley_humanoid
 python -m pip install -e .
 ```
 
+## Understanding the codebase
+1. `exts/berkeley_humanoid/berkeley_humanoid/assets`: place where the robot USD files are placed, and the entry for importing
+robots. Every robot is treated as an articulation, and its associated properties, such as initial state, joint limit, joint type, 
+are defined in `ArticulationCfg` in the files there. 
+2. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/locomotion/locomotion_env.py`: the core simulation logic. The observation space
+defined in  `_get_observations` and the reward function is `_get_rewards`. 
+3. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments`: place where parameters of the environments 
+(for different robots), such as scene, ground, velocity command parameters, are defined.
+
+
+## Single robot training and testing
+There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1nPq_osKWaZ_P89GdC27DXqrPYIGqKPCh/view?usp=sharing), unzip it and move it to the asset folder:
+```angular2html
+unzip gen_embodiments_1124.zip
+mv gen_embodiments_1124 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+```
+
+To train just one robot, run 
+```angular2htmlpyt
+python scripts/rsl_rl/train.py --task GenDog1
+```
+If you do not wish to have the visualization open, which could slow down training significantly, you should run
+```angular2htmlpyt
+python scripts/rsl_rl/train.py --task GenDog1 --headless
+```
+
+File `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments/__init__.py` contains all the task names that we can run. For example, for `GenBot1k`, we can run `Gendog{i}` where `i` could range from `0` to `307`. 
+
+### Test the learned policy
+Run
+```angular2html
+python scripts/rsl_rl/play.py --task GenDog1
+```
+It will load the best checkpoint in the latest run the evaluation. 
+
+## Training multiple robots in sequence 
+Do the following:
+```angular2html
+bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5
+```
+where `--tasks` is used to specify task IDs. It is personally recommended to direct the program output to an `.out` file
+for future reference, e.g., 
+```angular2html
+bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > train5.out
+```
+Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
+such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
+
 ## Adding customized robots
 Taking quadruped as an example, but the specific file names could differ for different robots: 
 0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
@@ -45,45 +93,7 @@ but also remember to modify the paths in the file.
 
 5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`. For adding a large number of robots, run `generation/gen_init_registry.py` to generate these lines automatically.
 
-## Single robot training and testing
-There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1nPq_osKWaZ_P89GdC27DXqrPYIGqKPCh/view?usp=sharing), unzip it and move it to the asset folder:
-```angular2html
-unzip gen_embodiments_1124.zip
-mv gen_embodiments_1124 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
-```
-
-To train just one robot, run 
-```angular2htmlpyt
-python scripts/rsl_rl/train.py --task GenDog1
-```
-If you do not wish to have the visualization open, which could slow down training significantly, you should run
-```angular2htmlpyt
-python scripts/rsl_rl/train.py --task GenDog1 --headless
-```
-
-File `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments/__init__.py` contains all the task names that we can run. For example, for `GenBot1k`, we can run `Gendog{i}` where `i` could range from `0` to `307`. 
-
-### Test the learned policy
-Run
-```angular2html
-python scripts/rsl_rl/play.py --task GenDog1
-```
-It will load the best checkpoint in the latest run the evaluation. 
-
-## How to train multiple robots in seqence 
-Do the following:
-```angular2html
-bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5
-```
-where `--tasks` is used to specify task IDs. It is personally recommended to direct the program output to an `.out` file
-for future reference, e.g., 
-```angular2html
-bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > train5.out
-```
-Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
-such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
-
-### Common errors
+## Common errors
 1. Initial state values are integers
 ```angular2html
     self._data.default_joint_pos[:, indices_list] = torch.tensor(values_list, device=self.device)
@@ -91,4 +101,3 @@ RuntimeError: Index put requires the source and destination dtypes match, got Fl
 ```
 This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
 
-Happy training! 
