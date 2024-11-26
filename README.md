@@ -1,30 +1,65 @@
-## Environment setup
-Set up the environment following the README in the original repo `README-OLD.md`. 
+
+This codebase was built upon the Berkeley Humanoid project, so you might see some trace of the legacy code, but our main program logic
+was implemented from scratch in the direct environment style (see [here](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/task_workflows.html) for an introduction
+to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is closer to Mujoco and the older Isaac Gym). 
+
+### Installation
+
+- Install Isaac Lab, see
+  the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
+
+- Using a python interpreter that has Isaac sLab installed, install the library
+
+```
+cd exts/berkeley_humanoid
+python -m pip install -e .
+```
 
 ## How to add robot
-Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
+Taking quadruped as an example, but the specific file names could differ for different robots: 
 0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
 Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
 ```angular2html
 sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
 sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
 ```
-1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
-2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
-3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
-4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
-5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`. 
+For large robot dataset like `GenBot1K`, we could store the folder somewhere else and create a soft link in the directory, e.g.
+```angular2html
+ln -s {folder_path} exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-0
+```
+2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern in the file. For adding a large number of robots, run `generation/gen_ppo_cfg.py` to generate these lines automatically:
+```angular2html
+python generation/gen_ppo_cfg.py 
+```
+but remember to modify the paths in the file. 
+
+3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/gen_quadrupeds.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters. For adding a large number of robots, run `generation/gen_articulation_cfg.py` to generate these lines automatically:
+```angular2html
+python generation/gen_articulation_cfg.py
+```
+but also remember to modify the paths in the file.
+
+4. Add training env configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_quadrupeds_env.py`. For adding a large number of robots, run `generation/gen_quadruped_env.py` to generate these lines automatically.
+
+5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`. For adding a large number of robots, run `generation/gen_init_registry.py` to generate these lines automatically.
 
 ## Single robot training and testing
 To train just one robot, run 
 ```angular2htmlpyt
 python scripts/rsl_rl/train.py --task GenDog1
 ```
-If you do not wish to have the visualization open, which could slow down training significantly, add `--headless` to the command. 
-### Visualize the learned policy
+If you do not wish to have the visualization open, which could slow down training significantly, you should run
+```angular2htmlpyt
+python scripts/rsl_rl/train.py --task GenDog1 --headless
+```
+
+### Test the learned policy
+Run
 ```angular2html
 python scripts/rsl_rl/play.py --task GenDog1
 ```
+It will load the best checkpoint in the latest run the evaluation. 
 
 ## How to batch training (sequential training of multiple robots)
 Do the following:
