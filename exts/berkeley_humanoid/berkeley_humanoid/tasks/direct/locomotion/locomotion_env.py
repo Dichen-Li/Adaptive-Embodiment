@@ -215,7 +215,7 @@ class LocomotionEnv(DirectRLEnv):
         trunk_rotation_matrix = self.quat_to_matrix(trunk_orientation_quat).transpose(1, 2)
 
         # Reserved for better method
-        robot_dimensions = torch.tensor([1, 1, 1], device=self.sim.device)
+        self.robot_dimensions = torch.tensor([1, 1, 1], device=self.sim.device)
 
         self.gains_and_action_scaling_factor = torch.tensor([0, 0, self.cfg.action_scale], device=self.sim.device)
         self.mass = torch.sum(self.robot.data.default_mass, dim=1).unsqueeze(1).to(self.sim.device)
@@ -246,7 +246,7 @@ class LocomotionEnv(DirectRLEnv):
                 (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)),
                 ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 ((self.mass / 85.0) - 1.0),
-                ((robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
+                ((self.robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
             ], dim=1)
 
         # Compute normalized foot positions
@@ -257,14 +257,14 @@ class LocomotionEnv(DirectRLEnv):
             foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
             relative_foot_position_global = foot_position_global - trunk_position_global
             relative_foot_position_local = torch.matmul(trunk_rotation_matrix, relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            relative_foot_position_normalized = relative_foot_position_local / robot_dimensions
+            relative_foot_position_normalized = relative_foot_position_local / self.robot_dimensions
 
             # Append foot description vector
             name_to_description_vector[foot_name] = torch.cat([
                 (relative_foot_position_normalized / 0.5) - 1.0,
                 ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 ((self.mass / 85.0) - 1.0),
-                ((robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
+                ((self.robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
             ], dim=1)
 
         self.dynamic_joint_description_size = name_to_description_vector[self.joint_names[0]].shape[1]
@@ -277,12 +277,12 @@ class LocomotionEnv(DirectRLEnv):
     
     def get_initial_observation(self, multi_robot_max_observation_size):
         # Dynamic observations
-        dynamic_joint_observations = torch.empty((self.num_envs, 0))
+        dynamic_joint_observations = torch.empty((self.num_envs, 0), device=self.sim.device)
         for i, joint_name in enumerate(self.joint_names):
             desc_vector = self.name_to_description_vector[joint_name]
             joint_pos_rel = (self.robot.data.joint_pos[:, i] - self.robot.data.default_joint_pos[:, i]).unsqueeze(1)
             joint_vel_rel = (self.robot.data.joint_vel[:, i] - self.robot.data.default_joint_vel[:, i]).unsqueeze(1)
-            action = (self.actions[:, i].unsqueeze(1))
+            action = self.actions[:, i].unsqueeze(1)
 
             # Concatenate all the current observations into one tensor
             current_observation = torch.cat((desc_vector, joint_pos_rel, joint_vel_rel, action), dim=1)
@@ -291,7 +291,7 @@ class LocomotionEnv(DirectRLEnv):
             dynamic_joint_observations = torch.cat((dynamic_joint_observations, current_observation), dim=1)
 
         # Get the foot contacts with ground
-        undesired_contacts = self.get_undesired_contacts(self.reward_cfgs['undesired_contact_cfg'],
+        undesired_contacts = self.get_contacts_without_sum(self.reward_cfgs['feet_ground_contact_cfg'],
                                                          threshold=1.0)
         # Get the time since last foot contact with ground
         feet_air_time = self.get_feet_air_time(
@@ -301,32 +301,34 @@ class LocomotionEnv(DirectRLEnv):
 
         # from training.environments.unitree_go1.info import touchdown_feet
         # Dynamic observations
-        dynamic_foot_observations = torch.empty((self.num_envs, 0))  # Start with None for the first iteration
+        dynamic_foot_observations = torch.empty((self.num_envs, 0), device=self.sim.device)  # Start with None for the first iteration
+        foot_index = 0
         for i, foot_name in enumerate(self.foot_names):
             if "foot" in foot_name:
                 # Concatenate all the current observations into one tensor
-                current_observation = torch.cat((self.name_to_description_vector[foot_name], undesired_contacts[i].unsqueeze(1), feet_air_time[i].unsqueeze(1)), dim=1)
-                
+                current_observation = torch.cat((self.name_to_description_vector[foot_name], undesired_contacts[:, foot_index].unsqueeze(1), feet_air_time[:, foot_index].unsqueeze(1)), dim=1)
+                foot_index += 1
                 # Concatenate along dimension 0 for subsequent observations
                 dynamic_foot_observations = torch.cat((dynamic_foot_observations, current_observation), dim=1)
 
         # General observations
         trunk_linear_velocity = self.robot.data.root_lin_vel_b
         trunk_angular_velocity = self.robot.data.root_ang_vel_b
-        goal_velocity = torch.Tensor([self.target_x_vel, self.target_y_vel, self.target_yaw_vel])
+        self.target_x_vel, self.target_y_vel, self.target_yaw_vel = self.command_generator.get_next_command()
+        goal_velocity = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
         projected_gravity_vector = self.robot.data.projected_gravity_b
-        height = self.robot.data.root_pos_w[:,2]
+        height = self.robot.data.root_pos_w[:,2].unsqueeze(1)
 
 
         # General robot context
-        gains_and_action_scaling_factor = (self.gains_and_action_scaling_factor / [100.0 / 2, 2.0 / 2, 0.8 / 2]) - 1.0
+        gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor([100.0 / 2, 2.0 / 2, 0.8 / 2], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1))
         mass = (self.mass / (170.0 / 2)) - 1.0
-        robot_dimensions = (self.robot_dimensions / (2.0 / 2)) - 1.0
+        robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0).repeat((self.num_envs, 1))
 
         # Padding
-        padding = torch.Tensor([])
-        if multi_robot_max_observation_size != -1:
-            padding = torch.zeros(self.missing_nr_of_observations, dtype=torch.float32)
+        padding = torch.empty((self.num_envs, 0), device=self.sim.device)
+        # if multi_robot_max_observation_size != -1:
+        #     padding = torch.zeros(self.missing_nr_of_observations, dtype=torch.float32)
 
         # Temporary value for expanding scalar to env_num tensor
 
@@ -338,17 +340,16 @@ class LocomotionEnv(DirectRLEnv):
             goal_velocity,
             projected_gravity_vector,
             height,
-            gains_and_action_scaling_factor.repeat((self.num_envs, 1)),
+            gains_and_action_scaling_factor,
             mass,
-            robot_dimensions.repeat((self.num_envs, 1)),
-            padding.repeat((self.num_envs, 1)),
+            robot_dimensions,
+            padding,
         ], dim=1)
 
         return observation
     
     def get_observation_space(self, multi_robot_max_observation_size):
         observation_names = []
-        space_low, space_high = [], []
 
         # Dynamic observations
         self.nr_dynamic_joint_observations = len(self.joint_names)
@@ -359,8 +360,6 @@ class LocomotionEnv(DirectRLEnv):
             observation_names.extend([
                 joint_name + "_position", joint_name + "_velocity", joint_name + "_previous_action",
             ])
-            space_low.extend([-np.inf] * (self.single_dynamic_joint_observation_length))
-            space_high.extend([np.inf] * (self.single_dynamic_joint_observation_length))
 
         self.nr_dynamic_foot_observations = len(self.foot_names)
         self.single_dynamic_foot_observation_length = self.dynamic_foot_description_size + 2
@@ -370,57 +369,32 @@ class LocomotionEnv(DirectRLEnv):
             observation_names.extend([
                 foot_name + "_ground_contact", foot_name + "_cycles_since_last_ground_contact",
             ])
-            space_low.extend([-np.inf] * (self.single_dynamic_foot_observation_length))
-            space_high.extend([np.inf] * (self.single_dynamic_foot_observation_length))
 
         # General observations
         observation_names.extend([
             "trunk_x_velocity", "trunk_y_velocity", "trunk_z_velocity",
             "trunk_roll_velocity", "trunk_pitch_velocity", "trunk_yaw_velocity",
         ])
-        space_low.extend([-np.inf] * 6)
-        space_high.extend([np.inf] * 6)
 
         observation_names.extend(["goal_x_velocity", "goal_y_velocity", "goal_yaw_velocity"])
-        space_low.extend([-np.inf] * 3)
-        space_high.extend([np.inf] * 3)
-
         observation_names.extend(["projected_gravity_x", "projected_gravity_y", "projected_gravity_z"])
-        space_low.extend([-np.inf] * 3)
-        space_high.extend([np.inf] * 3)
-
         observation_names.append("height_0")
-        space_low.append(-np.inf)
-        space_high.append(np.inf)
 
         # General robot context
         observation_names.extend(["p_gain", "d_gain", "action_scaling_factor"])
-        space_low.extend([-np.inf] * 3)
-        space_high.extend([np.inf] * 3)
-
         observation_names.append("mass")
-        space_low.append(-np.inf)
-        space_high.append(np.inf)
-
         observation_names.extend(["robot_length", "robot_width", "robot_height"])
-        space_low.extend([-np.inf] * 3)
-        space_high.extend([np.inf] * 3)
 
         self.missing_nr_of_observations = 0
         if multi_robot_max_observation_size != -1:
             self.missing_nr_of_observations = multi_robot_max_observation_size - len(observation_names)
             observation_names.extend(["padding_" + str(i) for i in range(self.missing_nr_of_observations)])
-            space_low.extend([-np.inf] * self.missing_nr_of_observations)
-            space_high.extend([np.inf] * self.missing_nr_of_observations)
-
-        space_low = np.array(space_low, dtype=np.float32)
-        space_high = np.array(space_high, dtype=np.float32)
 
         name_to_idx = {name: idx for idx, name in enumerate(observation_names)}
 
-        return gym.spaces.Box(low=space_low, high=space_high, shape=space_low.shape, dtype=np.float32), name_to_idx
+        return name_to_idx
 
-    def _get_observations(self) -> dict:
+    def _get_observations(self) -> tuple:
         base_lin_vel = self.robot.data.root_lin_vel_b
         base_ang_vel = self.robot.data.root_ang_vel_b
         projected_gravity_b = self.robot.data.projected_gravity_b
@@ -440,7 +414,7 @@ class LocomotionEnv(DirectRLEnv):
         observation = self.initial_observation.copy()
 
         # Get the foot contacts with ground
-        undesired_contacts = self.get_undesired_contacts(self.reward_cfgs['undesired_contact_cfg'],
+        undesired_contacts = self.get_contacts_without_sum(self.reward_cfgs['feet_ground_contact_cfg'],
                                                          threshold=1.0)
         
         # Get the time since last foot contact with ground
@@ -576,7 +550,7 @@ class LocomotionEnv(DirectRLEnv):
         #TODO: check if the returned data type (Long) makes sense for this reward
         return torch.sum(is_contact, dim=1)
     
-    def get_undesired_contacts_without_sum(self, sensor_cfg, threshold) -> torch.Tensor:
+    def get_contacts_without_sum(self, sensor_cfg, threshold) -> torch.Tensor:
         """Penalize undesired contacts as the number of violations that are above a threshold."""
         # # create sensor cfg
         # sensor_cfg = SceneEntityCfg(sensor_name, body_names=body_names)
