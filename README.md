@@ -63,6 +63,20 @@ bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > tr
 Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
 such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
 
+## Running batch training jobs on nautilus server
+To run many jobs on the nautilus server, we need to batch generate job scripts. Follow this steps:
+1. Check out `generation/gen_nautilus_jobs.py`. Adjust parameters, particularly `tasks_per_job` and `num_parallel_commands`.
+The former means the number of tasks that will be run in one job, and the second one refers to the number of parallel commands
+running parallely in one job. For example, if `num_tasks=300` and `tasks_per_job=30`, then we will 
+have ten jobs in total. Then, if `num_parallel_commands=4`, there will be `4` training commands running in every job
+simultaneously. I found it's usually good to have `num_parallel_commands>2` if there are more than 8 CPU cores and the GPU is 
+at least as good as 3090. Just using `num_parallel_commands=1` causes the training to be bottle-necked by the weak CPU cores. 
+2. After running the script with
+```angular2html
+python gen_nautilus_jobs.py
+```
+you should see a folder `jobs` containing all the job files. You can run `submit_jobs.sh` to submit them all at once.
+
 ## Adding customized robots
 Taking quadruped as an example, but the specific file names could differ for different robots: 
 0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
