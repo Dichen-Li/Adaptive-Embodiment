@@ -26,6 +26,10 @@ kwargs=("$@")
 echo "Tasks to be executed: ${tasks[@]}"
 echo "Additional arguments: ${kwargs[@]}"
 
+# Define the log directory
+log_dir="/bai-fast-vol/code/jobs-logs"
+mkdir -p "$log_dir"  # Create the log directory if it doesn't exist
+
 # Function to handle interrupt and exit
 function stop_execution {
   echo "Training interrupted. Exiting."
@@ -37,7 +41,11 @@ trap stop_execution SIGINT
 
 # Execute training for each specified task
 for task in "${tasks[@]}"; do
-  echo "Starting training for task: $task"
-  "/workspace/isaaclab/isaaclab.sh" -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" || stop_execution
-  echo "Completed training for task: $task"
+  # Generate a timestamp for the log file
+  timestamp=$(date +"%Y%m%d_%H%M%S")
+  log_file="${log_dir}/${task}_${timestamp}.log"
+
+  echo "Starting training for task: $task. Logging to $log_file"
+  "/workspace/isaaclab/isaaclab.sh" -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+  echo "Completed training for task: $task. Log saved to $log_file"
 done
