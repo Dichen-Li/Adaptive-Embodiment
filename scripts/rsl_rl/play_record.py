@@ -109,15 +109,16 @@ def main():
     h5py_record_file_path = os.path.join(h5py_record_root_path, "obs_actions.h5")
     with h5py.File(h5py_record_file_path, "a") as f:
     # Create datasets if they do not exist
-        if "observations" not in f:
-            obs_shape = env.observation_space.shape
-            f.create_dataset("observations", shape=(0,) + obs_shape, maxshape=(None,) + obs_shape, dtype="float32")
+        if "one_policy_observation" not in f:
+            one_policy_observation_shape = (env.num_envs, env.unwrapped.one_policy_observation_length)
+            f.create_dataset("one_policy_observation", shape=(0,) + one_policy_observation_shape, maxshape=(None,) + one_policy_observation_shape, dtype="float32")
         if "actions" not in f:
             action_shape = env.action_space.shape
             f.create_dataset("actions", shape=(0,) + action_shape, maxshape=(None,) + action_shape, dtype="float32")
     
     # reset environment
-    obs, _ = env.get_observations()
+    obs, observations = env.get_observations()
+    one_policy_observation =  observations['observations']['one_policy']
     timestep = 0
     # simulate environment
     while simulation_app.is_running():
@@ -128,13 +129,14 @@ def main():
 
             with h5py.File(h5py_record_file_path, "a") as f:
                 # Append the current observation and action to the HDF5 file
-                f["observations"].resize((f["observations"].shape[0] + 1,) + obs.shape)
+                f["one_policy_observation"].resize((f["one_policy_observation"].shape[0] + 1,) + one_policy_observation.shape)
                 f["actions"].resize((f["actions"].shape[0] + 1,) + actions.shape)
-                f["observations"][-1] = obs.cpu().numpy()
+                f["one_policy_observation"][-1] = one_policy_observation.cpu().numpy()
                 f["actions"][-1] = actions.cpu().numpy()
 
             # env stepping
-            obs, _, _, _ = env.step(actions)
+            obs, _, _, extra = env.step(actions)
+            one_policy_observation = extra['observations']['one_policy']
         
         h5py_timestep += 1
         if h5py_timestep == h5py_record_length:

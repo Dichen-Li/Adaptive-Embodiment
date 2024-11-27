@@ -93,19 +93,20 @@ class LocomotionEnv(DirectRLEnv):
         self.initial_observation = self.get_initial_observation(multi_robot_max_observation_size)
 
         # Get the dictionary of name to id
-        self.observation_space, self.observation_name_to_id = self.get_observation_space(multi_robot_max_observation_size)
+        self.observation_name_to_id = self.get_observation_space(multi_robot_max_observation_size)
         # Idx that need to be updated every step
         self.joint_positions_update_obs_idx = [self.observation_name_to_id[joint_name + "_position"] for joint_name in self.joint_names]
         self.joint_velocities_update_obs_idx = [self.observation_name_to_id[joint_name + "_velocity"] for joint_name in self.joint_names]
         self.joint_previous_actions_update_obs_idx = [self.observation_name_to_id[joint_name + "_previous_action"] for joint_name in self.joint_names]
-        self.foot_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_ground_contact"] for foot_name in self.foot_names]
-        self.foot_time_since_last_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_cycles_since_last_ground_contact"] for foot_name in self.foot_names]
+        self.foot_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
+        self.foot_time_since_last_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_cycles_since_last_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
         self.trunk_linear_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "z_velocity"]]
         self.trunk_angular_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["roll_velocity", "pitch_velocity", "yaw_velocity"]]
         self.goal_velocity_update_obs_idx = [self.observation_name_to_id["goal_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "yaw_velocity"]]
         self.projected_gravity_update_obs_idx = [self.observation_name_to_id["projected_gravity_" + observation_name] for observation_name in ["x", "y", "z"]]
         self.height_update_obs_idx = [self.observation_name_to_id["height_0"]]
         ## Define the one policy initialized parameters above
+        print("LocomotionEnv init done")
 
     def _setup_scene(self):
         """
@@ -361,14 +362,15 @@ class LocomotionEnv(DirectRLEnv):
                 joint_name + "_position", joint_name + "_velocity", joint_name + "_previous_action",
             ])
 
-        self.nr_dynamic_foot_observations = len(self.foot_names)
+        self.nr_dynamic_foot_observations = len([foot_name for foot_name in self.foot_names if "foot" in foot_name])
         self.single_dynamic_foot_observation_length = self.dynamic_foot_description_size + 2
         self.dynamic_foot_observation_length = self.single_dynamic_foot_observation_length * self.nr_dynamic_foot_observations
         for foot_name in self.foot_names:
-            observation_names.extend([foot_name + "_description_" + str(i) for i in range(self.dynamic_foot_description_size)])
-            observation_names.extend([
-                foot_name + "_ground_contact", foot_name + "_cycles_since_last_ground_contact",
-            ])
+            if "foot" in foot_name:
+                observation_names.extend([foot_name + "_description_" + str(i) for i in range(self.dynamic_foot_description_size)])
+                observation_names.extend([
+                    foot_name + "_ground_contact", foot_name + "_cycles_since_last_ground_contact",
+                ])
 
         # General observations
         observation_names.extend([
@@ -392,6 +394,8 @@ class LocomotionEnv(DirectRLEnv):
 
         name_to_idx = {name: idx for idx, name in enumerate(observation_names)}
 
+        self.one_policy_observation_length = len(name_to_idx)
+
         return name_to_idx
 
     def _get_observations(self) -> tuple:
@@ -411,7 +415,7 @@ class LocomotionEnv(DirectRLEnv):
 
         ## Define the one policy observations below
         # Copy the initial observation for update
-        observation = self.initial_observation.copy()
+        observation = self.initial_observation.clone()
 
         # Get the foot contacts with ground
         undesired_contacts = self.get_contacts_without_sum(self.reward_cfgs['feet_ground_contact_cfg'],
@@ -428,13 +432,13 @@ class LocomotionEnv(DirectRLEnv):
         observation[:, self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         observation[:, self.joint_previous_actions_update_obs_idx] = self.actions
         # note for the undesired_contacts dimension
-        observation[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts
+        observation[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
         observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
         observation[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
         observation[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
-        observation[:, self.goal_velocity_update_obs_idx] = torch.tensor([self.target_x_vel, self.target_y_vel, self.target_yaw_vel], device=self.sim.device).repeat(self.num_envs, 1)
+        observation[:, self.goal_velocity_update_obs_idx] = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
         observation[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
-        observation[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2]
+        observation[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2].unsqueeze(1)
 
 
         # Add noise
@@ -448,10 +452,10 @@ class LocomotionEnv(DirectRLEnv):
         observation[:, self.joint_velocities_update_obs_idx] /= 35.0
         observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0
         observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = np.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)
-        observation[:, self.trunk_linear_vel_update_obs_idx] = np.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)
-        observation[:, self.trunk_angular_vel_update_obs_idx] = np.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)
-        observation[:, self.height_update_obs_idx] = np.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_height / 2)) - 1.0, -1.0, 1.0)
+        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)
+        observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)
+        observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)
+        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[2] / 2)) - 1.0, -1.0, 1.0)
         ## Define the one policy observations above
 
         # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
@@ -480,7 +484,7 @@ class LocomotionEnv(DirectRLEnv):
         #     dim=-1,
         # )
 
-        observations = ({"policy": obs}, {"one_policy": observation})
+        observations = {"policy": obs, "one_policy": observation}
 
         return observations
 
