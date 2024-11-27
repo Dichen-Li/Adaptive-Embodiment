@@ -26,14 +26,15 @@ If you do not wish to have the visualization open, which could slow down trainin
 python scripts/rsl_rl/play.py --task GenDog1
 ```
 ### Teacher policy supervised distillation
-To supervised distillate a teacher policy, we generate the input & output dataset from the teacher policy, and then supervise on the loss of teacher & student policy output.
-Generate the dataset, run
+To supervisely distillate a teacher policy, we generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern.
+To generate the dataset, run
 ```angular2html
 python scripts/rsl_rl/play_record.py --task GenDog1
 ```
 The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
-Then supervise on the loss, run
-Generate the dataset, run
+
+And then we supervise on the loss of teacher & student policy output.
+To supervise on the loss, run
 ```angular2html
 python scripts/rsl_rl/train_supervised.py --task GenDog1
 ```
