@@ -37,7 +37,7 @@ def generate_runner_configs_with_adapted_names(base_dir, output_file):
             class_name = f"{robot_name.replace('_', '').capitalize()}PPORunnerCfg"  # Example: GenDog1K5PPORunnerCfg
 
             # Use the original folder name (unchanged) as the experiment name
-            experiment_name = robot_folder
+            experiment_name = robot_name.replace('_', '').capitalize() + '_' + robot_folder
 
             # Generate class definition
             class_definition = f"""
@@ -54,6 +54,6 @@ class {class_name}(HumanoidPPORunnerCfg):
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "ppo_cfg.py"  # Output file for the generated class definitions
 generate_runner_configs_with_adapted_names(base_dir, output_file)
