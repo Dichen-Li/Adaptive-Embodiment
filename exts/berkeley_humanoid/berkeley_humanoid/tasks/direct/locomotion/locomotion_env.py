@@ -398,7 +398,7 @@ class LocomotionEnv(DirectRLEnv):
 
         return name_to_idx
 
-    def _get_observations(self) -> tuple:
+    def _get_observations(self) -> dict:
         base_lin_vel = self.robot.data.root_lin_vel_b
         base_ang_vel = self.robot.data.root_ang_vel_b
         projected_gravity_b = self.robot.data.projected_gravity_b
