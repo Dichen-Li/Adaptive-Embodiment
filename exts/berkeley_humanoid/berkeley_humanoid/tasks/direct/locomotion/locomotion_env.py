@@ -174,8 +174,6 @@ class LocomotionEnv(DirectRLEnv):
             self.prev_potentials,
             self.cfg.sim.dt,
         )
-<<<<<<< HEAD
-=======
     
     def quat_to_matrix(self, quat):
         """
@@ -410,7 +408,6 @@ class LocomotionEnv(DirectRLEnv):
         self.one_policy_observation_length = len(name_to_idx)
 
         return name_to_idx
->>>>>>> isaac-v2.0
 
     def _get_observations(self) -> dict:
         base_lin_vel = self.robot.data.root_lin_vel_b
@@ -427,8 +424,6 @@ class LocomotionEnv(DirectRLEnv):
              self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1
         )
 
-<<<<<<< HEAD
-=======
         ## Define the one policy observations below
         # Copy the initial observation for update
         observation = self.initial_observation.clone()
@@ -474,7 +469,6 @@ class LocomotionEnv(DirectRLEnv):
         observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)
         ## Define the one policy observations above
 
->>>>>>> isaac-v2.0
         # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
         #      self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions]):
         #     print(i, x.max())
@@ -501,11 +495,7 @@ class LocomotionEnv(DirectRLEnv):
         #     dim=-1,
         # )
 
-<<<<<<< HEAD
-        observations = {"policy": obs}
-=======
         observations = {"policy": obs, "one_policy": observation}
->>>>>>> isaac-v2.0
 
         return observations
 
@@ -532,8 +522,6 @@ class LocomotionEnv(DirectRLEnv):
         reward *= torch.norm(command[:, :2], dim=1) > 0.1
         return reward
 
-<<<<<<< HEAD
-=======
     def get_feet_air_time(self, sensor_cfg, threshold_min, threshold_max):
         contact_sensor: ContactSensor = self.scene.sensors[sensor_cfg.name]
         # check if contact is made in the past self.step_dt second
@@ -550,7 +538,6 @@ class LocomotionEnv(DirectRLEnv):
         air_time = torch.clamp(air_time, max=threshold_max-threshold_min)
         return air_time
     
->>>>>>> isaac-v2.0
     def get_feet_slide_reward(self, sensor_cfg, asset_cfg):
         """
         Penalize feet sliding, where sliding is defined by the leg having contact AND velocity
@@ -577,8 +564,6 @@ class LocomotionEnv(DirectRLEnv):
         # sum over contacts for each environment
         #TODO: check if the returned data type (Long) makes sense for this reward
         return torch.sum(is_contact, dim=1)
-<<<<<<< HEAD
-=======
     
     def get_contacts_without_sum(self, sensor_cfg, threshold) -> torch.Tensor:
         """Penalize undesired contacts as the number of violations that are above a threshold."""
@@ -593,7 +578,6 @@ class LocomotionEnv(DirectRLEnv):
         # sum over contacts for each environment
         #TODO: check if the returned data type (Long) makes sense for this reward
         return is_contact
->>>>>>> isaac-v2.0
 
     def get_joint_deviation_l1(self, asset_cfg) -> torch.Tensor:
         """Penalize joint positions that deviate from the default one."""
