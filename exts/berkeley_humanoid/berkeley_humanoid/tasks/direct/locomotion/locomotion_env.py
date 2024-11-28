@@ -215,8 +215,24 @@ class LocomotionEnv(DirectRLEnv):
         # Convert trunk orientation to rotation matrix
         trunk_rotation_matrix = self.quat_to_matrix(trunk_orientation_quat).transpose(1, 2)
 
-        # Reserved for better method
-        self.robot_dimensions = torch.tensor([1, 1, 1], device=self.sim.device)
+        # Calculate robot width, length and height
+        num_geom = self.robot.data.body_pos_w.shape[1]
+        relative_geom_positions = self.robot.data.body_pos_w - trunk_position_global.unsqueeze(1).repeat(1, num_geom, 1)
+        for i in range(len(relative_geom_positions[1])):
+            relative_geom_positions[:, i] = torch.matmul(trunk_rotation_matrix.transpose(1,2), relative_geom_positions[:, i].unsqueeze(2)).squeeze(2)
+
+        # Ignore the first geom (floor)
+        min_x,_ = torch.min(relative_geom_positions[:,:,0], dim=1)
+        min_y,_ = torch.min(relative_geom_positions[:,:,1], dim=1)
+        min_z,_ = torch.min(relative_geom_positions[:,:,2], dim=1)
+        max_x,_ = torch.max(relative_geom_positions[:,:,0], dim=1)
+        max_y,_ = torch.max(relative_geom_positions[:,:,1], dim=1)
+        max_z,_ = torch.max(relative_geom_positions[:,:,2], dim=1)
+        mins = torch.stack((min_x, min_y, min_z), dim=1)
+        self.robot_length = max_x - min_x
+        self.robot_width = max_y - min_y
+        self.robot_height = max_z - min_z
+        self.robot_dimensions = torch.stack((self.robot_length, self.robot_width, self.robot_height), dim=1)
 
         self.gains_and_action_scaling_factor = torch.tensor([0, 0, self.cfg.action_scale], device=self.sim.device)
         self.mass = torch.sum(self.robot.data.default_mass, dim=1).unsqueeze(1).to(self.sim.device)
@@ -246,26 +262,26 @@ class LocomotionEnv(DirectRLEnv):
                 torch.tensor([(0.03 / 0.6) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
                 (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)),
                 ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
-                ((self.mass / 85.0) - 1.0),
-                ((self.robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
+                (self.mass / 85.0) - 1.0,
+                (self.robot_dimensions / 1.0) - 1.0,
             ], dim=1)
 
         # Compute normalized foot positions
         for i, foot_name in enumerate(self.foot_names):
             if "foot" not in foot_name:  # Skip non-foot bodies
                 continue
-
+            
             foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
             relative_foot_position_global = foot_position_global - trunk_position_global
             relative_foot_position_local = torch.matmul(trunk_rotation_matrix, relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            relative_foot_position_normalized = relative_foot_position_local / self.robot_dimensions
+            relative_foot_position_normalized = (relative_foot_position_local - mins) / self.robot_dimensions
 
             # Append foot description vector
             name_to_description_vector[foot_name] = torch.cat([
                 (relative_foot_position_normalized / 0.5) - 1.0,
                 ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 ((self.mass / 85.0) - 1.0),
-                ((self.robot_dimensions / 1.0) - 1.0).repeat((self.num_envs, 1)),
+                (self.robot_dimensions / 1.0) - 1.0,
             ], dim=1)
 
         self.dynamic_joint_description_size = name_to_description_vector[self.joint_names[0]].shape[1]
@@ -324,7 +340,7 @@ class LocomotionEnv(DirectRLEnv):
         # General robot context
         gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor([100.0 / 2, 2.0 / 2, 0.8 / 2], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1))
         mass = (self.mass / (170.0 / 2)) - 1.0
-        robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0).repeat((self.num_envs, 1))
+        robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0)
 
         # Padding
         padding = torch.empty((self.num_envs, 0), device=self.sim.device)
@@ -455,7 +471,7 @@ class LocomotionEnv(DirectRLEnv):
         observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)
         observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)
         observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)
-        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[2] / 2)) - 1.0, -1.0, 1.0)
+        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)
         ## Define the one policy observations above
 
         # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
