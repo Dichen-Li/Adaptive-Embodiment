@@ -25,20 +25,6 @@ If you do not wish to have the visualization open, which could slow down trainin
 ```angular2html
 python scripts/rsl_rl/play.py --task GenDog1
 ```
-### Teacher policy supervised distillation
-To supervisely distillate a teacher policy, we generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern.
-To generate the dataset, run
-```angular2html
-python scripts/rsl_rl/play_record.py --task GenDog1
-```
-The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
-
-And then we supervise on the loss of teacher & student policy output.
-To supervise on the loss, run
-```angular2html
-python scripts/rsl_rl/train_supervised.py --task GenDog1
-```
-The student policy is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
 
 ## How to batch training (sequential training of multiple robots)
 Do the following:
@@ -52,5 +38,20 @@ bash scripts/train_batch.sh --tasks GenDog1 GenDog2 GenDog3 GenDog4 GenDog5 > tr
 ```
 Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
 such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
+
+## Teacher policy supervised distillation
+To supervisely distillate a teacher policy, we generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern.
+To generate the dataset, run
+```angular2html
+python scripts/rsl_rl/play_record.py --task GenDog1
+```
+The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
+
+And then we supervise on the loss of teacher & student policy output.
+To supervise on the loss, run
+```angular2html
+python scripts/rsl_rl/train_supervised.py --task GenDog1
+```
+The student policy is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
 
 Happy training! 
