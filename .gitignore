@@ -6,10 +6,7 @@ experiments/
 rl_x/
 training/
 _orbit*
-<<<<<<< HEAD
 wandb/
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
-=======
-wandb/
->>>>>>> isaac-v2.0
+.*
