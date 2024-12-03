@@ -31,9 +31,6 @@ spec:
             - "-c"
           args:
             - |
-              source ~/.bashrc && 
-              cd /bai-fast-vol/code/embodiment-scaling-law &&
-              /workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid &&
               {parallel_commands}
           resources:
             requests:
@@ -81,7 +78,10 @@ for i in range(0, num_tasks, tasks_per_job):
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
-        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)}" for group in task_groups if group
+        f"source ~/.bashrc && cd /bai-fast-vol/code/embodiment-scaling-law && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
+        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)}"
+        for group in task_groups if group
     )
     parallel_commands += " & wait"  # Ensure all parallel commands complete
 
