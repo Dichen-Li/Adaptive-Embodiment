@@ -10,16 +10,15 @@ from dataclasses import MISSING
 import omni.isaac.lab.sim as sim_utils
 from omni.isaac.lab.assets import ArticulationCfg
 from omni.isaac.lab.envs import DirectRLEnvCfg
+from omni.isaac.lab.managers import SceneEntityCfg
 from omni.isaac.lab.scene import InteractiveSceneCfg
+from omni.isaac.lab.sensors import ContactSensorCfg
 from omni.isaac.lab.sim import SimulationCfg
 from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
-from omni.isaac.lab.managers import SceneEntityCfg
 
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
-from omni.isaac.lab.managers import RewardTermCfg as RewTerm
 from berkeley_humanoid.assets.gen_quadrupeds import *
-from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
+from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 
 
 @configclass
