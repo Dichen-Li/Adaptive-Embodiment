@@ -18,7 +18,6 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.gen_quadrupeds import *
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 
 
 @configclass
@@ -4233,10 +4232,3 @@ class Gendog243Cfg(GenDogEnvCfg):
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
         'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
     }
-
-
-class GenDirectEnv(LocomotionEnv):
-    cfg: GenDogEnvCfg
-
-    def __init__(self, cfg: GenDogEnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)

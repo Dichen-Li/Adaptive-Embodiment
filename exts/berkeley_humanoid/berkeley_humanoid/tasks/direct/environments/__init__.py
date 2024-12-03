@@ -10,13 +10,13 @@ Humanoid locomotion environment.
 import gymnasium as gym
 
 from . import agents
-from .humanoid_env import HumanoidEnv, HumanoidEnvCfg
-from .h1_direct_env import H1DirectEnv, H1EnvCfg
-from .g1_direct_env import G1DirectEnv, G1EnvCfg
-from .go2_direct_env import Go2DirectEnv, Go2EnvCfg
+from .humanoid_env import HumanoidEnvCfg
+from .h1_direct_env import H1EnvCfg
+from .g1_direct_env import G1EnvCfg
+from .go2_direct_env import Go2EnvCfg
 from .gen_quadrupeds_env import *
 from .gen_humanoid_env import *
-from .berkeley_humanoid_direct_env import BerkeleyHumanoidDirectEnv, BerkeleyHumanoidEnvCfg
+from .berkeley_humanoid_direct_env import BerkeleyHumanoidEnvCfg
 
 ##
 # Register Gym environments.
@@ -25,7 +25,7 @@ from .berkeley_humanoid_direct_env import BerkeleyHumanoidDirectEnv, BerkeleyHum
 # register standard robot envs
 gym.register(
     id="Go2-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments:Go2DirectEnv",
+    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": Go2EnvCfg,
@@ -35,7 +35,7 @@ gym.register(
 
 gym.register(
     id="G1-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments:G1DirectEnv",
+    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": G1EnvCfg,
@@ -45,7 +45,7 @@ gym.register(
 
 gym.register(
     id="H1-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments:H1DirectEnv",
+    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": H1EnvCfg,
@@ -57,7 +57,7 @@ gym.register(
 
 gym.register(
     id="Berkeley-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments:BerkeleyHumanoidDirectEnv",
+    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": BerkeleyHumanoidEnvCfg,
@@ -106,7 +106,7 @@ for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -136,7 +136,7 @@ for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -469,7 +469,7 @@ for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -823,7 +823,7 @@ for id, env_cfg_entry_point in id_entry_pair.items():
     rsl_rl_cfg_entry_point = f"{agents.__name__}.gen_humanoids_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
