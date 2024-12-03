@@ -86,10 +86,3 @@ class G1EnvCfg(DirectRLEnvCfg):
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=['torso_link', 'head_link',
                                                                             '.*elbow.*', '.*shoulder.*'])
     }
-
-
-class G1DirectEnv(LocomotionEnv):
-    cfg: G1EnvCfg
-
-    def __init__(self, cfg: G1EnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)

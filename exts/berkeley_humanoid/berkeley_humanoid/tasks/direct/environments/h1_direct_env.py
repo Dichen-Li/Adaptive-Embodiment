@@ -88,10 +88,3 @@ class H1EnvCfg(DirectRLEnvCfg):
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso.*')
     }
-
-
-class H1DirectEnv(LocomotionEnv):
-    cfg: H1EnvCfg
-
-    def __init__(self, cfg: H1EnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)

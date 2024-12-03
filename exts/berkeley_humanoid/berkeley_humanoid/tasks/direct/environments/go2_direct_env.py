@@ -85,10 +85,3 @@ class Go2EnvCfg(DirectRLEnvCfg):
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*calf.*joint"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*base.*"]) # , ".*thigh"
     }
-
-
-class Go2DirectEnv(LocomotionEnv):
-    cfg: Go2EnvCfg
-
-    def __init__(self, cfg: Go2EnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)

@@ -113,10 +113,3 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*KFE"]),
         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso')
     }
-
-
-class BerkeleyHumanoidDirectEnv(LocomotionEnv):
-    cfg: BerkeleyHumanoidEnvCfg
-
-    def __init__(self, cfg: BerkeleyHumanoidEnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)

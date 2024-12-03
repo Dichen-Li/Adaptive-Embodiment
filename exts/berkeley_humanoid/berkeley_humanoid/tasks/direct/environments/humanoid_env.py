@@ -14,7 +14,6 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.humanoid import HUMANOID_CFG
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 
 
 @configclass
@@ -85,10 +84,3 @@ class HumanoidEnvCfg(DirectRLEnvCfg):
 
     angular_velocity_scale: float = 0.25
     contact_force_scale: float = 0.01
-
-
-class HumanoidEnv(LocomotionEnv):
-    cfg: HumanoidEnvCfg
-
-    def __init__(self, cfg: HumanoidEnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)
