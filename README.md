@@ -141,14 +141,14 @@ This is pretty likely due to using integers like `0` as the initial state -- ple
 To supervisely distillate a teacher policy, we generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern.
 To generate the dataset, run
 ```angular2html
-python scripts/rsl_rl/play_record.py --task GenDog1
+python scripts/rsl_rl/play_record_one_policy.py --task GenDog1
 ```
 The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
 
 And then we supervise on the loss of teacher & student policy output.
 To supervise on the loss, run
 ```angular2html
-python scripts/rsl_rl/train_supervised.py --task GenDog1
+python scripts/rsl_rl/train_supervised_one_policy.py --task GenDog1
 ```
 The student policy is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
 
