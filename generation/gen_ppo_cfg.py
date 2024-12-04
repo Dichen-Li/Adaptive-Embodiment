@@ -42,7 +42,7 @@ def generate_runner_configs_with_adapted_names(base_dir, output_file):
             # Generate class definition
             class_definition = f"""
 @configclass
-class {class_name}(HumanoidPPORunnerCfg):
+class {class_name}(DefaultPPORunnerCfg):
     experiment_name = "{experiment_name}"
 """
             # Write to output file

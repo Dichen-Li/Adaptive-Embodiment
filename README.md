@@ -5,10 +5,22 @@ to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is clos
 
 ## Installation
 
-- Install Isaac Lab, see
-  the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
+### Isaac Lab
+Install Isaac Lab following the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
 
-- Using a python interpreter that has Isaac sLab installed, install the library
+### Learning Environments
+Use a python interpreter that has Isaac Lab installed and install the library: 
+```angular2html
+cd exts/berkeley_humanoid/
+pip install -e .
+```
+
+### RSL RL
+Install the fork of the RSL RL library:
+```angular2html
+cd rsl_rl_fork/
+pip install -e . --config-settings editable_mode=compat
+```
 
 ## How to add robot
 Taking quadruped as an example, but feel free to create new files and adapt accordingly: 

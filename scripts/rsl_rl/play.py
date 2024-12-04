@@ -45,13 +45,14 @@ import os
 import torch
 
 from rsl_rl.runners import OnPolicyRunner
+from rsl_rl.env.isaac_lab_vec_env import IsaacLabVecEnvWrapper
 
 # Import extensions to set up environment tasks
 import berkeley_humanoid.tasks  # noqa: F401
 
 from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
-from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
+from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import export_policy_as_onnx
 
 
 def main():
@@ -60,7 +61,7 @@ def main():
     env_cfg = parse_env_cfg(
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
-    agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
+    agent_cfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
     # specify directory for logging experiments
     log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
@@ -83,7 +84,7 @@ def main():
         print_dict(video_kwargs, nesting=4)
         env = gym.wrappers.RecordVideo(env, **video_kwargs)
     # wrap around environment for rsl-rl
-    env = RslRlVecEnvWrapper(env)
+    env = IsaacLabVecEnvWrapper(env)
 
     print(f"[INFO]: Loading model checkpoint from: {resume_path}")
 

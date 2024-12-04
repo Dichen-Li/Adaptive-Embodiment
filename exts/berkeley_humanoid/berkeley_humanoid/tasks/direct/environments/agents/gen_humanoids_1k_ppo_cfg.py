@@ -1,1331 +1,1325 @@
 from omni.isaac.lab.utils import configclass
 
-from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import (
-    RslRlOnPolicyRunnerCfg,
-    RslRlPpoActorCriticCfg,
-    RslRlPpoAlgorithmCfg,
-)
-
-from berkeley_humanoid.tasks.direct.environments.agents.rsl_rl_ppo_cfg import HumanoidPPORunnerCfg
+from berkeley_humanoid.tasks.direct.environments.agents.rsl_rl_ppo_cfg import DefaultPPORunnerCfg
 
 
 
 @configclass
-class Genhumanoid10PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid10PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid10_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid9PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid9PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid9_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid8PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid8PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid8_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid7PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid7PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid7_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid6PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid6PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid6_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid5PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid5PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid5_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid4PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid4PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid4_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid3PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid3PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid3_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid2PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid2PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid2_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid0PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid0PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid0_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid1PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid1PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid1_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid14PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid14PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid14_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid13PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid13PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid13_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid12PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid12PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid12_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid11PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid11PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid11_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid25PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid25PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid25_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid24PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid24PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid24_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid23PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid23PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid23_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid22PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid22PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid22_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid21PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid21PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid21_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid20PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid20PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid20_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid19PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid19PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid19_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid18PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid18PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid18_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid17PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid17PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid17_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid15PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid15PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid15_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid16PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid16PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid16_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid29PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid29PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid29_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid28PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid28PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid28_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid27PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid27PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid27_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid26PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid26PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid26_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid115PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid115PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid115_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid114PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid114PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid114_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid113PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid113PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid113_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid112PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid112PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid112_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid111PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid111PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid111_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid110PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid110PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid110_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid109PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid109PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid109_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid108PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid108PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid108_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid107PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid107PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid107_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid105PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid105PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid105_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid106PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid106PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid106_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid119PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid119PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid119_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid118PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid118PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid118_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid117PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid117PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid117_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid116PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid116PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid116_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid100PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid100PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid100_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid99PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid99PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid99_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid98PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid98PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid98_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid97PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid97PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid97_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid96PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid96PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid96_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid95PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid95PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid95_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid94PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid94PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid94_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid93PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid93PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid93_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid92PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid92PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid92_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid90PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid90PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid90_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid91PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid91PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid91_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid104PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid104PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid104_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid103PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid103PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid103_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid102PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid102PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid102_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid101PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid101PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid101_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid55PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid55PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid55_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid54PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid54PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid54_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid53PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid53PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid53_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid52PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid52PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid52_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid51PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid51PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid51_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid50PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid50PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid50_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid49PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid49PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid49_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid48PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid48PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid48_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid47PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid47PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid47_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid45PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid45PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid45_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid46PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid46PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid46_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid59PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid59PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid59_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid58PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid58PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid58_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid57PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid57PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid57_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid56PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid56PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid56_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid40PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid40PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid40_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid39PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid39PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid39_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid38PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid38PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid38_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid37PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid37PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid37_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid36PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid36PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid36_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid35PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid35PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid35_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid34PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid34PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid34_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid33PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid33PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid33_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid32PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid32PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid32_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid30PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid30PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid30_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid31PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid31PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid31_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid44PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid44PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid44_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid43PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid43PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid43_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid42PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid42PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid42_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid41PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid41PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid41_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid85PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid85PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid85_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid84PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid84PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid84_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid83PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid83PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid83_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid82PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid82PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid82_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid81PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid81PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid81_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid80PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid80PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid80_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid79PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid79PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid79_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid78PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid78PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid78_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid77PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid77PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid77_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid75PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid75PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid75_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid76PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid76PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid76_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid89PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid89PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid89_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid88PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid88PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid88_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid87PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid87PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid87_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid86PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid86PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid86_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid70PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid70PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid70_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid69PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid69PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid69_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid68PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid68PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid68_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid67PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid67PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid67_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid66PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid66PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid66_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid65PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid65PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid65_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid64PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid64PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid64_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid63PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid63PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid63_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid62PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid62PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid62_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid60PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid60PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid60_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid61PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid61PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid61_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid74PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid74PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid74_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid73PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid73PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid73_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid72PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid72PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid72_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid71PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid71PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid71_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid130PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid130PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid130_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid129PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid129PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid129_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid128PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid128PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid128_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid127PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid127PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid127_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid126PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid126PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid126_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid125PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid125PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid125_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid124PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid124PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid124_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid123PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid123PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid123_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid122PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid122PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid122_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid120PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid120PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid120_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid121PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid121PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid121_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid134PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid134PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid134_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid133PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid133PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid133_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid132PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid132PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid132_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid131PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid131PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid131_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid220PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid220PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid220_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid219PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid219PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid219_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid218PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid218PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid218_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid217PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid217PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid217_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid216PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid216PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid216_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid215PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid215PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid215_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid214PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid214PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid214_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid213PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid213PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid213_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid212PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid212PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid212_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid210PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid210PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid210_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid211PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid211PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid211_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid224PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid224PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid224_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid223PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid223PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid223_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid222PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid222PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid222_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid221PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid221PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid221_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid205PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid205PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid205_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid204PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid204PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid204_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid203PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid203PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid203_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid202PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid202PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid202_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid201PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid201PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid201_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid200PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid200PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid200_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid199PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid199PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid199_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid198PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid198PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid198_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid197PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid197PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid197_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid195PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid195PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid195_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid196PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid196PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid196_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid209PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid209PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid209_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid208PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid208PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid208_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid207PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid207PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid207_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid206PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid206PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid206_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid160PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid160PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid160_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid159PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid159PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid159_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid158PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid158PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid158_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid157PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid157PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid157_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid156PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid156PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid156_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid155PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid155PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid155_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid154PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid154PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid154_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid153PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid153PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid153_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid152PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid152PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid152_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid150PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid150PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid150_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid151PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid151PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid151_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid164PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid164PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid164_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid163PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid163PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid163_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid162PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid162PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid162_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid161PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid161PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid161_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid145PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid145PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid145_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid144PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid144PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid144_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid143PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid143PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid143_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid142PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid142PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid142_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid141PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid141PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid141_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid140PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid140PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid140_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid139PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid139PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid139_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid138PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid138PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid138_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid137PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid137PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid137_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid135PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid135PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid135_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid136PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid136PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid136_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid149PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid149PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid149_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid148PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid148PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid148_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid147PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid147PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid147_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid146PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid146PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid146_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid190PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid190PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid190_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid189PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid189PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid189_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid188PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid188PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid188_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid187PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid187PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid187_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid186PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid186PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid186_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid185PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid185PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid185_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid184PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid184PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid184_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid183PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid183PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid183_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid182PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid182PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid182_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid180PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid180PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid180_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid181PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid181PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid181_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid194PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid194PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid194_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid193PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid193PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid193_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid192PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid192PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid192_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid191PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid191PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid191_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid175PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid175PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid175_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid174PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid174PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid174_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid173PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid173PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid173_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid172PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid172PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid172_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid171PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid171PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid171_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid170PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid170PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid170_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid169PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid169PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid169_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid168PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid168PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid168_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid167PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid167PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid167_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid165PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid165PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid165_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid166PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid166PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid166_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid179PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid179PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid179_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid178PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid178PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid178_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid177PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid177PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid177_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid176PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid176PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid176_genhumanoid__KneeNum_l2_r2__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid235PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid235PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid235_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid234PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid234PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid234_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid233PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid233PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid233_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid232PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid232PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid232_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid231PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid231PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid231_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid230PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid230PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid230_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid229PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid229PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid229_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid228PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid228PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid228_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid227PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid227PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid227_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid225PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid225PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid225_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid226PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid226PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid226_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid239PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid239PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid239_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid238PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid238PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid238_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid237PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid237PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid237_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid236PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid236PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid236_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r0_1_0__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid325PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid325PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid325_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid324PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid324PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid324_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid323PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid323PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid323_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid322PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid322PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid322_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid321PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid321PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid321_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid320PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid320PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid320_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid319PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid319PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid319_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid318PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid318PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid318_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid317PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid317PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid317_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid315PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid315PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid315_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid316PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid316PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid316_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid329PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid329PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid329_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid328PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid328PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid328_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid327PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid327PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid327_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid326PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid326PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid326_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid310PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid310PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid310_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid309PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid309PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid309_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid308PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid308PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid308_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid307PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid307PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid307_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid306PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid306PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid306_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid305PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid305PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid305_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid304PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid304PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid304_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid303PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid303PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid303_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid302PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid302PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid302_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid300PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid300PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid300_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid301PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid301PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid301_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid314PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid314PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid314_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid313PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid313PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid313_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid312PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid312PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid312_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid311PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid311PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid311_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l0_r1_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid265PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid265PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid265_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid264PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid264PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid264_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid263PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid263PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid263_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid262PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid262PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid262_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid261PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid261PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid261_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid260PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid260PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid260_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid259PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid259PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid259_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid258PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid258PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid258_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid257PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid257PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid257_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid255PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid255PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid255_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid256PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid256PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid256_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid269PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid269PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid269_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid268PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid268PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid268_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid267PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid267PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid267_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid266PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid266PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid266_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid250PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid250PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid250_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid249PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid249PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid249_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid248PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid248PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid248_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid247PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid247PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid247_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid246PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid246PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid246_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid245PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid245PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid245_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid244PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid244PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid244_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid243PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid243PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid243_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid242PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid242PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid242_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid240PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid240PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid240_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid241PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid241PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid241_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid254PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid254PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid254_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid253PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid253PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid253_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid252PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid252PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid252_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid251PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid251PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid251_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r0_1_2__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid295PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid295PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid295_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid294PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid294PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid294_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid293PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid293PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid293_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid292PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid292PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid292_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid291PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid291PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid291_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid290PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid290PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid290_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid289PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid289PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid289_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid288PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid288PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid288_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid287PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid287PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid287_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid285PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid285PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid285_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid286PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid286PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid286_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid299PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid299PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid299_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid298PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid298PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid298_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid297PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid297PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid297_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid296PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid296PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid296_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_0_8__Geo_scale_torso_1_6"
 
 @configclass
-class Genhumanoid280PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid280PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid280_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_4"
 
 @configclass
-class Genhumanoid279PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid279PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid279_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_0_8"
 
 @configclass
-class Genhumanoid278PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid278PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid278_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_2"
 
 @configclass
-class Genhumanoid277PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid277PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid277_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_calf_1_6"
 
 @configclass
-class Genhumanoid276PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid276PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid276_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_4"
 
 @configclass
-class Genhumanoid275PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid275PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid275_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_0_8"
 
 @configclass
-class Genhumanoid274PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid274PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid274_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_2"
 
 @configclass
-class Genhumanoid273PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid273PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid273_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_lengthen_thigh_1_6"
 
 @configclass
-class Genhumanoid272PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid272PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid272_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_0_8"
 
 @configclass
-class Genhumanoid270PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid270PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid270_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_0"
 
 @configclass
-class Genhumanoid271PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid271PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid271_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_all_1_2"
 
 @configclass
-class Genhumanoid284PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid284PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid284_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_4"
 
 @configclass
-class Genhumanoid283PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid283PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid283_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_0_8"
 
 @configclass
-class Genhumanoid282PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid282PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid282_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_2"
 
 @configclass
-class Genhumanoid281PPORunnerCfg(HumanoidPPORunnerCfg):
+class Genhumanoid281PPORunnerCfg(DefaultPPORunnerCfg):
     experiment_name = "Genhumanoid281_genhumanoid__KneeNum_l3_r3__ScaleJointLimit_l1_r1_1_2__Geo_scale_torso_1_6"
