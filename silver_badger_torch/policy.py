@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+import os
+
 class Policy(nn.Module):
     def __init__(self, joint_log_softmax_temperature, foot_log_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip):
         super(Policy, self).__init__()
@@ -14,7 +16,7 @@ class Policy(nn.Module):
         self.policy_std_min_clip = policy_std_min_clip
         self.policy_std_max_clip = policy_std_max_clip
 
-        self.dynamic_joint_state_mask1 = nn.Linear(23, 64)
+        self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
         self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
         self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
         self.latent_dynamic_joint_state = nn.Linear(3, 4)
@@ -26,7 +28,7 @@ class Policy(nn.Module):
         self.action_layer_norm = nn.LayerNorm(512, eps=1e-6)
         self.action_latent2 = nn.Linear(512, 256)
         self.action_latent3 = nn.Linear(256, 128)
-        self.action_description_latent1 = nn.Linear(23, 128)
+        self.action_description_latent1 = nn.Linear(18, 128)
         self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
         self.action_description_latent2 = nn.Linear(128, 128)
         self.policy_mean_layer1 = nn.Linear(260, 128)
@@ -85,9 +87,9 @@ class Policy(nn.Module):
         return policy_mean.squeeze(-1)
 
 
-def get_policy():
-    joint_log_softmax_temperature = torch.tensor(np.load("jax_nn_weights/joint_log_softmax_temperature.npy"))
-    foot_log_softmax_temperature = torch.tensor(np.load("jax_nn_weights/foot_log_softmax_temperature.npy"))
+def get_policy(model_device: str):
+    joint_log_softmax_temperature = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/joint_log_softmax_temperature.npy")), device=model_device)
+    foot_log_softmax_temperature = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/foot_log_softmax_temperature.npy")), device=model_device)
     softmax_temperature_min = 0.015
     stability_epsilon = 0.00000001
     policy_mean_abs_clip = 10.0
@@ -96,64 +98,68 @@ def get_policy():
 
     policy = Policy(joint_log_softmax_temperature, foot_log_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip)
     policy = torch.jit.script(policy)
+    policy.to(model_device)
 
-    # Load weights
-    policy.dynamic_joint_state_mask1.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_0_kernel.npy")).T
-    policy.dynamic_joint_state_mask1.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_0_bias.npy"))
-    policy.dynamic_joint_layer_norm.weight.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_0_scale.npy"))
-    policy.dynamic_joint_layer_norm.bias.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_0_bias.npy"))
-    policy.dynamic_joint_state_mask2.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_1_kernel.npy")).T
-    policy.dynamic_joint_state_mask2.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_1_bias.npy"))
-    policy.latent_dynamic_joint_state.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_2_kernel.npy")).T
-    policy.latent_dynamic_joint_state.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_2_bias.npy"))
-    policy.dynamic_foot_state_mask1.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_3_kernel.npy")).T
-    policy.dynamic_foot_state_mask1.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_3_bias.npy"))
-    policy.dynamic_foot_layer_norm.weight.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_1_scale.npy"))
-    policy.dynamic_foot_layer_norm.bias.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_1_bias.npy"))
-    policy.dynamic_foot_state_mask2.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_4_kernel.npy")).T
-    policy.dynamic_foot_state_mask2.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_4_bias.npy"))
-    policy.latent_dynamic_foot_state.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_5_kernel.npy")).T
-    policy.latent_dynamic_foot_state.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_5_bias.npy"))
-    policy.action_latent1.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_6_kernel.npy")).T
-    policy.action_latent1.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_6_bias.npy"))
-    policy.action_layer_norm.weight.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_2_scale.npy"))
-    policy.action_layer_norm.bias.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_2_bias.npy"))
-    policy.action_latent2.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_7_kernel.npy")).T
-    policy.action_latent2.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_7_bias.npy"))
-    policy.action_latent3.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_8_kernel.npy")).T
-    policy.action_latent3.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_8_bias.npy"))
-    policy.action_description_latent1.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_9_kernel.npy")).T
-    policy.action_description_latent1.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_9_bias.npy"))
-    policy.action_description_layer_norm.weight.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_3_scale.npy"))
-    policy.action_description_layer_norm.bias.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_3_bias.npy"))
-    policy.action_description_latent2.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_10_kernel.npy")).T
-    policy.action_description_latent2.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_10_bias.npy"))
-    policy.policy_mean_layer1.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_11_kernel.npy")).T
-    policy.policy_mean_layer1.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_11_bias.npy"))
-    policy.policy_mean_layer_norm.weight.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_4_scale.npy"))
-    policy.policy_mean_layer_norm.bias.data = torch.tensor(np.load("jax_nn_weights/LayerNorm_4_bias.npy"))
-    policy.policy_mean_layer2.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_12_kernel.npy")).T
-    policy.policy_mean_layer2.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_12_bias.npy"))
-    policy.policy_logstd_layer.weight.data = torch.tensor(np.load("jax_nn_weights/Dense_13_kernel.npy")).T
-    policy.policy_logstd_layer.bias.data = torch.tensor(np.load("jax_nn_weights/Dense_13_bias.npy"))
+    # # Load weights
+    # policy.dynamic_joint_state_mask1.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_0_kernel.npy"))).T
+    # policy.dynamic_joint_state_mask1.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_0_bias.npy")))
+    # policy.dynamic_joint_layer_norm.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_0_scale.npy")))
+    # policy.dynamic_joint_layer_norm.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_0_bias.npy")))
+    # policy.dynamic_joint_state_mask2.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_1_kernel.npy"))).T
+    # policy.dynamic_joint_state_mask2.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_1_bias.npy")))
+    # policy.latent_dynamic_joint_state.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_2_kernel.npy"))).T
+    # policy.latent_dynamic_joint_state.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_2_bias.npy")))
+    # policy.dynamic_foot_state_mask1.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_3_kernel.npy"))).T
+    # policy.dynamic_foot_state_mask1.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_3_bias.npy")))
+    # policy.dynamic_foot_layer_norm.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_1_scale.npy")))
+    # policy.dynamic_foot_layer_norm.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_1_bias.npy")))
+    # policy.dynamic_foot_state_mask2.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_4_kernel.npy"))).T
+    # policy.dynamic_foot_state_mask2.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_4_bias.npy")))
+    # policy.latent_dynamic_foot_state.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_5_kernel.npy"))).T
+    # policy.latent_dynamic_foot_state.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_5_bias.npy")))
+    # policy.action_latent1.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_6_kernel.npy"))).T
+    # policy.action_latent1.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_6_bias.npy")))
+    # policy.action_layer_norm.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_2_scale.npy")))
+    # policy.action_layer_norm.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_2_bias.npy")))
+    # policy.action_latent2.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_7_kernel.npy"))).T
+    # policy.action_latent2.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_7_bias.npy")))
+    # policy.action_latent3.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_8_kernel.npy"))).T
+    # policy.action_latent3.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_8_bias.npy")))
+    # policy.action_description_latent1.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_9_kernel.npy"))).T
+    # policy.action_description_latent1.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_9_bias.npy")))
+    # policy.action_description_layer_norm.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_3_scale.npy")))
+    # policy.action_description_layer_norm.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_3_bias.npy")))
+    # policy.action_description_latent2.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_10_kernel.npy"))).T
+    # policy.action_description_latent2.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_10_bias.npy")))
+    # policy.policy_mean_layer1.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_11_kernel.npy"))).T
+    # policy.policy_mean_layer1.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_11_bias.npy")))
+    # policy.policy_mean_layer_norm.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_4_scale.npy")))
+    # policy.policy_mean_layer_norm.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/LayerNorm_4_bias.npy")))
+    # policy.policy_mean_layer2.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_12_kernel.npy"))).T
+    # policy.policy_mean_layer2.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_12_bias.npy")))
+    # policy.policy_logstd_layer.weight.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_13_kernel.npy"))).T
+    # policy.policy_logstd_layer.bias.data = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/Dense_13_bias.npy")))
 
     return policy
 
 
 if __name__ == "__main__":
-    policy = get_policy()
+    # define the device = 'cuda:0'
+    model_device = 'cuda:0'
+
+    policy = get_policy(model_device)
     
-    dummy_dynamic_joint_description = np.zeros((1, 13, 23))
+    dummy_dynamic_joint_description = np.zeros((1, 13, 18))
     dummy_dynamic_joint_state = np.zeros((1, 13, 3))
     dummy_dynamic_foot_description = np.zeros((1, 4, 10))
     dummy_dynamic_foot_state = np.zeros((1, 4, 2))
     dummy_general_policy_state = np.zeros((1, 16))
 
-    dummy_dynamic_joint_description = torch.tensor(dummy_dynamic_joint_description, dtype=torch.float32)
-    dummy_dynamic_joint_state = torch.tensor(dummy_dynamic_joint_state, dtype=torch.float32)
-    dummy_dynamic_foot_description = torch.tensor(dummy_dynamic_foot_description, dtype=torch.float32)
-    dummy_dynamic_foot_state = torch.tensor(dummy_dynamic_foot_state, dtype=torch.float32)
-    dummy_general_policy_state = torch.tensor(dummy_general_policy_state, dtype=torch.float32)
+    dummy_dynamic_joint_description = torch.tensor(dummy_dynamic_joint_description, dtype=torch.float32).to(model_device)
+    dummy_dynamic_joint_state = torch.tensor(dummy_dynamic_joint_state, dtype=torch.float32).to(model_device)
+    dummy_dynamic_foot_description = torch.tensor(dummy_dynamic_foot_description, dtype=torch.float32).to(model_device)
+    dummy_dynamic_foot_state = torch.tensor(dummy_dynamic_foot_state, dtype=torch.float32).to(model_device)
+    dummy_general_policy_state = torch.tensor(dummy_general_policy_state, dtype=torch.float32).to(model_device)
 
     import time
 
