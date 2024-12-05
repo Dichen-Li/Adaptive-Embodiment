@@ -71,7 +71,7 @@ def generate_robot_classes_from_config(base_dir, output_file):
             # Generate the class definition
             class_definition = (
                 f"@configclass\n"
-                f"class {class_name}(GenDogEnvCfg):\n"
+                f"class {class_name}({cfg_class_name}):\n"
                 f"    action_space = {action_space}\n"
                 f"    robot: ArticulationCfg = {cfg_name}\n"
                 f"    reward_cfgs = {{\n"
@@ -87,6 +87,7 @@ def generate_robot_classes_from_config(base_dir, output_file):
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
+cfg_class_parent = 'GenDogEnvCfg'   # it could also be 'GenHumanoidEnvCfg'
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "robot_classes.py"  # Output file for the generated class definitions
 generate_robot_classes_from_config(base_dir, output_file)
