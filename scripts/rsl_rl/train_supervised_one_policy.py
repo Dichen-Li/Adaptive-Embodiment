@@ -65,6 +65,117 @@ torch.backends.cudnn.benchmark = False
 import numpy as np
 
 
+import os
+import h5py
+import torch
+import numpy as np
+import yaml
+from torch.utils.data import DataLoader, TensorDataset
+
+class LocomotionDataset:
+    def __init__(self, folder_path):
+        """
+        Initialize the LocomotionDataset.
+
+        Args:
+            folder_path (str): Path to the folder containing HDF5 files and metadata.
+        """
+        self.folder_path = folder_path
+        self.metadata = self._load_metadata()
+        self.inputs = []
+        self.targets = []
+
+    def _load_metadata(self):
+        """
+        Load metadata from the YAML file in the dataset folder.
+
+        Returns:
+            dict: Metadata containing environment parameters.
+        """
+        metadata_path = os.path.join(self.folder_path, "metadata.yaml")
+        if not os.path.exists(metadata_path):
+            raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+
+        with open(metadata_path, "r") as metadata_file:
+            metadata = yaml.safe_load(metadata_file)
+        print(f"[INFO]: Loaded metadata from {metadata_path}")
+        return metadata
+
+    def _load_hdf5_files(self):
+        """
+        Load data from all HDF5 files in the folder, sorted numerically by index.
+        """
+        hdf5_files = sorted(
+            [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
+            key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
+        )
+
+        if not hdf5_files:
+            raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
+
+        for file_name in hdf5_files:
+            file_path = os.path.join(self.folder_path, file_name)
+            print(file_path)
+            with h5py.File(file_path, "r") as data_file:
+                inputs = data_file["one_policy_observation"][:]
+                targets = data_file["actions"][:]
+                self.inputs.append(inputs)
+                self.targets.append(targets)
+
+        # Concatenate data from all files
+        self.inputs = np.concatenate(self.inputs, axis=0)
+        self.targets = np.concatenate(self.targets, axis=0)
+        print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
+
+    def get_data_loader(self, batch_size=8, shuffle=True):
+        """
+        Create a DataLoader for the dataset.
+
+        Args:
+            batch_size (int): Batch size for the DataLoader.
+            shuffle (bool): Whether to shuffle the dataset.
+
+        Returns:
+            DataLoader: DataLoader object for the dataset.
+        """
+        if not self.inputs or not self.targets:
+            self._load_hdf5_files()
+
+        dataset = TensorDataset(
+            torch.tensor(self.inputs, dtype=torch.float32),
+            torch.tensor(self.targets, dtype=torch.float32),
+        )
+        return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+
+    def get_dynamic_joint_params(self):
+        """
+        Retrieve dynamic joint parameters from the metadata.
+
+        Returns:
+            dict: Dynamic joint parameters.
+        """
+        return {
+            "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
+            "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
+            "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
+            "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
+        }
+    
+    def get_dynamic_foot_params(self):
+        """
+        Retrieve dynamic foot parameters from the metadata.
+
+        Returns:
+            dict: Dynamic foot parameters.
+        """
+        return {
+            "nr_dynamic_foot_observations": self.metadata["nr_dynamic_foot_observations"],
+            "single_dynamic_foot_observation_length": self.metadata["single_dynamic_foot_observation_length"],
+            "dynamic_foot_observation_length": self.metadata["dynamic_foot_observation_length"],
+            "dynamic_foot_description_size": self.metadata["dynamic_foot_description_size"],
+        }
+
+
 def main():
 
     # parse configuration
@@ -80,24 +191,33 @@ def main():
     resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
     log_dir = os.path.dirname(resume_path)
 
-    # Load training dataset
-    import h5py
-    import numpy as np
-    # Define the file path
-    h5py_record_file_path = os.path.join(log_dir, "h5py_record", "obs_actions.h5")
-    if not os.path.exists(h5py_record_file_path):
-        print(f"[INFO]: h5py_record_file_path not found")
-        return
-    # Load h5py input output data
-    data = h5py.File(h5py_record_file_path, "a")
-    inputs = data["one_policy_observation"]
-    targets = data["actions"]
-    import ipdb; ipdb.set_trace()
+    # # Load training dataset
+    # import h5py
+    # import numpy as np
+    # # Define the file path
+    # h5py_record_file_path = os.path.join(log_dir, "h5py_record", "obs_actions.h5")
+    # if not os.path.exists(h5py_record_file_path):
+    #     print(f"[INFO]: h5py_record_file_path not found")
+    #     return
+    # # Load h5py input output data
+    # data = h5py.File(h5py_record_file_path, "a")
+    # inputs = data["one_policy_observation"]
+    # targets = data["actions"]
+    # import ipdb; ipdb.set_trace()
 
-    # Create DataLoader
-    from torch.utils.data import DataLoader, TensorDataset
-    dataset = TensorDataset(torch.tensor(np.array(inputs), dtype=torch.float32), torch.tensor(np.array(targets), dtype=torch.float32))
-    data_loader = DataLoader(dataset, batch_size=8, shuffle=True)
+    # # Create DataLoader
+    # from torch.utils.data import DataLoader, TensorDataset
+    # dataset = TensorDataset(torch.tensor(np.array(inputs), dtype=torch.float32), torch.tensor(np.array(targets), dtype=torch.float32))
+    # data_loader = DataLoader(dataset, batch_size=8, shuffle=True)
+
+    locomotion_dataset = LocomotionDataset(folder_path=os.path.join(log_dir, "h5py_record"))
+    data_loader = locomotion_dataset.get_data_loader(batch_size=8)
+
+    dynamic_joint_params = locomotion_dataset.get_dynamic_joint_params()
+    dynamic_foot_params = locomotion_dataset.get_dynamic_foot_params()
+
+    print("[INFO]: Dynamic Joint Parameters:", dynamic_joint_params)
+    print("[INFO]: Dynamic Foot Parameters:", dynamic_foot_params)
 
     # Define model, optimizer and loss
     import sys
@@ -126,33 +246,36 @@ def main():
             batch_predictions = []
             for single_input in batch_inputs:
                 state: torch.tensor = single_input
+                # import ipdb; ipdb.set_trace()
 
-                nr_dynamic_joint_observations = 12
-                single_dynamic_joint_observation_length = 21
-                dynamic_joint_observation_lengths = 12 * 21
-                dynamic_joint_description_size = 18
+                dynamic_joint_params = locomotion_dataset.get_dynamic_joint_params()
+                nr_dynamic_joint_observations = dynamic_joint_params['nr_dynamic_joint_observations']
+                single_dynamic_joint_observation_length = dynamic_joint_params['single_dynamic_joint_observation_length']
+                dynamic_joint_observation_length = dynamic_joint_params['dynamic_joint_observation_length']
+                dynamic_joint_description_size = dynamic_joint_params['dynamic_joint_description_size']
 
-                dynamic_joint_combined_state = state[:, :dynamic_joint_observation_lengths].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
+                dynamic_joint_combined_state = state[:, :dynamic_joint_observation_length].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
                 dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
                 dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
 
-                nr_dynamic_foot_observations = 4
-                single_dynamic_foot_observation_length = 12
-                dynamic_foot_observation_lengths = 4 * 12
-                dynamic_foot_description_size = 10
+                dynamic_foot_params = locomotion_dataset.get_dynamic_foot_params()
+                nr_dynamic_foot_observations = dynamic_foot_params['nr_dynamic_foot_observations']
+                single_dynamic_foot_observation_length = dynamic_foot_params['single_dynamic_foot_observation_length']
+                dynamic_foot_observation_length = dynamic_foot_params['dynamic_foot_observation_length']
+                dynamic_foot_description_size = dynamic_foot_params['dynamic_foot_description_size']
 
-                dynamic_foot_combined_state = state[:, dynamic_joint_observation_lengths:dynamic_joint_observation_lengths + dynamic_foot_observation_lengths].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
+                dynamic_foot_combined_state = state[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
                 dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
                 dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
 
-                policy_general_state_mask = torch.arange(303, 320, device = 'cpu')
-                policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
+                # import ipdb; ipdb.set_trace()
+                # policy_general_state_mask = torch.arange(303, 320, device = 'cpu')
+                # policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
 
-                general_policy_state = state[:, policy_general_state_mask]
-
+                # we just need a few last elements in the state as the "general_policy_state"
+                general_policy_state = torch.cat([state[:, -17:-8], state[:, -7:]], dim=1)
 
                 # Forward pass: process each input individually
-                import ipdb; ipdb.set_trace()
                 single_prediction = policy(dynamic_joint_description, dynamic_joint_state, dynamic_foot_description, dynamic_foot_state, general_policy_state)
                 batch_predictions.append(single_prediction)
 
