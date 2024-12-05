@@ -39,13 +39,21 @@ function stop_execution {
 # Trap SIGINT (Ctrl+C) and call stop_execution
 trap stop_execution SIGINT
 
-# Execute training for each specified task
 for task in "${tasks[@]}"; do
   # Generate a timestamp for the log file
   timestamp=$(date +"%Y%m%d_%H%M%S")
   log_file="${log_dir}/${task}_${timestamp}.log"
 
+  # Construct the command to be executed
+  cmd="/workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/train.py --task \"$task\" --headless ${kwargs[@]}"
+
+  # Print the command being executed
   echo "Starting training for task: $task. Logging to $log_file"
-  "/workspace/isaaclab/isaaclab.sh" -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+  echo "Executing command: $cmd"
+
+  # Execute the command with unbuffered output
+  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+
   echo "Completed training for task: $task. Log saved to $log_file"
 done
+
