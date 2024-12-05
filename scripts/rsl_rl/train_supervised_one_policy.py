@@ -92,6 +92,7 @@ def main():
     data = h5py.File(h5py_record_file_path, "a")
     inputs = data["one_policy_observation"]
     targets = data["actions"]
+    import ipdb; ipdb.set_trace()
 
     # Create DataLoader
     from torch.utils.data import DataLoader, TensorDataset
@@ -151,6 +152,7 @@ def main():
 
 
                 # Forward pass: process each input individually
+                import ipdb; ipdb.set_trace()
                 single_prediction = policy(dynamic_joint_description, dynamic_joint_state, dynamic_foot_description, dynamic_foot_state, general_policy_state)
                 batch_predictions.append(single_prediction)
 
