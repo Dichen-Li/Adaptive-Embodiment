@@ -989,7 +989,7 @@ GEN_DOG_76_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1010,7 +1010,7 @@ GEN_DOG_75_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1031,7 +1031,7 @@ GEN_DOG_74_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1052,7 +1052,7 @@ GEN_DOG_73_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1073,7 +1073,7 @@ GEN_DOG_72_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1094,7 +1094,7 @@ GEN_DOG_71_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1115,7 +1115,7 @@ GEN_DOG_70_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1136,7 +1136,7 @@ GEN_DOG_69_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1157,7 +1157,7 @@ GEN_DOG_68_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1178,7 +1178,7 @@ GEN_DOG_66_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1199,7 +1199,7 @@ GEN_DOG_67_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65
+            ".*_knee_joint": -0.84
         },
         joint_vel={".*": 0.0},
     ),
@@ -1220,7 +1220,7 @@ GEN_DOG_43_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1241,7 +1241,7 @@ GEN_DOG_42_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1262,7 +1262,7 @@ GEN_DOG_41_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1283,7 +1283,7 @@ GEN_DOG_40_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1304,7 +1304,7 @@ GEN_DOG_39_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1325,7 +1325,7 @@ GEN_DOG_38_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1346,7 +1346,7 @@ GEN_DOG_37_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1367,7 +1367,7 @@ GEN_DOG_36_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1388,7 +1388,7 @@ GEN_DOG_35_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1409,7 +1409,7 @@ GEN_DOG_33_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1430,7 +1430,7 @@ GEN_DOG_34_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1682,7 +1682,7 @@ GEN_DOG_109_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1703,7 +1703,7 @@ GEN_DOG_108_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1724,7 +1724,7 @@ GEN_DOG_107_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1745,7 +1745,7 @@ GEN_DOG_106_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1766,7 +1766,7 @@ GEN_DOG_105_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1787,7 +1787,7 @@ GEN_DOG_104_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1808,7 +1808,7 @@ GEN_DOG_103_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1829,7 +1829,7 @@ GEN_DOG_102_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1850,7 +1850,7 @@ GEN_DOG_101_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1871,7 +1871,7 @@ GEN_DOG_99_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -1892,7 +1892,7 @@ GEN_DOG_100_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2144,7 +2144,7 @@ GEN_DOG_65_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2165,7 +2165,7 @@ GEN_DOG_64_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2186,7 +2186,7 @@ GEN_DOG_63_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2207,7 +2207,7 @@ GEN_DOG_62_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2228,7 +2228,7 @@ GEN_DOG_61_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2249,7 +2249,7 @@ GEN_DOG_60_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2270,7 +2270,7 @@ GEN_DOG_59_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2291,7 +2291,7 @@ GEN_DOG_58_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2312,7 +2312,7 @@ GEN_DOG_57_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2333,7 +2333,7 @@ GEN_DOG_55_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -2354,7 +2354,7 @@ GEN_DOG_56_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            ".*_knee_joint": -1.03
         },
         joint_vel={".*": 0.0},
     ),
@@ -3090,7 +3090,7 @@ GEN_DOG_175_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3112,7 +3112,7 @@ GEN_DOG_174_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3134,7 +3134,7 @@ GEN_DOG_173_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3156,7 +3156,7 @@ GEN_DOG_172_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3178,7 +3178,7 @@ GEN_DOG_171_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3200,7 +3200,7 @@ GEN_DOG_170_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3222,7 +3222,7 @@ GEN_DOG_169_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3244,7 +3244,7 @@ GEN_DOG_168_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3266,7 +3266,7 @@ GEN_DOG_167_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3288,7 +3288,7 @@ GEN_DOG_165_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3310,7 +3310,7 @@ GEN_DOG_166_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3332,7 +3332,7 @@ GEN_DOG_142_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3354,7 +3354,7 @@ GEN_DOG_141_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3376,7 +3376,7 @@ GEN_DOG_140_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3398,7 +3398,7 @@ GEN_DOG_139_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3420,7 +3420,7 @@ GEN_DOG_138_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3442,7 +3442,7 @@ GEN_DOG_137_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3464,7 +3464,7 @@ GEN_DOG_136_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3486,7 +3486,7 @@ GEN_DOG_135_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3508,7 +3508,7 @@ GEN_DOG_134_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3530,7 +3530,7 @@ GEN_DOG_132_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3552,7 +3552,7 @@ GEN_DOG_133_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3816,7 +3816,7 @@ GEN_DOG_208_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3838,7 +3838,7 @@ GEN_DOG_207_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3860,7 +3860,7 @@ GEN_DOG_206_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3882,7 +3882,7 @@ GEN_DOG_205_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3904,7 +3904,7 @@ GEN_DOG_204_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3926,7 +3926,7 @@ GEN_DOG_203_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3948,7 +3948,7 @@ GEN_DOG_202_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3970,7 +3970,7 @@ GEN_DOG_201_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3992,7 +3992,7 @@ GEN_DOG_200_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4014,7 +4014,7 @@ GEN_DOG_198_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4036,7 +4036,7 @@ GEN_DOG_199_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4300,7 +4300,7 @@ GEN_DOG_164_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4322,7 +4322,7 @@ GEN_DOG_163_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4344,7 +4344,7 @@ GEN_DOG_162_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4366,7 +4366,7 @@ GEN_DOG_161_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4388,7 +4388,7 @@ GEN_DOG_160_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4410,7 +4410,7 @@ GEN_DOG_159_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4432,7 +4432,7 @@ GEN_DOG_158_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4454,7 +4454,7 @@ GEN_DOG_157_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4476,7 +4476,7 @@ GEN_DOG_156_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4498,7 +4498,7 @@ GEN_DOG_154_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4520,7 +4520,7 @@ GEN_DOG_155_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5268,7 +5268,7 @@ GEN_DOG_274_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5290,7 +5290,7 @@ GEN_DOG_273_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5312,7 +5312,7 @@ GEN_DOG_272_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5334,7 +5334,7 @@ GEN_DOG_271_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5356,7 +5356,7 @@ GEN_DOG_270_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5378,7 +5378,7 @@ GEN_DOG_269_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5400,7 +5400,7 @@ GEN_DOG_268_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5422,7 +5422,7 @@ GEN_DOG_267_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5444,7 +5444,7 @@ GEN_DOG_266_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5466,7 +5466,7 @@ GEN_DOG_264_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5488,7 +5488,7 @@ GEN_DOG_265_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.65,
+            ".*_knee_joint": -0.84,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5510,7 +5510,7 @@ GEN_DOG_241_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5532,7 +5532,7 @@ GEN_DOG_240_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5554,7 +5554,7 @@ GEN_DOG_239_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5576,7 +5576,7 @@ GEN_DOG_238_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5598,7 +5598,7 @@ GEN_DOG_237_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5620,7 +5620,7 @@ GEN_DOG_236_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5642,7 +5642,7 @@ GEN_DOG_235_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5664,7 +5664,7 @@ GEN_DOG_234_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5686,7 +5686,7 @@ GEN_DOG_233_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5708,7 +5708,7 @@ GEN_DOG_231_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5730,7 +5730,7 @@ GEN_DOG_232_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5994,7 +5994,7 @@ GEN_DOG_307_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6016,7 +6016,7 @@ GEN_DOG_306_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6038,7 +6038,7 @@ GEN_DOG_305_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6060,7 +6060,7 @@ GEN_DOG_304_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6082,7 +6082,7 @@ GEN_DOG_303_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6104,7 +6104,7 @@ GEN_DOG_302_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6126,7 +6126,7 @@ GEN_DOG_301_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6148,7 +6148,7 @@ GEN_DOG_300_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6170,7 +6170,7 @@ GEN_DOG_299_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6192,7 +6192,7 @@ GEN_DOG_297_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6214,7 +6214,7 @@ GEN_DOG_298_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6478,7 +6478,7 @@ GEN_DOG_263_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6500,7 +6500,7 @@ GEN_DOG_262_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6522,7 +6522,7 @@ GEN_DOG_261_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6544,7 +6544,7 @@ GEN_DOG_260_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6566,7 +6566,7 @@ GEN_DOG_259_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6588,7 +6588,7 @@ GEN_DOG_258_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6610,7 +6610,7 @@ GEN_DOG_257_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6632,7 +6632,7 @@ GEN_DOG_256_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6654,7 +6654,7 @@ GEN_DOG_255_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6676,7 +6676,7 @@ GEN_DOG_253_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6698,7 +6698,7 @@ GEN_DOG_254_CFG = ArticulationCfg(
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            ".*_knee_joint": -1.03,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},

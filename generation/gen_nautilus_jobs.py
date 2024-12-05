@@ -2,11 +2,11 @@ import os
 
 # Configuration
 num_tasks = 308  # Total number of tasks
-tasks_prefix = "Gendog"
+tasks_prefix = "Genhumanoid"
 tasks_suffix = ""  # Add any suffix if needed
 tasks_per_job = 30  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "bai-job-{job_index}"
+job_name_template = "bai-job-humanoid-{job_index}"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 
@@ -31,18 +31,15 @@ spec:
             - "-c"
           args:
             - |
-              source ~/.bashrc && 
-              cd /bai-fast-vol/code/embodiment-scaling-law &&
-              /workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid &&
               {parallel_commands}
           resources:
             requests:
               cpu: "8"
-              memory: "20Gi"
+              memory: "16Gi"
               nvidia.com/gpu: "1"
             limits:
               cpu: "16"
-              memory: "40Gi"
+              memory: "32Gi"
               nvidia.com/gpu: "1"
           volumeMounts:
             - name: dshm
@@ -67,8 +64,8 @@ spec:
                     values:
                       - NVIDIA-GeForce-RTX-4090
                       - NVIDIA-GeForce-RTX-3090
-                      - NVIDIA-GeForce-RTX-2080-Ti
                       - NVIDIA-RTX-A6000
+                      - NVIDIA-A10
   backoffLimit: 0
 """
 
@@ -81,7 +78,10 @@ for i in range(0, num_tasks, tasks_per_job):
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
-        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)}" for group in task_groups if group
+        f"source ~/.bashrc && cd /bai-fast-vol/code/embodiment-scaling-law && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
+        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)}"
+        for group in task_groups if group
     )
     parallel_commands += " & wait"  # Ensure all parallel commands complete
 

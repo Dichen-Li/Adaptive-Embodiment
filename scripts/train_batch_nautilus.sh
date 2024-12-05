@@ -39,6 +39,9 @@ function stop_execution {
 # Trap SIGINT (Ctrl+C) and call stop_execution
 trap stop_execution SIGINT
 
+# Execute multiple tasks sequentially
+# The expectation is that, even if one job fail, as long as SIGINT (ctrl+c) is not triggered
+# the program should proceed to the next job
 for task in "${tasks[@]}"; do
   # Generate a timestamp for the log file
   timestamp=$(date +"%Y%m%d_%H%M%S")
@@ -53,6 +56,11 @@ for task in "${tasks[@]}"; do
 
   # Execute the command with unbuffered output
   stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+  # However, please note that it seems that the normal outputs (training losses, etc) are not stdout and may
+  # not be redirected to the log file
+  # So you will mostly see a blank log file for normal training processes, or error messages for failed runs
+  # TODO: Figure out why this is the case
+#  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/train.py --task "$task" --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
 
   echo "Completed training for task: $task. Log saved to $log_file"
 done

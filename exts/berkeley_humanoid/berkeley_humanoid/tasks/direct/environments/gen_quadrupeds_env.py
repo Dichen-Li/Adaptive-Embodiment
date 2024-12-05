@@ -10,16 +10,14 @@ from dataclasses import MISSING
 import omni.isaac.lab.sim as sim_utils
 from omni.isaac.lab.assets import ArticulationCfg
 from omni.isaac.lab.envs import DirectRLEnvCfg
+from omni.isaac.lab.managers import SceneEntityCfg
 from omni.isaac.lab.scene import InteractiveSceneCfg
+from omni.isaac.lab.sensors import ContactSensorCfg
 from omni.isaac.lab.sim import SimulationCfg
 from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
-from omni.isaac.lab.managers import SceneEntityCfg
 
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
-from omni.isaac.lab.managers import RewardTermCfg as RewTerm
 from berkeley_humanoid.assets.gen_quadrupeds import *
-from omni.isaac.lab.sensors import RayCasterCfg, ContactSensorCfg, patterns
 
 
 @configclass
@@ -4234,10 +4232,3 @@ class Gendog243Cfg(GenDogEnvCfg):
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
         'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
     }
-
-
-class GenDirectEnv(LocomotionEnv):
-    cfg: GenDogEnvCfg
-
-    def __init__(self, cfg: GenDogEnvCfg, render_mode: str | None = None, **kwargs):
-        super().__init__(cfg, render_mode, **kwargs)
