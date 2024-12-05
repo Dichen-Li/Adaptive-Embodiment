@@ -7,9 +7,9 @@ from omni.isaac.lab.assets import Articulation
 from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
 from omni.isaac.lab.sensors import ContactSensor
 
-from berkeley_humanoid.tasks.direct.locomotion.command_function import RandomCommands
-from berkeley_humanoid.tasks.direct.locomotion.joint_position_controller import JointPositionAction
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import compute_intermediate_values, track_vel_exp
+from berkeley_humanoid.tasks.environments.command_function import RandomCommands
+from berkeley_humanoid.tasks.environments.joint_position_controller import JointPositionAction
+from berkeley_humanoid.tasks.environments.locomotion_env import compute_intermediate_values, track_vel_exp
 
 
 class LocomotionEnvMultiEmbodiment(DirectRLEnv):

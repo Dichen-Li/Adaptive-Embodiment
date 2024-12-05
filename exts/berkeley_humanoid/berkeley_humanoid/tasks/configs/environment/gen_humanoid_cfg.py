@@ -18,7 +18,8 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.gen_humanoids import *
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
+
+from berkeley_humanoid.tasks.environments.locomotion_env import LocomotionEnv
 
 
 @configclass

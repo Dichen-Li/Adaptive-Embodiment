@@ -53,7 +53,7 @@ def generate_robot_registration_with_consistent_names(base_dir, output_file):
         f_out.write("    rsl_rl_cfg_entry_point = f\"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg\"\n")
         f_out.write("    gym.register(\n")
         f_out.write("        id=id,\n")
-        f_out.write("        entry_point=\"berkeley_humanoid.tasks.direct.environments:GenDirectEnv\",\n")
+        f_out.write("        entry_point=\"berkeley_humanoid.tasks.environments:GenDirectEnv\",\n")
         f_out.write("        disable_env_checker=True,\n")
         f_out.write("        kwargs={\n")
         f_out.write("            \"env_cfg_entry_point\": env_cfg_entry_point,\n")

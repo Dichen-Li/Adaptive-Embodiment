@@ -1,6 +1,6 @@
 from omni.isaac.lab.utils import configclass
 
-from berkeley_humanoid.tasks.direct.environments.agents.rsl_rl_ppo_cfg import DefaultPPORunnerCfg
+from berkeley_humanoid.tasks.configs.algorithm.default_ppo_cfg import DefaultPPORunnerCfg
 
 
 

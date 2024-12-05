@@ -9,14 +9,14 @@ Humanoid locomotion environment.
 
 import gymnasium as gym
 
-from . import agents
-from .humanoid_env import HumanoidEnvCfg
-from .h1_direct_env import H1EnvCfg
-from .g1_direct_env import G1EnvCfg
-from .go2_direct_env import Go2EnvCfg
-from .gen_quadrupeds_env import *
-from .gen_humanoid_env import *
-from .berkeley_humanoid_direct_env import BerkeleyHumanoidEnvCfg
+from berkeley_humanoid.tasks.configs import algorithm
+from berkeley_humanoid.tasks.configs.environment.humanoid_cfg import HumanoidEnvCfg
+from berkeley_humanoid.tasks.configs.environment.h1_cfg import H1EnvCfg
+from berkeley_humanoid.tasks.configs.environment.g1_cfg import G1EnvCfg
+from berkeley_humanoid.tasks.configs.environment.go2_cfg import Go2EnvCfg
+from berkeley_humanoid.tasks.configs.environment.gen_quadrupeds_cfg import *
+from berkeley_humanoid.tasks.configs.environment.gen_humanoid_cfg import *
+from berkeley_humanoid.tasks.configs.environment.berkeley_humanoid_cfg import BerkeleyHumanoidEnvCfg
 
 ##
 # Register Gym environments.
@@ -25,45 +25,41 @@ from .berkeley_humanoid_direct_env import BerkeleyHumanoidEnvCfg
 # register standard robot envs
 gym.register(
     id="Go2-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+    entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": Go2EnvCfg,
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:DefaultPPORunnerCfg",
+        "rsl_rl_cfg_entry_point": f"{algorithm.__name__}.default_ppo_cfg:DefaultPPORunnerCfg",
     },
 )
 
 gym.register(
     id="G1-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+    entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": G1EnvCfg,
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:DefaultPPORunnerCfg",
+        "rsl_rl_cfg_entry_point": f"{algorithm.__name__}.default_ppo_cfg:DefaultPPORunnerCfg",
     },
 )
 
 gym.register(
     id="H1-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+    entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": H1EnvCfg,
-        "rl_games_cfg_entry_point": f"{agents.__name__}:rl_games_ppo_cfg.yaml",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:DefaultPPORunnerCfg",
-        "skrl_cfg_entry_point": f"{agents.__name__}:skrl_ppo_cfg.yaml",
+        "rsl_rl_cfg_entry_point": f"{algorithm.__name__}.default_ppo_cfg:DefaultPPORunnerCfg",
     },
 )
 
 gym.register(
     id="Berkeley-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+    entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": BerkeleyHumanoidEnvCfg,
-        "rl_games_cfg_entry_point": f"{agents.__name__}:rl_games_ppo_cfg.yaml",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:DefaultPPORunnerCfg",
-        "skrl_cfg_entry_point": f"{agents.__name__}:skrl_ppo_cfg.yaml",
+        "rsl_rl_cfg_entry_point": f"{algorithm.__name__}.default_ppo_cfg:DefaultPPORunnerCfg",
     },
 )
 
@@ -103,10 +99,10 @@ id_entry_pair = {
 }
 
 for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
+    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -133,10 +129,10 @@ id_entry_pair = {
 }
 
 for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{agents.__name__}.rsl_rl_ppo_cfg:{id}PPORunnerCfg"
+    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -466,10 +462,10 @@ id_entry_pair = {
 }
 
 for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
+    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,
@@ -820,10 +816,10 @@ id_entry_pair = {
 }
 
 for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{agents.__name__}.gen_humanoids_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
+    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.gen_humanoids_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg"
     gym.register(
         id=id,
-        entry_point="berkeley_humanoid.tasks.direct.environments.gen_direct_env:GenDirectEnv",
+        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
         disable_env_checker=True,
         kwargs={
             "env_cfg_entry_point": env_cfg_entry_point,

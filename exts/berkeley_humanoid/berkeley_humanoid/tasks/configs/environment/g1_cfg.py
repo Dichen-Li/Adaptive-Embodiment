@@ -16,7 +16,6 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.unitree import G1_CFG
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
 
 
 @configclass

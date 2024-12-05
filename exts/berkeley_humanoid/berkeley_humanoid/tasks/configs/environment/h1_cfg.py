@@ -15,19 +15,18 @@ from omni.isaac.lab.sim import SimulationCfg
 from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
-from berkeley_humanoid.assets.berkeley_humanoid import BERKELEY_HUMANOID_CFG
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env import LocomotionEnv
+from berkeley_humanoid.assets.unitree import H1_CFG
+from berkeley_humanoid.tasks.environments.locomotion_env import LocomotionEnv
 
 
 @configclass
-class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
+class H1EnvCfg(DirectRLEnvCfg):
     # env
     episode_length_s = 20.0
     decimation = 4
     dt = 0.005
-    action_space = 12
+    action_space = 19
     observation_space = 69
-    # state_space = 0
 
     # simulation
     sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
@@ -51,10 +50,7 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
     # scene = MySceneCfg(num_envs=4096, env_spacing=4.0)
 
     # robot
-    robot: ArticulationCfg = BERKELEY_HUMANOID_CFG.replace(prim_path="/World/envs/env_.*/Robot")
-    # joint_gears: list = [
-    #     50.0
-    # ] * 12  # self.robot.find_joints(".*") gives 37 but why?
+    robot: ArticulationCfg = H1_CFG.replace(prim_path="/World/envs/env_.*/Robot")
 
     # sensor for reward calculation
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
@@ -69,34 +65,13 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
     #     ),
     # )
 
-    # heading_weight: float = 0.5
-    # up_weight: float = 0.1
-    #
-    # energy_cost_scale: float = 0.05
-    # actions_cost_scale: float = 0.01
-    # alive_reward_scale: float = 2.0
-    # dof_vel_scale: float = 0.1
-
-    # death_cost: float = -1.0
-    # termination_height: float = 0.3     # extremely important
-
-    # angular_velocity_scale: float = 0.25
-    # contact_force_scale: float = 0.01
-
-    # Velocity command configuration (formerly CommandsCfg)
     asset_name = "robot"
-    # resampling_time_range = (10.0, 10.0)
-    # rel_standing_envs = 0.02
-    # rel_heading_envs = 1.0
-    # heading_command = True
-    # heading_control_stiffness = 0.5
-    # debug_vis = True
 
     # Velocity command ranges
     x_vel_range = (-1.0, 1.0)
     y_vel_range = (-1.0, 1.0)
     yaw_vel_range = (-1.0, 1.0)
-    resampling_interval = 10 / (dt * decimation)   # time before the command is changed in sec
+    resampling_interval = 10 / (dt * decimation)  # time before the command is changed in sec
     # dt * decimation is actually the time duration that corresponds to one env step
 
     # controller
@@ -106,10 +81,10 @@ class BerkeleyHumanoidEnvCfg(DirectRLEnvCfg):
 
     # reward configs
     reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*faa"),
-        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*faa"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*hfe", ".*haa"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*HR", ".*HAA"]),
-        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*KFE"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso')
+        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
+        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
+        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
+        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
+        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso.*')
     }

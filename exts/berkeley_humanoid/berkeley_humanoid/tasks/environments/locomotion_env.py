@@ -4,7 +4,6 @@ import torch
 import math
 
 import omni.isaac.core.utils.torch as torch_utils
-from berkeley_humanoid.tasks.direct.locomotion.command_function import RandomCommands
 from omni.isaac.core.utils.torch.rotations import compute_heading_and_up, compute_rot, quat_conjugate
 
 import omni.isaac.lab.sim as sim_utils
@@ -14,6 +13,7 @@ from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
 from omni.isaac.lab.sensors import ContactSensor
 
 from .joint_position_controller import JointPositionAction
+from .command_function import RandomCommands
 
 
 def normalize_angle(x):

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from berkeley_humanoid.tasks.direct import LocomotionEnv, GenDogEnvCfg
-from berkeley_humanoid.tasks.direct.locomotion.locomotion_env_multi_embodi import LocomotionEnvMultiEmbodiment
+from berkeley_humanoid.tasks.configs.environment.gen_quadrupeds_cfg import GenDogEnvCfg
+from berkeley_humanoid.tasks.environments.locomotion_env import LocomotionEnv
+from berkeley_humanoid.tasks.environments.locomotion_env_multi_embodi import LocomotionEnvMultiEmbodiment
 
 
 class GenDirectEnv(LocomotionEnv):
