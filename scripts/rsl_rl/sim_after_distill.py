@@ -261,7 +261,7 @@ def main():
             if args_cli.video:
                 video_timestep += 1
                 # Exit the play loop after recording one video
-                if video_timestep == args_cli.video_length:
+                if video_timestep > args_cli.video_length:
                     break
     env.close()
 
