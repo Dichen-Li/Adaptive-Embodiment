@@ -138,7 +138,6 @@ class DatasetSaver:
         self.close()
 
 
-
 class LocomotionDatasetSingle:
     def __init__(self, folder_path):
         """
@@ -252,163 +251,6 @@ class LocomotionDatasetSingle:
         }
 
 
-# import os
-# import yaml
-# import h5py
-# import numpy as np
-# import torch
-# from torch.utils.data import DataLoader, TensorDataset
-
-# class LocomotionDataset:
-#     def __init__(self, folder_paths):
-#         """
-#         Initialize the LocomotionDataset.
-
-#         Args:
-#             folder_paths (list): List of paths to folders containing HDF5 files and metadata.
-#         """
-#         self.folder_paths = folder_paths
-#         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
-#         self.inputs = []
-#         self.targets = []
-#         self.metadata_indices = []
-
-#         self._load_all_data()
-#         import ipdb; ipdb.set_trace()
-
-#     def _load_metadata(self, folder_path):
-#         """
-#         Load metadata from the YAML file in a dataset folder.
-
-#         Args:
-#             folder_path (str): Path to the folder.
-
-#         Returns:
-#             dict: Metadata containing environment parameters.
-#         """
-#         metadata_path = os.path.join(folder_path, "metadata.yaml")
-#         if not os.path.exists(metadata_path):
-#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-
-#         with open(metadata_path, "r") as metadata_file:
-#             metadata = yaml.safe_load(metadata_file)
-#         print(f"[INFO]: Loaded metadata from {metadata_path}")
-#         return metadata
-
-#     def _load_all_data(self):
-#         """
-#         Load data from all specified folders.
-#         """
-#         for idx, folder_path in enumerate(self.folder_paths):
-#             hdf5_files = sorted(
-#                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
-#                 key=lambda x: int(x.split('_')[-1].split('.')[0])
-#             )
-
-#             if not hdf5_files:
-#                 raise FileNotFoundError(f"No HDF5 files found in folder: {folder_path}")
-
-#             for file_name in hdf5_files:
-#                 file_path = os.path.join(folder_path, file_name)
-#                 print(f"[INFO]: Loading file {file_path}")
-
-#                 with h5py.File(file_path, "r") as data_file:
-#                     inputs = data_file["one_policy_observation"][:]
-#                     targets = data_file["actions"][:]
-
-#                     # Check for None or NaN values
-#                     if np.any(inputs == None) or np.any(targets == None):  # Check for None
-#                         raise ValueError(f"None values found in file: {file_path}")
-#                     if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
-#                         raise ValueError(f"NaN values found in file: {file_path}")
-
-#                     self.inputs.append(inputs)
-#                     self.targets.append(targets)
-#                     self.metadata_indices.extend([idx] * len(inputs))
-
-#         # Concatenate data from all files
-#         import ipdb; ipdb.set_trace()
-#         self.inputs = np.concatenate(self.inputs, axis=0)
-#         self.targets = np.concatenate(self.targets, axis=0)
-#         print(f"[INFO]: Loaded data from {len(self.folder_paths)} folders.")
-
-#     def __len__(self):
-#         """
-#         Get the total number of samples in the dataset.
-#         """
-#         return len(self.inputs)
-
-#     def __getitem__(self, index):
-#         """
-#         Get a transformed sample from the dataset at a specific index.
-
-#         Args:
-#             index (int): Index of the sample.
-
-#         Returns:
-#             tuple: Transformed inputs and targets for the sample.
-#         """
-#         state = torch.tensor(self.inputs[index], dtype=torch.float32)  # Shape: (4096, 320)
-#         target = torch.tensor(self.targets[index], dtype=torch.float32)  # Shape: (4096, 12)
-#         metadata = self.metadata_list[self.metadata_indices[index]]
-
-#         # Dynamic Joint Data Transformation
-#         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
-#         nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
-#         single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
-#         dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
-
-#         # Focus on the last dimension of `state`
-#         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length].view(
-#             -1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length
-#         )  # Shape: (4096, nr_dynamic_joint_observations, single_dynamic_joint_observation_length)
-#         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
-#         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
-
-#         # Dynamic Foot Data Transformation
-#         dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
-#         nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
-#         single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
-#         dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
-
-#         # Focus on the last dimension for foot data
-#         dynamic_foot_start = dynamic_joint_observation_length
-#         dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
-#         dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end].view(
-#             -1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length
-#         )  # Shape: (4096, nr_dynamic_foot_observations, single_dynamic_foot_observation_length)
-#         dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
-#         dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
-
-#         # General Policy State Transformation
-#         # Focus on the last `320` dimension for extracting policy state
-#         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)  # Shape: (4096, <combined_dim>)
-
-#         # Return transformed inputs and target
-#         return (
-#             dynamic_joint_description,  # Shape: (4096, nr_dynamic_joint_observations, dynamic_joint_description_size)
-#             dynamic_joint_state,        # Shape: (4096, nr_dynamic_joint_observations, remaining_length)
-#             dynamic_foot_description,   # Shape: (4096, nr_dynamic_foot_observations, dynamic_foot_description_size)
-#             dynamic_foot_state,         # Shape: (4096, nr_dynamic_foot_observations, remaining_length)
-#             general_policy_state,       # Shape: (4096, concatenated_dim_from_policy)
-#             target                      # Shape: (4096, 12)
-#         )
-
-
-#     def get_data_loader(self, batch_size=8, shuffle=True):
-#         """
-#         Create a DataLoader for the dataset.
-
-#         Args:
-#             batch_size (int): Batch size for the DataLoader.
-#             shuffle (bool): Whether to shuffle the dataset.
-
-#         Returns:
-#             DataLoader: DataLoader object for the dataset.
-#         """
-#         return DataLoader(self, batch_size=batch_size, shuffle=shuffle)
-
-
 import os
 import numpy as np
 import torch
@@ -416,7 +258,6 @@ from torch.utils.data import Dataset, DataLoader
 import yaml
 import h5py
 import random
-
 
 class LocomotionDataset(Dataset):
     def __init__(self, folder_paths):
@@ -689,3 +530,159 @@ class LocomotionDataset(Dataset):
         )
         return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn)
     
+
+# import os
+# import yaml
+# import h5py
+# import numpy as np
+# import torch
+# from torch.utils.data import DataLoader, TensorDataset
+
+# class LocomotionDataset:
+#     def __init__(self, folder_paths):
+#         """
+#         Initialize the LocomotionDataset.
+
+#         Args:
+#             folder_paths (list): List of paths to folders containing HDF5 files and metadata.
+#         """
+#         self.folder_paths = folder_paths
+#         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+#         self.inputs = []
+#         self.targets = []
+#         self.metadata_indices = []
+
+#         self._load_all_data()
+#         import ipdb; ipdb.set_trace()
+
+#     def _load_metadata(self, folder_path):
+#         """
+#         Load metadata from the YAML file in a dataset folder.
+
+#         Args:
+#             folder_path (str): Path to the folder.
+
+#         Returns:
+#             dict: Metadata containing environment parameters.
+#         """
+#         metadata_path = os.path.join(folder_path, "metadata.yaml")
+#         if not os.path.exists(metadata_path):
+#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+
+#         with open(metadata_path, "r") as metadata_file:
+#             metadata = yaml.safe_load(metadata_file)
+#         print(f"[INFO]: Loaded metadata from {metadata_path}")
+#         return metadata
+
+#     def _load_all_data(self):
+#         """
+#         Load data from all specified folders.
+#         """
+#         for idx, folder_path in enumerate(self.folder_paths):
+#             hdf5_files = sorted(
+#                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
+#                 key=lambda x: int(x.split('_')[-1].split('.')[0])
+#             )
+
+#             if not hdf5_files:
+#                 raise FileNotFoundError(f"No HDF5 files found in folder: {folder_path}")
+
+#             for file_name in hdf5_files:
+#                 file_path = os.path.join(folder_path, file_name)
+#                 print(f"[INFO]: Loading file {file_path}")
+
+#                 with h5py.File(file_path, "r") as data_file:
+#                     inputs = data_file["one_policy_observation"][:]
+#                     targets = data_file["actions"][:]
+
+#                     # Check for None or NaN values
+#                     if np.any(inputs == None) or np.any(targets == None):  # Check for None
+#                         raise ValueError(f"None values found in file: {file_path}")
+#                     if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
+#                         raise ValueError(f"NaN values found in file: {file_path}")
+
+#                     self.inputs.append(inputs)
+#                     self.targets.append(targets)
+#                     self.metadata_indices.extend([idx] * len(inputs))
+
+#         # Concatenate data from all files
+#         import ipdb; ipdb.set_trace()
+#         self.inputs = np.concatenate(self.inputs, axis=0)
+#         self.targets = np.concatenate(self.targets, axis=0)
+#         print(f"[INFO]: Loaded data from {len(self.folder_paths)} folders.")
+
+#     def __len__(self):
+#         """
+#         Get the total number of samples in the dataset.
+#         """
+#         return len(self.inputs)
+
+#     def __getitem__(self, index):
+#         """
+#         Get a transformed sample from the dataset at a specific index.
+
+#         Args:
+#             index (int): Index of the sample.
+
+#         Returns:
+#             tuple: Transformed inputs and targets for the sample.
+#         """
+#         state = torch.tensor(self.inputs[index], dtype=torch.float32)  # Shape: (4096, 320)
+#         target = torch.tensor(self.targets[index], dtype=torch.float32)  # Shape: (4096, 12)
+#         metadata = self.metadata_list[self.metadata_indices[index]]
+
+#         # Dynamic Joint Data Transformation
+#         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
+#         nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
+#         single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
+#         dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
+
+#         # Focus on the last dimension of `state`
+#         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length].view(
+#             -1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+#         )  # Shape: (4096, nr_dynamic_joint_observations, single_dynamic_joint_observation_length)
+#         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
+#         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
+
+#         # Dynamic Foot Data Transformation
+#         dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
+#         nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
+#         single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
+#         dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
+
+#         # Focus on the last dimension for foot data
+#         dynamic_foot_start = dynamic_joint_observation_length
+#         dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
+#         dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end].view(
+#             -1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length
+#         )  # Shape: (4096, nr_dynamic_foot_observations, single_dynamic_foot_observation_length)
+#         dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
+#         dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
+
+#         # General Policy State Transformation
+#         # Focus on the last `320` dimension for extracting policy state
+#         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)  # Shape: (4096, <combined_dim>)
+
+#         # Return transformed inputs and target
+#         return (
+#             dynamic_joint_description,  # Shape: (4096, nr_dynamic_joint_observations, dynamic_joint_description_size)
+#             dynamic_joint_state,        # Shape: (4096, nr_dynamic_joint_observations, remaining_length)
+#             dynamic_foot_description,   # Shape: (4096, nr_dynamic_foot_observations, dynamic_foot_description_size)
+#             dynamic_foot_state,         # Shape: (4096, nr_dynamic_foot_observations, remaining_length)
+#             general_policy_state,       # Shape: (4096, concatenated_dim_from_policy)
+#             target                      # Shape: (4096, 12)
+#         )
+
+
+#     def get_data_loader(self, batch_size=8, shuffle=True):
+#         """
+#         Create a DataLoader for the dataset.
+
+#         Args:
+#             batch_size (int): Batch size for the DataLoader.
+#             shuffle (bool): Whether to shuffle the dataset.
+
+#         Returns:
+#             DataLoader: DataLoader object for the dataset.
+#         """
+#         return DataLoader(self, batch_size=batch_size, shuffle=shuffle)

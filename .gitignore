@@ -10,3 +10,4 @@ _orbit*
 wandb/
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
+log_dir/
