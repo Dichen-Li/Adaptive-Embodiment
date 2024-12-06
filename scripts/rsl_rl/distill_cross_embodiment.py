@@ -1,18 +1,8 @@
-# Copyright (c) 2022-2024, The Berkeley Humanoid Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-"""Script to train RL agent with RSL-RL."""
-
-"""Launch Isaac Sim Simulator first."""
-
 import argparse
-
 from omni.isaac.lab.app import AppLauncher
-
-# local imports
 import cli_args  # isort: skip
+from dataset import LocomotionDatasetSingle
+from datetime import datetime
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
@@ -24,10 +14,27 @@ parser.add_argument(
 )
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+# parser.add_argument(
+#     "--tasks", 
+#     nargs="+",  # Allows multiple values to be passed
+#     type=str, 
+#     default=None, 
+#     help="List of tasks to process."
+# )
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 parser.add_argument("--max_iterations", type=int, default=None, help="RL Policy training iterations.")
-# append RSL-RL cli arguments
-cli_args.add_rsl_rl_args(parser)
+parser.add_argument("--batch_size", type=int, default=8, help="batch size")
+parser.add_argument("--num_epochs", type=int, default=100, help="number of epochs to run")
+parser.add_argument(
+    "--exp_name", 
+    type=str, 
+    default=datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),  # Default to current date and time
+    help="Name of the experiment. Default is the current date and time."
+)
+
+# # append RSL-RL cli arguments
+# cli_args.add_rsl_rl_args(parser)
+
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
@@ -46,14 +53,13 @@ import os
 import torch
 from datetime import datetime
 
-from rsl_rl.runners import OnPolicyRunner
+# from rsl_rl.runners import OnPolicyRunner
 
-# Import extensions to set up environment tasks
 import berkeley_humanoid.tasks  # noqa: F401
 
-from omni.isaac.lab.envs import ManagerBasedRLEnvCfg
-from omni.isaac.lab.utils.dict import print_dict
-from omni.isaac.lab.utils.io import dump_pickle, dump_yaml
+# from omni.isaac.lab.envs import ManagerBasedRLEnvCfg
+# from omni.isaac.lab.utils.dict import print_dict
+# from omni.isaac.lab.utils.io import dump_pickle, dump_yaml
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper
 
@@ -62,118 +68,46 @@ torch.backends.cudnn.allow_tf32 = True
 torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = False
 
-import numpy as np
-
-
 import os
-import h5py
 import torch
 import numpy as np
-import yaml
-from torch.utils.data import DataLoader, TensorDataset
 
-class LocomotionDataset:
-    def __init__(self, folder_path):
-        """
-        Initialize the LocomotionDataset.
+def get_most_recent_h5py_record_path(base_path, task_name):
+    """
+    Finds the most recent folder for a given task and returns the path to its h5py_record subfolder.
 
-        Args:
-            folder_path (str): Path to the folder containing HDF5 files and metadata.
-        """
-        self.folder_path = folder_path
-        self.metadata = self._load_metadata()
-        self.inputs = []
-        self.targets = []
+    Args:
+        base_path (str): The base directory where task folders are located.
+        task_name (str): The name of the task to search for.
 
-    def _load_metadata(self):
-        """
-        Load metadata from the YAML file in the dataset folder.
-
-        Returns:
-            dict: Metadata containing environment parameters.
-        """
-        metadata_path = os.path.join(self.folder_path, "metadata.yaml")
-        if not os.path.exists(metadata_path):
-            raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-
-        with open(metadata_path, "r") as metadata_file:
-            metadata = yaml.safe_load(metadata_file)
-        print(f"[INFO]: Loaded metadata from {metadata_path}")
-        return metadata
-
-    def _load_hdf5_files(self):
-        """
-        Load data from all HDF5 files in the folder, sorted numerically by index.
-        """
-        hdf5_files = sorted(
-            [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
-            key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
-        )
-
-        if not hdf5_files:
-            raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
-
-        for file_name in hdf5_files:
-            file_path = os.path.join(self.folder_path, file_name)
-            print(file_path)
-            with h5py.File(file_path, "r") as data_file:
-                inputs = data_file["one_policy_observation"][:]
-                targets = data_file["actions"][:]
-                self.inputs.append(inputs)
-                self.targets.append(targets)
-
-        # Concatenate data from all files
-        self.inputs = np.concatenate(self.inputs, axis=0)
-        self.targets = np.concatenate(self.targets, axis=0)
-        print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
-
-    def get_data_loader(self, batch_size=8, shuffle=True):
-        """
-        Create a DataLoader for the dataset.
-
-        Args:
-            batch_size (int): Batch size for the DataLoader.
-            shuffle (bool): Whether to shuffle the dataset.
-
-        Returns:
-            DataLoader: DataLoader object for the dataset.
-        """
-        if not self.inputs or not self.targets:
-            self._load_hdf5_files()
-
-        dataset = TensorDataset(
-            torch.tensor(self.inputs, dtype=torch.float32),
-            torch.tensor(self.targets, dtype=torch.float32),
-        )
-        return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
-
-    def get_dynamic_joint_params(self):
-        """
-        Retrieve dynamic joint parameters from the metadata.
-
-        Returns:
-            dict: Dynamic joint parameters.
-        """
-        return {
-            "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
-            "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
-            "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
-            "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
-        }
+    Returns:
+        str: Path to the h5py_record folder of the most recent task folder.
+    """
+    task_path = os.path.join(base_path, task_name)
     
-    def get_dynamic_foot_params(self):
-        """
-        Retrieve dynamic foot parameters from the metadata.
+    if not os.path.exists(task_path):
+        raise FileNotFoundError(f"Task folder '{task_name}' not found at {base_path}")
 
-        Returns:
-            dict: Dynamic foot parameters.
-        """
-        return {
-            "nr_dynamic_foot_observations": self.metadata["nr_dynamic_foot_observations"],
-            "single_dynamic_foot_observation_length": self.metadata["single_dynamic_foot_observation_length"],
-            "dynamic_foot_observation_length": self.metadata["dynamic_foot_observation_length"],
-            "dynamic_foot_description_size": self.metadata["dynamic_foot_description_size"],
-        }
+    # Find all subdirectories in the task folder
+    subdirectories = [
+        d for d in os.listdir(task_path) 
+        if os.path.isdir(os.path.join(task_path, d)) and d.replace("_", "-").replace("-", "").isdigit()
+    ]
+    
+    if not subdirectories:
+        raise FileNotFoundError(f"No subfolders found for task '{task_name}' in {task_path}")
+
+    # Sort directories by datetime in descending order
+    subdirectories.sort(key=lambda d: datetime.strptime(d, "%Y-%m-%d_%H-%M-%S"), reverse=True)
+    most_recent_folder = subdirectories[0]
+
+    # Construct the path to h5py_record
+    h5py_record_path = os.path.join(task_path, most_recent_folder, "h5py_record")
+    
+    if not os.path.exists(h5py_record_path):
+        raise FileNotFoundError(f"h5py_record folder not found in '{os.path.join(task_path, most_recent_folder)}'")
+
+    return h5py_record_path
 
 
 def main():
@@ -182,6 +116,7 @@ def main():
     env_cfg: ManagerBasedRLEnvCfg = parse_env_cfg(
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
+    # import ipdb; ipdb.set_trace()
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
     # specify directory for logging experiments
@@ -191,27 +126,9 @@ def main():
     resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
     log_dir = os.path.dirname(resume_path)
 
-    # # Load training dataset
-    # import h5py
-    # import numpy as np
-    # # Define the file path
-    # h5py_record_file_path = os.path.join(log_dir, "h5py_record", "obs_actions.h5")
-    # if not os.path.exists(h5py_record_file_path):
-    #     print(f"[INFO]: h5py_record_file_path not found")
-    #     return
-    # # Load h5py input output data
-    # data = h5py.File(h5py_record_file_path, "a")
-    # inputs = data["one_policy_observation"]
-    # targets = data["actions"]
-    # import ipdb; ipdb.set_trace()
+    locomotion_dataset = LocomotionDatasetSingle(folder_path=os.path.join(log_dir, "h5py_record"))
 
-    # # Create DataLoader
-    # from torch.utils.data import DataLoader, TensorDataset
-    # dataset = TensorDataset(torch.tensor(np.array(inputs), dtype=torch.float32), torch.tensor(np.array(targets), dtype=torch.float32))
-    # data_loader = DataLoader(dataset, batch_size=8, shuffle=True)
-
-    locomotion_dataset = LocomotionDataset(folder_path=os.path.join(log_dir, "h5py_record"))
-    data_loader = locomotion_dataset.get_data_loader(batch_size=8)
+    data_loader = locomotion_dataset.get_data_loader(batch_size=args_cli.batch_size)
 
     dynamic_joint_params = locomotion_dataset.get_dynamic_joint_params()
     dynamic_foot_params = locomotion_dataset.get_dynamic_foot_params()
@@ -238,7 +155,7 @@ def main():
     # Training loop
     num_epochs = 100
     print("[INFO] Starting supervised training.")
-    for epoch in range(num_epochs):
+    for epoch in range(args_cli.num_epochs):
         epoch_loss = 0.0
         for batch_inputs, batch_targets in data_loader:
             batch_inputs = batch_inputs.to(model_device)
@@ -246,7 +163,6 @@ def main():
             batch_predictions = []
             for single_input in batch_inputs:
                 state: torch.tensor = single_input
-                # import ipdb; ipdb.set_trace()
 
                 dynamic_joint_params = locomotion_dataset.get_dynamic_joint_params()
                 nr_dynamic_joint_observations = dynamic_joint_params['nr_dynamic_joint_observations']
@@ -268,7 +184,6 @@ def main():
                 dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
                 dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
 
-                # import ipdb; ipdb.set_trace()
                 # policy_general_state_mask = torch.arange(303, 320, device = 'cpu')
                 # policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
 
