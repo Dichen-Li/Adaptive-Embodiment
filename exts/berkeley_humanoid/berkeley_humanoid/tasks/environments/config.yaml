@@ -1,8 +1,0 @@
-command:
-  min_x_velocity: -1.0
-  max_x_velocity: 1.0
-  min_y_velocity: -1.0
-  max_y_velocity: 1.0
-  min_yaw_velocity: -1.0
-  max_yaw_velocity: 1.0
-

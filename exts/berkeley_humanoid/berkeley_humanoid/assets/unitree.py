@@ -156,7 +156,7 @@ GO2_CFG = ArticulationCfg(
         ),
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.4),
+        pos=(0.0, 0.0, 0.325),
         joint_pos={
             ".*L_hip_joint": 0.1,
             ".*R_hip_joint": -0.1,
@@ -175,7 +175,7 @@ GO2_CFG = ArticulationCfg(
             effort_limit=23.5,
             saturation_effort=23.5,
             velocity_limit=30.0,
-            stiffness=25.0,
+            stiffness=20.0,
             damping=0.5,
             friction=0.0,
         ),

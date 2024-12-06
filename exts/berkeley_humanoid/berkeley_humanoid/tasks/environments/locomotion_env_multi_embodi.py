@@ -1,15 +1,46 @@
 from __future__ import annotations
 
+import math
 import omni.isaac.lab.sim as sim_utils
 import torch
-from omni.isaac.core.utils.torch.rotations import quat_conjugate
+import omni.isaac.core.utils.torch as torch_utils
+from omni.isaac.core.utils.torch.rotations import compute_heading_and_up, compute_rot, quat_conjugate
 from omni.isaac.lab.assets import Articulation
 from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
 from omni.isaac.lab.sensors import ContactSensor
 
-from berkeley_humanoid.tasks.environments.command_function import RandomCommands
-from berkeley_humanoid.tasks.environments.joint_position_controller import JointPositionAction
-from berkeley_humanoid.tasks.environments.locomotion_env import compute_intermediate_values, track_vel_exp
+from .command_function import RandomCommands
+
+
+def track_vel_exp(curr, target, std=math.sqrt(0.25)):
+    """
+    Adapted from
+    https://isaac-sim.github.io/IsaacLab/main/_modules/omni/isaac/lab/envs/mdp/rewards.html#track_lin_vel_xy_exp
+    Reward tracking of velocity commands using exponential kernel.
+    """
+    lin_vel_error = torch.sum(torch.square(curr - target), dim=1)
+    lin_vel_error = torch.exp(-lin_vel_error / std ** 2)
+    return lin_vel_error
+
+
+class JointPositionAction:
+    def __init__(self, env, scale, use_default_offset):
+        self.env = env
+        self.scale = scale
+        self.use_default_offset = use_default_offset
+        self.default_offset = self.env.robot.data.default_joint_pos
+
+    def process_action(self, action):
+        """
+        Returns processed joint position action, given raw actions
+        predicted by the model
+        :param action: raw action from policy
+        :return: target joint positions to be achieved by the robot
+        """
+        processed_action = action * self.scale
+        if self.use_default_offset:
+            processed_action += self.default_offset
+        return processed_action
 
 
 class LocomotionEnvMultiEmbodiment(DirectRLEnv):
@@ -688,3 +719,55 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         self.potentials[env_ids] = -torch.norm(to_target, p=2, dim=-1) / self.cfg.sim.dt
 
         self._compute_intermediate_values()
+
+
+@torch.jit.script
+def compute_intermediate_values(
+    targets: torch.Tensor,
+    torso_position: torch.Tensor,
+    torso_rotation: torch.Tensor,
+    velocity: torch.Tensor,
+    ang_velocity: torch.Tensor,
+    dof_pos: torch.Tensor,
+    dof_lower_limits: torch.Tensor,
+    dof_upper_limits: torch.Tensor,
+    inv_start_rot: torch.Tensor,
+    basis_vec0: torch.Tensor,
+    basis_vec1: torch.Tensor,
+    potentials: torch.Tensor,
+    prev_potentials: torch.Tensor,
+    dt: float,
+):
+    to_target = targets - torso_position
+    to_target[:, 2] = 0.0
+
+    torso_quat, up_proj, heading_proj, up_vec, heading_vec = compute_heading_and_up(
+        torso_rotation, inv_start_rot, to_target, basis_vec0, basis_vec1, 2
+    )
+
+    vel_loc, angvel_loc, roll, pitch, yaw, angle_to_target = compute_rot(
+        torso_quat, velocity, ang_velocity, targets, torso_position
+    )
+
+    dof_pos_scaled = torch_utils.maths.unscale(dof_pos, dof_lower_limits, dof_upper_limits)
+
+    to_target = targets - torso_position
+    to_target[:, 2] = 0.0
+    prev_potentials[:] = potentials
+    potentials = -torch.norm(to_target, p=2, dim=-1) / dt
+
+    return (
+        up_proj,
+        heading_proj,
+        up_vec,
+        heading_vec,
+        vel_loc,
+        angvel_loc,
+        roll,
+        pitch,
+        yaw,
+        angle_to_target,
+        dof_pos_scaled,
+        prev_potentials,
+        potentials,
+    )

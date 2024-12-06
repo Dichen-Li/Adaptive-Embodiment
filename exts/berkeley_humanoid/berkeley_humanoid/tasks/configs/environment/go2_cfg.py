@@ -20,14 +20,14 @@ from berkeley_humanoid.assets.unitree import GO2_CFG
 
 @configclass
 class Go2EnvCfg(DirectRLEnvCfg):
-    # env
+    num_envs = 4096
     episode_length_s = 20.0
     decimation = 4
     dt = 0.005
+    nr_feet = 4
     action_space = 12
     observation_space = 69
 
-    # simulation
     sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
@@ -43,44 +43,13 @@ class Go2EnvCfg(DirectRLEnvCfg):
         debug_vis=False,
     )
 
-    # scene
-    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.5,
-                                                     replicate_physics=True)
-
-    # robot
-    robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
-
-    # sensor for reward calculation
-    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
-                                      track_air_time=True, track_pose=True)
-
-    # # lights
-    # sky_light = AssetBaseCfg(
-    #     prim_path="/World/skyLight",
-    #     spawn=sim_utils.DomeLightCfg(
-    #         intensity=750.0,
-    #         texture_file=f"{ISAAC_NUCLEUS_DIR}/Materials/Textures/Skies/PolyHaven/kloofendal_43d_clear_puresky_4k.hdr",
-    #     ),
-    # )
-
     asset_name = "robot"
+    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=2.5, replicate_physics=True)
+    robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
+    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3, track_air_time=True, track_pose=True)
 
-    # Velocity command ranges
-    x_vel_range = (-1.0, 1.0)
-    y_vel_range = (-1.0, 1.0)
-    yaw_vel_range = (-1.0, 1.0)
-    resampling_interval = 10 / (dt * decimation)
+    action_scaling_factor = 0.3
+    step_sampling_probability = 0.002
 
-    # controller
-    controller_use_offset = True
-    action_scale = 0.5
-    controlled_joints = ".*"
-
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
-        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*calf.*joint"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*base.*"]) # , ".*thigh"
-    }
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
