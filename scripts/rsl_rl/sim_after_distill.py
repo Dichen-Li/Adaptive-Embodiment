@@ -14,6 +14,7 @@ parser.add_argument("--num_envs", type=int, default=4096, help="Number of enviro
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
 parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
+parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -54,12 +55,17 @@ from rsl_rl.modules import ActorCritic
 
 import torch
 
+# Define the silver_badger_torch package
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 from silver_badger_torch.policy import get_policy
 
-class SimpleOnePolicyRunner:
+from rsl_rl.env import VecEnv
+
+class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
 
-    def __init__(self, device: str ="cpu"):
+    def __init__(self, env: VecEnv, device: str ="cpu"):
         """
         Initialize the one policy runner.
 
@@ -70,6 +76,7 @@ class SimpleOnePolicyRunner:
         policy = get_policy(device)
         self.policy = policy
         self.device = device
+        self.env = env
 
     def get_inference_policy(self, device: str ='cpu'):
         """
@@ -84,25 +91,95 @@ class SimpleOnePolicyRunner:
         print("[INFO] Inference policy is ready.")
         return self.policy
 
-    def load(self, checkpoint_path, optimizer=None):
+    import os
+
+    def load(self, log_dir, optimizer=None):
         """
-        Load the policy network and optimizer state from a checkpoint.
+        Load the 'best_model.pt' checkpoint from the newest experiment folder.
 
         Args:
-            checkpoint_path (str): Path to the checkpoint file.
-            optimizer (torch.optim.Optimizer, optional): The optimizer to restore, if provided.
+            base_log_dir (str): Base directory where experiment folders are located.
+            optimizer (torch.optim.Optimizer, optional): Optimizer to restore, if provided.
 
         Returns:
             int: The epoch at which the checkpoint was saved.
         """
-        checkpoint = torch.load(checkpoint_path, map_location=self.device)
+        # Step 1: Find the newest experiment folder
+        experiment_folders = [
+            f for f in os.listdir(log_dir) 
+            if os.path.isdir(os.path.join(log_dir, f))
+        ]
+        experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
+        if not experiment_folders:
+            raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
+        
+        newest_folder = os.path.join(log_dir, experiment_folders[0])
+        print(f"[INFO] Found newest experiment folder: {newest_folder}")
+
+        # Step 2: Locate the best checkpoint
+        best_checkpoint_path = os.path.join(newest_folder, "best_model.pt")
+        if not os.path.isfile(best_checkpoint_path):
+            raise FileNotFoundError(f"[ERROR] No 'best_model.pt' found in {newest_folder}")
+
+        # Step 3: Load the checkpoint
+        checkpoint = torch.load(best_checkpoint_path, map_location=self.device)
         self.policy.load_state_dict(checkpoint["state_dict"])
         if optimizer:
             optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
         self.policy.to(self.device)
         self.policy.eval()
-        print(f"[INFO] Checkpoint loaded from {checkpoint_path}")
+        print(f"[INFO] Checkpoint loaded successfully from {best_checkpoint_path}")
+
         return checkpoint["epoch"]
+
+
+    def infer(self, state: torch.Tensor):
+        """
+        Preprocess the input state and run inference with the policy network.
+
+        Args:
+            state (torch.Tensor): The input state tensor.
+
+        Returns:
+            torch.Tensor: The action predicted by the policy.
+        """
+        # Dynamic Joint Observations
+        nr_dynamic_joint_observations = self.env.unwrapped.nr_dynamic_joint_observations
+        single_dynamic_joint_observation_length = self.env.unwrapped.single_dynamic_joint_observation_length
+        dynamic_joint_observation_length = self.env.unwrapped.dynamic_joint_observation_length
+        dynamic_joint_description_size = self.env.unwrapped.dynamic_joint_description_size
+
+        dynamic_joint_combined_state = state[:, :dynamic_joint_observation_length].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
+        dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
+        dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
+
+        # Dynamic Foot Observations
+        nr_dynamic_foot_observations = self.env.unwrapped.nr_dynamic_foot_observations
+        single_dynamic_foot_observation_length = self.env.unwrapped.single_dynamic_foot_observation_length
+        dynamic_foot_observation_length = self.env.unwrapped.dynamic_foot_observation_length
+        dynamic_foot_description_size = self.env.unwrapped.dynamic_foot_description_size
+
+        dynamic_foot_combined_state = state[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
+        dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
+        dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
+
+        # General Policy State Mask
+        policy_general_state_mask = torch.arange(303, 320, device=self.device)
+        policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
+
+        general_policy_state = state[:, policy_general_state_mask]
+
+        # Feed processed data into the policy network
+        with torch.no_grad():
+            action = self.policy(
+                dynamic_joint_description,
+                dynamic_joint_state,
+                dynamic_foot_description,
+                dynamic_foot_state,
+                general_policy_state
+            )
+
+        return action
 
 
 
@@ -113,13 +190,6 @@ def main():
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
-
-    # specify directory for logging experiments
-    log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
-    log_root_path = os.path.abspath(log_root_path)
-    print(f"[INFO] Loading experiment from directory: {log_root_path}")
-    resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
-    log_dir = os.path.dirname(resume_path)
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
@@ -138,15 +208,13 @@ def main():
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
 
+    # Create one policy runner for inference and load trained model parameters
+    resume_path = args_cli.log_dir
     print(f"[INFO]: Loading model checkpoint from: {resume_path}")
-
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # load previously trained model
-    one_policy_runner = SimpleOnePolicyRunner(device=model_device)
+    one_policy_runner = InferenceOnePolicyRunner(env, device=model_device)
     one_policy_runner.load(resume_path)
-
-    # obtain the trained policy for inference
-    policy = one_policy_runner.get_inference_policy(device=model_device)
 
     # Reset environment and start simulation
     obs, observations = env.get_observations()
@@ -157,13 +225,7 @@ def main():
     while simulation_app.is_running():
         with torch.inference_mode():
             # Agent stepping
-            actions = policy(obs)
-
-            # Reshape and save data
-            dataset_manager.save_data(
-                one_policy_observation=one_policy_observation.cpu().numpy(),
-                actions=actions.cpu().numpy(),
-            )
+            actions = one_policy_runner.infer(one_policy_observation)
             
             # Environment stepping
             obs, _, _, extra = env.step(actions)
