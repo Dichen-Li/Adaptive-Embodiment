@@ -4,6 +4,7 @@ import math
 
 from omni.isaac.lab.assets import Articulation
 from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
+from omni.isaac.core.utils.torch.rotations import compute_rot
 from omni.isaac.lab.sensors import ContactSensor
 import omni.isaac.lab.sim as sim_utils
 
@@ -22,13 +23,32 @@ class LocomotionEnv(DirectRLEnv):
         self.nr_joints = self.robot.data.default_joint_pos.shape[1]
         self.nr_feet = self.cfg.nr_feet
 
+        self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
         self.action_scaling_factor = self.cfg.action_scaling_factor
         self.p_gains = self.robot.actuators["base_legs"].stiffness
         self.d_gains = self.robot.actuators["base_legs"].damping
 
         self.step_sampling_probability = self.cfg.step_sampling_probability
+
         self.goal_velocities = torch.zeros((self.num_envs, 3), dtype=torch.float32, device=self.sim.device)
+        self.previous_actions = torch.zeros((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
+
+        self.reward_curriculum_steps = self.cfg.reward_curriculum_steps
+        self.tracking_xy_velocity_command_coeff = self.cfg.tracking_xy_velocity_command_coeff
+        self.tracking_yaw_velocity_command_coeff = self.cfg.tracking_yaw_velocity_command_coeff
+        self.z_velocity_coeff = self.cfg.z_velocity_coeff
+        self.pitch_roll_vel_coeff = self.cfg.pitch_roll_vel_coeff
+        self.pitch_roll_pos_coeff = self.cfg.pitch_roll_pos_coeff
+        self.actuator_joint_nominal_diff_coeff = self.cfg.actuator_joint_nominal_diff_coeff
+        self.actuator_joint_nominal_diff_joints = self.cfg.actuator_joint_nominal_diff_joints
+        self.joint_position_limit_coeff = self.cfg.joint_position_limit_coeff
+        self.joint_acceleration_coeff = self.cfg.joint_acceleration_coeff
+        self.joint_torque_coeff = self.cfg.joint_torque_coeff
+        self.action_rate_coeff = self.cfg.action_rate_coeff
+        self.base_height_coeff = self.cfg.base_height_coeff
+        self.air_time_coeff = self.cfg.air_time_coeff
+        self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
 
         self.set_observation_indices()
 
@@ -76,8 +96,6 @@ class LocomotionEnv(DirectRLEnv):
 
         self.robot.set_joint_effort_target(torques)
 
-        self.prev_actions = self.actions.clone()
-
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
@@ -91,9 +109,42 @@ class LocomotionEnv(DirectRLEnv):
 
 
     def _get_rewards(self) -> torch.Tensor:
-        lin_vel = self.robot.data.root_lin_vel_b
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.reward_curriculum_steps, 1.0)
 
-        total_reward = compute_rewards(lin_vel, self.goal_velocities[:, :2])
+        total_reward = compute_rewards(
+            curriculum_coeff,
+            self.tracking_xy_velocity_command_coeff,
+            self.tracking_yaw_velocity_command_coeff,
+            self.z_velocity_coeff,
+            self.pitch_roll_vel_coeff,
+            self.pitch_roll_pos_coeff,
+            self.actuator_joint_nominal_diff_coeff,
+            self.actuator_joint_nominal_diff_joints,
+            self.joint_position_limit_coeff,
+            self.joint_acceleration_coeff,
+            self.joint_torque_coeff,
+            self.action_rate_coeff,
+            self.base_height_coeff,
+            self.air_time_coeff,
+            self.symmetry_air_coeff,
+            self.robot.data.root_lin_vel_b,
+            self.robot.data.root_ang_vel_b,
+            self.robot.data.root_state_w[:, :3],
+            self.robot.data.root_state_w[:, 3:7],
+            self.robot.data.joint_pos,
+            self.joint_nominal_positions,
+            self.robot.data.soft_joint_pos_limits[0, :, 0],
+            self.robot.data.soft_joint_pos_limits[0, :, 1],
+            self.actions,
+            self.previous_actions,
+            self.robot.data.joint_acc,
+            self.robot.data.applied_torque,
+            self.goal_velocities,
+            self.nominal_trunk_z
+        )
+
+        self.previous_actions = self.actions.clone()
 
         return total_reward
     
@@ -200,10 +251,123 @@ class LocomotionEnv(DirectRLEnv):
 
 ### JIT compiled helper functions ###
 @torch.jit.script
-def compute_rewards(lin_vel: torch.Tensor, target_x_vel: torch.Tensor) -> torch.Tensor:
-    lin_vel_error = torch.sum(torch.square(lin_vel[:, :2] - target_x_vel), dim=1)
-    track_lin_vel_xy_exp = torch.exp(-lin_vel_error / math.sqrt(0.25) ** 2)
+def quaternion_to_axis_angle(quaternions: torch.Tensor) -> torch.Tensor:
+    # From: https://github.com/facebookresearch/pytorch3d/blob/main/pytorch3d/transforms/rotation_conversions.py#L530
 
-    total_reward = track_lin_vel_xy_exp
+    norms = torch.norm(quaternions[..., 1:], p=2, dim=-1, keepdim=True)
+    half_angles = torch.atan2(norms, quaternions[..., :1])
+    angles = 2 * half_angles
+    eps = 1e-6
+    small_angles = angles.abs() < eps
+    sin_half_angles_over_angles = torch.empty_like(angles)
+    sin_half_angles_over_angles[~small_angles] = (
+        torch.sin(half_angles[~small_angles]) / angles[~small_angles]
+    )
+    # for x small, sin(x/2) is about x/2 - (x/2)^3/6
+    # so sin(x/2)/x is about 1/2 - (x*x)/48
+    sin_half_angles_over_angles[small_angles] = (
+        0.5 - (angles[small_angles] * angles[small_angles]) / 48
+    )
 
-    return total_reward
+    return quaternions[..., 1:] / sin_half_angles_over_angles
+
+
+@torch.jit.script
+def compute_rewards(
+    curriculum_coeff: float,
+    tracking_xy_velocity_command_coeff: float,
+    tracking_yaw_velocity_command_coeff: float,
+    z_velocity_coeff: float,
+    pitch_roll_vel_coeff: float,
+    pitch_roll_pos_coeff: float,
+    actuator_joint_nominal_diff_coeff: float,
+    actuator_joint_nominal_diff_joints: list[int],
+    joint_position_limit_coeff: float,
+    joint_acceleration_coeff: float,
+    joint_torque_coeff: float,
+    action_rate_coeff: float,
+    base_height_coeff: float,
+    air_time_coeff: float,
+    symmetry_air_coeff: float,
+    current_local_linear_velocity: torch.Tensor,
+    current_local_angular_velocity: torch.Tensor,
+    linear_position: torch.Tensor,
+    orientation_quat: torch.Tensor,
+    joint_positions: torch.Tensor,
+    joint_nominal_positions: torch.Tensor,
+    joint_position_soft_lower_limits: torch.Tensor,
+    joint_position_soft_upper_limits: torch.Tensor,
+    actions: torch.Tensor,
+    previous_actions: torch.Tensor,
+    joint_accelerations: torch.Tensor,
+    joint_torques: torch.Tensor,
+    goal_velocities: torch.Tensor,
+    nominal_trunk_z: float
+) -> torch.Tensor:
+    
+    # Tracking xy velocity command reward
+    current_local_linear_velocity_xy = current_local_linear_velocity[:, :2]
+    desired_local_linear_velocity_xy = goal_velocities[:, :2]
+    xy_velocity_difference_norm = torch.sum(torch.square(current_local_linear_velocity_xy - desired_local_linear_velocity_xy), dim=1)
+    tracking_xy_velocity_command_reward = tracking_xy_velocity_command_coeff * torch.exp(-xy_velocity_difference_norm / 0.25)
+
+    # Tracking angular velocity command reward
+    current_local_yaw_velocity = current_local_angular_velocity[:, 2]
+    desired_local_yaw_velocity = goal_velocities[:, 2]
+    yaw_velocity_difference_norm = torch.square(current_local_yaw_velocity - desired_local_yaw_velocity)
+    tracking_yaw_velocity_command_reward = tracking_yaw_velocity_command_coeff * torch.exp(-yaw_velocity_difference_norm / 0.25)
+
+    # Linear velocity reward
+    z_velocity_squared = torch.square(current_local_linear_velocity[:, 2])
+    linear_velocity_reward = curriculum_coeff * z_velocity_coeff * z_velocity_squared
+
+    # Angular velocity reward
+    angular_velocity_norm = torch.sum(torch.square(current_local_angular_velocity[:, :2]), dim=1)
+    angular_velocity_reward = curriculum_coeff * pitch_roll_vel_coeff * angular_velocity_norm
+
+    # Angular position reward
+    orientation_euler = quaternion_to_axis_angle(orientation_quat)
+    pitch_roll_position_norm = torch.sum(torch.square(orientation_euler[:, :2]), dim=1)
+    angular_position_reward = curriculum_coeff * pitch_roll_pos_coeff * pitch_roll_position_norm
+
+    # Joint nominal position difference reward
+    actuator_joint_nominal_diff_norm = torch.sum(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
+    actuator_joint_nominal_diff_reward = curriculum_coeff * actuator_joint_nominal_diff_coeff * actuator_joint_nominal_diff_norm
+
+    # Joint position limit reward
+    lower_limit_penalty = -torch.minimum(joint_positions - joint_position_soft_lower_limits, torch.tensor(0.0, device=joint_positions.device)).sum(dim=1)
+    upper_limit_penalty = torch.maximum(joint_positions - joint_position_soft_upper_limits, torch.tensor(0.0, device=joint_positions.device)).sum(dim=1)
+    joint_position_limit_reward = curriculum_coeff * joint_position_limit_coeff * -(lower_limit_penalty + upper_limit_penalty)
+
+    # Joint acceleration reward
+    acceleration_norm = torch.sum(torch.square(joint_accelerations), dim=1)
+    acceleration_reward = curriculum_coeff * joint_acceleration_coeff * acceleration_norm
+
+    # Joint torque reward
+    torque_norm = torch.sum(torch.square(joint_torques), dim=1)
+    torque_reward = curriculum_coeff * joint_torque_coeff * torque_norm
+
+    # Action rate reward
+    action_rate_norm = torch.sum(torch.square(actions - previous_actions), dim=1)
+    action_rate_reward = curriculum_coeff * action_rate_coeff * action_rate_norm
+
+    # Walking height reward
+    trunk_z = linear_position[:, 2]
+    height_difference_squared = (trunk_z - nominal_trunk_z) ** 2
+    base_height_reward = curriculum_coeff * base_height_coeff * height_difference_squared
+
+    # Air time reward
+    # TODO:
+
+    # Symmetry air reward
+    # TODO:
+
+    # Total reward
+    tracking_reward = tracking_xy_velocity_command_reward + tracking_yaw_velocity_command_reward
+    reward_penalty = linear_velocity_reward + angular_velocity_reward + angular_position_reward + actuator_joint_nominal_diff_reward + \
+                     joint_position_limit_reward + acceleration_reward + torque_reward + action_rate_reward + \
+                     base_height_reward + air_time_reward + symmetry_air_reward
+    reward = tracking_reward + reward_penalty
+    reward = torch.maximum(reward, torch.tensor(0.0, device=reward.device))
+
+    return reward
