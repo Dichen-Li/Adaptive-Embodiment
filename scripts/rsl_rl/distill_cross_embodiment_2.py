@@ -96,8 +96,8 @@ def train(policy, criterion, optimizer, data_loader, num_epochs, model_device, l
             ) = batch_inputs
 
             # Forward pass
-            print(dynamic_joint_description.shape, dynamic_joint_state.shape, dynamic_foot_description.shape, 
-                  dynamic_foot_state.shape, general_policy_state.shape)
+            # print(dynamic_joint_description.shape, dynamic_joint_state.shape, dynamic_foot_description.shape, 
+            #       dynamic_foot_state.shape, general_policy_state.shape)
             batch_predictions = policy(
                 dynamic_joint_description,
                 dynamic_joint_state,
