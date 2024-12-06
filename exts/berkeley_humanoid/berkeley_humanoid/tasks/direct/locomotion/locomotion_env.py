@@ -210,6 +210,7 @@ class LocomotionEnv(DirectRLEnv):
         # Convert trunk orientation to rotation matrix
         trunk_rotation_matrix = self.quat_to_matrix(trunk_orientation_quat).transpose(1, 2)
 
+        # TODO: Implement the robot dimension with geometry bounding box and movable geometry; See below Temporary TODO
         # Calculate robot width, length and height
         num_geom = self.robot.data.body_pos_w.shape[1]
         relative_geom_positions = self.robot.data.body_pos_w - trunk_position_global.unsqueeze(1).repeat(1, num_geom, 1)
@@ -269,7 +270,8 @@ class LocomotionEnv(DirectRLEnv):
             foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
             relative_foot_position_global = foot_position_global - trunk_position_global
             relative_foot_position_local = torch.matmul(trunk_rotation_matrix, relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            relative_foot_position_normalized = (relative_foot_position_local - mins) / self.robot_dimensions
+            # TODO: now we are using a hack of adding epsilon to robot_dimensions, but remember that we are not using link to compute size
+            relative_foot_position_normalized = (relative_foot_position_local - mins) / (self.robot_dimensions + 1e-8)
 
             # Append foot description vector
             name_to_description_vector[foot_name] = torch.cat([

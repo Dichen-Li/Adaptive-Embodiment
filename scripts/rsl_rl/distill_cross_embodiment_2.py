@@ -7,6 +7,10 @@ import numpy as np
 from torch.utils.tensorboard import SummaryWriter
 from utils import AverageMeter  
 from dataset import LocomotionDataset
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
+import silver_badger_torch
+import tqdm
 
 
 def parse_arguments():
@@ -14,11 +18,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
     parser.add_argument("--tasks", nargs="+", type=str, default=None, help="List of tasks to process.")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=8, help="Batch size.")
+    parser.add_argument("--batch_size", type=int, default=4090*8, help="Batch size.")
     parser.add_argument("--exp_name", type=str, default=datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
                         help="Name of the experiment. Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
+    parser.add_argument("--lr", type=float, default=0.001, help="learning rate")
     return parser.parse_args()
 
 
@@ -76,19 +81,22 @@ def train(policy, criterion, optimizer, data_loader, num_epochs, model_device, l
         loss_meter.reset()
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs}.")
 
-        for batch_inputs, batch_targets in data_loader:
+        for batch_inputs, batch_targets in tqdm.tqdm(data_loader):
             # Move data to device
+            batch_inputs = [x.to(model_device) for x in batch_inputs] 
             batch_targets = batch_targets.to(model_device)
-            batch_inputs = [x.to(model_device) for x in batch_inputs[:-1]]  # Exclude the targets
 
             # Unpack dataset-specific transformed inputs
-            (
-                dynamic_joint_description,
-                dynamic_joint_state,
-                dynamic_foot_description,
-                dynamic_foot_state,
-                general_policy_state,
-            ) = batch_inputs
+            try:
+                (
+                    dynamic_joint_description,
+                    dynamic_joint_state,
+                    dynamic_foot_description,
+                    dynamic_foot_state,
+                    general_policy_state,
+                ) = batch_inputs
+            except:
+                import ipdb; ipdb.set_trace()
 
             # Forward pass
             batch_predictions = policy(
@@ -143,7 +151,7 @@ def main():
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     policy = get_policy(model_device)
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.Adam(policy.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr)
 
     # Train the policy
     train(

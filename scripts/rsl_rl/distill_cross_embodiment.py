@@ -192,6 +192,10 @@ def main():
 
                 # Forward pass: process each input individually
                 single_prediction = policy(dynamic_joint_description, dynamic_joint_state, dynamic_foot_description, dynamic_foot_state, general_policy_state)
+                print(dynamic_joint_description.shape, dynamic_joint_state.shape, dynamic_foot_description.shape, dynamic_foot_state.shape, general_policy_state.shape, single_prediction.shape)
+                import ipdb; ipdb.set_trace()
+                # humanoid: torch.Size([4096, 15, 18]) torch.Size([4096, 15, 3]) torch.Size([4096, 2, 10]) torch.Size([4096, 2, 2]) torch.Size([4096, 16]) torch.Size([4096, 15])
+                # quadruped: torch.Size([4096, 12, 18]) torch.Size([4096, 12, 3]) torch.Size([4096, 4, 10]) torch.Size([4096, 4, 2]) torch.Size([4096, 16]) torch.Size([4096, 12])
                 batch_predictions.append(single_prediction)
 
             batch_predictions = torch.stack(batch_predictions)
