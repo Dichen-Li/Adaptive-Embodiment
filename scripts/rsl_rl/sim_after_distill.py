@@ -6,7 +6,7 @@ from dataset import DatasetSaver  # isort: skip
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
-parser.add_argument("--video_length", type=int, default=20, help="Length of the recorded video (in steps).")
+parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
@@ -62,6 +62,40 @@ from silver_badger_torch.policy import get_policy
 
 from rsl_rl.env import VecEnv
 
+import os
+
+def find_newest_best_checkpoint(log_dir: str) -> str:
+    """
+    Find the newest 'best_model.pt' checkpoint in the latest experiment folder.
+
+    Args:
+        log_dir (str): Base directory where experiment folders are located.
+
+    Returns:
+        str: Full path to the 'best_model.pt' checkpoint.
+
+    Raises:
+        FileNotFoundError: If no experiment folder or checkpoint is found.
+    """
+    # Step 1: Find the newest experiment folder
+    experiment_folders = [
+        f for f in os.listdir(log_dir) 
+        if os.path.isdir(os.path.join(log_dir, f))
+    ]
+    experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
+    if not experiment_folders:
+        raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
+    
+    newest_folder = os.path.join(log_dir, experiment_folders[0])
+    print(f"[INFO] Found newest experiment folder: {newest_folder}")
+
+    # Step 2: Locate the best checkpoint
+    best_checkpoint_path = os.path.join(newest_folder, "best_model.pt")
+    if not os.path.isfile(best_checkpoint_path):
+        raise FileNotFoundError(f"[ERROR] No 'best_model.pt' found in {newest_folder}")
+
+    return (newest_folder, best_checkpoint_path)
+
 class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
 
@@ -93,36 +127,20 @@ class InferenceOnePolicyRunner:
 
     import os
 
-    def load(self, log_dir, optimizer=None):
+    def load(self, best_checkpoint_path: str, optimizer=None):
         """
-        Load the 'best_model.pt' checkpoint from the newest experiment folder.
+        Load the policy network from the specified checkpoint path.
 
         Args:
-            base_log_dir (str): Base directory where experiment folders are located.
+            best_checkpoint_path (str): Full path to the 'best_model.pt' checkpoint.
             optimizer (torch.optim.Optimizer, optional): Optimizer to restore, if provided.
 
         Returns:
             int: The epoch at which the checkpoint was saved.
         """
-        # Step 1: Find the newest experiment folder
-        experiment_folders = [
-            f for f in os.listdir(log_dir) 
-            if os.path.isdir(os.path.join(log_dir, f))
-        ]
-        experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
-        if not experiment_folders:
-            raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
-        
-        newest_folder = os.path.join(log_dir, experiment_folders[0])
-        print(f"[INFO] Found newest experiment folder: {newest_folder}")
-
-        # Step 2: Locate the best checkpoint
-        best_checkpoint_path = os.path.join(newest_folder, "best_model.pt")
-        if not os.path.isfile(best_checkpoint_path):
-            raise FileNotFoundError(f"[ERROR] No 'best_model.pt' found in {newest_folder}")
-
-        # Step 3: Load the checkpoint
         checkpoint = torch.load(best_checkpoint_path, map_location=self.device)
+        if self.policy is None:
+            self.policy = get_policy(self.device)  # Initialize policy if not already initialized
         self.policy.load_state_dict(checkpoint["state_dict"])
         if optimizer:
             optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
@@ -181,8 +199,6 @@ class InferenceOnePolicyRunner:
 
         return action
 
-
-
 def main():
     """Play with RSL-RL agent."""
     # parse configuration
@@ -191,35 +207,42 @@ def main():
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
+    # specify directory for logging experiments
+    policy_root_directory = args_cli.log_dir
+    (policy_folder_directory, policy_file_directory) = find_newest_best_checkpoint(policy_root_directory)
+
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
 
     # wrap for video recording
     if args_cli.video:
         video_kwargs = {
-            "video_folder": os.path.join(log_dir, "videos", "play"),
+            "video_folder": os.path.join(policy_folder_directory, "one_policy_videos", args_cli.task),
             "step_trigger": lambda step: step == 0,
             "video_length": args_cli.video_length,
-            "disable_logger": True,
+            "disable_logger": True
         }
         print("[INFO] Recording videos during training.")
         print_dict(video_kwargs, nesting=4)
         env = gym.wrappers.RecordVideo(env, **video_kwargs)
+    
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
 
     # Create one policy runner for inference and load trained model parameters
-    resume_path = args_cli.log_dir
-    print(f"[INFO]: Loading model checkpoint from: {resume_path}")
+    print(f"[INFO]: Loading model checkpoint from: {policy_file_directory}")
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # load previously trained model
     one_policy_runner = InferenceOnePolicyRunner(env, device=model_device)
-    one_policy_runner.load(resume_path)
+    one_policy_runner.load(policy_file_directory)
+
+
 
     # Reset environment and start simulation
     obs, observations = env.get_observations()
     one_policy_observation = observations["observations"]["one_policy"]
     curr_timestep = 0
+    video_timestep = 0
 
     # Main simulation loop
     while simulation_app.is_running():
@@ -235,12 +258,11 @@ def main():
 
             if curr_timestep > args_cli.steps:
                 break
-
-    # if args_cli.video:
-    #     if h5py_timestep >= args_cli.video_length:
-    #         break
-
-    # close the simulator
+            if args_cli.video:
+                video_timestep += 1
+                # Exit the play loop after recording one video
+                if video_timestep == args_cli.video_length:
+                    break
     env.close()
 
 
