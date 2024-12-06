@@ -408,12 +408,183 @@ class LocomotionDatasetSingle:
 #         """
 #         return DataLoader(self, batch_size=batch_size, shuffle=shuffle)
 
+# import os
+# import numpy as np
+# import torch
+# from torch.utils.data import Dataset, DataLoader
+# import yaml
+# import h5py
+
+# class LocomotionDataset(Dataset):
+#     def __init__(self, folder_paths):
+#         """
+#         Initialize the LocomotionDataset.
+
+#         Args:
+#             folder_paths (list): List of paths to folders containing HDF5 files and metadata.
+#         """
+#         self.folder_paths = folder_paths
+#         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+#         self.transformed_inputs = []
+#         self.transformed_targets = []
+
+#         # Load and preprocess the dataset
+#         self._load_all_data()
+
+#     def _load_metadata(self, folder_path):
+#         """
+#         Load metadata from the YAML file in a dataset folder.
+
+#         Args:
+#             folder_path (str): Path to the folder.
+
+#         Returns:
+#             dict: Metadata containing environment parameters.
+#         """
+#         metadata_path = os.path.join(folder_path, "metadata.yaml")
+#         if not os.path.exists(metadata_path):
+#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+
+#         with open(metadata_path, "r") as metadata_file:
+#             metadata = yaml.safe_load(metadata_file)
+#         print(f"[INFO]: Loaded metadata from {metadata_path}")
+#         return metadata
+
+#     def _load_all_data(self):
+#         """
+#         Load and preprocess data from all specified folders.
+#         """
+#         for idx, folder_path in enumerate(self.folder_paths):
+#             hdf5_files = sorted(
+#                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
+#                 key=lambda x: int(x.split('_')[-1].split('.')[0])
+#             )
+
+#             if not hdf5_files:
+#                 raise FileNotFoundError(f"No HDF5 files found in folder: {folder_path}")
+
+#             for file_name in hdf5_files:
+#                 file_path = os.path.join(folder_path, file_name)
+#                 print(f"[INFO]: Loading file {file_path}")
+
+#                 with h5py.File(file_path, "r") as data_file:
+#                     inputs = data_file["one_policy_observation"][:]
+#                     targets = data_file["actions"][:]
+
+#                     # Validate data
+#                     if np.any(inputs == None) or np.any(targets == None):  # Check for None
+#                         raise ValueError(f"None values found in file: {file_path}")
+#                     if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
+#                         raise ValueError(f"NaN values found in file: {file_path}")
+
+#                     # Flatten (N, 4096, D) into (N * 4096, D)
+#                     inputs = inputs.reshape(-1, inputs.shape[-1])  # Flatten sample dimension
+#                     targets = targets.reshape(-1, targets.shape[-1])  # Flatten sample dimension
+
+#                     # Transform and store components
+#                     for input_sample, target_sample in zip(inputs, targets):
+#                         components = self._transform_sample(input_sample, target_sample, self.metadata_list[idx])
+#                         self.transformed_inputs.append(components[:-1])  # Exclude target from inputs
+#                         self.transformed_targets.append(components[-1])  # Only store target separately
+
+#         print(f"[INFO]: Preprocessed dataset with {len(self.transformed_inputs)} samples.")
+
+#     def _transform_sample(self, input_sample, target_sample, metadata):
+#         """
+#         Transform a single input and target sample into its components.
+
+#         Args:
+#             input_sample (np.ndarray): The input sample (shape: [D]).
+#             target_sample (np.ndarray): The target sample (shape: [T]).
+#             metadata (dict): Metadata for this sample.
+
+#         Returns:
+#             tuple: Transformed components.
+#         """
+#         state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
+#         target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+
+#         # Dynamic Joint Data Transformation
+#         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
+#         nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
+#         single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
+#         dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
+
+#         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
+#         dynamic_joint_combined_state = dynamic_joint_combined_state.view(
+#             nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+#         )
+#         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
+#         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
+
+#         # Dynamic Foot Data Transformation
+#         dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
+#         nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
+#         single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
+#         dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
+
+#         dynamic_foot_start = dynamic_joint_observation_length
+#         dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
+#         dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end]  # Focus only on last dim
+#         dynamic_foot_combined_state = dynamic_foot_combined_state.view(
+#             nr_dynamic_foot_observations, single_dynamic_foot_observation_length
+#         )
+#         dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
+#         dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
+
+#         # General Policy State Transformation
+#         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
+
+#         # Return transformed inputs and target
+#         return (
+#             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
+#             dynamic_joint_state,        # Shape: (nr_dynamic_joint_observations, remaining_length)
+#             dynamic_foot_description,   # Shape: (nr_dynamic_foot_observations, dynamic_foot_description_size)
+#             dynamic_foot_state,         # Shape: (nr_dynamic_foot_observations, remaining_length)
+#             general_policy_state,       # Shape: (<concatenated_dim>)
+#             target                      # Shape: (12,)
+#         )
+
+#     def __len__(self):
+#         """
+#         Get the total number of samples in the dataset.
+#         """
+#         return len(self.transformed_inputs)
+
+#     def __getitem__(self, index):
+#         """
+#         Get a preprocessed sample from the dataset at a specific index.
+
+#         Args:
+#             index (int): Index of the sample.
+
+#         Returns:
+#             tuple: Preprocessed inputs and target for the sample.
+#         """
+#         return (self.transformed_inputs[index], self.transformed_targets[index])
+
+#     def get_data_loader(self, batch_size=8, shuffle=True):
+#         """
+#         Create a DataLoader for the dataset.
+
+#         Args:
+#             batch_size (int): Batch size for the DataLoader.
+#             shuffle (bool): Whether to shuffle the dataset.
+
+#         Returns:
+#             DataLoader: DataLoader object for the dataset.
+#         """
+#         return DataLoader(self, batch_size=batch_size, shuffle=s__huffle)
+
+
 import os
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 import yaml
 import h5py
+import random
+
 
 class LocomotionDataset(Dataset):
     def __init__(self, folder_paths):
@@ -427,6 +598,7 @@ class LocomotionDataset(Dataset):
         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
         self.transformed_inputs = []
         self.transformed_targets = []
+        self.folder_indices = []  # Track which folder each sample belongs to
 
         # Load and preprocess the dataset
         self._load_all_data()
@@ -486,6 +658,7 @@ class LocomotionDataset(Dataset):
                         components = self._transform_sample(input_sample, target_sample, self.metadata_list[idx])
                         self.transformed_inputs.append(components[:-1])  # Exclude target from inputs
                         self.transformed_targets.append(components[-1])  # Only store target separately
+                        self.folder_indices.append(idx)  # Track folder index for each sample
 
         print(f"[INFO]: Preprocessed dataset with {len(self.transformed_inputs)} samples.")
 
@@ -551,28 +724,136 @@ class LocomotionDataset(Dataset):
         """
         return len(self.transformed_inputs)
 
+    # def __getitem__(self, index):
+    #     """
+    #     Get a preprocessed sample from the dataset at a specific index.
+
+    #     Args:
+    #         index (int): Index of the sample.
+
+    #     Returns:
+    #         tuple: Transformed inputs and target for the sample.
+    #     """
+    #     return (self.transformed_inputs[index], self.transformed_targets[index])
+
     def __getitem__(self, index):
         """
         Get a preprocessed sample from the dataset at a specific index.
 
         Args:
-            index (int): Index of the sample.
+            index (int or list): Index of the sample(s).
 
         Returns:
-            tuple: Preprocessed inputs and target for the sample.
+            tuple: Transformed inputs and target for the sample(s).
         """
-        return (self.transformed_inputs[index], self.transformed_targets[index])
+        # import ipdb; ipdb.set_trace()
+        if isinstance(index, int):
+            return (self.transformed_inputs[index], self.transformed_targets[index])
+        else:
+            return ([self.transformed_inputs[i] for i in index], self.transformed_targets[index])
 
-    def get_data_loader(self, batch_size=8, shuffle=True):
+    # def get_batch_indices(self, batch_size, shuffle=True):
+    #     """
+    #     Generate all indices for the dataset, ensuring batches come from the same folder.
+
+    #     Args:
+    #         batch_size (int): The size of each batch.
+    #         shuffle (bool): Whether to shuffle the dataset.
+
+    #     Returns:
+    #         list: A list of lists, where each sublist contains indices for a batch.
+    #     """
+    #     if shuffle:
+    #         indices = torch.randperm(len(self.folder_indices)).tolist()
+    #     else:
+    #         indices = list(range(len(self.folder_indices)))
+
+    #     # Group indices by folder
+    #     folder_to_indices = {}
+    #     for idx in indices:
+    #         folder = self.folder_indices[idx]
+    #         if folder not in folder_to_indices:
+    #             folder_to_indices[folder] = []
+    #         folder_to_indices[folder].append(idx)
+
+    #     # Create batches for each folder
+    #     batch_indices = []
+    #     for folder, folder_indices in folder_to_indices.items():
+    #         for i in range(0, len(folder_indices), batch_size):
+    #             batch_indices.append(folder_indices[i:i + batch_size])
+
+    #     return batch_indices
+
+    def get_batch_indices(self, batch_size, shuffle=True):
         """
-        Create a DataLoader for the dataset.
+        Generate all indices for the dataset, ensuring batches come from the same folder
+        and merging them in the specified order.
 
         Args:
-            batch_size (int): Batch size for the DataLoader.
+            batch_size (int): The size of each batch.
             shuffle (bool): Whether to shuffle the dataset.
 
         Returns:
-            DataLoader: DataLoader object for the dataset.
+            list: A list of indices, where each sublist contains indices for a batch.
         """
-        return DataLoader(self, batch_size=batch_size, shuffle=shuffle)
+        # Group indices by folder
+        folder_to_indices = {}
+        for idx, folder in enumerate(self.folder_indices):
+            if folder not in folder_to_indices:
+                folder_to_indices[folder] = []
+            folder_to_indices[folder].append(idx)
 
+        # Chunk indices for each folder
+        folder_batches = []
+        for folder_indices in folder_to_indices.values():
+            # Split folder indices into chunks of batch_size
+            folder_chunks = [folder_indices[i:i + batch_size] for i in range(0, len(folder_indices) - batch_size, batch_size)]  # reduce the stop length by batch_size to avoid getting partial slice, which may bug sampler
+            folder_batches.extend(folder_chunks)
+
+        # Shuffle the list of batches (but not the contents of each batch)
+        if shuffle:
+            random.shuffle(folder_batches)
+
+        # Flatten the list of batches to return a single list of indices
+        merged_indices = [idx for batch in folder_batches for idx in batch]
+
+        return merged_indices
+
+    def collate_fn(self, batch):
+        """
+        Collate function to combine samples into a batch.
+
+        Args:
+            batch (list): List of samples, where each sample is a 2-tuple:
+                        (inputs: 5-tuple, target: tensor).
+
+        Returns:
+            tuple: A 2-tuple where:
+                - The first element is a 5-tuple of batched inputs.
+                - The second element is the batched target tensor.
+        """
+        # Unpack inputs and targets
+        inputs, targets = zip(*batch)  # inputs: list of 5-tuples, targets: list of tensors
+
+        # Transpose the inputs to group by component
+        inputs_by_component = zip(*inputs)  # Convert from list of 5-tuples to 5 lists
+
+        # Stack each component of inputs along the batch dimension
+        batched_inputs = tuple(torch.stack(component) for component in inputs_by_component)
+
+        # Stack targets along the batch dimension
+        batched_targets = torch.stack(targets)
+
+        return batched_inputs, batched_targets
+
+    def get_data_loader(self, batch_size, shuffle=True):
+        """
+        Create a DataLoader for the dataset.
+        """
+        sampler = torch.utils.data.sampler.BatchSampler(
+            self.get_batch_indices(batch_size, shuffle),
+            batch_size=batch_size,
+            drop_last=False,
+        )
+        return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn)
+    

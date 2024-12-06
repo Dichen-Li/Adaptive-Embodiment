@@ -87,18 +87,17 @@ def train(policy, criterion, optimizer, data_loader, num_epochs, model_device, l
             batch_targets = batch_targets.to(model_device)
 
             # Unpack dataset-specific transformed inputs
-            try:
-                (
-                    dynamic_joint_description,
-                    dynamic_joint_state,
-                    dynamic_foot_description,
-                    dynamic_foot_state,
-                    general_policy_state,
-                ) = batch_inputs
-            except:
-                import ipdb; ipdb.set_trace()
+            (
+                dynamic_joint_description,
+                dynamic_joint_state,
+                dynamic_foot_description,
+                dynamic_foot_state,
+                general_policy_state,
+            ) = batch_inputs
 
             # Forward pass
+            print(dynamic_joint_description.shape, dynamic_joint_state.shape, dynamic_foot_description.shape, 
+                  dynamic_foot_state.shape, general_policy_state.shape)
             batch_predictions = policy(
                 dynamic_joint_description,
                 dynamic_joint_state,
@@ -142,8 +141,8 @@ def main():
     os.makedirs(log_dir, exist_ok=True)
 
     dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.tasks]
-    locomotion_dataset = LocomotionDataset(folder_paths=dataset_dirs)
-    data_loader = locomotion_dataset.get_data_loader(batch_size=args_cli.batch_size)
+    dataset = LocomotionDataset(folder_paths=dataset_dirs)
+    data_loader = dataset.get_data_loader(batch_size=args_cli.batch_size, shuffle=True)
 
     # Define model, optimizer, and loss
     from silver_badger_torch.policy import get_policy
