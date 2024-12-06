@@ -138,18 +138,38 @@ RuntimeError: Index put requires the source and destination dtypes match, got Fl
 This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
 
 ## Teacher policy supervised distillation
-To supervisely distillate a teacher policy, we generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern.
+To overall goal is to supervisely distill multiple teachers policies into one student policy, where teachers policies are RL policies for each of the robots, and the student policy is the one policy model. It can be split into 3 steps.
+
+1. We first generate the input & output dataset from the teacher policy. The input data follows the rule of one policy run them all pattern, which includes description vectors. The output follows the normal action pattern. Replicate this process for each of the robots.
 To generate the dataset, run
 ```angular2html
 python scripts/rsl_rl/play_record_one_policy.py --task GenDog1
 ```
+```angular2html
+python scripts/rsl_rl/play_record_one_policy.py --task GenDog2
+```
+```angular2html
+python scripts/rsl_rl/play_record_one_policy.py --task GenHumanoid1
+```
 The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
 
-And then we supervise on the loss of teacher & student policy output.
-To supervise on the loss, run
+2. After generating the dataset, we combine the datasets from different robots to one dataset. Then we feed the dataset input into the student policy network, and supervised on the the loss between the student action and the dataset output. After that, we will get a trained student policy network.
+To supervisely train the student model from multiple teacher policies, run
 ```angular2html
-python scripts/rsl_rl/train_supervised_one_policy.py --task GenDog1
+python scripts/rsl_rl/distill_cross_embodiment.py --task GenDog1 GenDog2 GenHumanoid1
 ```
-The student policy is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record.
+The student policy is stored in log_dir/'experiments_name'/best_model.pt.
+
+3. Finally, load the policy network and use it to control the robot env in the simulation environment.
+To visualize, run
+```angular2html
+python scripts/rsl_rl/sim_after_distill.py --task GenDog1
+```
+```angular2html
+python scripts/rsl_rl/sim_after_distill.py --task GenDog2
+```
+```angular2html
+python scripts/rsl_rl/sim_after_distill.py --task GenHumanoid1
+```
 
 Happy training! 
