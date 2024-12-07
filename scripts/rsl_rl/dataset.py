@@ -260,7 +260,7 @@ class LocomotionDatasetSingle:
 
 
 class LocomotionDataset(Dataset):
-    def __init__(self, folder_paths, max_files_in_memory):
+    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio):
         """
         Initialize the LocomotionDataset.
 
@@ -280,6 +280,8 @@ class LocomotionDataset(Dataset):
         self.folder_paths = folder_paths
         self.max_files_in_memory = max_files_in_memory
         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+        self.train_mode = train_mode
+        self.val_ratio = val_ratio
         self.file_indices = {}
         self.total_samples = 0
 
@@ -317,7 +319,7 @@ class LocomotionDataset(Dataset):
     def _prepare_file_indices(self):
         """
         Create a mapping of file indices to (folder_idx, file_idx).
-        Also computes the total number of samples in the dataset.
+        Segregates files into train/validation sets based on val_ratio.
         """
         for folder_idx, folder_path in enumerate(self.folder_paths):
             metadata = self.metadata_list[folder_idx]
@@ -325,11 +327,24 @@ class LocomotionDataset(Dataset):
                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
                 key=lambda x: int(x.split('_')[-1].split('.')[0])
             )
-            steps_per_file = metadata["steps_per_file"]
-            parallel_envs = metadata["parallel_envs"]
+            total_files = len(hdf5_files)
+            num_val_files = int(total_files * self.val_ratio)
+            if num_val_files == 0:
+                print(f"Num of val files {num_val_files} is 0, given total_files {total_files} "
+                      f"and val_ratio {self.val_ratio}. Will use one file as validation set")
+                num_val_files = 1
 
-            for file_idx, file_name in enumerate(hdf5_files):
+            # Choose files based on train/val mode
+            if self.train_mode:
+                selected_files = hdf5_files[num_val_files:]  # Remaining files for training
+            else:
+                selected_files = hdf5_files[:num_val_files]  # First files for validation
+
+            # Process selected files
+            for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)
+                steps_per_file = metadata["steps_per_file"]
+                parallel_envs = metadata["parallel_envs"]
                 self.file_indices[key] = (folder_path, file_name, steps_per_file, parallel_envs)
                 self.total_samples += steps_per_file * parallel_envs
 
