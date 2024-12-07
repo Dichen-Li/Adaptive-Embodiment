@@ -8,7 +8,7 @@ import threading
 
 # ThreadSafeDict implementation
 class ThreadSafeDict:
-    def __init__(self, max_size=128):
+    def __init__(self, max_size):
         self.dict = OrderedDict()
         self.lock = threading.RLock()
         self.max_size = max_size
@@ -37,6 +37,16 @@ class ThreadSafeDict:
         with self.lock:
             self.dict.clear()
 
+    def keys(self):
+        """
+        Get all the keys in the dictionary.
+
+        Returns:
+            list: A list of all keys in the dictionary.
+        """
+        with self.lock:
+            return list(self.dict.keys())
+
 
 # Function to monitor memory usage
 def memory_usage():
@@ -47,7 +57,7 @@ def memory_usage():
 # Test the ThreadSafeDict with large NumPy arrays
 def test_memory_leak():
     print("Starting memory leak test with large NumPy arrays...")
-    max_size = 100  # Maximum number of items in cache
+    max_size = 10  # Maximum number of items in cache
     cache = ThreadSafeDict(max_size=max_size)
     array_size = (1000, 10000)  # Large NumPy array size (1 million elements)
 
