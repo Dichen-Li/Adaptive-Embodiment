@@ -1,4 +1,6 @@
 import argparse
+
+import tqdm
 from omni.isaac.lab.app import AppLauncher
 import cli_args
 from dataset import DatasetSaver  # isort: skip
@@ -101,28 +103,29 @@ def main():
     # Reset environment and start simulation
     obs, observations = env.get_observations()
     one_policy_observation = observations["observations"]["one_policy"]
-    curr_timestep = 0
+    # curr_timestep = 0
 
     # Main simulation loop
     while simulation_app.is_running():
         with torch.inference_mode():
-            # Agent stepping
-            actions = policy(obs)
+            for _ in tqdm.tqdm(range(args_cli.steps)):
+                # Agent stepping
+                actions = policy(obs)
 
-            # Reshape and save data
-            dataset_manager.save_data(
-                one_policy_observation=one_policy_observation.cpu().numpy(),
-                actions=actions.cpu().numpy(),
-            )
-            
-            # Environment stepping
-            obs, _, _, extra = env.step(actions)
-            one_policy_observation = extra["observations"]["one_policy"]
+                # Reshape and save data
+                dataset_manager.save_data(
+                    one_policy_observation=one_policy_observation.cpu().numpy(),
+                    actions=actions.cpu().numpy(),
+                )
 
-            curr_timestep += 1
+                # Environment stepping
+                obs, _, _, extra = env.step(actions)
+                one_policy_observation = extra["observations"]["one_policy"]
 
-            if curr_timestep > args_cli.steps:
-                break
+                # curr_timestep += 1
+
+                # if curr_timestep > args_cli.steps:
+                #     break
 
     # if args_cli.video:
     #     if h5py_timestep >= args_cli.video_length:
