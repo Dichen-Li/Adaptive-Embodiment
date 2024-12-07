@@ -48,6 +48,79 @@ class ThreadSafeDict:
             return list(self.dict.keys())
 
 
+#
+# class ThreadSafeDict:
+#     def __init__(self, max_size, manager_dict=None):
+#         """
+#         A thread/process-safe dictionary with an optional size limit.
+#
+#         Args:
+#             max_size (int): Maximum number of items in the dictionary.
+#             manager_dict: An optional multiprocessing.Manager().dict().
+#                           If None, an in-memory OrderedDict is used.
+#         """
+#         self.dict = manager_dict if manager_dict is not None else OrderedDict()
+#         self.max_size = max_size
+#
+#     def get(self, key):
+#         """
+#         Retrieve a value from the dictionary.
+#
+#         Args:
+#             key: The key to retrieve.
+#
+#         Returns:
+#             The value associated with the key, or None if the key is not present.
+#         """
+#         if key in self.dict:
+#             # Move key to the end if using OrderedDict (for LRU behavior)
+#             if isinstance(self.dict, OrderedDict):
+#                 self.dict.move_to_end(key)
+#             return self.dict[key]
+#         return None
+#
+#     def put(self, key, value):
+#         """
+#         Add or update a key-value pair in the dictionary.
+#
+#         Args:
+#             key: The key to add or update.
+#             value: The value to associate with the key.
+#         """
+#         if key in self.dict:
+#             # Move key to the end if using OrderedDict (for LRU behavior)
+#             if isinstance(self.dict, OrderedDict):
+#                 self.dict.move_to_end(key)
+#         self.dict[key] = value
+#         # Enforce max size for OrderedDict
+#         if isinstance(self.dict, OrderedDict) and len(self.dict) > self.max_size:
+#             self.dict.popitem(last=False)  # Remove the oldest item
+#
+#     def delete(self, key):
+#         """
+#         Remove a key-value pair from the dictionary.
+#
+#         Args:
+#             key: The key to remove.
+#         """
+#         if key in self.dict:
+#             del self.dict[key]
+#
+#     def clear(self):
+#         """
+#         Clear all items from the dictionary.
+#         """
+#         self.dict.clear()
+#
+#     def keys(self):
+#         """
+#         Retrieve all keys in the dictionary.
+#
+#         Returns:
+#             A list of all keys.
+#         """
+#         return list(self.dict.keys())
+
 # Function to monitor memory usage
 def memory_usage():
     process = psutil.Process(os.getpid())
