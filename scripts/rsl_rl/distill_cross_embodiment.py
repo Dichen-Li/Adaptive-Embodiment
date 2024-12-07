@@ -18,14 +18,15 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
     parser.add_argument("--tasks", nargs="+", type=str, default=None, help="List of tasks to process.")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=4090*8, help="Batch size.")
+    parser.add_argument("--batch_size", type=int, default=4090*16, help="Batch size.")
     parser.add_argument("--exp_name", type=str, default=datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
                         help="Name of the experiment. Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
-    parser.add_argument("--lr", type=float, default=0.001, help="learning rate")
+    parser.add_argument("--lr", type=float, default=1e-3, help="learning rate")
+    parser.add_argument("--num_workers", type=int, default=16, help="Number of workers for torch data loder. ")
+    parser.add_argument("--max_files_in_memory", type=int, default=8, help="Max number of data files in memory.")
     return parser.parse_args()
-
 
 def get_most_recent_h5py_record_path(base_path, task_name):
     """Find the most recent folder for a given task and return the path to its `h5py_record` subfolder."""
@@ -141,8 +142,9 @@ def main():
     os.makedirs(log_dir, exist_ok=True)
 
     dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.tasks]
-    dataset = LocomotionDataset(folder_paths=dataset_dirs)
-    data_loader = dataset.get_data_loader(batch_size=args_cli.batch_size, shuffle=True)
+    dataset = LocomotionDataset(folder_paths=dataset_dirs, max_files_in_memory=args_cli.max_files_in_memory)
+    data_loader = dataset.get_data_loader(batch_size=args_cli.batch_size, shuffle=True,
+                                          num_workers=args_cli.num_workers)
 
     # Define model, optimizer, and loss
     from silver_badger_torch.policy import get_policy
