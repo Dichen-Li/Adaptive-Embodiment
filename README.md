@@ -18,7 +18,7 @@ pip install -e .
 ### RSL RL
 Install the fork of the RSL RL library:
 ```angular2html
-cd rsl_rl_fork/
+cd rsl_rl/
 pip install -e . --config-settings editable_mode=compat
 ```
 

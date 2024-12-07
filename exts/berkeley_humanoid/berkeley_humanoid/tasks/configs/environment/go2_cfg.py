@@ -48,7 +48,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
     asset_name = "robot"
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=2.5, replicate_physics=True)
     robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
-    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3, track_air_time=True, track_pose=True)
+    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
 
     step_sampling_probability = 0.002
 
@@ -69,6 +69,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
     base_height_coeff = 30.0                    * action_dt
     air_time_coeff = 0.1                        * action_dt
     symmetry_air_coeff = 0.5                    * action_dt
+    feet_symmetry_pairs = [(0, 1), (2, 3)]
 
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")

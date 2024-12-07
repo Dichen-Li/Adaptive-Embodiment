@@ -205,10 +205,10 @@ class OnPolicyRunner:
         self.writer.add_scalar("Perf/collection time", locs["collection_time"], locs["it"])
         self.writer.add_scalar("Perf/learning_time", locs["learn_time"], locs["it"])
         if len(locs["rewbuffer"]) > 0:
-            self.writer.add_scalar("Train/mean_reward", statistics.mean(locs["rewbuffer"]), locs["it"])
+            self.writer.add_scalar("Train/mean_return", statistics.mean(locs["rewbuffer"]), locs["it"])
             self.writer.add_scalar("Train/mean_episode_length", statistics.mean(locs["lenbuffer"]), locs["it"])
             if self.logger_type != "wandb":  # wandb does not support non-integer x-axis logging
-                self.writer.add_scalar("Train/mean_reward/time", statistics.mean(locs["rewbuffer"]), self.tot_time)
+                self.writer.add_scalar("Train/mean_return/time", statistics.mean(locs["rewbuffer"]), self.tot_time)
                 self.writer.add_scalar(
                     "Train/mean_episode_length/time", statistics.mean(locs["lenbuffer"]), self.tot_time
                 )
@@ -227,7 +227,7 @@ class OnPolicyRunner:
                 f"""{'Mean reward:':>{pad}} {statistics.mean(locs['rewbuffer']):.2f}\n"""
                 f"""{'Mean episode length:':>{pad}} {statistics.mean(locs['lenbuffer']):.2f}\n"""
             )
-            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_reward']:.2f}\n"""
+            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_return']:.2f}\n"""
             #   f"""{'Mean episode length/episode:':>{pad}} {locs['mean_trajectory_length']:.2f}\n""")
         else:
             log_string = (
@@ -239,7 +239,7 @@ class OnPolicyRunner:
                 f"""{'Surrogate loss:':>{pad}} {locs['mean_surrogate_loss']:.4f}\n"""
                 f"""{'Mean action noise std:':>{pad}} {mean_std.item():.2f}\n"""
             )
-            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_reward']:.2f}\n"""
+            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_return']:.2f}\n"""
             #   f"""{'Mean episode length/episode:':>{pad}} {locs['mean_trajectory_length']:.2f}\n""")
 
         log_string += ep_string
