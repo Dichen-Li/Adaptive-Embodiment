@@ -105,7 +105,7 @@ class InferenceOnePolicyRunner:
             device (str): The device for computation ('cpu' or 'cuda').
         """
         if model_is_actor:
-            from supervise_actor_critic.policy import get_policy
+            from supervised_actor.policy import get_policy
             policy = get_policy(env.unwrapped.nr_dynamic_joint_observations, device)
         else:
             from silver_badger_torch.policy import get_policy
