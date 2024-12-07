@@ -8,6 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
 
 from thread_safe_dict import ThreadSafeDict
+from utils import AverageMeter
 
 
 class DatasetSaver:
@@ -259,6 +260,18 @@ class LocomotionDatasetSingle:
         }
 
 
+# cache = ThreadSafeDict(max_size=16)
+
+# from multiprocessing import Manager
+#
+# # Create a manager and shared dictionary
+# manager = Manager()
+# global_cache_dict = manager.dict()
+#
+# # Create a ThreadSafeDict using the shared dictionary
+# global_cache = ThreadSafeDict(max_size=16, manager_dict=global_cache_dict)
+
+
 class LocomotionDataset(Dataset):
     def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio):
         """
@@ -268,6 +281,8 @@ class LocomotionDataset(Dataset):
         Note that DataLoader spawns num_workers DataSet classes, each for one thread, so the cache will not
         be shared across multiple threads.
         TODO: Consider implementing a cache sharable across all threads to avoid duplicate IO and memory usage
+        Edit: The TODO doesn't look feasible, because Manager().dict() can be shared across threads but the reading
+        is 100x slower due to communication. Seems that a trade-off is necessary
 
         The dataset sampler also guarantees that the samples in one batch are all from one .h5 file, which
         may reduce randomness in data but increases reading speed and ease implementation.
@@ -286,6 +301,7 @@ class LocomotionDataset(Dataset):
         self.total_samples = 0
 
         # Thread-safe cache for loaded files
+        # global global_cache    # we must use global reference, otherwise every thread will spawn its own cache
         self.cache = ThreadSafeDict(max_size=max_files_in_memory)
 
         # Map file indices and prepare dataset structure
@@ -293,7 +309,7 @@ class LocomotionDataset(Dataset):
 
         # Compute hit rate for caching, for debugging purpose
         # self.cache_hit_count = AverageMeter()
-        # self.cache_query_time = AverageMeter()
+        self.cache_query_time = AverageMeter()
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders.")
@@ -395,15 +411,16 @@ class LocomotionDataset(Dataset):
         cache_key = (folder_idx, file_idx)
         cached_file = self.cache.get(cache_key)
         if cached_file is None:
+            # print(f"can't find cached file for {cache_key}")
             inputs, targets = self._load_file(folder_idx, file_idx)
             self.cache.put(cache_key, (inputs, targets))
             return inputs, targets
             # self.cache_hit_count.update(0, 1)
         # else:
-        # self.cache_hit_count.update(1, 1 / self.batch_size)
-        # print(f"[INFO]: Cached file found {cache_key}")
-        # if self.cache_hit_count.count % 1000000:
-        #     print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
+            # self.cache_hit_count.update(1, 1 / self.batch_size)
+            # print(f"[INFO]: Cached file found {cache_key}")
+            # if self.cache_hit_count.count % 1000000:
+            #     print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
         return self.cache.get(cache_key)
 
     def __getitem__(self, index):
@@ -416,15 +433,19 @@ class LocomotionDataset(Dataset):
         Returns:
             tuple: Transformed input and target for the sample.
         """
+        # print(index)
+        # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
+
         # Expecting index as (folder_idx, file_idx, step, env)
         folder_idx, file_idx, step, env = index
 
         # Load data from cache or file
+        # import time
         # start_time = time.time()
         inputs, targets = self._cache_file(folder_idx, file_idx)
         # self.cache_query_time.update(time.time() - start_time, 1)
         # if self.cache_query_time.count % self.batch_size == 0:
-        #     print(f'cache query time for a batch on avg = {self.cache_query_time.avg * self.batch_size}')
+        #     # print(f'cache query time for a batch on avg = {self.cache_query_time.avg * self.batch_size}')
         #     keys = self.cache.keys()
         #     file_indices = set([(x[0], x[1]) for x in keys])
         #     print(f'file indices: {file_indices}')
@@ -525,32 +546,61 @@ class LocomotionDataset(Dataset):
 
         return batched_inputs, batched_targets
 
-    def get_batch_indices(self, batch_size, shuffle=True):
+    def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
-        Generate all indices for the dataset, ensuring batches come from the same file.
+        Generate all indices for the dataset, ensuring (1) batches are interleaved across workers,
+        (2) each worker processes batches from a specific file in sequence, and (3) adjacent batches
+        for one worker com from the same file.
+
+        The expectation is:
+        Worker 1: [batch from K1.h5] [batch from K1.h5] ... [batch from K3.h5] [batch from K3.h5]
+        Worker 2: [batch from K2.h5] [batch from K2.h5] ... [batch from K4.h5] [batch from K4.h5]
+        This way, workers won't process the same .h5 and every .h5 won't be read from disk more than once.
 
         Args:
             batch_size (int): The size of each batch.
             shuffle (bool): Whether to shuffle the dataset.
+            num_workers (int): Number of workers in the DataLoader.
 
         Returns:
-            list: A list of indices, where each sublist contains indices for a batch.
+            list: A list of indices, interleaved for workers, where each sublist contains indices for a batch.
         """
         self.batch_size = batch_size
-        batches = []
+        file_batches = {}  # Dictionary to hold batches per file
+
+        # Collect batches for each file
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
             indices = [(folder_idx, file_idx, step, env)
                        for step in range(steps_per_file)
                        for env in range(parallel_envs)]
             if shuffle:
-                np.random.shuffle(indices)
-            for i in range(0, len(indices), batch_size):
-                batches.append(indices[i:i + batch_size])
+                np.random.shuffle(indices)  # Shuffle indices within the file
 
+            # Split indices into batches and store in file_batches
+            file_batches[(folder_idx, file_idx)] = [
+                indices[i:i + batch_size] for i in range(0, len(indices), batch_size)
+            ]
+
+        # Shuffle the order of files
+        file_keys = list(file_batches.keys())
         if shuffle:
-            np.random.shuffle(batches)
-        # import ipdb; ipdb.set_trace()
-        return batches
+            np.random.shuffle(file_keys)
+
+        # Distribute batches across workers in an interleaved manner
+        interleaved_batches = [[] for _ in range(num_workers)]
+        for i, key in enumerate(file_keys):
+            for batch in file_batches[key]:
+                interleaved_batches[i % num_workers].append(batch)
+
+        # Interleave batches from all workers to form the final sequence
+        final_batches = []
+        max_batches_per_worker = max(len(worker_batches) for worker_batches in interleaved_batches)
+        for i in range(max_batches_per_worker):
+            for worker_batches in interleaved_batches:
+                if i < len(worker_batches):
+                    final_batches.append(worker_batches[i])
+
+        return final_batches
 
     def get_data_loader(self, batch_size, shuffle=True, num_workers=16):
         """
@@ -565,7 +615,7 @@ class LocomotionDataset(Dataset):
         """
         return DataLoader(
             self,
-            batch_sampler=self.get_batch_indices(batch_size, shuffle),
+            batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
         )
