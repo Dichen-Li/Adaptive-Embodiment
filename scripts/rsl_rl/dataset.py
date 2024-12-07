@@ -269,6 +269,7 @@ class LocomotionDataset(Dataset):
         """
         self.folder_paths = folder_paths
         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+        # import ipdb; ipdb.set_trace()
         self.transformed_inputs = []
         self.transformed_targets = []
         self.folder_indices = []  # Track which folder each sample belongs to

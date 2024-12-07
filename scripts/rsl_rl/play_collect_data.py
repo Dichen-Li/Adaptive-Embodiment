@@ -116,6 +116,7 @@ def main():
             )
             
             # Environment stepping
+            import ipdb; ipdb.set_trace()
             obs, _, _, extra = env.step(actions)
             one_policy_observation = extra["observations"]["one_policy"]
 

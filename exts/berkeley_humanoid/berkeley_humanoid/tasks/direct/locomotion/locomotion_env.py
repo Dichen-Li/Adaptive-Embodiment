@@ -420,7 +420,7 @@ class LocomotionEnv(DirectRLEnv):
         joint_vel_rel = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         actions = self.actions  # actions at prev step
         # base_lin_vel, base_ang_vel, joint_pos_rel, joint_vel_rel could explode
-
+        # import ipdb; ipdb.set_trace()
         obs = torch.cat(
             [base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
              self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1

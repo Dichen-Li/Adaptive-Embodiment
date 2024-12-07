@@ -9,7 +9,6 @@ from utils import AverageMeter
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
-import silver_badger_torch
 import tqdm
 
 
@@ -24,7 +23,6 @@ def parse_arguments():
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=0.001, help="learning rate")
-    parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
     return parser.parse_args()
 
 
@@ -144,18 +142,17 @@ def main():
     dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.tasks]
     dataset = LocomotionDataset(folder_paths=dataset_dirs)
     data_loader = dataset.get_data_loader(batch_size=args_cli.batch_size, shuffle=True)
-    
+
+    # # Define model, optimizer, and loss
+    # from silver_badger_torch.policy import get_policy
+    # policy = get_policy(model_device)
+
     # Define model, optimizer, and loss
-    if args_cli.model_is_actor:
-        from supervise_actor_critic.policy import get_policy
-        metadata = dataset.metadata_list[0]
-        nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
-        model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        policy = get_policy(nr_dynamic_joint_observations, model_device)
-    else:
-        from silver_badger_torch.policy import get_policy
-        model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        policy = get_policy(model_device)
+    from supervise_actor_critic.policy import get_policy
+    metadata = dataset.metadata_list[0]
+    nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
+    model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    policy = get_policy(nr_dynamic_joint_observations, model_device)
     criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr)
 

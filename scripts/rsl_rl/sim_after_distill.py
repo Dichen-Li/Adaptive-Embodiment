@@ -15,6 +15,7 @@ parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
 parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
 parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
+parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -55,16 +56,13 @@ from rsl_rl.modules import ActorCritic
 
 import torch
 
-# Define the silver_badger_torch package
+# Ready for defining the policy package
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
-from silver_badger_torch.policy import get_policy
 
 from rsl_rl.env import VecEnv
 
-import os
-
-def find_newest_best_checkpoint(log_dir: str) -> str:
+def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
     Find the newest 'best_model.pt' checkpoint in the latest experiment folder.
 
@@ -99,15 +97,20 @@ def find_newest_best_checkpoint(log_dir: str) -> str:
 class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
 
-    def __init__(self, env: VecEnv, device: str ="cpu"):
+    def __init__(self, env: VecEnv, device: str ="cpu", model_is_actor: bool = False):
         """
         Initialize the one policy runner.
 
         Args:
             device (str): The device for computation ('cpu' or 'cuda').
         """
-
-        policy = get_policy(device)
+        if model_is_actor:
+            from supervise_actor_critic.policy import get_policy
+            policy = get_policy(env.unwrapped.nr_dynamic_joint_observations, device)
+        else:
+            from silver_badger_torch.policy import get_policy
+            policy = get_policy(device)
+        
         self.policy = policy
         self.device = device
         self.env = env
@@ -233,7 +236,7 @@ def main():
     print(f"[INFO]: Loading model checkpoint from: {policy_file_directory}")
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # load previously trained model
-    one_policy_runner = InferenceOnePolicyRunner(env, device=model_device)
+    one_policy_runner = InferenceOnePolicyRunner(env, device=model_device, model_is_actor=args_cli.model_is_actor)
     one_policy_runner.load(policy_file_directory)
 
 
