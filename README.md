@@ -159,17 +159,34 @@ To supervisely train the student model from multiple teacher policies, run
 python scripts/rsl_rl/distill_cross_embodiment.py --task GenDog1 GenDog2 GenHumanoid1
 ```
 The student policy is stored in log_dir/'experiments_name'/best_model.pt.
+After testing, the best training parameters for a 32G RAM and 4070 GPU 8G VRAM computer is: 
+During collecting, set 1000 steps of dataset -> 32G.
+During training, 
+set 4096*12 for batch_size -> 8G VRAM,
+and set learning rate to 1e-4 and number of epoch to 100.
 
 3. Finally, load the policy network and use it to control the robot env in the simulation environment.
 To visualize, run
 ```angular2html
-python scripts/rsl_rl/sim_after_distill.py --task GenDog1
+python scripts/rsl_rl/sim_after_distill.py --task GenDog1 --video --video_length 200
 ```
 ```angular2html
-python scripts/rsl_rl/sim_after_distill.py --task GenDog2
+python scripts/rsl_rl/sim_after_distill.py --task GenDog2 --video --video_length 200
 ```
 ```angular2html
-python scripts/rsl_rl/sim_after_distill.py --task GenHumanoid1
+python scripts/rsl_rl/sim_after_distill.py --task GenHumanoid1 --video --video_length 200
 ```
+The corresponding video is stored in directory: log_dir/{experiment_name}/one_policy_videos/{task}
+
+4. For debug purpose, we might want to replace the one policy model with a actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. There, the new actor-critic model could be called baseline actor model. We want to adapt the new actor network to the original supervsied training pipeline, so we load the one policy dataset and extract the variables needed for actor network. To accomplish it by adding a preprocessing layer before the normal actor layer in order to keep the same policy input.
+To train the baseline actor model, run
+```angular2html
+python scripts/rsl_rl/distill_cross_distillation.py --task GenHumanoid1 --model_is_actor
+```
+To visualize, run
+```angular2html
+python scripts/rsl_rl/sim_after_distill.py --task GenHumanoid1 --video --video_length 200 --model_is_actor
+```
+For the baseline actor model, the same single task arg is required for training and visualization.
 
 Happy training! 
