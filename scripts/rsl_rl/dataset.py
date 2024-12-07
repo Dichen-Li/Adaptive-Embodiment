@@ -1,11 +1,13 @@
+import os
+
 import h5py
 import numpy as np
-import os
 import torch
 import yaml
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import TensorDataset
 
-from utils import AverageMeter
+from thread_safe_dict import ThreadSafeDict
 
 
 class DatasetSaver:
@@ -188,7 +190,7 @@ class LocomotionDatasetSingle:
 
         for file_name in hdf5_files:
             file_path = os.path.join(self.folder_path, file_name)
-            print(f"[INFO]: Loading file {file_path}")
+            # print(f"[INFO]: Loading file {file_path}")
 
             with h5py.File(file_path, "r") as data_file:
                 inputs = data_file["one_policy_observation"][:]
@@ -257,648 +259,19 @@ class LocomotionDatasetSingle:
         }
 
 
-import os
-import numpy as np
-import torch
-from torch.utils.data import Dataset, DataLoader
-import yaml
-import h5py
-import random
-from collections import OrderedDict
-
-from cachetools import LRUCache
-from threading import RLock
-
-
-class ThreadSafeLRUCache:
-    def __init__(self, max_size=128):
-        """
-        Initialize a thread-safe LRU cache.
-
-        Args:
-            max_size (int): Maximum number of items to store in the cache.
-        """
-        self.cache = LRUCache(maxsize=max_size)
-        self.lock = RLock()
-
-    def get(self, key):
-        """
-        Get a value from the cache.
-
-        Args:
-            key: The key to look up.
-
-        Returns:
-            The value associated with the key, or None if the key is not found.
-        """
-        with self.lock:
-            return self.cache.get(key)
-
-    def put(self, key, value):
-        """
-        Add a value to the cache. If the cache is full, the least recently used item is evicted.
-
-        Args:
-            key: The key for the value.
-            value: The value to store.
-        """
-        with self.lock:
-            self.cache[key] = value  # LRUCache automatically handles eviction
-
-    def delete(self, key):
-        """
-        Remove a key from the cache.
-
-        Args:
-            key: The key to remove.
-        """
-        with self.lock:
-            if key in self.cache:
-                del self.cache[key]
-
-    def clear(self):
-        """
-        Clear all items from the cache.
-        """
-        with self.lock:
-            self.cache.clear()
-
-    def size(self):
-        """
-        Get the current size of the cache.
-
-        Returns:
-            int: The number of items currently in the cache.
-        """
-        with self.lock:
-            return len(self.cache)  # Returns the number of items in the cache
-
-
-# class LocomotionDataset(Dataset):
-#     def __init__(self, folder_paths, max_steps_in_memory=None, max_files_in_memory=None):
-#         """
-#         Initialize the LocomotionDataset with caching.
-#
-#         Args:
-#             folder_paths (list): List of paths to folders containing HDF5 files and metadata.
-#             max_steps_in_memory (int, optional): Maximum number of steps to keep in memory.
-#             max_files_in_memory (int, optional): Maximum number of files to keep in memory.
-#         """
-#         assert (
-#                 max_steps_in_memory or max_files_in_memory
-#         ), "You must specify either max_steps_in_memory or max_files_in_memory."
-#
-#         self.folder_paths = folder_paths
-#         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
-#         self.file_indices = []  # Map global sample indices to (folder_idx, file_idx, step, env)
-#         self.folder_indices = []  # Map global sample indices to folder indices
-#         self._calculate_total_samples()
-#
-#         # Caching configuration
-#         self.max_steps_in_memory = max_steps_in_memory
-#         self.max_files_in_memory = max_files_in_memory
-#         self.cache = ThreadSafeLRUCache(max_size=max_files_in_memory)
-#
-#     def _load_file(self, folder_idx, file_idx):
-#         """
-#         Load a specific HDF5 file into memory.
-#
-#         Args:
-#             folder_idx (int): Index of the folder.
-#             file_idx (int): Index of the file within the folder.
-#
-#         Returns:
-#             tuple: (inputs, targets) from the HDF5 file.
-#         """
-#         folder_path = self.folder_paths[folder_idx]
-#         metadata = self.metadata_list[folder_idx]
-#
-#         hdf5_files = sorted(
-#             [f for f in os.listdir(folder_path) if f.endswith(".h5")],
-#             key=lambda x: int(x.split('_')[-1].split('.')[0])
-#         )
-#         file_path = os.path.join(folder_path, hdf5_files[file_idx])
-#
-#         with h5py.File(file_path, "r") as data_file:
-#             inputs = np.array(data_file["one_policy_observation"][:])
-#             targets = np.array(data_file["actions"][:])
-#
-#         # Sanity check
-#         steps_per_file = metadata["steps_per_file"]
-#         parallel_envs = metadata["parallel_envs"]
-#         if inputs.shape != (steps_per_file, parallel_envs, inputs.shape[-1]):
-#             raise ValueError(f"Input shape mismatch in file {file_path}.")
-#         if targets.shape != (steps_per_file, parallel_envs, targets.shape[-1]):
-#             raise ValueError(f"Target shape mismatch in file {file_path}.")
-#
-#         return inputs, targets
-#
-#     def _cache_file(self, folder_idx, file_idx):
-#         """
-#         Cache a specific HDF5 file using a thread-safe LRU cache.
-#
-#         Args:
-#             folder_idx (int): Index of the folder.
-#             file_idx (int): Index of the file within the folder.
-#         """
-#         cache_key = (folder_idx, file_idx)
-#         cached_file = self.cache.get(cache_key)
-#         if cached_file is None:
-#             # Load the file and add it to the cache
-#             inputs, targets = self._load_file(folder_idx, file_idx)
-#             self.cache.put(cache_key, (inputs, targets))
-#             del inputs, targets
-#         return self.cache.get(cache_key)
-#
-#     def _load_metadata(self, folder_path):
-#         """
-#         Load metadata from the YAML file in a dataset folder.
-#
-#         Args:
-#             folder_path (str): Path to the folder.
-#
-#         Returns:
-#             dict: Metadata containing environment parameters.
-#         """
-#         metadata_path = os.path.join(folder_path, "metadata.yaml")
-#         if not os.path.exists(metadata_path):
-#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-#
-#         with open(metadata_path, "r") as metadata_file:
-#             metadata = yaml.safe_load(metadata_file)
-#
-#         print(f"[INFO]: Loaded metadata from {metadata_path}")
-#         return metadata
-#
-#     def _calculate_total_samples(self):
-#         """
-#         Calculate the total number of samples in the dataset using metadata.
-#         """
-#         self.total_samples = 0
-#         for folder_idx, folder_path in enumerate(self.folder_paths):
-#             metadata = self.metadata_list[folder_idx]
-#             steps_per_file = metadata["steps_per_file"]
-#             parallel_envs = metadata["parallel_envs"]
-#
-#             hdf5_files = sorted(
-#                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
-#                 key=lambda x: int(x.split('_')[-1].split('.')[0])
-#             )
-#
-#             num_files = len(hdf5_files)
-#             folder_samples = num_files * steps_per_file * parallel_envs
-#             self.total_samples += folder_samples
-#
-#             # Map global indices to file/sample indices and folder indices
-#             for file_idx in range(num_files):
-#                 for step in range(steps_per_file):
-#                     for env in range(parallel_envs):
-#                         self.file_indices.append((folder_idx, file_idx, step, env))
-#                         self.folder_indices.append(folder_idx)
-#
-#         print(f"[INFO]: Total samples across folders: {self.total_samples}")
-#
-#     def __len__(self):
-#         """
-#         Get the total number of samples in the dataset.
-#         """
-#         return self.total_samples
-#
-#     def __getitem__(self, index):
-#         """
-#         Retrieve a sample from the dataset by global index.
-#
-#         Args:
-#             index (int): Global index of the sample.
-#
-#         Returns:
-#             tuple: Transformed input and target for the sample.
-#         """
-#         folder_idx, file_idx, step, env = self.file_indices[index]
-#         self._cache_file(folder_idx, file_idx)
-#         inputs, targets = self.cache.get((folder_idx, file_idx))
-#
-#         input_sample = inputs[step, env]
-#         target_sample = targets[step, env]
-#         metadata = self.metadata_list[folder_idx]
-#
-#         # Transform the sample
-#         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
-#         return transformed_sample[:-1], transformed_sample[-1]
-#
-#     def _transform_sample(self, input_sample, target_sample, metadata):
-#         """
-#         Transform a single input and target sample into its components.
-#
-#         Args:
-#             input_sample (np.ndarray): The input sample (shape: [D]).
-#             target_sample (np.ndarray): The target sample (shape: [T]).
-#             metadata (dict): Metadata for this sample.
-#
-#         Returns:
-#             tuple: Transformed components.
-#         """
-#         state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
-#         target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
-#
-#         # Dynamic Joint Data Transformation
-#         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
-#         nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
-#         single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
-#         dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
-#
-#         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
-#         dynamic_joint_combined_state = dynamic_joint_combined_state.view(
-#             nr_dynamic_joint_observations, single_dynamic_joint_observation_length
-#         )
-#         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
-#         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
-#
-#         # Dynamic Foot Data Transformation
-#         dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
-#         nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
-#         single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
-#         dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
-#
-#         dynamic_foot_start = dynamic_joint_observation_length
-#         dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
-#         dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end]  # Focus only on last dim
-#         dynamic_foot_combined_state = dynamic_foot_combined_state.view(
-#             nr_dynamic_foot_observations, single_dynamic_foot_observation_length
-#         )
-#         dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
-#         dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
-#
-#         # General Policy State Transformation
-#         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
-#
-#         # Return transformed inputs and target
-#         return (
-#             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
-#             dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
-#             dynamic_foot_description,  # Shape: (nr_dynamic_foot_observations, dynamic_foot_description_size)
-#             dynamic_foot_state,  # Shape: (nr_dynamic_foot_observations, remaining_length)
-#             general_policy_state,  # Shape: (<concatenated_dim>)
-#             target  # Shape: (12,)
-#         )
-#
-#     def get_batch_indices(self, batch_size, shuffle=True):
-#         """
-#         Generate all indices for the dataset, ensuring batches come from the same folder
-#         and merging them in the specified order.
-#
-#         Args:
-#             batch_size (int): The size of each batch.
-#             shuffle (bool): Whether to shuffle the dataset.
-#
-#         Returns:
-#             list: A list of indices, where each sublist contains indices for a batch.
-#         """
-#         # Group indices by folder
-#         folder_to_indices = {}
-#         for idx, folder in enumerate(self.folder_indices):
-#             if folder not in folder_to_indices:
-#                 folder_to_indices[folder] = []
-#             folder_to_indices[folder].append(idx)
-#
-#         # Chunk indices for each folder
-#         folder_batches = []
-#         for folder_indices in folder_to_indices.values():
-#             folder_chunks = [
-#                 folder_indices[i:i + batch_size] for i in range(0, len(folder_indices), batch_size)
-#             ]
-#             folder_batches.extend(folder_chunks)
-#
-#         # Shuffle the list of batches (but not the contents of each batch)
-#         if shuffle:
-#             random.shuffle(folder_batches)
-#
-#         # Flatten the list of batches to return a single list of indices
-#         merged_indices = [idx for batch in folder_batches for idx in batch]
-#
-#         return merged_indices
-#
-#     def collate_fn(self, batch):
-#         """
-#         Collate function to combine samples into a batch.
-#
-#         Args:
-#             batch (list): List of samples, where each sample is a 2-tuple:
-#                         (inputs: 5-tuple, target: tensor).
-#
-#         Returns:
-#             tuple: A 2-tuple where:
-#                 - The first element is a 5-tuple of batched inputs.
-#                 - The second element is the batched target tensor.
-#         """
-#         inputs, targets = zip(*batch)  # Unpack inputs and targets
-#         inputs_by_component = zip(*inputs)  # Group inputs by component
-#         batched_inputs = tuple(torch.stack(component) for component in inputs_by_component)
-#         batched_targets = torch.stack(targets)
-#         return batched_inputs, batched_targets
-#
-#     def get_data_loader(self, batch_size, shuffle=True, num_workers=16):
-#         """
-#         Create a DataLoader for the dataset.
-#
-#         Args:
-#             batch_size (int): Size of each batch.
-#             shuffle (bool): Whether to shuffle the data.
-#             num_workers (int): Number of workers for data loading.
-#
-#         Returns:
-#             DataLoader: PyTorch DataLoader for the dataset.
-#         """
-#         sampler = torch.utils.data.sampler.BatchSampler(
-#             self.get_batch_indices(batch_size, shuffle),
-#             batch_size=batch_size,
-#             drop_last=False,
-#             num_workers=16
-#         )
-#         return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn, num_workers=num_workers)
-#
-# class LocomotionDataset(Dataset):
-#     def __init__(self, folder_paths, **kwargs):
-#         """
-#         Initialize the LocomotionDataset.
-#
-#         Args:
-#             folder_paths (list): List of paths to folders containing HDF5 files and metadata.
-#         """
-#         self.folder_paths = folder_paths
-#         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
-#         self.transformed_inputs = []
-#         self.transformed_targets = []
-#         self.folder_indices = []  # Track which folder each sample belongs to
-#
-#         # Load and preprocess the dataset
-#         self._load_all_data()
-#
-#     def _load_metadata(self, folder_path):
-#         """
-#         Load metadata from the YAML file in a dataset folder.
-#
-#         Args:
-#             folder_path (str): Path to the folder.
-#
-#         Returns:
-#             dict: Metadata containing environment parameters.
-#         """
-#         metadata_path = os.path.join(folder_path, "metadata.yaml")
-#         if not os.path.exists(metadata_path):
-#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-#
-#         with open(metadata_path, "r") as metadata_file:
-#             metadata = yaml.safe_load(metadata_file)
-#         print(f"[INFO]: Loaded metadata from {metadata_path}")
-#         return metadata
-#
-#     def _load_all_data(self):
-#         """
-#         Load and preprocess data from all specified folders.
-#         """
-#         for idx, folder_path in enumerate(self.folder_paths):
-#             hdf5_files = sorted(
-#                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
-#                 key=lambda x: int(x.split('_')[-1].split('.')[0])
-#             )
-#
-#             if not hdf5_files:
-#                 raise FileNotFoundError(f"No HDF5 files found in folder: {folder_path}")
-#
-#             hdf5_files = hdf5_files[:5]
-#             for file_name in hdf5_files:
-#                 file_path = os.path.join(folder_path, file_name)
-#                 print(f"[INFO]: Loading file {file_path}")
-#
-#                 with h5py.File(file_path, "r") as data_file:
-#                     inputs = data_file["one_policy_observation"][:]
-#                     targets = data_file["actions"][:]
-#
-#                     # Validate data
-#                     if np.any(inputs == None) or np.any(targets == None):  # Check for None
-#                         raise ValueError(f"None values found in file: {file_path}")
-#                     if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
-#                         raise ValueError(f"NaN values found in file: {file_path}")
-#
-#                     # Flatten (N, 4096, D) into (N * 4096, D)
-#                     inputs = inputs.reshape(-1, inputs.shape[-1])  # Flatten sample dimension
-#                     targets = targets.reshape(-1, targets.shape[-1])  # Flatten sample dimension
-#
-#                     # Transform and store components
-#                     for input_sample, target_sample in zip(inputs, targets):
-#                         components = self._transform_sample(input_sample, target_sample, self.metadata_list[idx])
-#                         self.transformed_inputs.append(components[:-1])  # Exclude target from inputs
-#                         self.transformed_targets.append(components[-1])  # Only store target separately
-#                         self.folder_indices.append(idx)  # Track folder index for each sample
-#
-#         print(f"[INFO]: Preprocessed dataset with {len(self.transformed_inputs)} samples.")
-#
-#     def _transform_sample(self, input_sample, target_sample, metadata):
-#         """
-#         Transform a single input and target sample into its components.
-#
-#         Args:
-#             input_sample (np.ndarray): The input sample (shape: [D]).
-#             target_sample (np.ndarray): The target sample (shape: [T]).
-#             metadata (dict): Metadata for this sample.
-#
-#         Returns:
-#             tuple: Transformed components.
-#         """
-#         state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
-#         target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
-#
-#         # Dynamic Joint Data Transformation
-#         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
-#         nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
-#         single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
-#         dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
-#
-#         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
-#         dynamic_joint_combined_state = dynamic_joint_combined_state.view(
-#             nr_dynamic_joint_observations, single_dynamic_joint_observation_length
-#         )
-#         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
-#         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
-#
-#         # Dynamic Foot Data Transformation
-#         dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
-#         nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
-#         single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
-#         dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
-#
-#         dynamic_foot_start = dynamic_joint_observation_length
-#         dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
-#         dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end]  # Focus only on last dim
-#         dynamic_foot_combined_state = dynamic_foot_combined_state.view(
-#             nr_dynamic_foot_observations, single_dynamic_foot_observation_length
-#         )
-#         dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
-#         dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
-#
-#         # General Policy State Transformation
-#         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
-#
-#         # Return transformed inputs and target
-#         return (
-#             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
-#             dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
-#             dynamic_foot_description,  # Shape: (nr_dynamic_foot_observations, dynamic_foot_description_size)
-#             dynamic_foot_state,  # Shape: (nr_dynamic_foot_observations, remaining_length)
-#             general_policy_state,  # Shape: (<concatenated_dim>)
-#             target  # Shape: (12,)
-#         )
-#
-#     def __len__(self):
-#         """
-#         Get the total number of samples in the dataset.
-#         """
-#         return len(self.transformed_inputs)
-#
-#     # def __getitem__(self, index):
-#     #     """
-#     #     Get a preprocessed sample from the dataset at a specific index.
-#
-#     #     Args:
-#     #         index (int): Index of the sample.
-#
-#     #     Returns:
-#     #         tuple: Transformed inputs and target for the sample.
-#     #     """
-#     #     return (self.transformed_inputs[index], self.transformed_targets[index])
-#
-#     def __getitem__(self, index):
-#         """
-#         Get a preprocessed sample from the dataset at a specific index.
-#
-#         Args:
-#             index (int or list): Index of the sample(s).
-#
-#         Returns:
-#             tuple: Transformed inputs and target for the sample(s).
-#         """
-#         # import ipdb; ipdb.set_trace()
-#         if isinstance(index, int):
-#             return (self.transformed_inputs[index], self.transformed_targets[index])
-#         else:
-#             return ([self.transformed_inputs[i] for i in index], self.transformed_targets[index])
-#
-#     # def get_batch_indices(self, batch_size, shuffle=True):
-#     #     """
-#     #     Generate all indices for the dataset, ensuring batches come from the same folder.
-#
-#     #     Args:
-#     #         batch_size (int): The size of each batch.
-#     #         shuffle (bool): Whether to shuffle the dataset.
-#
-#     #     Returns:
-#     #         list: A list of lists, where each sublist contains indices for a batch.
-#     #     """
-#     #     if shuffle:
-#     #         indices = torch.randperm(len(self.folder_indices)).tolist()
-#     #     else:
-#     #         indices = list(range(len(self.folder_indices)))
-#
-#     #     # Group indices by folder
-#     #     folder_to_indices = {}
-#     #     for idx in indices:
-#     #         folder = self.folder_indices[idx]
-#     #         if folder not in folder_to_indices:
-#     #             folder_to_indices[folder] = []
-#     #         folder_to_indices[folder].append(idx)
-#
-#     #     # Create batches for each folder
-#     #     batch_indices = []
-#     #     for folder, folder_indices in folder_to_indices.items():
-#     #         for i in range(0, len(folder_indices), batch_size):
-#     #             batch_indices.append(folder_indices[i:i + batch_size])
-#
-#     #     return batch_indices
-#
-#     def get_batch_indices(self, batch_size, shuffle=True):
-#         """
-#         Generate all indices for the dataset, ensuring batches come from the same folder
-#         and merging them in the specified order.
-#
-#         Args:
-#             batch_size (int): The size of each batch.
-#             shuffle (bool): Whether to shuffle the dataset.
-#
-#         Returns:
-#             list: A list of indices, where each sublist contains indices for a batch.
-#         """
-#         # Group indices by folder
-#         folder_to_indices = {}
-#         for idx, folder in enumerate(self.folder_indices):
-#             if folder not in folder_to_indices:
-#                 folder_to_indices[folder] = []
-#             folder_to_indices[folder].append(idx)
-#
-#         # Chunk indices for each folder
-#         folder_batches = []
-#         for folder_indices in folder_to_indices.values():
-#             # Split folder indices into chunks of batch_size
-#             folder_chunks = [folder_indices[i:i + batch_size] for i in range(0, len(folder_indices) - batch_size,
-#                                                                              batch_size)]  # reduce the stop length by batch_size to avoid getting partial slice, which may bug sampler
-#             folder_batches.extend(folder_chunks)
-#
-#         # Shuffle the list of batches (but not the contents of each batch)
-#         if shuffle:
-#             random.shuffle(folder_batches)
-#
-#         # Flatten the list of batches to return a single list of indices
-#         merged_indices = [idx for batch in folder_batches for idx in batch]
-#
-#         return merged_indices
-#
-#     def collate_fn(self, batch):
-#         """
-#         Collate function to combine samples into a batch.
-#
-#         Args:
-#             batch (list): List of samples, where each sample is a 2-tuple:
-#                         (inputs: 5-tuple, target: tensor).
-#
-#         Returns:
-#             tuple: A 2-tuple where:
-#                 - The first element is a 5-tuple of batched inputs.
-#                 - The second element is the batched target tensor.
-#         """
-#         # Unpack inputs and targets
-#         inputs, targets = zip(*batch)  # inputs: list of 5-tuples, targets: list of tensors
-#
-#         # Transpose the inputs to group by component
-#         inputs_by_component = zip(*inputs)  # Convert from list of 5-tuples to 5 lists
-#
-#         # Stack each component of inputs along the batch dimension
-#         batched_inputs = tuple(torch.stack(component) for component in inputs_by_component)
-#
-#         # Stack targets along the batch dimension
-#         batched_targets = torch.stack(targets)
-#
-#         return batched_inputs, batched_targets
-#
-#     def get_data_loader(self, batch_size, shuffle=True, **kwargs):
-#         """
-#         Create a DataLoader for the dataset.
-#         """
-#         sampler = torch.utils.data.sampler.BatchSampler(
-#             self.get_batch_indices(batch_size, shuffle),
-#             batch_size=batch_size,
-#             drop_last=False
-#         )
-#         return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn, num_workers=16)
-#
-
-
-from thread_safe_dict import ThreadSafeDict
-
-
 class LocomotionDataset(Dataset):
-    def __init__(self, folder_paths, max_files_in_memory=128):
+    def __init__(self, folder_paths, max_files_in_memory):
         """
         Initialize the LocomotionDataset.
+
+        The dataset uses memoization for data loading, i.e., once a data file is loaded it will also be stored in cache
+        Note that DataLoader spawns num_workers DataSet classes, each for one thread, so the cache will not
+        be shared across multiple threads.
+        TODO: Consider implementing a cache sharable across all threads to avoid duplicate IO and memory usage
+
+        The dataset sampler also guarantees that the samples in one batch are all from one .h5 file, which
+        may reduce randomness in data but increases reading speed and ease implementation.
+        Thus, an implicit assumption is that one .h5 file contains at least one batch of data.
 
         Args:
             folder_paths (list): List of paths to dataset folders.
@@ -917,7 +290,8 @@ class LocomotionDataset(Dataset):
         self._prepare_file_indices()
 
         # Compute hit rate for caching, for debugging purpose
-        self.cache_hit_count = AverageMeter()
+        # self.cache_hit_count = AverageMeter()
+        # self.cache_query_time = AverageMeter()
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders.")
@@ -978,7 +352,7 @@ class LocomotionDataset(Dataset):
         """
         folder_path, file_name, steps_per_file, parallel_envs = self.file_indices[(folder_idx, file_idx)]
         file_path = os.path.join(folder_path, file_name)
-        print(f"[INFO]: Loading file {file_path}")
+        # print(f"[INFO]: Loading file {file_path}")
 
         with h5py.File(file_path, "r") as data_file:
             inputs = np.array(data_file["one_policy_observation"][:])
@@ -1008,12 +382,13 @@ class LocomotionDataset(Dataset):
         if cached_file is None:
             inputs, targets = self._load_file(folder_idx, file_idx)
             self.cache.put(cache_key, (inputs, targets))
-            self.cache_hit_count.update(0, 1)
-        else:
-            self.cache_hit_count.update(1, 1/self.batch_size)
-            # print(f"[INFO]: Cached file found {cache_key}")
-        if self.cache_hit_count.count % 100000:
-            print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
+            return inputs, targets
+            # self.cache_hit_count.update(0, 1)
+        # else:
+        # self.cache_hit_count.update(1, 1 / self.batch_size)
+        # print(f"[INFO]: Cached file found {cache_key}")
+        # if self.cache_hit_count.count % 1000000:
+        #     print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
         return self.cache.get(cache_key)
 
     def __getitem__(self, index):
@@ -1030,7 +405,14 @@ class LocomotionDataset(Dataset):
         folder_idx, file_idx, step, env = index
 
         # Load data from cache or file
+        # start_time = time.time()
         inputs, targets = self._cache_file(folder_idx, file_idx)
+        # self.cache_query_time.update(time.time() - start_time, 1)
+        # if self.cache_query_time.count % self.batch_size == 0:
+        #     print(f'cache query time for a batch on avg = {self.cache_query_time.avg * self.batch_size}')
+        #     keys = self.cache.keys()
+        #     file_indices = set([(x[0], x[1]) for x in keys])
+        #     print(f'file indices: {file_indices}')
 
         # Retrieve specific sample within the file
         input_sample = inputs[step, env]
