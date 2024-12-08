@@ -79,6 +79,18 @@ class Go2EnvCfg(DirectRLEnvCfg):
     max_nr_action_delay_steps = 1
     mixed_action_delay_chance = 0.05
 
+    # Control
+    motor_strength_min = 0.5
+    motor_strength_max = 1.5
+    p_gain_factor_min = 0.5
+    p_gain_factor_max = 1.5
+    d_gain_factor_min = 0.5
+    d_gain_factor_max = 1.5
+    asymmetric_control_factor_min = 0.95
+    asymmetric_control_factor_max = 1.05
+    p_law_position_offset_min = -0.05
+    p_law_position_offset_max = 0.05
+
     # Observation noise
     joint_position_noise = 0.01
     joint_velocity_noise = 1.5
