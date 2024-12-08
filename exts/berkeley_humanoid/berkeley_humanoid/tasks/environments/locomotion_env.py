@@ -4,7 +4,7 @@ import math
 
 from omni.isaac.lab.assets import Articulation
 from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
-from omni.isaac.core.utils.torch.rotations import compute_rot
+import omni.isaac.lab.envs.mdp as mdp
 from omni.isaac.lab.sensors import ContactSensor
 import omni.isaac.lab.sim as sim_utils
 
@@ -17,6 +17,12 @@ class LocomotionEnv(DirectRLEnv):
         super().__init__(cfg, render_mode, **kwargs)
         self.action_dt = self.cfg.action_dt
 
+        self.all_bodies_cfg = self.cfg.all_bodies_cfg
+        self.all_bodies_cfg.resolve(self.scene)
+        self.all_joints_cfg = self.cfg.all_joints_cfg
+        self.all_joints_cfg.resolve(self.scene)
+        self.trunk_cfg = self.cfg.trunk_cfg
+        self.trunk_cfg.resolve(self.scene)
         self.trunk_contact_cfg = self.cfg.trunk_contact_cfg
         self.trunk_contact_cfg.resolve(self.scene)
         self.feet_contact_cfg = self.cfg.feet_contact_cfg
@@ -92,6 +98,31 @@ class LocomotionEnv(DirectRLEnv):
         self.gravity_vector_noise = self.cfg.gravity_vector_noise
 
         self.joint_and_feet_dropout_chance = self.cfg.joint_and_feet_dropout_chance
+
+        self.static_friction_min = self.cfg.static_friction_min
+        self.static_friction_max = self.cfg.static_friction_max
+        self.dynamic_friction_min = self.cfg.dynamic_friction_min
+        self.dynamic_friction_max = self.cfg.dynamic_friction_max
+        self.restitution_min = self.cfg.restitution_min
+        self.restitution_max = self.cfg.restitution_max
+        self.added_trunk_mass_min = self.cfg.added_trunk_mass_min
+        self.added_trunk_mass_max = self.cfg.added_trunk_mass_max
+        self.added_gravity_min = self.cfg.added_gravity_min
+        self.added_gravity_max = self.cfg.added_gravity_max
+        self.joint_friction_min = self.cfg.joint_friction_min
+        self.joint_friction_max = self.cfg.joint_friction_max
+        self.joint_armature_min = self.cfg.joint_armature_min
+        self.joint_armature_max = self.cfg.joint_armature_max
+        event_term_config = mdp.EventTermCfg()
+        event_term_config.params = {
+            "env": self,
+            "static_friction_range": (self.static_friction_min, self.static_friction_max),
+            "dynamic_friction_range": (self.dynamic_friction_min, self.dynamic_friction_max),
+            "restitution_range": (self.restitution_min, self.restitution_max),
+            "num_buckets": 64,
+            "asset_cfg": self.all_bodies_cfg,
+        }
+        self.randomize_rigid_body_material = mdp.randomize_rigid_body_material(event_term_config, self)
 
         self.perturb_velocity_x_min = self.cfg.perturb_velocity_x_min
         self.perturb_velocity_x_max = self.cfg.perturb_velocity_x_max
@@ -188,17 +219,24 @@ class LocomotionEnv(DirectRLEnv):
         self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.d_gain_factor_max - self.d_gain_factor_min) + self.d_gain_factor_min
         self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_law_position_offset_max - self.p_law_position_offset_min) + self.p_law_position_offset_min
 
+        # Model
+        env_randomization_indices = torch.nonzero(env_randomization_mask).flatten()
+        self.randomize_rigid_body_material(self, env_randomization_indices, (self.static_friction_min, self.static_friction_max), (self.dynamic_friction_min, self.dynamic_friction_max), (self.restitution_min, self.restitution_max), 64, self.all_bodies_cfg)
+        mdp.randomize_rigid_body_mass(self, env_randomization_indices, self.trunk_cfg, (self.added_trunk_mass_min, self.added_trunk_mass_max), "add")
+        mdp.randomize_physics_scene_gravity(self, env_randomization_indices, (self.added_gravity_min, self.added_gravity_max), "add")
+        mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (self.joint_friction_min, self.joint_friction_max), (self.joint_armature_min, self.joint_armature_max), None, None, "abs")
+
         # Perturbations
-        env_randomization_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
-        nr_perturbed_envs = env_randomization_mask.sum()
+        env_perturbation_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        nr_perturbed_envs = env_perturbation_mask.sum()
         perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_x_max - self.perturb_velocity_x_min) + self.perturb_velocity_x_min
         perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_y_max - self.perturb_velocity_y_min) + self.perturb_velocity_y_min
         perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_z_max - self.perturb_velocity_z_min) + self.perturb_velocity_z_min
-        current_global_velocity = self.robot.data.root_state_w[env_randomization_mask, 7:]
+        current_global_velocity = self.robot.data.root_state_w[env_perturbation_mask, 7:]
         current_global_velocity[:, 0] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_x + current_global_velocity[:, 0] * self.perturb_additive_multiplier, perturb_velocity_x)
         current_global_velocity[:, 1] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_y + current_global_velocity[:, 1] * self.perturb_additive_multiplier, perturb_velocity_y)
         current_global_velocity[:, 2] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_z + current_global_velocity[:, 2] * self.perturb_additive_multiplier, perturb_velocity_z)
-        env_perturbed_indices = torch.nonzero(env_randomization_mask).flatten()
+        env_perturbed_indices = torch.nonzero(env_perturbation_mask).flatten()
         self.robot.write_root_velocity_to_sim(current_global_velocity, env_perturbed_indices)
 
 

@@ -30,7 +30,11 @@ class Go2EnvCfg(DirectRLEnvCfg):
 
     action_dt = dt * decimation
 
-    sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
+    sim: SimulationCfg = SimulationCfg(
+        dt=dt,
+        render_interval=decimation,
+        disable_contact_processing=True,
+    )
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
         terrain_type="plane",
@@ -46,9 +50,12 @@ class Go2EnvCfg(DirectRLEnvCfg):
     )
 
     asset_name = "robot"
-    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=2.5, replicate_physics=True)
+    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=4.0, replicate_physics=True)
     robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
+    all_bodies_cfg = SceneEntityCfg("robot", body_names=".*")
+    all_joints_cfg = SceneEntityCfg("robot", joint_names=".*")
+    trunk_cfg = SceneEntityCfg("robot", body_names="base")
 
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -111,6 +118,22 @@ class Go2EnvCfg(DirectRLEnvCfg):
 
     # Observation dropout
     joint_and_feet_dropout_chance = 0.05
+
+    # Model
+    static_friction_min = 0.05
+    static_friction_max = 2.0
+    dynamic_friction_min = 0.05
+    dynamic_friction_max = 1.5
+    restitution_min = 0.0
+    restitution_max = 1.0
+    added_trunk_mass_min = -2.0
+    added_trunk_mass_max = 2.0
+    added_gravity_min = -1.0
+    added_gravity_max = 1.0
+    joint_friction_min = 0.0
+    joint_friction_max = 0.01
+    joint_armature_min = 0.0
+    joint_armature_max = 0.01
 
     # Perturbations
     perturb_velocity_x_min = -1.0
