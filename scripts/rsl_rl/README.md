@@ -1,3 +1,4 @@
+## Using subset of One Plicy observation for distillation policy
 Training:
 
 ```
@@ -18,3 +19,9 @@ Policy architecture:
 ```
 /home/research/anaconda3/envs/isaac_lab/lib/python3.10/site-packages/rsl_rl/modules/actor_critic.py
 ```
+
+## Using simple observation (teacher policy) for student policy
+Check out `train_obs_supervise_actor_critic.py` and `play_actor_critic_collect_obs.py`
+
+## Train One Policy for student policy
+`play_collect_data.py`, `sim_after_distill_one_policy.py` and `distill_cross_embodiment.py`
