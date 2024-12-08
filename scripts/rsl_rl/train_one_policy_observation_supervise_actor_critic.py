@@ -242,31 +242,32 @@ def main():
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path, is_best=True)
         print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_loss_meter.avg:.6f}")
 
-    # release memory
-    del train_dataset, train_loader
+    
+    # # release memory
+    # del train_dataset, train_loader
 
-    import ipdb; ipdb.set_trace()
-    # obtain the trained policy for inference
-    policy = runner.get_inference_policy(device=env.unwrapped.device)
+    # import ipdb; ipdb.set_trace()
+    # # obtain the trained policy for inference
+    # policy = runner.get_inference_policy(device=env.unwrapped.device)
 
-    # reset environment
-    obs, _ = env.get_observations()
-    timestep = 0
-    # simulate environment
-    while simulation_app.is_running():
-        # run everything in inference mode
-        with torch.inference_mode():
-            # agent stepping
-            actions = policy(obs)
-            # env stepping
-            obs, _, _, _ = env.step(actions)
+    # # reset environment
+    # obs, _ = env.get_observations()
+    # timestep = 0
+    # # simulate environment
+    # while simulation_app.is_running():
+    #     # run everything in inference mode
+    #     with torch.inference_mode():
+    #         # agent stepping
+    #         actions = policy(obs)
+    #         # env stepping
+    #         obs, _, _, _ = env.step(actions)
         
         
-        if args_cli.video:
-            timestep += 1
-            # Exit the play loop after recording one video
-            if timestep == args_cli.video_length:
-                break
+    #     if args_cli.video:
+    #         timestep += 1
+    #         # Exit the play loop after recording one video
+    #         if timestep == args_cli.video_length:
+    #             break
     # close the simulator
     env.close()
 
