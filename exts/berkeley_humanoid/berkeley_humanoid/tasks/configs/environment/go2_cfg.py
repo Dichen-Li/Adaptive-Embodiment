@@ -49,11 +49,15 @@ class Go2EnvCfg(DirectRLEnvCfg):
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=2.5, replicate_physics=True)
     robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
+    
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
     step_sampling_probability = 0.002
 
     action_scaling_factor = 0.3
 
+    # Reward
     reward_curriculum_steps = 12e6
     tracking_xy_velocity_command_coeff = 2.0    * action_dt
     tracking_yaw_velocity_command_coeff = 1.0   * action_dt
@@ -71,5 +75,14 @@ class Go2EnvCfg(DirectRLEnvCfg):
     symmetry_air_coeff = 0.5                    * action_dt
     feet_symmetry_pairs = [(0, 1), (2, 3)]
 
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+    # Observation noise
+    joint_position_noise = 0.01
+    joint_velocity_noise = 1.5
+    trunk_angular_velocity_noise = 0.2
+    ground_contact_noise_chance = 0.05
+    contact_time_noise_chance = 0.05
+    contact_time_noise_factor = 1.0
+    gravity_vector_noise = 0.05
+
+    # Observation dropout
+    joint_and_feet_dropout_chance = 0.05

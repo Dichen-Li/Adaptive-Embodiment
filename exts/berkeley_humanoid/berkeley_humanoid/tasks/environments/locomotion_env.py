@@ -15,6 +15,8 @@ class LocomotionEnv(DirectRLEnv):
 
     def __init__(self, cfg: DirectRLEnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)
+        self.action_dt = self.cfg.action_dt
+
         self.trunk_contact_cfg = self.cfg.trunk_contact_cfg
         self.trunk_contact_cfg.resolve(self.scene)
         self.feet_contact_cfg = self.cfg.feet_contact_cfg
@@ -51,6 +53,16 @@ class LocomotionEnv(DirectRLEnv):
         self.air_time_coeff = self.cfg.air_time_coeff
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int64, device=self.sim.device)
+
+        self.joint_position_noise = self.cfg.joint_position_noise
+        self.joint_velocity_noise = self.cfg.joint_velocity_noise
+        self.trunk_angular_velocity_noise = self.cfg.trunk_angular_velocity_noise
+        self.ground_contact_noise_chance = self.cfg.ground_contact_noise_chance
+        self.contact_time_noise_chance = self.cfg.contact_time_noise_chance
+        self.contact_time_noise_factor = self.cfg.contact_time_noise_factor
+        self.gravity_vector_noise = self.cfg.gravity_vector_noise
+
+        self.joint_and_feet_dropout_chance = self.cfg.joint_and_feet_dropout_chance
 
         self.set_observation_indices()
 
@@ -234,9 +246,22 @@ class LocomotionEnv(DirectRLEnv):
             dim=1,
         )
         
-        # TODO: Add noise
+        # Add noise
+        observation[:, self.joint_positions_obs_idx] += torch.rand_like(observation[:, self.joint_positions_obs_idx]) * self.joint_position_noise
+        observation[:, self.joint_velocities_obs_idx] += torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * self.joint_velocity_noise
+        observation[:, self.trunk_angular_velocity_obs_idx] += torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * self.trunk_angular_velocity_noise
+        observation[:, self.projected_gravity_vector_obs_idx] += torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * self.gravity_vector_noise
+        observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
+        observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * self.action_dt), observation[:, self.feet_air_time_obs_idx])
 
-        # TODO: Dropout
+        # Dropout
+        joint_dropout_mask = torch.rand((self.num_envs, self.nr_joints), device=self.sim.device) < self.joint_and_feet_dropout_chance
+        feet_dropout_mask = torch.rand((self.num_envs, self.nr_feet), device=self.sim.device) < self.joint_and_feet_dropout_chance
+        observation[:, self.joint_positions_obs_idx][joint_dropout_mask] = 0.0
+        observation[:, self.joint_velocities_obs_idx][joint_dropout_mask] = 0.0
+        observation[:, self.joint_previous_actions_obs_idx][joint_dropout_mask] = 0.0
+        observation[:, self.feet_contact_obs_idx][feet_dropout_mask] = 0.0
+        observation[:, self.feet_air_time_obs_idx][feet_dropout_mask] = 0.0
 
         # Normalize & Clip
         observation[:, self.joint_positions_obs_idx] /= 4.6
