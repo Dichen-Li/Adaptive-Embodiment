@@ -14,3 +14,7 @@ Test teacher policy:
 python scripts/rsl_rl/play.py --task GenDog2
 ```
 
+Policy architecture:
+```
+/home/research/anaconda3/envs/isaac_lab/lib/python3.10/site-packages/rsl_rl/modules/actor_critic.py
+```
