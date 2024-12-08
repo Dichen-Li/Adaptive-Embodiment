@@ -77,22 +77,30 @@ def save_checkpoint(policy, optimizer, epoch, log_dir, is_best=False):
         torch.save(checkpoint, best_checkpoint_path)
         print(f"[INFO] Best model saved to {best_checkpoint_path}")
 
-def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, meta_dict, device='cpu'):
+
+def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, metadata, device):
+    """
+        Transform one policy observation into 5 inputs that a one policy model accept
+        Args:
+            one_policy_observation (tensor): The one policy observation. eg. For GenDog1, the size is 340 on the last dimension.
+            meta: could be anything that provide the metadata of robot joint and foot numbers. By default, pass in env.unwrapped.
+            device: 
+        """
     # Dynamic Joint Observations
-    nr_dynamic_joint_observations = meta_dict.nr_dynamic_joint_observations
-    single_dynamic_joint_observation_length = meta_dict.single_dynamic_joint_observation_length
-    dynamic_joint_observation_length = meta_dict.dynamic_joint_observation_length
-    dynamic_joint_description_size = meta_dict.dynamic_joint_description_size
+    nr_dynamic_joint_observations = metadata.nr_dynamic_joint_observations
+    single_dynamic_joint_observation_length = metadata.single_dynamic_joint_observation_length
+    dynamic_joint_observation_length = metadata.dynamic_joint_observation_length
+    dynamic_joint_description_size = metadata.dynamic_joint_description_size
 
     dynamic_joint_combined_state = one_policy_observation[:, :dynamic_joint_observation_length].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
     dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
     dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
 
     # Dynamic Foot Observations
-    nr_dynamic_foot_observations = meta_dict.nr_dynamic_foot_observations
-    single_dynamic_foot_observation_length = meta_dict.single_dynamic_foot_observation_length
-    dynamic_foot_observation_length = meta_dict.dynamic_foot_observation_length
-    dynamic_foot_description_size = meta_dict.dynamic_foot_description_size
+    nr_dynamic_foot_observations = metadata.nr_dynamic_foot_observations
+    single_dynamic_foot_observation_length = metadata.single_dynamic_foot_observation_length
+    dynamic_foot_observation_length = metadata.dynamic_foot_observation_length
+    dynamic_foot_description_size = metadata.dynamic_foot_description_size
 
     dynamic_foot_combined_state = one_policy_observation[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
     dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
@@ -102,7 +110,7 @@ def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, meta_
     policy_general_state_end_index = one_policy_observation.shape[1]
     policy_general_state_mask = torch.arange(policy_general_state_start_index, policy_general_state_end_index, device=device)
     # exclude truck_linear_vel and height # 20->16
-    policy_exlucion_index = torch.tensor((meta_dict.trunk_linear_vel_update_obs_idx + meta_dict.height_update_obs_idx), device=device)
+    policy_exlucion_index = torch.tensor((metadata.trunk_linear_vel_update_obs_idx + metadata.height_update_obs_idx), device=device)
     policy_general_state_mask = policy_general_state_mask[~torch.isin(policy_general_state_mask, policy_exlucion_index)]
     general_policy_state = one_policy_observation[:, policy_general_state_mask]
 
