@@ -189,4 +189,20 @@ python scripts/rsl_rl/sim_after_distill.py --task GenHumanoid1 --video --video_l
 ```
 For the baseline actor model, the same single task arg is required for training and visualization.
 
+The above debug shows that baseline actor model failed. To further investigate the bug, we want to reproduce the original actor-critic supervise training pipeline. In this pipeline, we save the simple obs (input for a simple actor-critic) into logs/rsl_rl/GenDog2/h5py_record_simple_obs. We then load the simple obs, train the simple actor-critic model and store the trained pt file into logs/rsl_rl/GenDog2/pt_save_actor_critic.
+Run,
+```angular2html
+python scripts/rsl_rl/play_actor_critic_collect_obs.py --task GenHumanoid2
+python scripts/rsl_rl/train_obs_supervise_actor_critic.py --task GenHumanoid2
+```
+The above pipeline successfully trained the embodiment to walk. The loss goes down fast within 1000 epochs.
+
+Nextstep, to further investigate if the one policy observation is problematic, we extract the needed values from one policy observation into the above actor-critic model, and do the supervise learning. In this pipeline, we load one policy observation from logs/rsl_rl/GenDog2/h5py_record, train the simple actor-critic model and  store the trained pt file into logs/rsl_rl/GenDog2/pt_save_actor_critic.
+Run,
+```angular2html
+python scripts/rsl_rl/train_one_policy_observation_supervise_actor_critic.py --task GenDog2 --num_epochs 100
+```
+We expect to see loss going down to 0.05 in 100 epochs.
+Work continued.
+
 Happy training! 
