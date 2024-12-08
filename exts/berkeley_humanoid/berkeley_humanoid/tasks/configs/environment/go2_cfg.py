@@ -49,7 +49,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=2.5, replicate_physics=True)
     robot: ArticulationCfg = GO2_CFG.replace(prim_path="/World/envs/env_.*/Robot")
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
-    
+
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
@@ -58,7 +58,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
     action_scaling_factor = 0.3
 
     # Reward
-    reward_curriculum_steps = 12e6
+    reward_curriculum_steps = 20e6
     tracking_xy_velocity_command_coeff = 2.0    * action_dt
     tracking_yaw_velocity_command_coeff = 1.0   * action_dt
     z_velocity_coeff = 2.0                      * action_dt
