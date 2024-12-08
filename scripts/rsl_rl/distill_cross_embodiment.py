@@ -178,7 +178,7 @@ def main():
     # Define model, optimizer, and loss
     if args_cli.model_is_actor:
         from supervised_actor.policy import get_policy
-        metadata = dataset.metadata_list[0]
+        metadata = train_dataset.metadata_list[0]
         nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
         model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         policy = get_policy(nr_dynamic_joint_observations, model_device)
