@@ -17,8 +17,9 @@ def parse_arguments():
     parser.add_argument("--tasks", nargs="+", type=str, default=None, help="List of tasks to process.")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
     parser.add_argument("--batch_size", type=int, default=4090*8, help="Batch size. 4096*16 takes 10G")
-    parser.add_argument("--exp_name", type=str, default=datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
-                        help="Name of the experiment. Default is the current date and time.")
+    parser.add_argument("--exp_name", type=str, default=None,
+                        help="Name of the experiment. If provided, the current date and time will be appended. "
+                             "Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=1e-4, help="learning rate")
@@ -26,7 +27,18 @@ def parse_arguments():
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
     parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
-    return parser.parse_args()
+    parser.add_argument("--naive_actor", action="store_true", default=False, help="Use naive actor or not. ")
+
+    args = parser.parse_args()
+
+    # Handle experiment name
+    current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    if args.exp_name:
+        args.exp_name = f"{args.exp_name}_{current_datetime}"
+    else:
+        args.exp_name = current_datetime
+
+    return args
 
 
 def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num_epochs, model_device,
@@ -67,6 +79,12 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     dynamic_foot_state,
                     general_policy_state,
                 )
+                # one_input = torch.cat([
+                #     dynamic_joint_description.flatten(1), dynamic_joint_state.flatten(1),
+                #     dynamic_foot_description.flatten(1), dynamic_foot_state.flatten(1),
+                #     general_policy_state.flatten(1),
+                # ], dim=1)
+                # batch_predictions = policy(one_input)
                 loss = criterion(batch_predictions, batch_targets)
 
                 # Backward pass and optimization
@@ -145,11 +163,13 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
 def main():
     args_cli = parse_arguments()
+
     # Prepare log directory
     log_dir = os.path.join(args_cli.log_dir, args_cli.exp_name)
     os.makedirs(log_dir, exist_ok=True)
 
     # Dataset paths
+    assert args_cli.tasks is not None, f"Please specify value for arg --tasks"
     dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.tasks]
 
     # Training dataset
@@ -174,19 +194,27 @@ def main():
         batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
     )
 
+    model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     # Define model, optimizer, and loss
     if args_cli.model_is_actor:
         from supervised_actor.policy import get_policy
         metadata = train_dataset.metadata_list[0]
         nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
-        model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         policy = get_policy(nr_dynamic_joint_observations, model_device)
+    elif args_cli.naive_actor:
+        from naive_actor import ActorMLP
+        from torch import nn
+        policy = ActorMLP(input_dim=316, hidden_dim=256, output_dim=12,
+                          activation=nn.LeakyReLU(negative_slope=0.03)).to(model_device)
     else:
         from silver_badger_torch.policy import get_policy
-        model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         policy = get_policy(model_device)
+
+    print(policy)
+
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
+    optimizer = torch.optim.AdamW(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
 
     # Train the policy
