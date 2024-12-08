@@ -154,16 +154,16 @@ def main():
         batch_size=args_cli.batch_size, shuffle=True, num_workers=args_cli.num_workers
     )
 
-    # Validation dataset
-    val_dataset = LocomotionDataset(
-        folder_paths=dataset_dirs,
-        train_mode=False,
-        val_ratio=args_cli.val_ratio,
-        max_files_in_memory=args_cli.max_files_in_memory
-    )
-    val_loader = val_dataset.get_data_loader(
-        batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
-    )
+    # # Validation dataset
+    # val_dataset = LocomotionDataset(
+    #     folder_paths=dataset_dirs,
+    #     train_mode=False,
+    #     val_ratio=args_cli.val_ratio,
+    #     max_files_in_memory=args_cli.max_files_in_memory
+    # )
+    # val_loader = val_dataset.get_data_loader(
+    #     batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
+    # )
 
     # Define loss function and optimizer
     criterion = torch.nn.MSELoss()
@@ -236,7 +236,32 @@ def main():
         if val_loss_meter.avg < best_val_loss:
             best_val_loss = val_loss_meter.avg
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path, is_best=True)
+    
 
+    # release memory
+    del train_dataset, train_loader
+
+    # obtain the trained policy for inference
+    policy = runner.get_inference_policy(device=env.unwrapped.device)
+
+    # reset environment
+    obs, _ = env.get_observations()
+    timestep = 0
+    # simulate environment
+    while simulation_app.is_running():
+        # run everything in inference mode
+        with torch.inference_mode():
+            # agent stepping
+            actions = policy(obs)
+            # env stepping
+            obs, _, _, _ = env.step(actions)
+        
+        
+        if args_cli.video:
+            timestep += 1
+            # Exit the play loop after recording one video
+            if timestep == args_cli.video_length:
+                break
     # close the simulator
     env.close()
 
