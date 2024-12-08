@@ -50,7 +50,7 @@ defined in  `_get_observations` and the reward function is `_get_rewards`.
 
 
 ## Single robot training and testing
-There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1nPq_osKWaZ_P89GdC27DXqrPYIGqKPCh/view?usp=sharing), unzip it and move it to the asset folder:
+There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1T9D7uOnAsab9wM6gAQSQY9PHTk6zu2PQ/view?usp=sharing), unzip it and move it to the asset folder:
 ```angular2html
 unzip gen_embodiments_1124.zip
 mv gen_embodiments_1124 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
