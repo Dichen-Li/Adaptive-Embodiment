@@ -125,7 +125,7 @@ def main():
     import h5py
     import numpy as np
     # Define the file path
-    h5py_record_file_path = os.path.join(log_dir, "h5py_record", "obs_actions.h5")
+    h5py_record_file_path = os.path.join(log_dir, "h5py_record_simple_obs", "obs_actions.h5")
     if not os.path.exists(h5py_record_file_path):
         print(f"[INFO]: h5py_record_file_path not found")
         env.close()
@@ -193,9 +193,16 @@ def main():
         plt.legend(fontsize=12)
         plt.tight_layout()
         plt.show()
-
+    
     # Save the new trained model
-    save_path = os.path.join(log_dir, "h5py_record/supervised_model.pt")
+    # save_path is ./logs/rsl_rl/task_name/pt_save_actor_critic/supervised_model.pt
+    save_path = os.path.join(log_dir, "pt_save_actor_critic")
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+        print(f"Directory '{save_path}' created.")
+    save_path = os.path.join(save_path, "supervised_model.pt")
+    from utils import ensure_unique_save_path
+    save_path = ensure_unique_save_path(save_path)
     torch.save(runner.alg.actor_critic.state_dict(), save_path)
     print(f"[INFO] Supervised trained model saved to {save_path}.")
 

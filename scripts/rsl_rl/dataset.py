@@ -355,7 +355,6 @@ class LocomotionDataset(Dataset):
                 selected_files = hdf5_files[num_val_files:]  # Remaining files for training
             else:
                 selected_files = hdf5_files[:num_val_files]  # First files for validation
-
             # Process selected files
             for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)

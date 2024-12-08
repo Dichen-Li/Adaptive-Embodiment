@@ -53,7 +53,6 @@ from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
 
-
 def main():
     """Play with RSL-RL agent."""
     # parse configuration
@@ -102,7 +101,8 @@ def main():
     h5py_timestep = 0
     h5py_record_length = 200
     # Define the file path
-    h5py_record_root_path = os.path.join(log_dir, "h5py_record")
+    # h5py_record_file_path is ./logs/rsl_rl/task_name/h5py_record_simple_obs/obs_actions.h5
+    h5py_record_root_path = os.path.join(log_dir, "h5py_record_simple_obs")
     if not os.path.exists(h5py_record_root_path):
         os.makedirs(h5py_record_root_path)
         print(f"Directory '{h5py_record_root_path}' created.")

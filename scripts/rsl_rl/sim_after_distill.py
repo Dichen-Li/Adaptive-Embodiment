@@ -47,20 +47,15 @@ from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
 
-
-import os
-import torch
-
-import torch
 from rsl_rl.modules import ActorCritic
-
-import torch
 
 # Ready for defining the policy package
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 
 from rsl_rl.env import VecEnv
+
+from utils import one_policy_observation_to_inputs
 
 def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
@@ -93,6 +88,9 @@ def find_newest_best_checkpoint(log_dir: str) -> tuple:
         raise FileNotFoundError(f"[ERROR] No 'best_model.pt' found in {newest_folder}")
 
     return (newest_folder, best_checkpoint_path)
+
+
+
 
 class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
@@ -154,42 +152,23 @@ class InferenceOnePolicyRunner:
         return checkpoint["epoch"]
 
 
-    def infer(self, state: torch.Tensor):
+    def infer(self, one_policy_observation: torch.Tensor):
         """
-        Preprocess the input state and run inference with the policy network.
+        Preprocess the input one_policy_observation and run inference with the policy network.
 
         Args:
-            state (torch.Tensor): The input state tensor.
+            one_policy_observation (torch.Tensor): The input one_policy_observation tensor.
 
         Returns:
             torch.Tensor: The action predicted by the policy.
         """
-        # Dynamic Joint Observations
-        nr_dynamic_joint_observations = self.env.unwrapped.nr_dynamic_joint_observations
-        single_dynamic_joint_observation_length = self.env.unwrapped.single_dynamic_joint_observation_length
-        dynamic_joint_observation_length = self.env.unwrapped.dynamic_joint_observation_length
-        dynamic_joint_description_size = self.env.unwrapped.dynamic_joint_description_size
-
-        dynamic_joint_combined_state = state[:, :dynamic_joint_observation_length].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
-        dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
-        dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
-
-        # Dynamic Foot Observations
-        nr_dynamic_foot_observations = self.env.unwrapped.nr_dynamic_foot_observations
-        single_dynamic_foot_observation_length = self.env.unwrapped.single_dynamic_foot_observation_length
-        dynamic_foot_observation_length = self.env.unwrapped.dynamic_foot_observation_length
-        dynamic_foot_description_size = self.env.unwrapped.dynamic_foot_description_size
-
-        dynamic_foot_combined_state = state[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
-        dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
-        dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
-
-        # General Policy State Mask
-        policy_general_state_mask = torch.arange(303, 320, device=self.device)
-        policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
-
-        general_policy_state = state[:, policy_general_state_mask]
-
+        (
+            dynamic_joint_description,
+            dynamic_joint_state,
+            dynamic_foot_description,
+            dynamic_foot_state,
+            general_policy_state
+        ) = one_policy_observation_to_inputs(one_policy_observation, self.env.unwrapped, self.device)
         # Feed processed data into the policy network
         with torch.no_grad():
             action = self.policy(

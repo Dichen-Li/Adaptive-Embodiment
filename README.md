@@ -156,7 +156,7 @@ The h5py dataset is stored in logs/rsl_rl/GenDog1/'experiments_name'/h5py_record
 2. After generating the dataset, we combine the datasets from different robots to one dataset. Then we feed the dataset input into the student policy network, and supervised on the the loss between the student action and the dataset output. After that, we will get a trained student policy network.
 To supervisely train the student model from multiple teacher policies, run
 ```angular2html
-python scripts/rsl_rl/distill_cross_embodiment.py --task GenDog1 GenDog2 GenHumanoid1
+python scripts/rsl_rl/distill_cross_embodiment.py --tasks GenDog1 GenDog2 GenHumanoid1
 ```
 The student policy is stored in log_dir/'experiments_name'/best_model.pt.
 After testing, the best training parameters for a 32G RAM and 4070 GPU 8G VRAM computer is: 
