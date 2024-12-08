@@ -12,37 +12,45 @@ import tqdm
 
 
 def parse_arguments():
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
-    parser.add_argument("--tasks", nargs="+", type=str, default=None, help="List of tasks to process.")
-    parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=4090*8, help="Batch size. 4096*16 takes 10G")
+    parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
+    parser.add_argument("--tasks", nargs="+", type=str, default=None, required=True,
+                        help="List of tasks to process.")
+    parser.add_argument("--num_epochs", type=int, default=500, help="Number of epochs to run.")
+    parser.add_argument("--batch_size", type=int, default=4096*8, help="Batch size. 4096*16 takes 10G")
     parser.add_argument("--exp_name", type=str, default=None,
                         help="Name of the experiment. If provided, the current date and time will be appended. "
                              "Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
-    parser.add_argument("--lr", type=float, default=1e-4, help="learning rate")
+    parser.add_argument("--lr", type=float, default=1.25e-4, help="unit learning rate (for a batch size of 4096)")
     parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loder.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
-    parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
-    parser.add_argument("--naive_actor", action="store_true", default=False, help="Use naive actor or not. ")
+    parser.add_argument(
+        "--model",
+        type=str,
+        required=True,
+        choices=["urma", "rsl_rl_actor", "naive_actor"],
+        help="Model type."
+    )
 
     args = parser.parse_args()
 
     # Handle experiment name
     current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     if args.exp_name:
-        args.exp_name = f"{args.exp_name}_{current_datetime}"
+        args.exp_name = f"{current_datetime}_{args.exp_name}"
     else:
         args.exp_name = current_datetime
+
+    # Process learning rate
+    args.lr = args.lr * (args.batch_size / 4096)
 
     return args
 
 
 def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num_epochs, model_device,
-          log_dir, checkpoint_interval):
+          log_dir, checkpoint_interval, model):
     """Training loop with validation, TensorBoard logging, and checkpoint saving."""
     writer = SummaryWriter(log_dir=log_dir)
     train_loss_meter = AverageMeter()
@@ -62,29 +70,14 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
 
-                # Unpack dataset-specific transformed inputs
-                (
-                    dynamic_joint_description,
-                    dynamic_joint_state,
-                    dynamic_foot_description,
-                    dynamic_foot_state,
-                    general_policy_state,
-                ) = batch_inputs
+                if model == 'urma':
+                    batch_predictions = policy(*batch_inputs)
+                else:
+                    one_input = torch.cat([
+                        component.flatten(1) for component in batch_inputs
+                    ], dim=1)
+                    batch_predictions = policy(one_input)
 
-                # Forward pass
-                batch_predictions = policy(
-                    dynamic_joint_description,
-                    dynamic_joint_state,
-                    dynamic_foot_description,
-                    dynamic_foot_state,
-                    general_policy_state,
-                )
-                # one_input = torch.cat([
-                #     dynamic_joint_description.flatten(1), dynamic_joint_state.flatten(1),
-                #     dynamic_foot_description.flatten(1), dynamic_foot_state.flatten(1),
-                #     general_policy_state.flatten(1),
-                # ], dim=1)
-                # batch_predictions = policy(one_input)
                 loss = criterion(batch_predictions, batch_targets)
 
                 # Backward pass and optimization
@@ -100,7 +93,7 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
         # Log training loss to TensorBoard
         writer.add_scalar("Train/loss", train_loss_meter.avg, epoch + 1)
-        writer.add_scalar("Train/lr", scheduler.get_last_lr()[0], epoch + 1)
+        writer.add_scalar("Train/lr", optimizer.param_groups[0]['lr'], epoch + 1)
 
         # Validation phase
         policy.eval()
@@ -114,23 +107,14 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
 
-                    # Unpack dataset-specific transformed inputs
-                    (
-                        dynamic_joint_description,
-                        dynamic_joint_state,
-                        dynamic_foot_description,
-                        dynamic_foot_state,
-                        general_policy_state,
-                    ) = batch_inputs
+                    if model == 'urma':
+                        batch_predictions = policy(*batch_inputs)
+                    else:
+                        one_input = torch.cat([
+                            component.flatten(1) for component in batch_inputs
+                        ], dim=1)
+                        batch_predictions = policy(one_input)
 
-                    # Forward pass
-                    batch_predictions = policy(
-                        dynamic_joint_description,
-                        dynamic_joint_state,
-                        dynamic_foot_description,
-                        dynamic_foot_state,
-                        general_policy_state,
-                    )
                     loss = criterion(batch_predictions, batch_targets)
 
                     # Update validation loss tracker
@@ -143,7 +127,8 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
         writer.add_scalar("Val/loss", val_loss_meter.avg, epoch + 1)
 
         # Step the LR scheduler
-        scheduler.step()
+        if scheduler is not None:
+            scheduler.step()
 
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
@@ -197,25 +182,32 @@ def main():
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Define model, optimizer, and loss
-    if args_cli.model_is_actor:
-        from supervised_actor.policy import get_policy
-        metadata = train_dataset.metadata_list[0]
-        nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
-        policy = get_policy(nr_dynamic_joint_observations, model_device)
-    elif args_cli.naive_actor:
-        from naive_actor import ActorMLP
-        from torch import nn
-        policy = ActorMLP(input_dim=316, hidden_dim=256, output_dim=12,
-                          activation=nn.LeakyReLU(negative_slope=0.03)).to(model_device)
-    else:
+    if args_cli.model == 'urma':
         from silver_badger_torch.policy import get_policy
         policy = get_policy(model_device)
+        # from supervised_actor.policy import get_policy
+        # metadata = train_dataset.metadata_list[0]
+        # nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
+        # policy = get_policy(nr_dynamic_joint_observations, model_device)
+    elif args_cli.model == 'rsl_rl_actor':
+        from rsl_rl.modules import ActorCritic
+        # metadata = train_dataset.metadata_list[0]
+        # import ipdb; ipdb.set_trace()
+        actor_critic = ActorCritic(316, 316, 12)
+        policy = actor_critic.actor.to(model_device)
+    elif args_cli.model == 'naive_actor':
+        from naive_actor import ActorMLP
+        policy = ActorMLP(input_dim=316, hidden_dim=256, output_dim=12,
+                          activation=torch.nn.LeakyReLU(negative_slope=0.03)).to(model_device)
+    else:
+        raise NotImplementedError(f'model type {args_cli.model} not implemented')
 
-    print(policy)
+    print('policy architecture:\n', policy)
 
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.AdamW(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
+    # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
+    scheduler = None
 
     # Train the policy
     train(
@@ -229,6 +221,7 @@ def main():
         model_device=model_device,
         log_dir=log_dir,
         checkpoint_interval=args_cli.checkpoint_interval,
+        model=args_cli
     )
 
 
