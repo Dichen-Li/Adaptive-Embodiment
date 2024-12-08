@@ -1,7 +1,6 @@
 import argparse
 from omni.isaac.lab.app import AppLauncher
 import cli_args
-from dataset import DatasetSaver  # isort: skip
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
@@ -54,7 +53,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 
 from rsl_rl.env import VecEnv
-
+from silver_badger_torch.policy import get_policy
 from utils import one_policy_observation_to_inputs
 
 def find_newest_best_checkpoint(log_dir: str) -> tuple:
@@ -125,8 +124,6 @@ class InferenceOnePolicyRunner:
         self.policy.to(self.device)  # Ensure the policy is on the correct device
         print("[INFO] Inference policy is ready.")
         return self.policy
-
-    import os
 
     def load(self, best_checkpoint_path: str, optimizer=None):
         """
@@ -217,8 +214,6 @@ def main():
     # load previously trained model
     one_policy_runner = InferenceOnePolicyRunner(env, device=model_device, model_is_actor=args_cli.model_is_actor)
     one_policy_runner.load(policy_file_directory)
-
-
 
     # Reset environment and start simulation
     obs, observations = env.get_observations()
