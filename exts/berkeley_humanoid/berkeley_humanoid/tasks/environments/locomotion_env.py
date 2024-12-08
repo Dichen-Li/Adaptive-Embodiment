@@ -27,6 +27,7 @@ class LocomotionEnv(DirectRLEnv):
 
         self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
+        self.joint_max_velocity = self.robot.actuators["base_legs"].velocity_limit
         self.action_scaling_factor = self.cfg.action_scaling_factor
         self.p_gains = self.robot.actuators["base_legs"].stiffness
         self.d_gains = self.robot.actuators["base_legs"].damping
@@ -74,6 +75,14 @@ class LocomotionEnv(DirectRLEnv):
         self.extrinsic_d_gain_factor = torch.ones((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
         self.extrinsic_position_offset = torch.zeros((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
 
+        self.initial_state_roll_angle_factor = self.cfg.initial_state_roll_angle_factor
+        self.initial_state_pitch_angle_factor = self.cfg.initial_state_pitch_angle_factor
+        self.initial_state_yaw_angle_factor = self.cfg.initial_state_yaw_angle_factor
+        self.initial_state_joint_nominal_position_factor = self.cfg.initial_state_joint_nominal_position_factor
+        self.initial_state_joint_velocity_factor = self.cfg.initial_state_joint_velocity_factor
+        self.initial_state_max_linear_velocity = self.cfg.initial_state_max_linear_velocity
+        self.initial_state_max_angular_velocity = self.cfg.initial_state_max_angular_velocity
+
         self.joint_position_noise = self.cfg.joint_position_noise
         self.joint_velocity_noise = self.cfg.joint_velocity_noise
         self.trunk_angular_velocity_noise = self.cfg.trunk_angular_velocity_noise
@@ -112,20 +121,31 @@ class LocomotionEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
 
-    def _reset_idx(self, env_ids: torch.Tensor | None):
+    def _reset_idx(self, env_ids: torch.Tensor):
         if env_ids is None or len(env_ids) == self.num_envs:
             env_ids = self.robot._ALL_INDICES
         self.robot.reset(env_ids)
         super()._reset_idx(env_ids)
 
-        joint_pos = self.robot.data.default_joint_pos[env_ids]
-        joint_vel = self.robot.data.default_joint_vel[env_ids]
+        nr_reset_envs = env_ids.shape[0]
+
+        roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor
+        pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor
+        yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor
+        quaternion = axis_angle_to_quaternion(torch.stack([roll_angle, pitch_angle, yaw_angle], dim=1))
+        joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor)
+        joint_velocities = self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_velocity_factor
+        linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity
+        angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity
+
         default_root_state = self.robot.data.default_root_state[env_ids]
         default_root_state[:, :3] += self.scene.env_origins[env_ids]
-
+        default_root_state[:, 3:7] = quaternion
+        default_root_state[:, 7:10] = linear_velocity
+        default_root_state[:, 10:] = angular_velocity
         self.robot.write_root_pose_to_sim(default_root_state[:, :7], env_ids)
         self.robot.write_root_velocity_to_sim(default_root_state[:, 7:], env_ids)
-        self.robot.write_joint_state_to_sim(joint_pos, joint_vel, None, env_ids)
+        self.robot.write_joint_state_to_sim(joint_positions, joint_velocities, None, env_ids)
 
         self.previous_actions[env_ids] *= 0.0
         self.previous_feet_air_times[env_ids] *= 0.0
@@ -377,6 +397,29 @@ def quaternion_to_axis_angle(quaternions: torch.Tensor) -> torch.Tensor:
     )
 
     return quaternions[..., 1:] / sin_half_angles_over_angles
+
+
+@torch.jit.script
+def axis_angle_to_quaternion(axis_angle: torch.Tensor) -> torch.Tensor:
+    # From: https://github.com/facebookresearch/pytorch3d/blob/main/pytorch3d/transforms/rotation_conversions.py#L498
+
+    angles = torch.norm(axis_angle, p=2, dim=-1, keepdim=True)
+    half_angles = angles * 0.5
+    eps = 1e-6
+    small_angles = angles.abs() < eps
+    sin_half_angles_over_angles = torch.empty_like(angles)
+    sin_half_angles_over_angles[~small_angles] = (
+        torch.sin(half_angles[~small_angles]) / angles[~small_angles]
+    )
+    # for x small, sin(x/2) is about x/2 - (x/2)^3/6
+    # so sin(x/2)/x is about 1/2 - (x*x)/48
+    sin_half_angles_over_angles[small_angles] = (
+        0.5 - (angles[small_angles] * angles[small_angles]) / 48
+    )
+    quaternions = torch.cat(
+        [torch.cos(half_angles), axis_angle * sin_half_angles_over_angles], dim=-1
+    )
+    return quaternions
 
 
 @torch.jit.script

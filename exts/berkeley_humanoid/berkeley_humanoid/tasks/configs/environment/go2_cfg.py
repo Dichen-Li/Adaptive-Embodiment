@@ -91,6 +91,15 @@ class Go2EnvCfg(DirectRLEnvCfg):
     p_law_position_offset_min = -0.05
     p_law_position_offset_max = 0.05
 
+    # Initial state
+    initial_state_roll_angle_factor = 0.0625
+    initial_state_pitch_angle_factor = 0.0625
+    initial_state_yaw_angle_factor = 1.0
+    initial_state_joint_nominal_position_factor = 0.5
+    initial_state_joint_velocity_factor = 0.5
+    initial_state_max_linear_velocity = 0.5
+    initial_state_max_angular_velocity = 0.5
+
     # Observation noise
     joint_position_noise = 0.01
     joint_velocity_noise = 1.5
