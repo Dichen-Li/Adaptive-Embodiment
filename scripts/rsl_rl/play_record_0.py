@@ -1,7 +1,18 @@
+# Copyright (c) 2022-2024, The Berkeley Humanoid Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+"""Script to play a checkpoint if an RL agent from RSL-RL."""
+
+"""Launch Isaac Sim Simulator first."""
+
 import argparse
+
 from omni.isaac.lab.app import AppLauncher
-import cli_args
-from dataset import DatasetSaver  # isort: skip
+
+# local imports
+import cli_args  # isort: skip
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
@@ -10,16 +21,13 @@ parser.add_argument("--video_length", type=int, default=20, help="Length of the 
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
-parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
+parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
-parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
-
+parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
-
 args_cli = parser.parse_args()
 # always enable cameras to record video
 if args_cli.video:
@@ -46,10 +54,6 @@ from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
 
 
-import os
-import torch
-
-
 def main():
     """Play with RSL-RL agent."""
     # parse configuration
@@ -67,7 +71,6 @@ def main():
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
-
     # wrap for video recording
     if args_cli.video:
         video_kwargs = {
@@ -91,43 +94,57 @@ def main():
     # obtain the trained policy for inference
     policy = ppo_runner.get_inference_policy(device=env.unwrapped.device)
 
-    # Initialize DatasetManager
-    dataset_manager = DatasetSaver(
-        record_path=os.path.join(log_dir, "h5py_record"),
-        max_steps_per_file=200,
-        env=env
-    )
+    # export policy to onnx
+    export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
+    export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
 
-    # Reset environment and start simulation
-    obs, observations = env.get_observations()
-    one_policy_observation = observations["observations"]["one_policy"]
-    curr_timestep = 0
-
-    # Main simulation loop
+    import h5py
+    h5py_timestep = 0
+    h5py_record_length = 200
+    # Define the file path
+    h5py_record_root_path = os.path.join(log_dir, "h5py_record")
+    if not os.path.exists(h5py_record_root_path):
+        os.makedirs(h5py_record_root_path)
+        print(f"Directory '{h5py_record_root_path}' created.")
+    h5py_record_file_path = os.path.join(h5py_record_root_path, "obs_actions.h5")
+    with h5py.File(h5py_record_file_path, "a") as f:
+    # Create datasets if they do not exist
+        if "observations" not in f:
+            obs_shape = env.observation_space.shape
+            f.create_dataset("observations", shape=(0,) + obs_shape, maxshape=(None,) + obs_shape, dtype="float32")
+        if "actions" not in f:
+            action_shape = env.action_space.shape
+            f.create_dataset("actions", shape=(0,) + action_shape, maxshape=(None,) + action_shape, dtype="float32")
+    
+    # reset environment
+    obs, _ = env.get_observations()
+    timestep = 0
+    # simulate environment
     while simulation_app.is_running():
+        # run everything in inference mode
         with torch.inference_mode():
-            # Agent stepping
+            # agent stepping
             actions = policy(obs)
 
-            # Reshape and save data
-            dataset_manager.save_data(
-                one_policy_observation=one_policy_observation.cpu().numpy(),
-                actions=actions.cpu().numpy(),
-            )
-            
-            # Environment stepping
-            # import ipdb; ipdb.set_trace()
-            obs, _, _, extra = env.step(actions)
-            one_policy_observation = extra["observations"]["one_policy"]
+            with h5py.File(h5py_record_file_path, "a") as f:
+                # Append the current observation and action to the HDF5 file
+                f["observations"].resize((f["observations"].shape[0] + 1,) + obs.shape)
+                f["actions"].resize((f["actions"].shape[0] + 1,) + actions.shape)
+                f["observations"][-1] = obs.cpu().numpy()
+                f["actions"][-1] = actions.cpu().numpy()
 
-            curr_timestep += 1
-
-            if curr_timestep > args_cli.steps:
+            # env stepping
+            obs, _, _, _ = env.step(actions)
+        
+        h5py_timestep += 1
+        if h5py_timestep == h5py_record_length:
                 break
-
-    # if args_cli.video:
-    #     if h5py_timestep >= args_cli.video_length:
-    #         break
+        
+        if args_cli.video:
+            timestep += 1
+            # Exit the play loop after recording one video
+            if timestep == args_cli.video_length:
+                break
 
     # close the simulator
     env.close()

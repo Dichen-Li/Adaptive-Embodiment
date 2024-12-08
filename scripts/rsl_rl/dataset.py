@@ -529,7 +529,7 @@ class LocomotionDataset(Dataset):
             batch_size=batch_size,
             drop_last=False,
         )
-        return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn)
+        return DataLoader(self, batch_sampler=sampler, collate_fn=self.collate_fn, num_workers=16)
     
 
 # import os

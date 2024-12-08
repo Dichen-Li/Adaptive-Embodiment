@@ -459,16 +459,29 @@ class LocomotionEnv(DirectRLEnv):
 
         # # Dropout
         # observation = self.observation_dropout_function.modify_observation(observation)
+        # import random
+        # if random.random() > 0.995:
+        #     import ipdb; ipdb.set_trace()
 
-        # Normalize and clip
-        observation[:, self.joint_positions_update_obs_idx] /= 4.6
-        observation[:, self.joint_velocities_update_obs_idx] /= 35.0
-        observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0
-        observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)
-        observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)
-        observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)
-        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)
+        # # Normalize and clip
+        # observation[:, self.joint_positions_update_obs_idx] /= 4.6      # max is only 1.06? mean 0.0
+        # observation[:, self.joint_velocities_update_obs_idx] /= 35.0    # range from -3 to 3?   
+        # observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
+        # observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0 
+        # observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
+        # observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)  # range from -1.x to 1? 
+        # observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)  # range from -3 to 3
+        # observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)  # the quotient ranges from 0 to 1.x? 
+
+        observation[:, self.joint_positions_update_obs_idx] /= 3.14      # max is only 1.06? mean 0.0
+        observation[:, self.joint_velocities_update_obs_idx] /= 3    # range from -3 to 3?   
+        observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
+        observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0 
+        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
+        observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1? 
+        observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
+        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0, 2.0)  # the quotient ranges from 0 to 1.x? 
+
         ## Define the one policy observations above
 
         # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
