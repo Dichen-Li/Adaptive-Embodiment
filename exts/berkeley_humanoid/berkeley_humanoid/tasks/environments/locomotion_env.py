@@ -52,7 +52,12 @@ class LocomotionEnv(DirectRLEnv):
         self.base_height_coeff = self.cfg.base_height_coeff
         self.air_time_coeff = self.cfg.air_time_coeff
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
-        self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int64, device=self.sim.device)
+        self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
+
+        self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
+        self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
+        self.action_current_mixed = torch.zeros((self.num_envs,), dtype=torch.bool, device=self.sim.device)
+        self.action_history = torch.zeros((self.num_envs, self.max_nr_action_delay_steps + 1, self.nr_joints), dtype=torch.float32, device=self.sim.device)
 
         self.joint_position_noise = self.cfg.joint_position_noise
         self.joint_velocity_noise = self.cfg.joint_velocity_noise
@@ -101,20 +106,35 @@ class LocomotionEnv(DirectRLEnv):
         self.previous_actions[env_ids] *= 0.0
         self.previous_feet_air_times[env_ids] *= 0.0
 
+        self.action_history[env_ids] *= 0.0
+
 
     def _pre_physics_step(self, actions: torch.Tensor):
         self.actions = actions
 
+        # Action delay
+        self.action_history = torch.roll(self.action_history, -1, dims=1)
+        self.action_history[:, -1] = self.actions
+        current_nr_delay_steps = torch.zeros((self.num_envs,), dtype=torch.int32, device=self.sim.device)
+        current_nr_delay_steps[self.action_current_mixed] = torch.randint(0, self.max_nr_action_delay_steps + 1, (int(self.action_current_mixed.sum().item()),), dtype=torch.int32, device=self.sim.device)
+        chosen_actions = self.action_history[torch.arange(self.num_envs, device=self.sim.device), -1 - current_nr_delay_steps]
+
+        # PD control
+        scaled_actions = chosen_actions * self.action_scaling_factor
+        target_joint_positions = self.joint_nominal_positions + scaled_actions
+        self.torques = self.p_gains * (target_joint_positions - self.robot.data.joint_pos) - self.d_gains * self.robot.data.joint_vel
+
 
     def _apply_action(self):
-        scaled_actions = self.actions * self.action_scaling_factor
-        target_joint_positions = self.joint_nominal_positions + scaled_actions
-        torques = self.p_gains * (target_joint_positions - self.robot.data.joint_pos) - self.d_gains * self.robot.data.joint_vel
-
-        self.robot.set_joint_effort_target(torques)
+        self.robot.set_joint_effort_target(self.torques)
 
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
+        # Handle domain randomization
+        env_randomization_indices = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        nr_randomized_envs = env_randomization_indices.sum()
+        self.action_current_mixed[env_randomization_indices] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance
+
         trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
         trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
         terminated = trunk_contact

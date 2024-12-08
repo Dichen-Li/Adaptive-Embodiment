@@ -75,6 +75,10 @@ class Go2EnvCfg(DirectRLEnvCfg):
     symmetry_air_coeff = 0.5                    * action_dt
     feet_symmetry_pairs = [(0, 1), (2, 3)]
 
+    # Action delay
+    max_nr_action_delay_steps = 1
+    mixed_action_delay_chance = 0.05
+
     # Observation noise
     joint_position_noise = 0.01
     joint_velocity_noise = 1.5
