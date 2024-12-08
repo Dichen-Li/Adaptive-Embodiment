@@ -221,7 +221,7 @@ def main():
         model_device=model_device,
         log_dir=log_dir,
         checkpoint_interval=args_cli.checkpoint_interval,
-        model=args_cli
+        model=args_cli.model
     )
 
 
