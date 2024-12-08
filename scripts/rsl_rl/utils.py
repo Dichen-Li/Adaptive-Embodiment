@@ -76,3 +76,54 @@ def save_checkpoint(policy, optimizer, epoch, log_dir, is_best=False):
         best_checkpoint_path = os.path.join(log_dir, "best_model.pt")
         torch.save(checkpoint, best_checkpoint_path)
         print(f"[INFO] Best model saved to {best_checkpoint_path}")
+
+def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, meta_dict, device='cpu'):
+    # Dynamic Joint Observations
+    nr_dynamic_joint_observations = meta_dict.nr_dynamic_joint_observations
+    single_dynamic_joint_observation_length = meta_dict.single_dynamic_joint_observation_length
+    dynamic_joint_observation_length = meta_dict.dynamic_joint_observation_length
+    dynamic_joint_description_size = meta_dict.dynamic_joint_description_size
+
+    dynamic_joint_combined_state = one_policy_observation[:, :dynamic_joint_observation_length].view((-1, nr_dynamic_joint_observations, single_dynamic_joint_observation_length))
+    dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
+    dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
+
+    # Dynamic Foot Observations
+    nr_dynamic_foot_observations = meta_dict.nr_dynamic_foot_observations
+    single_dynamic_foot_observation_length = meta_dict.single_dynamic_foot_observation_length
+    dynamic_foot_observation_length = meta_dict.dynamic_foot_observation_length
+    dynamic_foot_description_size = meta_dict.dynamic_foot_description_size
+
+    dynamic_foot_combined_state = one_policy_observation[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
+    dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
+    dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
+
+    policy_general_state_start_index = dynamic_joint_observation_length + dynamic_foot_observation_length
+    policy_general_state_end_index = one_policy_observation.shape[1]
+    policy_general_state_mask = torch.arange(policy_general_state_start_index, policy_general_state_end_index, device=device)
+    # exclude truck_linear_vel and height # 20->16
+    policy_exlucion_index = torch.tensor((meta_dict.trunk_linear_vel_update_obs_idx + meta_dict.height_update_obs_idx), device=device)
+    policy_general_state_mask = policy_general_state_mask[~torch.isin(policy_general_state_mask, policy_exlucion_index)]
+    general_policy_state = one_policy_observation[:, policy_general_state_mask]
+
+    # # General Policy State Mask
+    # policy_general_state_mask = torch.arange(303, 320, device=self.device)
+    # policy_general_state_mask = policy_general_state_mask[policy_general_state_mask != 312]
+
+    # general_policy_state = one_policy_observation[:, policy_general_state_mask]
+    inputs = (
+        dynamic_joint_description,
+        dynamic_joint_state,
+        dynamic_foot_description,
+        dynamic_foot_state,
+        general_policy_state
+    )
+    return inputs
+
+def ensure_unique_save_path(save_path):
+    base_name, ext = os.path.splitext(save_path)
+    counter = 1
+    while os.path.exists(save_path):
+        save_path = f"{base_name}_{counter}{ext}"
+        counter += 1
+    return save_path

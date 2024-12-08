@@ -82,7 +82,7 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
         # Log training loss to TensorBoard
         writer.add_scalar("Train/loss", train_loss_meter.avg, epoch + 1)
-        writer.add_scalar("Train/lr", scheduler.get_lr(), epoch + 1)
+        writer.add_scalar("Train/lr", scheduler.get_last_lr()[0], epoch + 1)
 
         # Validation phase
         policy.eval()
@@ -145,7 +145,6 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
 def main():
     args_cli = parse_arguments()
-
     # Prepare log directory
     log_dir = os.path.join(args_cli.log_dir, args_cli.exp_name)
     os.makedirs(log_dir, exist_ok=True)
@@ -178,7 +177,7 @@ def main():
     # Define model, optimizer, and loss
     if args_cli.model_is_actor:
         from supervised_actor.policy import get_policy
-        metadata = dataset.metadata_list[0]
+        metadata = train_dataset.metadata_list[0]
         nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
         model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         policy = get_policy(nr_dynamic_joint_observations, model_device)
@@ -187,7 +186,7 @@ def main():
         model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         policy = get_policy(model_device)
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.AdamW(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
 
     # Train the policy
