@@ -85,12 +85,33 @@ def main():
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
-    # specify directory for logging experiments
-    log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
-    log_root_path = os.path.abspath(log_root_path)
-    print(f"[INFO] Loading experiment from directory: {log_root_path}")
-    resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
-    log_dir = os.path.dirname(resume_path)
+    # from omni.isaac.core import SimulationContext
+    # batch_size = args_cli.batch_size
+    # simulation_context = SimulationContext()
+    # multiplier = max(1, batch_size // 256)
+    # n_pairs = simulation_context.get_physics_context().get_gpu_found_lost_aggregate_pairs_capacity()
+    # simulation_context.get_physics_context().set_gpu_found_lost_aggregate_pairs_capacity(n_pairs * multiplier)
+
+    from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter
+    from dataset import LocomotionDataset
+
+    task = args_cli.task
+    # Dataset paths
+    dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task)]
+
+    if len(dataset_dirs) != 1:
+        print("[ERROR]: Dataset task cannot be assigned to more than 1 in this pipeline")
+        return
+    log_dir = os.path.dirname(dataset_dirs[0])
+
+    # specifying derectory for saving trained results
+    if args_cli.exp_name != parser.get_default('exp_name'):
+        args_cli.exp_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + args_cli.exp_name
+    # save_path is ./logs/rsl_rl/task_name/pt_save_actor_critic/exp_name
+    save_path = os.path.join(log_dir, "pt_save_actor_critic", args_cli.exp_name)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+        print(f"Directory '{save_path}' created.")
 
     # max iterations for training
     if args_cli.max_iterations:
@@ -116,13 +137,6 @@ def main():
     runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
     # write git state to logs
     runner.add_git_repo_to_log(__file__)
-    # save resume path before creating a new log_dir
-    if agent_cfg.resume:
-        # get path to previous checkpoint
-        resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
-        print(f"[INFO]: Loading model checkpoint from: {resume_path}")
-        # load previously trained model
-        runner.load(resume_path)
 
     # set seed of the environment
     env.seed(agent_cfg.seed)
@@ -135,13 +149,6 @@ def main():
 
     # define the device = 'cuda:0'
     model_device = agent_cfg.device
-
-    from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter
-    from dataset import LocomotionDataset
-
-    task = args_cli.task
-    # Dataset paths
-    dataset_dirs = [get_most_recent_h5py_record_path("logs/rsl_rl", task)]
 
     # Training dataset
     train_dataset = LocomotionDataset(
@@ -169,12 +176,6 @@ def main():
     criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(runner.alg.actor_critic.parameters(), lr=0.001)
     runner.train_mode()
-
-    # save_path is ./logs/rsl_rl/task_name/pt_save_actor_critic
-    save_path = os.path.join(log_dir, "pt_save_actor_critic")
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-        print(f"Directory '{save_path}' created.")
     
     writer = SummaryWriter(log_dir=save_path)
     train_loss_meter = AverageMeter()
@@ -183,7 +184,7 @@ def main():
 
     # Training loop
     num_epochs = args_cli.num_epochs
-    checkpoint_interval=args_cli.checkpoint_interval
+    checkpoint_interval = args_cli.checkpoint_interval
     print("[INFO] Starting supervised training.")
     for epoch in range(num_epochs):
         runner.train_mode()
@@ -228,6 +229,9 @@ def main():
                 # Update progress bar with current loss
                 pbar.set_postfix({"Loss": f"{train_loss_meter.avg:.3f}"})
 
+        # Log training loss to TensorBoard
+        writer.add_scalar("Train/loss", train_loss_meter.avg, epoch + 1)
+
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path)
@@ -236,11 +240,12 @@ def main():
         if val_loss_meter.avg < best_val_loss:
             best_val_loss = val_loss_meter.avg
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path, is_best=True)
-    
+        print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_loss_meter.avg:.6f}")
 
     # release memory
     del train_dataset, train_loader
 
+    import ipdb; ipdb.set_trace()
     # obtain the trained policy for inference
     policy = runner.get_inference_policy(device=env.unwrapped.device)
 
