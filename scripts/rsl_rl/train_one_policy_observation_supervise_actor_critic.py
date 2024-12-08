@@ -1,12 +1,3 @@
-# Copyright (c) 2022-2024, The Berkeley Humanoid Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-"""Script to train RL agent with RSL-RL."""
-
-"""Launch Isaac Sim Simulator first."""
-
 import argparse
 
 from omni.isaac.lab.app import AppLauncher
@@ -16,6 +7,7 @@ import cli_args  # isort: skip
 from datetime import datetime
 import tqdm
 from torch.utils.tensorboard import SummaryWriter
+
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
@@ -53,8 +45,6 @@ if args_cli.video:
 app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
-"""Rest everything follows."""
-
 import gymnasium as gym
 import os
 import torch
@@ -75,6 +65,24 @@ torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = False
+
+
+def slice_one_policy_observation(general_policy_state, dynamic_joint_state):
+    # Preprocessing the batch_inputs to adapt to the original actor_critic model
+    sliced_1 = general_policy_state[:,
+               :12]  # base_lin_vel, base_ang_vel, projected_gravity and target_x_y_yaw_rel from general_policy_state
+    swapped = torch.cat([sliced_1[:, :6], sliced_1[:, 9:12], sliced_1[:, 6:9]],
+                        dim=-1)  # base_lin_vel, base_ang_vel, arget_x_y_yaw_rel and projected_gravity
+
+    sliced_2 = dynamic_joint_state  # dynamic_joint_state (batch_num, 15, 3)
+    split = torch.split(sliced_2, 1, dim=-1)  # Split into 3 tensors along last axis
+    concatenated = torch.cat(split, dim=1).squeeze(
+        -1)  # Concatenate along the second axis. This is joint_pos_rel, joint_vel_rel and action(previous)
+
+    # The order of a actor model obs input is base_lin_vel, base_ang_vel, projected_gravity, target_x_y_yaw_rel, joint_pos_rel, joint_vel_rel and action(previous)
+    processed_batch_inputs = torch.cat([swapped, concatenated], dim=1)
+
+    return processed_batch_inputs
 
 
 def main():
@@ -130,6 +138,7 @@ def main():
         print("[INFO] Recording videos during training.")
         print_dict(video_kwargs, nesting=4)
         env = gym.wrappers.RecordVideo(env, **video_kwargs)
+
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
 
@@ -161,16 +170,16 @@ def main():
         batch_size=args_cli.batch_size, shuffle=True, num_workers=args_cli.num_workers
     )
 
-    # # Validation dataset
-    # val_dataset = LocomotionDataset(
-    #     folder_paths=dataset_dirs,
-    #     train_mode=False,
-    #     val_ratio=args_cli.val_ratio,
-    #     max_files_in_memory=args_cli.max_files_in_memory
-    # )
-    # val_loader = val_dataset.get_data_loader(
-    #     batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
-    # )
+    # Validation dataset
+    val_dataset = LocomotionDataset(
+        folder_paths=dataset_dirs,
+        train_mode=False,
+        val_ratio=args_cli.val_ratio,
+        max_files_in_memory=args_cli.max_files_in_memory
+    )
+    val_loader = val_dataset.get_data_loader(
+        batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
+    )
 
     # Define loss function and optimizer
     criterion = torch.nn.MSELoss()
@@ -202,18 +211,20 @@ def main():
                     general_policy_state,
                 ) = batch_inputs
 
-                # Preprocessing the batch_inputs to adapt to the original actor_critic model
-                sliced_1 = general_policy_state[:, :12] # base_lin_vel, base_ang_vel, projected_gravity and target_x_y_yaw_rel from general_policy_state
-                swapped = torch.cat([sliced_1[:, :6], sliced_1[:, 9:12], sliced_1[:, 6:9]], dim=-1) # base_lin_vel, base_ang_vel, arget_x_y_yaw_rel and projected_gravity
+                # # Preprocessing the batch_inputs to adapt to the original actor_critic model
+                # sliced_1 = general_policy_state[:, :12] # base_lin_vel, base_ang_vel, projected_gravity and target_x_y_yaw_rel from general_policy_state
+                # swapped = torch.cat([sliced_1[:, :6], sliced_1[:, 9:12], sliced_1[:, 6:9]], dim=-1) # base_lin_vel, base_ang_vel, arget_x_y_yaw_rel and projected_gravity
+                #
+                # sliced_2 = dynamic_joint_state  # dynamic_joint_state (batch_num, 15, 3)
+                # split = torch.split(sliced_2, 1, dim=-1)  # Split into 3 tensors along last axis
+                # concatenated = torch.cat(split, dim=1).squeeze(-1)  # Concatenate along the second axis. This is joint_pos_rel, joint_vel_rel and action(previous)
+                #
+                # # The order of a actor model obs input is base_lin_vel, base_ang_vel, projected_gravity, target_x_y_yaw_rel, joint_pos_rel, joint_vel_rel and action(previous)
+                # processed_batch_inputs = torch.cat([swapped, concatenated], dim=1)
 
-                sliced_2 = dynamic_joint_state  # dynamic_joint_state (batch_num, 15, 3)
-                split = torch.split(sliced_2, 1, dim=-1)  # Split into 3 tensors along last axis
-                concatenated = torch.cat(split, dim=1).squeeze(-1)  # Concatenate along the second axis. This is joint_pos_rel, joint_vel_rel and action(previous)
+                processed_batch_inputs = slice_one_policy_observation(general_policy_state, dynamic_joint_state)
 
-                # The order of a actor model obs input is base_lin_vel, base_ang_vel, projected_gravity, target_x_y_yaw_rel, joint_pos_rel, joint_vel_rel and action(previous)
-                processed_batch_inputs = torch.cat([swapped, concatenated], dim=1)
-
-                # Forward passd
+                # Forward pass
                 batch_predictions = runner.alg.actor_critic.actor(processed_batch_inputs)  # Add batch dimension
 
                 loss = criterion(batch_predictions, batch_targets)
@@ -236,13 +247,47 @@ def main():
         if (epoch + 1) % checkpoint_interval == 0:
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path)
 
+        # Validation phase
+        runner.alg.actor_critic.actor.eval()
+        val_loss_meter.reset()
+        print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
+
+        with torch.no_grad():
+            with tqdm.tqdm(val_loader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
+                for batch_inputs, batch_targets in pbar:
+                    # Move data to device
+                    batch_inputs = [x.to(model_device) for x in batch_inputs]
+                    batch_targets = batch_targets.to(model_device)
+
+                    # Unpack dataset-specific transformed inputs
+                    (
+                        dynamic_joint_description,
+                        dynamic_joint_state,
+                        dynamic_foot_description,
+                        dynamic_foot_state,
+                        general_policy_state,
+                    ) = batch_inputs
+
+                    processed_batch_inputs = slice_one_policy_observation(general_policy_state, dynamic_joint_state)
+                    batch_predictions = runner.alg.actor_critic.actor(processed_batch_inputs)  # Add batch dimension
+
+                    loss = criterion(batch_predictions, batch_targets)
+
+                    # Update validation loss tracker
+                    val_loss_meter.update(loss.item(), n=batch_targets.size(0))
+
+                    # Update progress bar with current loss
+                    pbar.set_postfix({"Loss": f"{val_loss_meter.avg:.3f}"})
+
+        # Log validation loss to TensorBoard
+        writer.add_scalar("Val/loss", val_loss_meter.avg, epoch + 1)
+
         # Save the best model based on validation loss
         if val_loss_meter.avg < best_val_loss:
             best_val_loss = val_loss_meter.avg
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path, is_best=True)
         print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_loss_meter.avg:.6f}")
 
-    
     # # release memory
     # del train_dataset, train_loader
 
@@ -269,6 +314,7 @@ def main():
     #         if timestep == args_cli.video_length:
     #             break
     # close the simulator
+
     env.close()
 
 if __name__ == "__main__":
