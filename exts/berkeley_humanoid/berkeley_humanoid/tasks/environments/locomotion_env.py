@@ -84,6 +84,15 @@ class LocomotionEnv(DirectRLEnv):
 
         self.joint_and_feet_dropout_chance = self.cfg.joint_and_feet_dropout_chance
 
+        self.perturb_velocity_x_min = self.cfg.perturb_velocity_x_min
+        self.perturb_velocity_x_max = self.cfg.perturb_velocity_x_max
+        self.perturb_velocity_y_min = self.cfg.perturb_velocity_y_min
+        self.perturb_velocity_y_max = self.cfg.perturb_velocity_y_max
+        self.perturb_velocity_z_min = self.cfg.perturb_velocity_z_min
+        self.perturb_velocity_z_max = self.cfg.perturb_velocity_z_max
+        self.perturb_add_chance = self.cfg.perturb_add_chance
+        self.perturb_additive_multiplier = self.cfg.perturb_additive_multiplier
+
         self.set_observation_indices()
 
 
@@ -147,17 +156,30 @@ class LocomotionEnv(DirectRLEnv):
 
 
     def handle_domain_randomization(self):
-        env_randomization_indices = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
-        nr_randomized_envs = env_randomization_indices.sum()
+        env_randomization_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        nr_randomized_envs = env_randomization_mask.sum()
 
         # Action delay
-        self.action_current_mixed[env_randomization_indices] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance
+        self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance
         
         # Control
-        self.extrinsic_motor_strength[env_randomization_indices] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.motor_strength_max - self.motor_strength_min) + self.motor_strength_min
-        self.extrinsic_p_gain_factor[env_randomization_indices] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_gain_factor_max - self.p_gain_factor_min) + self.p_gain_factor_min
-        self.extrinsic_d_gain_factor[env_randomization_indices] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.d_gain_factor_max - self.d_gain_factor_min) + self.d_gain_factor_min
-        self.extrinsic_position_offset[env_randomization_indices] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_law_position_offset_max - self.p_law_position_offset_min) + self.p_law_position_offset_min
+        self.extrinsic_motor_strength[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.motor_strength_max - self.motor_strength_min) + self.motor_strength_min
+        self.extrinsic_p_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_gain_factor_max - self.p_gain_factor_min) + self.p_gain_factor_min
+        self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.d_gain_factor_max - self.d_gain_factor_min) + self.d_gain_factor_min
+        self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_law_position_offset_max - self.p_law_position_offset_min) + self.p_law_position_offset_min
+
+        # Perturbations
+        env_randomization_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        nr_perturbed_envs = env_randomization_mask.sum()
+        perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_x_max - self.perturb_velocity_x_min) + self.perturb_velocity_x_min
+        perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_y_max - self.perturb_velocity_y_min) + self.perturb_velocity_y_min
+        perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_z_max - self.perturb_velocity_z_min) + self.perturb_velocity_z_min
+        current_global_velocity = self.robot.data.root_state_w[env_randomization_mask, 7:]
+        current_global_velocity[:, 0] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_x + current_global_velocity[:, 0] * self.perturb_additive_multiplier, perturb_velocity_x)
+        current_global_velocity[:, 1] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_y + current_global_velocity[:, 1] * self.perturb_additive_multiplier, perturb_velocity_y)
+        current_global_velocity[:, 2] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_z + current_global_velocity[:, 2] * self.perturb_additive_multiplier, perturb_velocity_z)
+        env_perturbed_indices = torch.nonzero(env_randomization_mask).flatten()
+        self.robot.write_root_velocity_to_sim(current_global_velocity, env_perturbed_indices)
 
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:

@@ -102,3 +102,13 @@ class Go2EnvCfg(DirectRLEnvCfg):
 
     # Observation dropout
     joint_and_feet_dropout_chance = 0.05
+
+    # Perturbations
+    perturb_velocity_x_min = -1.0
+    perturb_velocity_x_max = 1.0
+    perturb_velocity_y_min = -1.0
+    perturb_velocity_y_max = 1.0
+    perturb_velocity_z_min = -1.0
+    perturb_velocity_z_max = 1.0
+    perturb_add_chance = 0.5
+    perturb_additive_multiplier = 1.5
