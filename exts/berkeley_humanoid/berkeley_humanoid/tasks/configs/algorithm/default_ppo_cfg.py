@@ -9,8 +9,8 @@ from omni.isaac.lab.utils import configclass
 class PolicyCfg:
     class_name = "ActorCritic"
     init_noise_std = 1.0
-    actor_hidden_dims = [128, 128, 128]
-    critic_hidden_dims = [128, 128, 128]
+    actor_hidden_dims = [512, 256, 128]
+    critic_hidden_dims = [512, 256, 128]
     activation = "elu"
 
 
