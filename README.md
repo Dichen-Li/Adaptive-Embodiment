@@ -8,7 +8,11 @@ to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is clos
 - Install Isaac Lab, see
   the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
 
-- Using a python interpreter that has Isaac sLab installed, install the library
+- Using a python interpreter that has Isaac sLab installed, install the library with
+```
+cd embodiment-scaling-law
+pip install -e exts/berkeley_humanoid/
+```
 
 ## Single robot training and testing
 To train just one robot, run 
