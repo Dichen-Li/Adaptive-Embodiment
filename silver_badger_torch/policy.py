@@ -3,9 +3,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os
+import ipdb
 
 class Policy(nn.Module):
-    def __init__(self, joint_log_softmax_temperature, foot_log_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip):
+    def __init__(self, joint_log_softmax_temperature, foot_log_softmax_temperature,
+                 softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip,
+                 policy_std_max_clip):
         super(Policy, self).__init__()
         self.joint_log_softmax_temperature = joint_log_softmax_temperature
         self.foot_log_softmax_temperature = foot_log_softmax_temperature
@@ -35,11 +38,33 @@ class Policy(nn.Module):
         self.policy_mean_layer2 = nn.Linear(128, 1)
         self.policy_logstd_layer = nn.Linear(128, 1)
 
-    def forward(self, dynamic_joint_description, dynamic_joint_state, dynamic_foot_description, dynamic_foot_state, general_state):
+        # self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
+        # self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
+        # self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
+        # self.latent_dynamic_joint_state = nn.Linear(3, 4)
+        # self.dynamic_foot_state_mask1 = nn.Linear(10, 32)
+        # self.dynamic_foot_layer_norm = nn.LayerNorm(32, eps=1e-6)
+        # self.dynamic_foot_state_mask2 = nn.Linear(32, 32)
+        # self.latent_dynamic_foot_state = nn.Linear(2, 4)
+        # self.action_latent1 = nn.Linear(400, 512 * 2)
+        # self.action_layer_norm = nn.LayerNorm(512 * 2, eps=1e-6)
+        # self.action_latent2 = nn.Linear(512 * 2, 256 * 2)
+        # self.action_latent3 = nn.Linear(256 * 2, 128)
+        # self.action_description_latent1 = nn.Linear(18, 128)
+        # self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
+        # self.action_description_latent2 = nn.Linear(128, 128)
+        # self.policy_mean_layer1 = nn.Linear(260, 128 * 2)
+        # self.policy_mean_layer_norm = nn.LayerNorm(128 * 2, eps=1e-6)
+        # self.policy_mean_layer2 = nn.Linear(128 * 2, 1)
+        # self.policy_logstd_layer = nn.Linear(128 * 2, 1)
+
+    def forward(self, dynamic_joint_description, dynamic_joint_state, dynamic_foot_description,
+                dynamic_foot_state, general_state):
         dynamic_joint_state_mask = self.dynamic_joint_state_mask1(dynamic_joint_description)
         dynamic_joint_state_mask = F.elu(self.dynamic_joint_layer_norm(dynamic_joint_state_mask))
         dynamic_joint_state_mask = torch.tanh(self.dynamic_joint_state_mask2(dynamic_joint_state_mask))
-        dynamic_joint_state_mask = torch.clamp(dynamic_joint_state_mask, -1.0 + self.stability_epsilon, 1.0 - self.stability_epsilon)
+        dynamic_joint_state_mask = torch.clamp(dynamic_joint_state_mask,
+                                               -1.0 + self.stability_epsilon, 1.0 - self.stability_epsilon)
 
         latent_dynamic_joint_state = F.elu(self.latent_dynamic_joint_state(dynamic_joint_state))
 
@@ -53,7 +78,8 @@ class Policy(nn.Module):
         dynamic_foot_state_mask = self.dynamic_foot_state_mask1(dynamic_foot_description)
         dynamic_foot_state_mask = F.elu(self.dynamic_foot_layer_norm(dynamic_foot_state_mask))
         dynamic_foot_state_mask = torch.tanh(self.dynamic_foot_state_mask2(dynamic_foot_state_mask))
-        dynamic_foot_state_mask = torch.clamp(dynamic_foot_state_mask, -1.0 + self.stability_epsilon, 1.0 - self.stability_epsilon)
+        dynamic_foot_state_mask = torch.clamp(dynamic_foot_state_mask, -1.0 + self.stability_epsilon,
+                                              1.0 - self.stability_epsilon)
 
         latent_dynamic_foot_state = F.elu(self.latent_dynamic_foot_state(dynamic_foot_state))
 
@@ -77,7 +103,7 @@ class Policy(nn.Module):
 
         action_latent = action_latent.unsqueeze(-2).repeat(1, action_description_latent.size(-2), 1)
         combined_action_latent = torch.cat([action_latent, latent_dynamic_joint_state.detach(), action_description_latent], dim=-1)
-        
+
         policy_mean = self.policy_mean_layer1(combined_action_latent)
         policy_mean = F.elu(self.policy_mean_layer_norm(policy_mean))
         policy_mean = self.policy_mean_layer2(policy_mean)
@@ -91,12 +117,12 @@ def get_policy(model_device: str):
     foot_log_softmax_temperature = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/foot_log_softmax_temperature.npy")), device=model_device)
     softmax_temperature_min = 0.015
     stability_epsilon = 0.00000001
-    policy_mean_abs_clip = 10.0
+    policy_mean_abs_clip = 50  # 10.0. This value should be adjusted based on data? Or the data should be normalized.
     policy_std_min_clip = 0.00000001
     policy_std_max_clip = 2.0
 
     policy = Policy(joint_log_softmax_temperature, foot_log_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip)
-    policy = torch.jit.script(policy)
+    # policy = torch.jit.script(policy)
     policy.to(model_device)
 
     # # Load weights
@@ -147,7 +173,7 @@ if __name__ == "__main__":
     model_device = 'cuda:0'
 
     policy = get_policy(model_device)
-    
+
     dummy_dynamic_joint_description = np.zeros((1, 13, 18))
     dummy_dynamic_joint_state = np.zeros((1, 13, 3))
     dummy_dynamic_foot_description = np.zeros((1, 4, 10))
