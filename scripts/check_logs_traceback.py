@@ -25,7 +25,7 @@ def check_file_for_errors(file_path, traceback_pattern, error_pattern, num_lines
         print(f"Error reading file {file_path}: {e}")
     return False, last_lines
 
-def analyze_logs(root_dir, keyword, num_lines, traceback_pattern="Traceback", error_pattern="Error"):
+def analyze_logs(root_dir, keyword, max_index, num_lines, traceback_pattern="Traceback", error_pattern="Error"):
     """Analyze log files and categorize them into errors, missing, and good files."""
     log_files = [f for f in os.listdir(root_dir) if re.match(rf"{keyword}\d+.*", f)]
     file_indices = {
@@ -35,14 +35,7 @@ def analyze_logs(root_dir, keyword, num_lines, traceback_pattern="Traceback", er
     }
 
     # Determine the range of indices to analyze
-    all_indices = sorted(file_indices.keys())
-    if not all_indices:
-        print("No files matching the pattern found.")
-        return
-
-    min_index = min(all_indices)
-    max_index = max(all_indices)
-    index_range = range(min_index, max_index + 1)
+    index_range = range(0, max_index)
 
     # Categorize files
     missing_files = []
@@ -87,9 +80,11 @@ if __name__ == "__main__":
                         help="Root directory containing the log files. Default: /bai-fast-vol/code/jobs-logs")
     parser.add_argument("--keyword", type=str, default="Gendog",
                         help="Keyword to match log files (e.g., 'Gendog'). Default: Gendog")
+    parser.add_argument("--max-index", type=int, required=True,
+                        help="Maximum index (exclusive) for log files (e.g., for max-index=10, checks Gendog0 to Gendog9).")
     parser.add_argument("--num-lines", type=int, default=10,
                         help="Number of last lines to print for files with errors. Default: 10")
     args = parser.parse_args()
 
     # Run analysis
-    analyze_logs(args.root, args.keyword, args.num_lines)
+    analyze_logs(args.root, args.keyword, args.max_index, args.num_lines)
