@@ -67,7 +67,18 @@ torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = False
 
 
-def slice_one_policy_observation(general_policy_state, dynamic_joint_state):
+def slice_one_policy_observation(dynamic_joint_description, dynamic_joint_state,
+                                 dynamic_foot_description, dynamic_foot_state, general_policy_state):
+    """
+    Convert URMA observation to a single vector, which can be done in two different ways
+    """
+    # one_input = torch.cat([
+    #     dynamic_joint_description.flatten(1), dynamic_joint_state.flatten(1),
+    #     dynamic_foot_description.flatten(1), dynamic_foot_state.flatten(1),
+    #     general_policy_state.flatten(1),
+    # ], dim=1)
+    # return one_input
+
     # Preprocessing the batch_inputs to adapt to the original actor_critic model
     sliced_1 = general_policy_state[:,
                :12]  # base_lin_vel, base_ang_vel, projected_gravity and target_x_y_yaw_rel from general_policy_state
@@ -203,28 +214,7 @@ def main():
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
 
-                (
-                    dynamic_joint_description,
-                    dynamic_joint_state,
-                    dynamic_foot_description,
-                    dynamic_foot_state,
-                    general_policy_state,
-                ) = batch_inputs
-
-                # # Preprocessing the batch_inputs to adapt to the original actor_critic model
-                # sliced_1 = general_policy_state[:, :12] # base_lin_vel, base_ang_vel, projected_gravity and target_x_y_yaw_rel from general_policy_state
-                # swapped = torch.cat([sliced_1[:, :6], sliced_1[:, 9:12], sliced_1[:, 6:9]], dim=-1) # base_lin_vel, base_ang_vel, arget_x_y_yaw_rel and projected_gravity
-                #
-                # sliced_2 = dynamic_joint_state  # dynamic_joint_state (batch_num, 15, 3)
-                # split = torch.split(sliced_2, 1, dim=-1)  # Split into 3 tensors along last axis
-                # concatenated = torch.cat(split, dim=1).squeeze(-1)  # Concatenate along the second axis. This is joint_pos_rel, joint_vel_rel and action(previous)
-                #
-                # # The order of a actor model obs input is base_lin_vel, base_ang_vel, projected_gravity, target_x_y_yaw_rel, joint_pos_rel, joint_vel_rel and action(previous)
-                # processed_batch_inputs = torch.cat([swapped, concatenated], dim=1)
-
-                processed_batch_inputs = slice_one_policy_observation(general_policy_state, dynamic_joint_state)
-
-                # Forward pass
+                processed_batch_inputs = slice_one_policy_observation(*batch_inputs)
                 batch_predictions = runner.alg.actor_critic.actor(processed_batch_inputs)  # Add batch dimension
 
                 loss = criterion(batch_predictions, batch_targets)
@@ -259,16 +249,7 @@ def main():
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
 
-                    # Unpack dataset-specific transformed inputs
-                    (
-                        dynamic_joint_description,
-                        dynamic_joint_state,
-                        dynamic_foot_description,
-                        dynamic_foot_state,
-                        general_policy_state,
-                    ) = batch_inputs
-
-                    processed_batch_inputs = slice_one_policy_observation(general_policy_state, dynamic_joint_state)
+                    processed_batch_inputs = slice_one_policy_observation(*batch_inputs)
                     batch_predictions = runner.alg.actor_critic.actor(processed_batch_inputs)  # Add batch dimension
 
                     loss = criterion(batch_predictions, batch_targets)
@@ -287,33 +268,6 @@ def main():
             best_val_loss = val_loss_meter.avg
             save_checkpoint(runner.alg.actor_critic.actor, optimizer, epoch + 1, save_path, is_best=True)
         print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_loss_meter.avg:.6f}")
-
-    # # release memory
-    # del train_dataset, train_loader
-
-    # import ipdb; ipdb.set_trace()
-    # # obtain the trained policy for inference
-    # policy = runner.get_inference_policy(device=env.unwrapped.device)
-
-    # # reset environment
-    # obs, _ = env.get_observations()
-    # timestep = 0
-    # # simulate environment
-    # while simulation_app.is_running():
-    #     # run everything in inference mode
-    #     with torch.inference_mode():
-    #         # agent stepping
-    #         actions = policy(obs)
-    #         # env stepping
-    #         obs, _, _, _ = env.step(actions)
-        
-        
-    #     if args_cli.video:
-    #         timestep += 1
-    #         # Exit the play loop after recording one video
-    #         if timestep == args_cli.video_length:
-    #             break
-    # close the simulator
 
     env.close()
 
