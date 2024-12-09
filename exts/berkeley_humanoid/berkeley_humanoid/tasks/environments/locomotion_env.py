@@ -375,10 +375,10 @@ class LocomotionEnv(DirectRLEnv):
         )
         
         # Add noise
-        observation[:, self.joint_positions_obs_idx] += torch.rand_like(observation[:, self.joint_positions_obs_idx]) * self.joint_position_noise
-        observation[:, self.joint_velocities_obs_idx] += torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * self.joint_velocity_noise
-        observation[:, self.trunk_angular_velocity_obs_idx] += torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * self.trunk_angular_velocity_noise
-        observation[:, self.projected_gravity_vector_obs_idx] += torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * self.gravity_vector_noise
+        observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise
+        observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise
+        observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise
+        observation[:, self.projected_gravity_vector_obs_idx] += ((torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * 2) - 1) * self.gravity_vector_noise
         observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
         observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * self.action_dt), observation[:, self.feet_air_time_obs_idx])
 
