@@ -16,7 +16,7 @@ def parse_arguments():
     parser.add_argument("--tasks", nargs="+", type=str, default=None, required=True,
                         help="List of tasks to process.")
     parser.add_argument("--num_epochs", type=int, default=500, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=4096*8, help="Batch size. 4096*16 takes 10G")
+    parser.add_argument("--batch_size", type=int, default=4096, help="Batch size. 4096*16 takes 10G")
     parser.add_argument("--exp_name", type=str, default=None,
                         help="Name of the experiment. If provided, the current date and time will be appended. "
                              "Default is the current date and time.")
@@ -185,11 +185,19 @@ def main():
     if args_cli.model == 'urma':
         from silver_badger_torch.policy import get_policy
         policy = get_policy(model_device)
+
+        # load checkpoint if needed
+        # checkpoint_path = "log_dir/2024-12-08_14-55-29_initial_urma/checkpoint_epoch_77.pt"
+        # checkpoint = torch.load(checkpoint_path, map_location=model_device)
+        # policy.load_state_dict(checkpoint["state_dict"])
+
         # from supervised_actor.policy import get_policy
         # metadata = train_dataset.metadata_list[0]
         # nr_dynamic_joint_observations = metadata['nr_dynamic_joint_observations']
         # policy = get_policy(nr_dynamic_joint_observations, model_device)
+
     elif args_cli.model == 'rsl_rl_actor':
+        # use a simple MLP from RSL-RL
         from rsl_rl.modules import ActorCritic
         # metadata = train_dataset.metadata_list[0]
         # import ipdb; ipdb.set_trace()
