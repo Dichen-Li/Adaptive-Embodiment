@@ -163,7 +163,7 @@ Assume that we have the pre-trained RL actor-critic model parameters stored in l
 After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.
 To supervisely train the student model from multiple teacher policies, run
 ```angular2html
-python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model URMA
+python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model urma
 ```
 The student policy is stored in log_dir/'experiments_name'/best_model.pt.
 Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: 
