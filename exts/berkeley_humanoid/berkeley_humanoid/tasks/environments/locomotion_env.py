@@ -205,7 +205,7 @@ class LocomotionEnv(DirectRLEnv):
 
 
     def _apply_action(self):
-        self._joint_effort_target_sim = self.torques
+        self.robot._joint_effort_target_sim = self.torques
 
 
     def handle_domain_randomization(self):
