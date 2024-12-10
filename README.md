@@ -142,71 +142,72 @@ This is pretty likely due to using integers like `0` as the initial state -- ple
 The goal is to use one policy observation dataset to supervise a URMA model. But before that, we will need to do sanity check on the URMA model. So we should approach the goal within two phases: 1. extract data from one policy observation to supervise the MLP actor-critic model. 2. use one policy observation to supervise the URMA model. The following explanation goes over the phase reversly.
 
 ### One policy observation and URMA model
-  To overall goal is to supervisely distill multiple teachers policies into one student policy, where teachers policies are RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.
-  #### 1. Data Collection
-    We first generate the input & output dataset from the teacher policy. The input data is suitable for URMA model, which includes joint description, joint state, foot description, foot state and general state. The output follows the normal action pattern. Replicate this process for each of the robots.
-    To generate the dataset, run
-    ```angular2html
-    python scripts/rsl_rl/play_collect_data.py --task GenDog1
-    ```
-    ```angular2html
-    python scripts/rsl_rl/play_collect_data.py --task GenDog2
-    ```
-    ```angular2html
-    python scripts/rsl_rl/play_collect_data.py --task GenHumanoid1
-    ```
-    Directory explaination:
-    Assume that we have the pre-trained RL actor-critic model parameters stored in logs/rsl_rl/GenDog2/2024-11-11_12-21-42. The collected input & output data is stored to multiple h5py files in logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record. Technically, we also store the meta data in a yaml file in the same directory as well. The meata data includes all morphology parameters w.r.t to the robot, such as joint number, foot number and general state update index.
+To overall goal is to supervisely distill multiple teachers policies into one student policy, where teachers policies are RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.
+#### 1. Data Collection
+We first generate the input & output dataset from the teacher policy. The input data is suitable for URMA model, which includes joint description, joint state, foot description, foot state and general state. The output follows the normal action pattern. Replicate this process for each of the robots.
+To generate the dataset, run
+```angular2html
+python scripts/rsl_rl/play_collect_data.py --task GenDog1
+```
+```angular2html
+python scripts/rsl_rl/play_collect_data.py --task GenDog2
+```
+```angular2html
+python scripts/rsl_rl/play_collect_data.py --task GenHumanoid1
+```
+Directory explaination:
+Assume that we have the pre-trained RL actor-critic model parameters stored in logs/rsl_rl/GenDog2/2024-11-11_12-21-42. The collected input & output data is stored to multiple h5py files in logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record. Technically, we also store the meta data in a yaml file in the same directory as well. The meata data includes all morphology parameters w.r.t to the robot, such as joint number, foot number and general state update index.
 
 
-  #### 2. Supervise Training
-    After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.
-    To supervisely train the student model from multiple teacher policies, run
-    ```angular2html
-    python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model URMA
-    ```
-    The student policy is stored in log_dir/'experiments_name'/best_model.pt.
-    Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: 
-    During dataset loading:
-    Set total steps of dataset to 1000 -> 32G RAM. (this requires attention on either dataset collection or dataset loading)
-    During training: 
-    set batch size to 4096*10 -> 8G VRAM;
-    set learning rate to 1e-4 and number of epoch to 100. (BoAi set default as 1.25e-4)
+#### 2. Supervise Training
+After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.
+To supervisely train the student model from multiple teacher policies, run
+```angular2html
+python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model URMA
+```
+The student policy is stored in log_dir/'experiments_name'/best_model.pt.
+Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: 
+During dataset loading:
+Set total steps of dataset to 1000 -> 32G RAM. (this requires attention on either dataset collection or dataset loading)
+During training: 
+set batch size to 4096*10 -> 8G VRAM;
+set learning rate to 1e-4 and number of epoch to 100. (BoAi set default as 1.25e-4)
 
-  #### 3. Evaluation
-    Finally, load the policy network and use it to control the robot env in the simulation environment.
-    To visualize, run
-    ```angular2html
-    python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 --video --video_length 200
-    ```
-    ```angular2html
-    python scripts/rsl_rl/eval_student_model_urma.py --task GenDog2 --video --video_length 200
-    ```
-    ```angular2html
-    python scripts/rsl_rl/eval_student_model_urma.py --task GenHumanoid1 --video --video_length 200
-    ```
-    The corresponding video is stored in directory: log_dir/{experiment_name}/one_policy_videos/{task}
-  
-  ### 4. Developing
-    There is a "--model" arg in run_distillation.py and eval_student_model_urma.py. It serves as a function to replace the model to self defined naive MLP, rsl_rl model actor-critic or self defined silver_badger_torch URMA. 
-    <!-- TODO: @BoAi, check if it can work properly in code. If so, use it to replace the following "One policy observation and MLP actor-critic model". Check the corresponding args input in md explaination. -->
+#### 3. Evaluation
+Finally, load the policy network and use it to control the robot env in the simulation environment.
+To visualize, run
+```angular2html
+python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 --video --video_length 200
+```
+```angular2html
+python scripts/rsl_rl/eval_student_model_urma.py --task GenDog2 --video --video_length 200
+```
+```angular2html
+python scripts/rsl_rl/eval_student_model_urma.py --task GenHumanoid1 --video --video_length 200
+```
+The corresponding video is stored in directory: log_dir/{experiment_name}/one_policy_videos/{task}
+
+#### 4. Developing
+There is a "--model" arg in run_distillation.py and eval_student_model_urma.py. It serves as a function to replace the model to self defined naive MLP, rsl_rl model actor-critic or self defined silver_badger_torch URMA. 
+<!-- TODO: @BoAi, check if it can work properly in code. If so, use it to replace the following "One policy observation and MLP actor-critic model". Check the corresponding args input in md explaination. -->
 
 ### One policy observation and MLP actor-critic model
-  For debug purpose, we use the MLP actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. We load the one policy dataset and extract the variables needed for MLP actor-critic network. The extraction process is done right before every inference of MLP actor-critic model in training pipeline.
-  To collect data, run 
-    ```angular2html
-    python scripts/rsl_rl/play_collect_data.py --task GenDog2
-    ```
-  To train, run
-  ```angular2html
-  python scripts/rsl_rl/run_distillation_mlp_dichen.py --task GenDog2 --num_epochs 1000 --exp_name 'your_experiment_name' --headless
-  ```
-  To evaluate, run
-  ```angular2html
-  python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog2 --new_log_dir logs/rsl_rl/GenDog2/2024-11-11_12-21-42/pt_save_actor_critic/'date_time'+'your_experiment_name'
-  ```
-  For MLP actor-critic model, the same single task arg is required for training and evaluation.
-  This pipeline works. We see loss going down to 0.02 in 1000 epochs. and the robot could walk. Fewer epochs as 100 is also acceptable.
+For debug purpose, we use the MLP actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. We load the one policy dataset and extract the variables needed for MLP actor-critic network. The extraction process is done right before every inference of MLP actor-critic model in training pipeline.
+To collect data, run 
+```angular2html
+python scripts/rsl_rl/play_collect_data.py --task GenDog2
+```
+To train, run
+```angular2html
+python scripts/rsl_rl/run_distillation_mlp_dichen.py --task GenDog2 --num_epochs 1000 --exp_name 'your_experiment_name' --headless
+```
+To evaluate, run
+```angular2html
+python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog2 --new_log_dir logs/rsl_rl/GenDog2/2024-11-11_12-21-42/pt_save_actor_critic/'date_time'+'your_experiment_name'
+```
+For MLP actor-critic model, the same single task arg is required for training and evaluation.
+This pipeline works. We see loss going down to 0.02 in 1000 epochs. and the robot could walk. Fewer epochs as 100 is also acceptable.
+
 Work continued.
 
 Happy training! 
