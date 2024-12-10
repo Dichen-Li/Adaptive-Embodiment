@@ -34,6 +34,7 @@ class LocomotionEnv(DirectRLEnv):
         self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
         self.joint_max_velocity = self.robot.actuators["base_legs"].velocity_limit
+        self.joint_max_torque = self.robot.actuators["base_legs"].effort_limit
         self.action_scaling_factor = self.cfg.action_scaling_factor
         self.p_gains = self.robot.actuators["base_legs"].stiffness
         self.d_gains = self.robot.actuators["base_legs"].damping
@@ -138,6 +139,7 @@ class LocomotionEnv(DirectRLEnv):
 
     def _setup_scene(self):
         self.robot = Articulation(self.cfg.robot)
+        self.robot._apply_actuator_model = lambda: None
         self.cfg.terrain.num_envs = self.scene.cfg.num_envs
         self.cfg.terrain.env_spacing = self.scene.cfg.env_spacing
         self.terrain = self.cfg.terrain.class_type(self.cfg.terrain)
@@ -199,11 +201,11 @@ class LocomotionEnv(DirectRLEnv):
         target_joint_positions = self.joint_nominal_positions + scaled_actions
         self.torques = self.p_gains * self.extrinsic_p_gain_factor * (target_joint_positions - self.robot.data.joint_pos + self.extrinsic_position_offset) \
                        - self.d_gains * self.extrinsic_d_gain_factor * self.robot.data.joint_vel
-        self.torques *= self.extrinsic_motor_strength
+        self.torques = torch.clamp(self.torques * self.extrinsic_motor_strength, -self.joint_max_torque, self.joint_max_torque)
 
 
     def _apply_action(self):
-        self.robot.set_joint_effort_target(self.torques)
+        self._joint_effort_target_sim = self.torques
 
 
     def handle_domain_randomization(self):
@@ -286,7 +288,7 @@ class LocomotionEnv(DirectRLEnv):
             self.actions,
             self.previous_actions,
             self.robot.data.joint_acc,
-            self.robot.data.applied_torque,
+            self.torques,
             self.goal_velocities,
             self.nominal_trunk_z,
             feet_contacts,
