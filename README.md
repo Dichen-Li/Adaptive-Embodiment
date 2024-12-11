@@ -8,21 +8,11 @@ to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is clos
 - Install Isaac Lab, see
   the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
 
-- Using a python interpreter that has Isaac sLab installed, install the library
-
-## How to add robot
-Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
-0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
-Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
-```angular2html
-sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
-sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
+- Using a python interpreter that has Isaac sLab installed, install the library with
 ```
-1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
-2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
-3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
-4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
-5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+cd embodiment-scaling-law
+pip install -e exts/berkeley_humanoid/
+```
 
 ## Single robot training and testing
 To train just one robot, run 
@@ -46,7 +36,7 @@ defined in  `_get_observations` and the reward function is `_get_rewards`.
 
 
 ## Single robot training and testing
-There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1nPq_osKWaZ_P89GdC27DXqrPYIGqKPCh/view?usp=sharing), unzip it and move it to the asset folder:
+There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1T9D7uOnAsab9wM6gAQSQY9PHTk6zu2PQ/view?usp=sharing), unzip it and move it to the asset folder:
 ```angular2html
 unzip gen_embodiments_1124.zip
 mv gen_embodiments_1124 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
@@ -99,7 +89,42 @@ python gen_nautilus_jobs.py
 ```
 you should see a folder `jobs` containing all the job files. You can run `submit_jobs.sh` to submit them all at once.
 
-## Adding customized robots
+## Examine batch training results on nautilus server
+After running the training scripts for many robots, we need to batch examine the output logs and checkpoints produced by
+the program. Some util scripts have been implemented to ease manual checking.
+1. Check `.out` logs. The commands in job scripts should have redirected the training printout to `.out` files, and we 
+can check these files to see if there are `Error` or `Traceback`. The following script can do this for you (please
+adapt the arg values for your own case):
+```angular2html
+cd scripts
+python check_logs_traceback.py --root ../../jobs-logs/ --keyword Gendog --max-index 308
+```
+2. Check tensorboard logs. The training programs should produce checkpoints (though, please note that even if IsaacLab 
+throws errors, training can still resume sometimes; thus, please check `.out` as well). To check if there are checkpoints
+produced for every robot, below is an example command: 
+```angular2html
+cd scripts
+python check_tf_checkpoints.py --root ../logs/rsl_rl --keyword Gendog --max-index 308 --min-epoch 3000
+```
+The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete logs.
+
+
+## How to add single robot manually
+Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
+0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
+Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
+```angular2html
+sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
+sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
+```
+1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
+2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
+3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
+4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
+5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+
+
+## Adding customized robots in batch using generation script
 Taking quadruped as an example, but the specific file names could differ for different robots: 
 0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
 Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
@@ -110,7 +135,7 @@ sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_var
 1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`. 
 For large robot dataset like `GenBot1K`, we could store the folder somewhere else and create a soft link in the directory pointing to the folder, e.g.
 ```angular2html
-ln -s {folder_path} exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
 ```
 
 2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/gen_quadruped_1k_ppo_cfg.py`, following the pattern in the file. For adding a large number of robots, run `generation/gen_ppo_cfg.py` to generate these lines automatically:
@@ -137,8 +162,8 @@ RuntimeError: Index put requires the source and destination dtypes match, got Fl
 ```
 This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
 
-## Cross-embodiment distillation
-This section introduces how to perform data collection for policy distillation. 
+## Policy distillation
+This section introduces how to perform policy distillation. 
 
 [//]: # (The goal is to use one policy observation dataset to supervise a URMA model. But before that, we will need to do sanity check on the URMA model. So we should approach the goal within two phases: 1. extract data from one policy observation to supervise the MLP actor-critic model. 2. use one policy observation to supervise the URMA model. The following explanation goes over the phase reversly.)
 
@@ -151,8 +176,13 @@ Checkpoints should be at `logs/rsl_rl/{robot_name}` where `robot_name` could be 
 [//]: # (### One policy observation and URM/re RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.)
 
 #### 1. Data Collection
-We first generate the input & output dataset from the teacher policy. The input data is suitable for URMA model, which includes joint description, joint state, foot description, foot state and general state. The output follows the normal action pattern. Replicate this process for each of the robots.
-To generate the dataset, run
+To generate dataset for a robot, run the following command, which loads the most
+recent checkpoint in the directory and save datasets as `.h5` files in 
+that folder. 
+
+[//]: # (We first generate a dataset from the teacher policy. The input data is suitable for URMA model, which includes joint description, joint state, foot description, foot state and general state. The output follows the normal action pattern. Replicate this process for each of the robots.)
+
+[//]: # (To generate the dataset, run)
 ```angular2html
 python scripts/rsl_rl/play_collect_data.py --task GenDog1
 ```
@@ -162,59 +192,87 @@ python scripts/rsl_rl/play_collect_data.py --task GenDog2
 ```angular2html
 python scripts/rsl_rl/play_collect_data.py --task GenHumanoid1
 ```
-Directory explaination:
-Assume that we have the pre-trained RL actor-critic model parameters stored in logs/rsl_rl/GenDog2/2024-11-11_12-21-42. The collected input & output data is stored to multiple h5py files in logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record. Technically, we also store the meta data in a yaml file in the same directory as well. The meata data includes all morphology parameters w.r.t to the robot, such as joint number, foot number and general state update index.
+Directory structure explanation:
+Assume that we have the pre-trained RL actor-critic model parameters stored in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42`. The collected input & output data is stored to multiple h5py files in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record`. Technically, we also store the metadata in a yaml file in the same directory. The metadata includes many simulation and robot paramters, such as numbers of joints and various indices needed to construct/decompose URMA observation vector. 
 
+#### 2. Behavior Cloning
+To train a student policy, run the following command, which will load the datasets from all robots and perform supervised learning
 
-#### 2. Supervise Training
-After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.
-To supervisely train the student model from multiple teacher policies, run
+[//]: # (After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.)
+[//]: # (To supervisely train the student model from multiple teacher policies, run)
 ```angular2html
-python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model urma
+python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model urma --exp_name {exp_name}
 ```
-The student policy is stored in log_dir/'experiments_name'/best_model.pt.
-Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: 
-During dataset loading:
-Set total steps of dataset to 1000 -> 32G RAM. (this requires attention on either dataset collection or dataset loading)
-During training: 
-set batch size to 4096*10 -> 8G VRAM;
-set learning rate to 1e-4 and number of epoch to 100. (BoAi set default as 1.25e-4)
+where `model` could also be `"rsl_rl_actor", "naive_actor". 
+
+The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, consider increasing the value of `--max_files_in_memory`. 
+
+[//]: # (Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: )
+
+[//]: # (During dataset loading:)
+
+[//]: # (Set total steps of dataset to 1000 -> 32G RAM. &#40;this requires attention on either dataset collection or dataset loading&#41;)
+
+[//]: # (During training: )
+
+[//]: # (set batch size to 4096*10 -> 8G VRAM;)
+
+[//]: # (set learning rate to 1e-4 and number of epoch to 100. &#40;BoAi set default as 1.25e-4&#41;)
 
 #### 3. Evaluation
 Finally, load the policy network and use it to control the robot env in the simulation environment.
-To visualize, run
+
+To visualize the trained URMA policy, run
 ```angular2html
 python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 --video --video_length 200
 ```
+If the model is an MLP, run
 ```angular2html
-python scripts/rsl_rl/eval_student_model_urma.py --task GenDog2 --video --video_length 200
+python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog1 --video --video_length 200
 ```
-```angular2html
-python scripts/rsl_rl/eval_student_model_urma.py --task GenHumanoid1 --video --video_length 200
-```
-The corresponding video is stored in directory: log_dir/{experiment_name}/one_policy_videos/{task}
 
-#### 4. Developing
-There is a "--model" arg in run_distillation.py and eval_student_model_urma.py. It serves as a function to replace the model to self defined naive MLP, rsl_rl model actor-critic or self defined silver_badger_torch URMA. 
-<!-- TODO: @BoAi, check if it can work properly in code. If so, use it to replace the following "One policy observation and MLP actor-critic model". Check the corresponding args input in md explaination. -->
+The corresponding video is stored in directory: `log_dir/{experiment_name}/one_policy_videos/{task}`. If no `--video_length` is set, no videos will be saved (and simulation will be faster). 
 
-### One policy observation and MLP actor-critic model
-For debug purpose, we use the MLP actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. We load the one policy dataset and extract the variables needed for MLP actor-critic network. The extraction process is done right before every inference of MLP actor-critic model in training pipeline.
-To collect data, run 
-```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenDog2
-```
-To train, run
-```angular2html
-python scripts/rsl_rl/run_distillation_mlp_dichen.py --task GenDog2 --num_epochs 1000 --exp_name 'your_experiment_name' --headless
-```
-To evaluate, run
-```angular2html
-python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog2 --new_log_dir logs/rsl_rl/GenDog2/2024-11-11_12-21-42/pt_save_actor_critic/'date_time'+'your_experiment_name'
-```
-For MLP actor-critic model, the same single task arg is required for training and evaluation.
-This pipeline works. We see loss going down to 0.02 in 1000 epochs. and the robot could walk. Fewer epochs as 100 is also acceptable.
+[//]: # (#### 4. Developing)
 
-Work continued.
+[//]: # (There is a "--model" arg in run_distillation.py and eval_student_model_urma.py. It serves as a function to replace the model to self defined naive MLP, rsl_rl model actor-critic or self defined silver_badger_torch URMA. )
 
-Happy training! 
+[//]: # (<!-- TODO: @BoAi, check if it can work properly in code. If so, use it to replace the following "One policy observation and MLP actor-critic model". Check the corresponding args input in md explaination. -->)
+
+[//]: # ()
+[//]: # (### One policy observation and MLP actor-critic model)
+
+[//]: # (For debug purpose, we use the MLP actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. We load the one policy dataset and extract the variables needed for MLP actor-critic network. The extraction process is done right before every inference of MLP actor-critic model in training pipeline.)
+
+[//]: # (To collect data, run )
+
+[//]: # (```angular2html)
+
+[//]: # (python scripts/rsl_rl/play_collect_data.py --task GenDog2)
+
+[//]: # (```)
+
+[//]: # (To train, run)
+
+[//]: # (```angular2html)
+
+[//]: # (python scripts/rsl_rl/run_distillation_mlp_dichen.py --task GenDog2 --num_epochs 1000 --exp_name 'your_experiment_name' --headless)
+
+[//]: # (```)
+
+[//]: # (To evaluate, run)
+
+[//]: # (```angular2html)
+
+[//]: # (python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog2 --new_log_dir logs/rsl_rl/GenDog2/2024-11-11_12-21-42/pt_save_actor_critic/'date_time'+'your_experiment_name')
+
+[//]: # (```)
+
+[//]: # (For MLP actor-critic model, the same single task arg is required for training and evaluation.)
+
+[//]: # (This pipeline works. We see loss going down to 0.02 in 1000 epochs. and the robot could walk. Fewer epochs as 100 is also acceptable.)
+
+[//]: # ()
+[//]: # (Work continued.)
+
+[//]: # (Happy training! )
