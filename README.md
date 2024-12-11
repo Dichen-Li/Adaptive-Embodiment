@@ -137,12 +137,19 @@ RuntimeError: Index put requires the source and destination dtypes match, got Fl
 ```
 This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
 
-## Teacher policy supervised distillation 
-@Nico, watch this
-The goal is to use one policy observation dataset to supervise a URMA model. But before that, we will need to do sanity check on the URMA model. So we should approach the goal within two phases: 1. extract data from one policy observation to supervise the MLP actor-critic model. 2. use one policy observation to supervise the URMA model. The following explanation goes over the phase reversly.
+## Cross-embodiment distillation
+This section introduces how to perform data collection for policy distillation. 
 
-### One policy observation and URMA model
-To overall goal is to supervisely distill multiple teachers policies into one student policy, where teachers policies are RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.
+[//]: # (The goal is to use one policy observation dataset to supervise a URMA model. But before that, we will need to do sanity check on the URMA model. So we should approach the goal within two phases: 1. extract data from one policy observation to supervise the MLP actor-critic model. 2. use one policy observation to supervise the URMA model. The following explanation goes over the phase reversly.)
+
+0. Place checkpoints under the project root. 
+```angular2html
+unzip logs.zip
+```
+Checkpoints should be at `logs/rsl_rl/{robot_name}` where `robot_name` could be `GenDog1`, `GenDog2` etc.
+
+[//]: # (### One policy observation and URM/re RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.)
+
 #### 1. Data Collection
 We first generate the input & output dataset from the teacher policy. The input data is suitable for URMA model, which includes joint description, joint state, foot description, foot state and general state. The output follows the normal action pattern. Replicate this process for each of the robots.
 To generate the dataset, run
