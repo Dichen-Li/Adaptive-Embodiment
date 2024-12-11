@@ -167,16 +167,16 @@ This section introduces how to perform policy distillation.
 
 [//]: # (The goal is to use one policy observation dataset to supervise a URMA model. But before that, we will need to do sanity check on the URMA model. So we should approach the goal within two phases: 1. extract data from one policy observation to supervise the MLP actor-critic model. 2. use one policy observation to supervise the URMA model. The following explanation goes over the phase reversly.)
 
-0. Place checkpoints under the project root. 
+#### 0. Place checkpoints under the project root, or train robots to obtain checkpointws
 ```angular2html
 unzip logs.zip
 ```
-Checkpoints should be at `logs/rsl_rl/{robot_name}` where `robot_name` could be `GenDog1`, `GenDog2` etc.
+Checkpoints should be at `logs/rsl_rl/{robot_name}` where `robot_name` could be `GenDog1`, `GenDog2` etc. Alternatively, train any robot that you prefer and checkpoints will appear in the same directory. 
 
 [//]: # (### One policy observation and URM/re RL actor-critic policies for each of the robots, and the student policy is the URMA model. It can be split into 3 steps.)
 
 #### 1. Data Collection
-To generate dataset for a robot, run the following command, which loads the most
+To generate a dataset for a robot, run the following command, which loads the most
 recent checkpoint in the directory and save datasets as `.h5` files in 
 that folder. 
 
@@ -184,28 +184,25 @@ that folder.
 
 [//]: # (To generate the dataset, run)
 ```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenDog1
+python scripts/rsl_rl/play_collect_data.py --task GenDog1 --steps 1000
 ```
-```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenDog2
-```
-```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenHumanoid1
-```
-Directory structure explanation:
-Assume that we have the pre-trained RL actor-critic model parameters stored in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42`. The collected input & output data is stored to multiple h5py files in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record`. Technically, we also store the metadata in a yaml file in the same directory. The metadata includes many simulation and robot paramters, such as numbers of joints and various indices needed to construct/decompose URMA observation vector. 
+You may interrupt data collection at any time and the files won't corrupt. 
+
+Dataset directory structure: 
+Assume that we have the teacher model checkpoint in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42`. The collected dataset is stored as multiple `h5py` files in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record`. We also store the metadata in a yaml file in the same directory. The metadata includes many simulation and robot parameters, such as the number of joints and various indices needed to construct/decompose the URMA observation vector. 
 
 #### 2. Behavior Cloning
 To train a student policy, run the following command, which will load the datasets from all robots and perform supervised learning
 
 [//]: # (After generating the dataset, we combine datasets from different robots to one. After that, we feed the input into the student policy network, and supervised on the the loss between the student action and the dataset output.)
 [//]: # (To supervisely train the student model from multiple teacher policies, run)
+
 ```angular2html
 python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model urma --exp_name {exp_name}
 ```
 where `model` could also be `"rsl_rl_actor", "naive_actor". 
 
-The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, consider increasing the value of `--max_files_in_memory`. 
+The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, consider increasing the value of `--max_files_in_memory`, or let Bo know to improve the dataset class. 
 
 [//]: # (Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: )
 
@@ -220,18 +217,20 @@ The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Ple
 [//]: # (set learning rate to 1e-4 and number of epoch to 100. &#40;BoAi set default as 1.25e-4&#41;)
 
 #### 3. Evaluation
-Finally, load the policy network and use it to control the robot env in the simulation environment.
+Finally, load the policy network and test it in the simulation environment.
 
 To visualize the trained URMA policy, run
 ```angular2html
-python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 --video --video_length 200
+python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 
 ```
 If the model is an MLP, run
 ```angular2html
-python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog1 --video --video_length 200
+python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog1
 ```
 
-The corresponding video is stored in directory: `log_dir/{experiment_name}/one_policy_videos/{task}`. If no `--video_length` is set, no videos will be saved (and simulation will be faster). 
+If you wish to store videos, which might slow down simulation, add `--video --video_length 200` and the corresponding video will be stored in the directory: `log_dir/{experiment_name}/one_policy_videos/{task}`. 
+
+TODO: compute reward values for evaluation to quantify performance. 
 
 [//]: # (#### 4. Developing)
 
