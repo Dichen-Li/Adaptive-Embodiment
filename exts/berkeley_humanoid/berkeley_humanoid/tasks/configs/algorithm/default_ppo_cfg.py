@@ -36,11 +36,11 @@ class DefaultPPORunnerCfg:
     seed = 42
     device = "cuda:0"
     num_steps_per_env = 24
-    max_iterations = 4000
+    max_iterations = 20000
     empirical_normalization = False
     policy = PolicyCfg()
     algorithm = AlgorithmCfg()
-    save_interval = 200
+    save_interval = 1000
     experiment_name = "standard"
     run_name = ""
     logger = "tensorboard"

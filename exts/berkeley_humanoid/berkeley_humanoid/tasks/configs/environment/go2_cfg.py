@@ -77,10 +77,11 @@ class Go2EnvCfg(DirectRLEnvCfg):
     joint_acceleration_coeff = 2.5e-7           * action_dt
     joint_torque_coeff = 2e-4                   * action_dt
     action_rate_coeff = 0.01                    * action_dt
-    base_height_coeff = 30.0                    * action_dt
+    base_height_coeff = 50.0                    * action_dt
     air_time_coeff = 0.1                        * action_dt
     symmetry_air_coeff = 0.5                    * action_dt
     feet_symmetry_pairs = [(0, 1), (2, 3)]
+    feet_y_distance_coeff = 2.0                 * action_dt
 
     # Action delay
     max_nr_action_delay_steps = 1

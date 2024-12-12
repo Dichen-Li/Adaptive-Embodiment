@@ -7,6 +7,7 @@ from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
 import omni.isaac.lab.envs.mdp as mdp
 from omni.isaac.lab.sensors import ContactSensor
 import omni.isaac.lab.sim as sim_utils
+import omni.isaac.lab.utils.math as math_utils
 
 
 class LocomotionEnv(DirectRLEnv):
@@ -61,6 +62,7 @@ class LocomotionEnv(DirectRLEnv):
         self.air_time_coeff = self.cfg.air_time_coeff
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
+        self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
 
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
@@ -261,6 +263,10 @@ class LocomotionEnv(DirectRLEnv):
         feet_contact_sensors = self.scene.sensors[self.feet_contact_cfg.name]
         feet_contacts = torch.norm(feet_contact_sensors.data.net_forces_w[:, self.feet_contact_cfg.body_ids], dim=-1) > 1.0
 
+        feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
+        global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
+        local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
+
         reward, extras = compute_rewards(
             curriculum_coeff,
             self.tracking_xy_velocity_command_coeff,
@@ -277,6 +283,7 @@ class LocomotionEnv(DirectRLEnv):
             self.base_height_coeff,
             self.air_time_coeff,
             self.symmetry_air_coeff,
+            self.feet_y_distance_coeff,
             self.robot.data.root_lin_vel_b,
             self.robot.data.root_ang_vel_b,
             self.robot.data.root_state_w[:, :3],
@@ -293,7 +300,8 @@ class LocomotionEnv(DirectRLEnv):
             self.nominal_trunk_z,
             feet_contacts,
             self.previous_feet_air_times,
-            self.feet_symmetry_pairs
+            self.feet_symmetry_pairs,
+            local_feet_pos
         )
 
         self.extras = {"log": extras}
@@ -479,6 +487,7 @@ def compute_rewards(
     base_height_coeff: float,
     air_time_coeff: float,
     symmetry_air_coeff: float,
+    feet_y_distance_coeff: float,
     current_local_linear_velocity: torch.Tensor,
     current_local_angular_velocity: torch.Tensor,
     linear_position: torch.Tensor,
@@ -495,7 +504,8 @@ def compute_rewards(
     nominal_trunk_z: float,
     feet_contacts: torch.Tensor,
     feet_air_times: torch.Tensor,
-    feet_symmetry_pairs: torch.Tensor
+    feet_symmetry_pairs: torch.Tensor,
+    local_feet_pos: torch.Tensor
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     
     # Tracking xy velocity command reward
@@ -556,11 +566,16 @@ def compute_rewards(
     symmetry_air_violations = torch.sum(~feet_contacts[:, feet_symmetry_pairs[:, 0]] & ~feet_contacts[:, feet_symmetry_pairs[:, 1]], dim=1)
     symmetry_air_reward = curriculum_coeff * symmetry_air_coeff * -symmetry_air_violations
 
+    # Feet y distance reward
+    feet_y_distance = torch.abs(local_feet_pos[:, feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
+    feet_y_distance_from_target_norm = (feet_y_distance - 0.34) ** 2
+    feet_y_distance_reward = curriculum_coeff * feet_y_distance_coeff * -feet_y_distance_from_target_norm
+
     # Total reward
     tracking_reward = tracking_xy_velocity_command_reward + tracking_yaw_velocity_command_reward
     reward_penalty = linear_velocity_reward + angular_velocity_reward + angular_position_reward + actuator_joint_nominal_diff_reward + \
                      joint_position_limit_reward + acceleration_reward + torque_reward + action_rate_reward + \
-                     base_height_reward + air_time_reward + symmetry_air_reward
+                     base_height_reward + air_time_reward + symmetry_air_reward + feet_y_distance_reward
     reward = tracking_reward + reward_penalty
     reward = torch.maximum(reward, torch.tensor(0.0, device=reward.device))
 
@@ -578,6 +593,7 @@ def compute_rewards(
         "reward/base_height": base_height_reward.mean(),
         "reward/air_time": air_time_reward.mean(),
         "reward/symmetry_air": symmetry_air_reward.mean(),
+        "reward/feet_y_distance": feet_y_distance_reward.mean(),
     }
 
     return reward, extras
