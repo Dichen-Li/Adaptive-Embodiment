@@ -98,6 +98,7 @@ class ActorCritic(nn.Module):
 
     def update_distribution(self, observations):
         mean = self.actor(observations)
+        mean = torch.clamp(mean, -10.0, 10.0)
         self.distribution = Normal(mean, mean * 0.0 + self.std)
 
     def act(self, observations, **kwargs):
@@ -109,6 +110,7 @@ class ActorCritic(nn.Module):
 
     def act_inference(self, observations):
         actions_mean = self.actor(observations)
+        actions_mean = torch.clamp(actions_mean, -10.0, 10.0)
         return actions_mean
 
     def evaluate(self, critic_observations, **kwargs):
