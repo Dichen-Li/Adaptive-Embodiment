@@ -94,6 +94,7 @@ class OnPolicyRunner:
         critic_obs = extras["observations"].get("critic", obs)
         obs, critic_obs = obs.to(self.device), critic_obs.to(self.device)
         self.train_mode()  # switch to train mode (for dropout for example)
+        self.alg.calculate_total_nr_updates(num_learning_iterations)
 
         ep_infos = []
         rewbuffer = deque(maxlen=100)
