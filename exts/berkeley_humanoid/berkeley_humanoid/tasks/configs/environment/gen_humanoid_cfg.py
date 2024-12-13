@@ -187,7 +187,7 @@ class Genhumanoid10Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -200,7 +200,7 @@ class Genhumanoid9Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -213,7 +213,7 @@ class Genhumanoid8Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -226,7 +226,7 @@ class Genhumanoid7Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -239,7 +239,7 @@ class Genhumanoid6Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -252,7 +252,7 @@ class Genhumanoid5Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -265,7 +265,7 @@ class Genhumanoid4Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -278,7 +278,7 @@ class Genhumanoid3Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -291,7 +291,7 @@ class Genhumanoid2Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -304,7 +304,7 @@ class Genhumanoid0Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -317,7 +317,7 @@ class Genhumanoid1Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -330,7 +330,7 @@ class Genhumanoid14Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -343,7 +343,7 @@ class Genhumanoid13Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -356,7 +356,7 @@ class Genhumanoid12Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -369,7 +369,7 @@ class Genhumanoid11Cfg(GenHumanoidEnvCfg):
         'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*']),
         'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint', '.*elbow.*joint', '.*shoulder.*joint', '.*torso.*joint']),
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
+        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
 
 @configclass
@@ -4466,4 +4466,3 @@ class Genhumanoid281Cfg(GenHumanoidEnvCfg):
         'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
         'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*head.*', '.*torso.*', '.*arm.*', '.*calf.*'])
     }
-

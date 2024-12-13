@@ -5,36 +5,14 @@ to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is clos
 
 ## Installation
 
-### Isaac Lab
-Install Isaac Lab following the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
+- Install Isaac Lab, see
+  the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
 
-### Learning Environments
-Use a python interpreter that has Isaac Lab installed and install the library: 
-```angular2html
-cd exts/berkeley_humanoid/
-pip install -e .
+- Using a python interpreter that has Isaac sLab installed, install the library with
 ```
-
-### RSL RL
-Install the fork of the RSL RL library:
-```angular2html
-cd rsl_rl/
-pip install -e . --config-settings editable_mode=compat
+cd embodiment-scaling-law
+pip install -e exts/berkeley_humanoid/
 ```
-
-## How to add robot
-Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
-0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
-Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
-```angular2html
-sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
-sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
-```
-1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
-2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/default_ppo_cfg.py`, following the pattern
-3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
-4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
-5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
 
 ## Single robot training and testing
 To train just one robot, run 
@@ -58,7 +36,7 @@ defined in  `_get_observations` and the reward function is `_get_rewards`.
 
 
 ## Single robot training and testing
-There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1nPq_osKWaZ_P89GdC27DXqrPYIGqKPCh/view?usp=sharing), unzip it and move it to the asset folder:
+There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1T9D7uOnAsab9wM6gAQSQY9PHTk6zu2PQ/view?usp=sharing), unzip it and move it to the asset folder:
 ```angular2html
 unzip gen_embodiments_1124.zip
 mv gen_embodiments_1124 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
@@ -111,7 +89,42 @@ python gen_nautilus_jobs.py
 ```
 you should see a folder `jobs` containing all the job files. You can run `submit_jobs.sh` to submit them all at once.
 
-## Adding customized robots
+## Examine batch training results on nautilus server
+After running the training scripts for many robots, we need to batch examine the output logs and checkpoints produced by
+the program. Some util scripts have been implemented to ease manual checking.
+1. Check `.out` logs. The commands in job scripts should have redirected the training printout to `.out` files, and we 
+can check these files to see if there are `Error` or `Traceback`. The following script can do this for you (please
+adapt the arg values for your own case):
+```angular2html
+cd scripts
+python check_logs_traceback.py --root ../../jobs-logs/ --keyword Gendog --max-index 308
+```
+2. Check tensorboard logs. The training programs should produce checkpoints (though, please note that even if IsaacLab 
+throws errors, training can still resume sometimes; thus, please check `.out` as well). To check if there are checkpoints
+produced for every robot, below is an example command: 
+```angular2html
+cd scripts
+python check_tf_checkpoints.py --root ../logs/rsl_rl --keyword Gendog --max-index 308 --min-epoch 3000
+```
+The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete logs.
+
+
+## How to add single robot manually
+Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
+0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
+Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
+```angular2html
+sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
+sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
+```
+1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
+2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
+3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
+4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
+5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+
+
+## Adding customized robots in batch using generation script
 Taking quadruped as an example, but the specific file names could differ for different robots: 
 0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
 Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
@@ -122,7 +135,7 @@ sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_var
 1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`. 
 For large robot dataset like `GenBot1K`, we could store the folder somewhere else and create a soft link in the directory pointing to the folder, e.g.
 ```angular2html
-ln -s {folder_path} exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
 ```
 
 2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/gen_quadruped_1k_ppo_cfg.py`, following the pattern in the file. For adding a large number of robots, run `generation/gen_ppo_cfg.py` to generate these lines automatically:
