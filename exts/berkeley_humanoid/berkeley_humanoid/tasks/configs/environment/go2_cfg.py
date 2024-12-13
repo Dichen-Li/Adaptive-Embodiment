@@ -55,8 +55,9 @@ class Go2EnvCfg(DirectRLEnvCfg):
     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
     all_bodies_cfg = SceneEntityCfg("robot", body_names=".*")
     all_joints_cfg = SceneEntityCfg("robot", joint_names=".*")
-    trunk_cfg = SceneEntityCfg("robot", body_names="base")
 
+    # robot-specific config
+    trunk_cfg = SceneEntityCfg("robot", body_names="base")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
