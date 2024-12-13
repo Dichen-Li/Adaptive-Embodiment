@@ -1,8 +1,3 @@
-# Copyright (c) 2022-2024, The Isaac Lab Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
 from __future__ import annotations
 
 from dataclasses import MISSING
@@ -18,76 +13,77 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.gen_quadrupeds import *
+from .go2_cfg import Go2EnvCfg
 
 
-@configclass
-class GenDogEnvCfg(DirectRLEnvCfg):
-    """
-    A parent config class that will be inherited by robot-specific config classes
-    """
-    seed = 42
-
-    # env
-    episode_length_s = 20.0
-    decimation = 4
-    dt = 0.005
-    action_space = 12
-    observation_space = 69
-
-    # simulation
-    sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
-    terrain = TerrainImporterCfg(
-        prim_path="/World/ground",
-        terrain_type="plane",
-        collision_group=-1,
-        physics_material=sim_utils.RigidBodyMaterialCfg(
-            friction_combine_mode="average",
-            restitution_combine_mode="average",
-            static_friction=1.0,
-            dynamic_friction=1.0,
-            restitution=0.0,
-        ),
-        debug_vis=False,
-    )
-
-    # scene
-    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.5,
-                                                     replicate_physics=True)
-
-    # robot
-    robot: ArticulationCfg = MISSING
-
-    # sensor for reward calculation
-    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
-                                      track_air_time=True, track_pose=True)
-
-    asset_name = "robot"
-
-    # Velocity command ranges
-    x_vel_range = (-1.0, 1.0)
-    y_vel_range = (-1.0, 1.0)
-    yaw_vel_range = (-1.0, 1.0)
-    resampling_interval = 10 / (dt * decimation)
-
-    # controller
-    controller_use_offset = True
-    action_scale = 0.5
-    controlled_joints = ".*"
-
-    # reward configurations
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
-        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*", ".*thigh.*", ".*trunk.*"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
-                                                                            ".*thigh.*", ".*calf.*"])
-    }
-
-    def __init__(self, robot_cfg, **kwargs):
-        super().__init__(**kwargs)
-        self.robot = robot_cfg  # Set the specific robot configuration
+# @configclass
+# class GenDogEnvCfg(DirectRLEnvCfg):
+#     """
+#     A parent config class that will be inherited by robot-specific config classes
+#     """
+#     seed = 42
+#
+#     # env
+#     episode_length_s = 20.0
+#     decimation = 4
+#     dt = 0.005
+#     action_space = 12
+#     observation_space = 69
+#
+#     # simulation
+#     sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
+#     terrain = TerrainImporterCfg(
+#         prim_path="/World/ground",
+#         terrain_type="plane",
+#         collision_group=-1,
+#         physics_material=sim_utils.RigidBodyMaterialCfg(
+#             friction_combine_mode="average",
+#             restitution_combine_mode="average",
+#             static_friction=1.0,
+#             dynamic_friction=1.0,
+#             restitution=0.0,
+#         ),
+#         debug_vis=False,
+#     )
+#
+#     # scene
+#     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.5,
+#                                                      replicate_physics=True)
+#
+#     # robot
+#     robot: ArticulationCfg = MISSING
+#
+#     # sensor for reward calculation
+#     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
+#                                       track_air_time=True, track_pose=True)
+#
+#     asset_name = "robot"
+#
+#     # Velocity command ranges
+#     x_vel_range = (-1.0, 1.0)
+#     y_vel_range = (-1.0, 1.0)
+#     yaw_vel_range = (-1.0, 1.0)
+#     resampling_interval = 10 / (dt * decimation)
+#
+#     # controller
+#     controller_use_offset = True
+#     action_scale = 0.5
+#     controlled_joints = ".*"
+#
+#     # reward configurations
+#     reward_cfgs = {
+#         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
+#         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
+#         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*", ".*thigh.*", ".*trunk.*"]),
+#         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+#         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
+#         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
+#                                                                             ".*thigh.*", ".*calf.*"])
+#     }
+#
+#     def __init__(self, robot_cfg, **kwargs):
+#         super().__init__(**kwargs)
+#         self.robot = robot_cfg  # Set the specific robot configuration
 
 
 # @configclass
@@ -114,80 +110,81 @@ class GenDogEnvCfg(DirectRLEnvCfg):
 # class GenDog5Cfg(GenDogEnvCfg):
 #     robot: ArticulationCfg = GEN_DOG5_CFG
 
-@configclass
-class GenDogF0R0KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 8
-    robot: ArticulationCfg = GEN_DOG_F0R0_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
-        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
-                                                                            ".*thigh.*", ".*calf.*"])
-    }
 
-@configclass
-class GenDogF0R1KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 10
-    robot: ArticulationCfg = GEN_DOG_F0R1_CFG
+# @configclass
+# class GenDogF0R0KneeJoint0Cfg(Go2EnvCfg):
+#     action_space = 8
+#     robot: ArticulationCfg = GEN_DOG_F0R0_CFG
+#     reward_cfgs = {
+#         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
+#         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
+#         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
+#         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
+#         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[]),
+#         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
+#                                                                             ".*thigh.*", ".*calf.*"])
+#     }
 
-@configclass
-class GenDogF1R0KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 10
-    robot: ArticulationCfg = GEN_DOG_F1R0_CFG
-
-@configclass
-class GenDogF2R2KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 16
-    robot: ArticulationCfg = GEN_DOG_F2R2_CFG
-
-@configclass
-class GenDogF2R3KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_DOG_F2R3_CFG
-
-@configclass
-class GenDogF3R2KneeJoint0Cfg(GenDogEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_DOG_F3R2_CFG
-
-@configclass
-class GenDogOriginalJoint0Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_0_CFG
-
-@configclass
-class GenDogOriginalJoint1Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_1_CFG
-
-@configclass
-class GenDogOriginalJoint2Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_2_CFG
-
-@configclass
-class GenDogOriginalJoint3Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_3_CFG
-
-@configclass
-class GenDogOriginalJoint4Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_4_CFG
-
-@configclass
-class GenDogOriginalJoint5Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_5_CFG
-
-@configclass
-class GenDogOriginalJoint6Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_6_CFG
-
-@configclass
-class GenDogOriginalJoint7Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_7_CFG
-
-@configclass
-class GenDogOriginalJoint8Cfg(GenDogEnvCfg):
-    robot: ArticulationCfg = GEN_DOG_ORIGINAL_8_CFG
+# @configclass
+# class GenDogF0R1KneeJoint0Cfg(GenDogEnvCfg):
+#     action_space = 10
+#     robot: ArticulationCfg = GEN_DOG_F0R1_CFG
+#
+# @configclass
+# class GenDogF1R0KneeJoint0Cfg(GenDogEnvCfg):
+#     action_space = 10
+#     robot: ArticulationCfg = GEN_DOG_F1R0_CFG
+#
+# @configclass
+# class GenDogF2R2KneeJoint0Cfg(GenDogEnvCfg):
+#     action_space = 16
+#     robot: ArticulationCfg = GEN_DOG_F2R2_CFG
+#
+# @configclass
+# class GenDogF2R3KneeJoint0Cfg(GenDogEnvCfg):
+#     action_space = 18
+#     robot: ArticulationCfg = GEN_DOG_F2R3_CFG
+#
+# @configclass
+# class GenDogF3R2KneeJoint0Cfg(GenDogEnvCfg):
+#     action_space = 18
+#     robot: ArticulationCfg = GEN_DOG_F3R2_CFG
+#
+# @configclass
+# class GenDogOriginalJoint0Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_0_CFG
+#
+# @configclass
+# class GenDogOriginalJoint1Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_1_CFG
+#
+# @configclass
+# class GenDogOriginalJoint2Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_2_CFG
+#
+# @configclass
+# class GenDogOriginalJoint3Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_3_CFG
+#
+# @configclass
+# class GenDogOriginalJoint4Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_4_CFG
+#
+# @configclass
+# class GenDogOriginalJoint5Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_5_CFG
+#
+# @configclass
+# class GenDogOriginalJoint6Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_6_CFG
+#
+# @configclass
+# class GenDogOriginalJoint7Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_7_CFG
+#
+# @configclass
+# class GenDogOriginalJoint8Cfg(GenDogEnvCfg):
+#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_8_CFG
 
 
 # # Add CFG classes dynamically
@@ -230,4005 +227,2466 @@ GenBot-1K quadrupeds
 """
 
 @configclass
-class Gendog10Cfg(GenDogEnvCfg):
+class Gendog10Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_10_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog9Cfg(GenDogEnvCfg):
+class Gendog9Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_9_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog8Cfg(GenDogEnvCfg):
+class Gendog8Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_8_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog7Cfg(GenDogEnvCfg):
+class Gendog7Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_7_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog6Cfg(GenDogEnvCfg):
+class Gendog6Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_6_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog5Cfg(GenDogEnvCfg):
+class Gendog5Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_5_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog4Cfg(GenDogEnvCfg):
+class Gendog4Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_4_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog3Cfg(GenDogEnvCfg):
+class Gendog3Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_3_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog2Cfg(GenDogEnvCfg):
+class Gendog2Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_2_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog0Cfg(GenDogEnvCfg):
+class Gendog0Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_0_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog1Cfg(GenDogEnvCfg):
+class Gendog1Cfg(Go2EnvCfg):
     action_space = 8
     robot: ArticulationCfg = GEN_DOG_1_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=[]),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog21Cfg(GenDogEnvCfg):
+class Gendog21Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_21_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog20Cfg(GenDogEnvCfg):
+class Gendog20Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_20_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog19Cfg(GenDogEnvCfg):
+class Gendog19Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_19_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog18Cfg(GenDogEnvCfg):
+class Gendog18Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_18_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog17Cfg(GenDogEnvCfg):
+class Gendog17Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_17_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog16Cfg(GenDogEnvCfg):
+class Gendog16Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_16_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog15Cfg(GenDogEnvCfg):
+class Gendog15Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_15_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog14Cfg(GenDogEnvCfg):
+class Gendog14Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_14_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog13Cfg(GenDogEnvCfg):
+class Gendog13Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_13_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog11Cfg(GenDogEnvCfg):
+class Gendog11Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_11_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog12Cfg(GenDogEnvCfg):
+class Gendog12Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_12_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog87Cfg(GenDogEnvCfg):
+class Gendog87Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_87_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog86Cfg(GenDogEnvCfg):
+class Gendog86Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_86_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog85Cfg(GenDogEnvCfg):
+class Gendog85Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_85_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog84Cfg(GenDogEnvCfg):
+class Gendog84Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_84_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog83Cfg(GenDogEnvCfg):
+class Gendog83Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_83_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog82Cfg(GenDogEnvCfg):
+class Gendog82Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_82_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog81Cfg(GenDogEnvCfg):
+class Gendog81Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_81_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog80Cfg(GenDogEnvCfg):
+class Gendog80Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_80_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog79Cfg(GenDogEnvCfg):
+class Gendog79Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_79_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog77Cfg(GenDogEnvCfg):
+class Gendog77Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_77_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog78Cfg(GenDogEnvCfg):
+class Gendog78Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_78_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog76Cfg(GenDogEnvCfg):
+class Gendog76Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_76_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog75Cfg(GenDogEnvCfg):
+class Gendog75Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_75_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog74Cfg(GenDogEnvCfg):
+class Gendog74Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_74_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog73Cfg(GenDogEnvCfg):
+class Gendog73Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_73_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog72Cfg(GenDogEnvCfg):
+class Gendog72Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_72_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog71Cfg(GenDogEnvCfg):
+class Gendog71Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_71_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog70Cfg(GenDogEnvCfg):
+class Gendog70Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_70_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog69Cfg(GenDogEnvCfg):
+class Gendog69Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_69_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog68Cfg(GenDogEnvCfg):
+class Gendog68Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_68_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog66Cfg(GenDogEnvCfg):
+class Gendog66Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_66_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog67Cfg(GenDogEnvCfg):
+class Gendog67Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_67_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog43Cfg(GenDogEnvCfg):
+class Gendog43Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_43_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog42Cfg(GenDogEnvCfg):
+class Gendog42Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_42_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog41Cfg(GenDogEnvCfg):
+class Gendog41Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_41_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog40Cfg(GenDogEnvCfg):
+class Gendog40Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_40_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog39Cfg(GenDogEnvCfg):
+class Gendog39Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_39_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog38Cfg(GenDogEnvCfg):
+class Gendog38Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_38_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog37Cfg(GenDogEnvCfg):
+class Gendog37Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_37_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog36Cfg(GenDogEnvCfg):
+class Gendog36Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_36_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog35Cfg(GenDogEnvCfg):
+class Gendog35Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_35_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog33Cfg(GenDogEnvCfg):
+class Gendog33Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_33_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog34Cfg(GenDogEnvCfg):
+class Gendog34Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_34_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog32Cfg(GenDogEnvCfg):
+class Gendog32Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_32_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog31Cfg(GenDogEnvCfg):
+class Gendog31Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_31_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog30Cfg(GenDogEnvCfg):
+class Gendog30Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_30_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog29Cfg(GenDogEnvCfg):
+class Gendog29Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_29_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog28Cfg(GenDogEnvCfg):
+class Gendog28Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_28_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog27Cfg(GenDogEnvCfg):
+class Gendog27Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_27_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog26Cfg(GenDogEnvCfg):
+class Gendog26Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_26_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog25Cfg(GenDogEnvCfg):
+class Gendog25Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_25_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog24Cfg(GenDogEnvCfg):
+class Gendog24Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_24_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog22Cfg(GenDogEnvCfg):
+class Gendog22Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_22_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog23Cfg(GenDogEnvCfg):
+class Gendog23Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_23_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog109Cfg(GenDogEnvCfg):
+class Gendog109Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_109_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog108Cfg(GenDogEnvCfg):
+class Gendog108Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_108_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog107Cfg(GenDogEnvCfg):
+class Gendog107Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_107_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog106Cfg(GenDogEnvCfg):
+class Gendog106Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_106_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog105Cfg(GenDogEnvCfg):
+class Gendog105Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_105_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog104Cfg(GenDogEnvCfg):
+class Gendog104Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_104_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog103Cfg(GenDogEnvCfg):
+class Gendog103Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_103_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog102Cfg(GenDogEnvCfg):
+class Gendog102Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_102_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog101Cfg(GenDogEnvCfg):
+class Gendog101Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_101_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog99Cfg(GenDogEnvCfg):
+class Gendog99Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_99_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog100Cfg(GenDogEnvCfg):
+class Gendog100Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_100_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog98Cfg(GenDogEnvCfg):
+class Gendog98Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_98_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog97Cfg(GenDogEnvCfg):
+class Gendog97Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_97_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog96Cfg(GenDogEnvCfg):
+class Gendog96Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_96_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog95Cfg(GenDogEnvCfg):
+class Gendog95Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_95_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog94Cfg(GenDogEnvCfg):
+class Gendog94Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_94_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog93Cfg(GenDogEnvCfg):
+class Gendog93Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_93_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog92Cfg(GenDogEnvCfg):
+class Gendog92Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_92_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog91Cfg(GenDogEnvCfg):
+class Gendog91Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_91_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog90Cfg(GenDogEnvCfg):
+class Gendog90Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_90_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog88Cfg(GenDogEnvCfg):
+class Gendog88Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_88_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog89Cfg(GenDogEnvCfg):
+class Gendog89Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_89_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog65Cfg(GenDogEnvCfg):
+class Gendog65Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_65_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog64Cfg(GenDogEnvCfg):
+class Gendog64Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_64_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog63Cfg(GenDogEnvCfg):
+class Gendog63Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_63_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog62Cfg(GenDogEnvCfg):
+class Gendog62Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_62_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog61Cfg(GenDogEnvCfg):
+class Gendog61Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_61_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog60Cfg(GenDogEnvCfg):
+class Gendog60Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_60_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog59Cfg(GenDogEnvCfg):
+class Gendog59Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_59_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog58Cfg(GenDogEnvCfg):
+class Gendog58Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_58_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog57Cfg(GenDogEnvCfg):
+class Gendog57Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_57_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog55Cfg(GenDogEnvCfg):
+class Gendog55Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_55_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog56Cfg(GenDogEnvCfg):
+class Gendog56Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_56_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog54Cfg(GenDogEnvCfg):
+class Gendog54Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_54_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog53Cfg(GenDogEnvCfg):
+class Gendog53Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_53_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog52Cfg(GenDogEnvCfg):
+class Gendog52Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_52_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog51Cfg(GenDogEnvCfg):
+class Gendog51Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_51_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog50Cfg(GenDogEnvCfg):
+class Gendog50Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_50_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog49Cfg(GenDogEnvCfg):
+class Gendog49Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_49_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog48Cfg(GenDogEnvCfg):
+class Gendog48Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_48_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog47Cfg(GenDogEnvCfg):
+class Gendog47Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_47_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog46Cfg(GenDogEnvCfg):
+class Gendog46Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_46_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog44Cfg(GenDogEnvCfg):
+class Gendog44Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_44_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog45Cfg(GenDogEnvCfg):
+class Gendog45Cfg(Go2EnvCfg):
     action_space = 12
     robot: ArticulationCfg = GEN_DOG_45_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog120Cfg(GenDogEnvCfg):
+class Gendog120Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_120_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog119Cfg(GenDogEnvCfg):
+class Gendog119Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_119_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog118Cfg(GenDogEnvCfg):
+class Gendog118Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_118_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog117Cfg(GenDogEnvCfg):
+class Gendog117Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_117_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog116Cfg(GenDogEnvCfg):
+class Gendog116Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_116_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog115Cfg(GenDogEnvCfg):
+class Gendog115Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_115_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog114Cfg(GenDogEnvCfg):
+class Gendog114Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_114_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog113Cfg(GenDogEnvCfg):
+class Gendog113Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_113_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog112Cfg(GenDogEnvCfg):
+class Gendog112Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_112_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog110Cfg(GenDogEnvCfg):
+class Gendog110Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_110_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog111Cfg(GenDogEnvCfg):
+class Gendog111Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_111_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog186Cfg(GenDogEnvCfg):
+class Gendog186Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_186_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog185Cfg(GenDogEnvCfg):
+class Gendog185Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_185_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog184Cfg(GenDogEnvCfg):
+class Gendog184Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_184_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog183Cfg(GenDogEnvCfg):
+class Gendog183Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_183_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog182Cfg(GenDogEnvCfg):
+class Gendog182Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_182_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog181Cfg(GenDogEnvCfg):
+class Gendog181Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_181_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog180Cfg(GenDogEnvCfg):
+class Gendog180Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_180_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog179Cfg(GenDogEnvCfg):
+class Gendog179Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_179_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog178Cfg(GenDogEnvCfg):
+class Gendog178Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_178_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog176Cfg(GenDogEnvCfg):
+class Gendog176Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_176_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog177Cfg(GenDogEnvCfg):
+class Gendog177Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_177_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog175Cfg(GenDogEnvCfg):
+class Gendog175Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_175_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog174Cfg(GenDogEnvCfg):
+class Gendog174Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_174_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog173Cfg(GenDogEnvCfg):
+class Gendog173Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_173_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog172Cfg(GenDogEnvCfg):
+class Gendog172Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_172_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog171Cfg(GenDogEnvCfg):
+class Gendog171Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_171_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog170Cfg(GenDogEnvCfg):
+class Gendog170Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_170_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog169Cfg(GenDogEnvCfg):
+class Gendog169Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_169_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog168Cfg(GenDogEnvCfg):
+class Gendog168Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_168_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog167Cfg(GenDogEnvCfg):
+class Gendog167Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_167_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog165Cfg(GenDogEnvCfg):
+class Gendog165Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_165_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog166Cfg(GenDogEnvCfg):
+class Gendog166Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_166_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog142Cfg(GenDogEnvCfg):
+class Gendog142Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_142_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog141Cfg(GenDogEnvCfg):
+class Gendog141Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_141_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog140Cfg(GenDogEnvCfg):
+class Gendog140Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_140_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog139Cfg(GenDogEnvCfg):
+class Gendog139Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_139_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog138Cfg(GenDogEnvCfg):
+class Gendog138Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_138_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog137Cfg(GenDogEnvCfg):
+class Gendog137Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_137_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog136Cfg(GenDogEnvCfg):
+class Gendog136Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_136_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog135Cfg(GenDogEnvCfg):
+class Gendog135Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_135_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog134Cfg(GenDogEnvCfg):
+class Gendog134Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_134_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog132Cfg(GenDogEnvCfg):
+class Gendog132Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_132_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog133Cfg(GenDogEnvCfg):
+class Gendog133Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_133_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog131Cfg(GenDogEnvCfg):
+class Gendog131Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_131_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog130Cfg(GenDogEnvCfg):
+class Gendog130Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_130_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog129Cfg(GenDogEnvCfg):
+class Gendog129Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_129_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog128Cfg(GenDogEnvCfg):
+class Gendog128Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_128_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog127Cfg(GenDogEnvCfg):
+class Gendog127Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_127_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog126Cfg(GenDogEnvCfg):
+class Gendog126Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_126_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog125Cfg(GenDogEnvCfg):
+class Gendog125Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_125_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog124Cfg(GenDogEnvCfg):
+class Gendog124Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_124_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog123Cfg(GenDogEnvCfg):
+class Gendog123Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_123_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog121Cfg(GenDogEnvCfg):
+class Gendog121Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_121_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog122Cfg(GenDogEnvCfg):
+class Gendog122Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_122_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog208Cfg(GenDogEnvCfg):
+class Gendog208Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_208_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog207Cfg(GenDogEnvCfg):
+class Gendog207Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_207_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog206Cfg(GenDogEnvCfg):
+class Gendog206Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_206_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog205Cfg(GenDogEnvCfg):
+class Gendog205Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_205_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog204Cfg(GenDogEnvCfg):
+class Gendog204Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_204_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog203Cfg(GenDogEnvCfg):
+class Gendog203Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_203_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog202Cfg(GenDogEnvCfg):
+class Gendog202Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_202_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog201Cfg(GenDogEnvCfg):
+class Gendog201Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_201_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog200Cfg(GenDogEnvCfg):
+class Gendog200Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_200_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog198Cfg(GenDogEnvCfg):
+class Gendog198Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_198_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog199Cfg(GenDogEnvCfg):
+class Gendog199Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_199_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog197Cfg(GenDogEnvCfg):
+class Gendog197Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_197_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog196Cfg(GenDogEnvCfg):
+class Gendog196Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_196_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog195Cfg(GenDogEnvCfg):
+class Gendog195Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_195_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog194Cfg(GenDogEnvCfg):
+class Gendog194Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_194_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog193Cfg(GenDogEnvCfg):
+class Gendog193Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_193_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog192Cfg(GenDogEnvCfg):
+class Gendog192Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_192_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog191Cfg(GenDogEnvCfg):
+class Gendog191Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_191_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog190Cfg(GenDogEnvCfg):
+class Gendog190Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_190_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog189Cfg(GenDogEnvCfg):
+class Gendog189Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_189_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog187Cfg(GenDogEnvCfg):
+class Gendog187Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_187_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog188Cfg(GenDogEnvCfg):
+class Gendog188Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_188_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog164Cfg(GenDogEnvCfg):
+class Gendog164Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_164_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog163Cfg(GenDogEnvCfg):
+class Gendog163Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_163_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog162Cfg(GenDogEnvCfg):
+class Gendog162Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_162_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog161Cfg(GenDogEnvCfg):
+class Gendog161Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_161_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog160Cfg(GenDogEnvCfg):
+class Gendog160Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_160_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog159Cfg(GenDogEnvCfg):
+class Gendog159Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_159_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog158Cfg(GenDogEnvCfg):
+class Gendog158Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_158_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog157Cfg(GenDogEnvCfg):
+class Gendog157Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_157_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog156Cfg(GenDogEnvCfg):
+class Gendog156Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_156_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog154Cfg(GenDogEnvCfg):
+class Gendog154Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_154_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog155Cfg(GenDogEnvCfg):
+class Gendog155Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_155_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog153Cfg(GenDogEnvCfg):
+class Gendog153Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_153_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog152Cfg(GenDogEnvCfg):
+class Gendog152Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_152_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog151Cfg(GenDogEnvCfg):
+class Gendog151Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_151_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog150Cfg(GenDogEnvCfg):
+class Gendog150Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_150_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog149Cfg(GenDogEnvCfg):
+class Gendog149Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_149_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog148Cfg(GenDogEnvCfg):
+class Gendog148Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_148_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog147Cfg(GenDogEnvCfg):
+class Gendog147Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_147_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog146Cfg(GenDogEnvCfg):
+class Gendog146Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_146_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog145Cfg(GenDogEnvCfg):
+class Gendog145Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_145_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog143Cfg(GenDogEnvCfg):
+class Gendog143Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_143_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog144Cfg(GenDogEnvCfg):
+class Gendog144Cfg(Go2EnvCfg):
     action_space = 16
     robot: ArticulationCfg = GEN_DOG_144_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog219Cfg(GenDogEnvCfg):
+class Gendog219Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_219_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog218Cfg(GenDogEnvCfg):
+class Gendog218Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_218_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog217Cfg(GenDogEnvCfg):
+class Gendog217Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_217_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog216Cfg(GenDogEnvCfg):
+class Gendog216Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_216_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog215Cfg(GenDogEnvCfg):
+class Gendog215Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_215_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog214Cfg(GenDogEnvCfg):
+class Gendog214Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_214_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog213Cfg(GenDogEnvCfg):
+class Gendog213Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_213_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog212Cfg(GenDogEnvCfg):
+class Gendog212Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_212_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog211Cfg(GenDogEnvCfg):
+class Gendog211Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_211_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog209Cfg(GenDogEnvCfg):
+class Gendog209Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_209_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog210Cfg(GenDogEnvCfg):
+class Gendog210Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_210_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog285Cfg(GenDogEnvCfg):
+class Gendog285Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_285_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog284Cfg(GenDogEnvCfg):
+class Gendog284Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_284_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog283Cfg(GenDogEnvCfg):
+class Gendog283Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_283_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog282Cfg(GenDogEnvCfg):
+class Gendog282Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_282_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog281Cfg(GenDogEnvCfg):
+class Gendog281Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_281_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog280Cfg(GenDogEnvCfg):
+class Gendog280Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_280_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog279Cfg(GenDogEnvCfg):
+class Gendog279Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_279_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog278Cfg(GenDogEnvCfg):
+class Gendog278Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_278_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog277Cfg(GenDogEnvCfg):
+class Gendog277Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_277_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog275Cfg(GenDogEnvCfg):
+class Gendog275Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_275_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog276Cfg(GenDogEnvCfg):
+class Gendog276Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_276_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog274Cfg(GenDogEnvCfg):
+class Gendog274Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_274_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog273Cfg(GenDogEnvCfg):
+class Gendog273Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_273_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog272Cfg(GenDogEnvCfg):
+class Gendog272Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_272_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog271Cfg(GenDogEnvCfg):
+class Gendog271Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_271_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog270Cfg(GenDogEnvCfg):
+class Gendog270Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_270_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog269Cfg(GenDogEnvCfg):
+class Gendog269Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_269_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog268Cfg(GenDogEnvCfg):
+class Gendog268Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_268_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog267Cfg(GenDogEnvCfg):
+class Gendog267Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_267_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog266Cfg(GenDogEnvCfg):
+class Gendog266Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_266_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog264Cfg(GenDogEnvCfg):
+class Gendog264Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_264_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog265Cfg(GenDogEnvCfg):
+class Gendog265Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_265_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog241Cfg(GenDogEnvCfg):
+class Gendog241Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_241_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog240Cfg(GenDogEnvCfg):
+class Gendog240Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_240_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog239Cfg(GenDogEnvCfg):
+class Gendog239Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_239_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog238Cfg(GenDogEnvCfg):
+class Gendog238Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_238_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog237Cfg(GenDogEnvCfg):
+class Gendog237Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_237_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog236Cfg(GenDogEnvCfg):
+class Gendog236Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_236_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog235Cfg(GenDogEnvCfg):
+class Gendog235Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_235_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog234Cfg(GenDogEnvCfg):
+class Gendog234Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_234_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog233Cfg(GenDogEnvCfg):
+class Gendog233Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_233_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog231Cfg(GenDogEnvCfg):
+class Gendog231Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_231_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog232Cfg(GenDogEnvCfg):
+class Gendog232Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_232_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog230Cfg(GenDogEnvCfg):
+class Gendog230Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_230_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog229Cfg(GenDogEnvCfg):
+class Gendog229Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_229_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog228Cfg(GenDogEnvCfg):
+class Gendog228Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_228_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog227Cfg(GenDogEnvCfg):
+class Gendog227Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_227_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog226Cfg(GenDogEnvCfg):
+class Gendog226Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_226_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog225Cfg(GenDogEnvCfg):
+class Gendog225Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_225_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog224Cfg(GenDogEnvCfg):
+class Gendog224Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_224_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog223Cfg(GenDogEnvCfg):
+class Gendog223Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_223_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog222Cfg(GenDogEnvCfg):
+class Gendog222Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_222_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog220Cfg(GenDogEnvCfg):
+class Gendog220Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_220_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog221Cfg(GenDogEnvCfg):
+class Gendog221Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_221_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog307Cfg(GenDogEnvCfg):
+class Gendog307Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_307_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog306Cfg(GenDogEnvCfg):
+class Gendog306Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_306_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog305Cfg(GenDogEnvCfg):
+class Gendog305Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_305_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog304Cfg(GenDogEnvCfg):
+class Gendog304Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_304_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog303Cfg(GenDogEnvCfg):
+class Gendog303Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_303_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog302Cfg(GenDogEnvCfg):
+class Gendog302Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_302_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog301Cfg(GenDogEnvCfg):
+class Gendog301Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_301_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog300Cfg(GenDogEnvCfg):
+class Gendog300Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_300_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog299Cfg(GenDogEnvCfg):
+class Gendog299Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_299_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog297Cfg(GenDogEnvCfg):
+class Gendog297Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_297_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog298Cfg(GenDogEnvCfg):
+class Gendog298Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_298_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog296Cfg(GenDogEnvCfg):
+class Gendog296Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_296_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog295Cfg(GenDogEnvCfg):
+class Gendog295Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_295_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog294Cfg(GenDogEnvCfg):
+class Gendog294Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_294_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog293Cfg(GenDogEnvCfg):
+class Gendog293Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_293_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog292Cfg(GenDogEnvCfg):
+class Gendog292Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_292_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog291Cfg(GenDogEnvCfg):
+class Gendog291Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_291_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog290Cfg(GenDogEnvCfg):
+class Gendog290Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_290_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog289Cfg(GenDogEnvCfg):
+class Gendog289Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_289_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog288Cfg(GenDogEnvCfg):
+class Gendog288Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_288_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog286Cfg(GenDogEnvCfg):
+class Gendog286Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_286_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog287Cfg(GenDogEnvCfg):
+class Gendog287Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_287_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog263Cfg(GenDogEnvCfg):
+class Gendog263Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_263_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog262Cfg(GenDogEnvCfg):
+class Gendog262Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_262_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog261Cfg(GenDogEnvCfg):
+class Gendog261Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_261_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog260Cfg(GenDogEnvCfg):
+class Gendog260Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_260_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog259Cfg(GenDogEnvCfg):
+class Gendog259Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_259_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog258Cfg(GenDogEnvCfg):
+class Gendog258Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_258_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog257Cfg(GenDogEnvCfg):
+class Gendog257Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_257_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog256Cfg(GenDogEnvCfg):
+class Gendog256Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_256_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog255Cfg(GenDogEnvCfg):
+class Gendog255Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_255_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog253Cfg(GenDogEnvCfg):
+class Gendog253Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_253_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog254Cfg(GenDogEnvCfg):
+class Gendog254Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_254_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog252Cfg(GenDogEnvCfg):
+class Gendog252Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_252_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog251Cfg(GenDogEnvCfg):
+class Gendog251Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_251_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog250Cfg(GenDogEnvCfg):
+class Gendog250Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_250_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog249Cfg(GenDogEnvCfg):
+class Gendog249Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_249_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog248Cfg(GenDogEnvCfg):
+class Gendog248Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_248_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog247Cfg(GenDogEnvCfg):
+class Gendog247Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_247_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog246Cfg(GenDogEnvCfg):
+class Gendog246Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_246_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog245Cfg(GenDogEnvCfg):
+class Gendog245Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_245_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog244Cfg(GenDogEnvCfg):
+class Gendog244Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_244_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog242Cfg(GenDogEnvCfg):
+class Gendog242Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_242_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Gendog243Cfg(GenDogEnvCfg):
+class Gendog243Cfg(Go2EnvCfg):
     action_space = 20
     robot: ArticulationCfg = GEN_DOG_243_CFG
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*foot']),
-        'feet_ground_asset_cfg': SceneEntityCfg('robot', body_names=['.*foot']),
-        'undesired_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*calf.*', '.*thigh.*', '.*trunk.*']),
-        'joint_hip_cfg': SceneEntityCfg('robot', joint_names=['.*hip.*joint']),
-        'joint_knee_cfg': SceneEntityCfg('robot', joint_names=['.*knee.*joint']),
-        'illegal_contact_cfg': SceneEntityCfg('contact_sensor', body_names=['.*trunk.*', '.*hip.*', '.*thigh.*', '.*calf.*'])
-    }
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*trunk.*")
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
