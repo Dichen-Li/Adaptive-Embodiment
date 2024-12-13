@@ -1,26 +1,11 @@
-# Copyright (c) 2022-2024, The Isaac Lab Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-"""
-Humanoid locomotion environment.
-"""
-
 import gymnasium as gym
-
 from berkeley_humanoid.tasks.configs import algorithm
-from berkeley_humanoid.tasks.configs.environment.humanoid_cfg import HumanoidEnvCfg
 from berkeley_humanoid.tasks.configs.environment.h1_cfg import H1EnvCfg
 from berkeley_humanoid.tasks.configs.environment.g1_cfg import G1EnvCfg
 from berkeley_humanoid.tasks.configs.environment.go2_cfg import Go2EnvCfg
 from berkeley_humanoid.tasks.configs.environment.gen_quadrupeds_cfg import *
 from berkeley_humanoid.tasks.configs.environment.gen_humanoid_cfg import *
-from berkeley_humanoid.tasks.configs.environment.berkeley_humanoid_cfg import BerkeleyHumanoidEnvCfg
 
-##
-# Register Gym environments.
-##
 
 # register standard robot envs
 gym.register(
@@ -53,92 +38,82 @@ gym.register(
     },
 )
 
-gym.register(
-    id="Berkeley-Direct-v0",
-    entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": BerkeleyHumanoidEnvCfg,
-        "rsl_rl_cfg_entry_point": f"{algorithm.__name__}.default_ppo_cfg:DefaultPPORunnerCfg",
-    },
-)
-
 """
 Register customized robot configs.
 Due to the large number of configs, ideally we want to automate the process
 """
 
-id_entry_pair = {
-    # "GenDog0": GenDog0Cfg,
-    # "GenDog1": GenDog1Cfg,
-    # "GenDog2": GenDog2Cfg,
-    # "GenDog3": GenDog3Cfg,
-    # "GenDog4": GenDog4Cfg,
-    # "GenDog5": GenDog5Cfg,
-    "GenHumanoid1": GenHumanoid1Cfg,
-    "GenHumanoid2": GenHumanoid2Cfg,
-    "GenHumanoid3": GenHumanoid3Cfg,
-    "GenHumanoid4": GenHumanoid4Cfg,
-    "GenHumanoid5": GenHumanoid5Cfg,
-    "GenHumanoid6": GenHumanoid6Cfg,
-    "GenDogF0R0": GenDogF0R0KneeJoint0Cfg,
-    "GenDogF0R1": GenDogF0R1KneeJoint0Cfg,
-    "GenDogF1R0": GenDogF1R0KneeJoint0Cfg,
-    "GenDogF2R2": GenDogF2R2KneeJoint0Cfg,
-    "GenDogF2R3": GenDogF2R3KneeJoint0Cfg,
-    "GenDogF3R2": GenDogF3R2KneeJoint0Cfg,
-    "GenDogOriginal0": GenDogOriginalJoint0Cfg,
-    "GenDogOriginal1": GenDogOriginalJoint1Cfg,
-    "GenDogOriginal2": GenDogOriginalJoint2Cfg,
-    "GenDogOriginal3": GenDogOriginalJoint3Cfg,
-    "GenDogOriginal4": GenDogOriginalJoint4Cfg,
-    "GenDogOriginal5": GenDogOriginalJoint5Cfg,
-    "GenDogOriginal6": GenDogOriginalJoint6Cfg,
-    "GenDogOriginal7": GenDogOriginalJoint7Cfg,
-    "GenDogOriginal8": GenDogOriginalJoint8Cfg,
-}
+# id_entry_pair = {
+#     "GenDog0": GenDog0Cfg,
+#     "GenDog1": GenDog1Cfg,
+#     "GenDog2": GenDog2Cfg,
+#     "GenDog3": GenDog3Cfg,
+#     "GenDog4": GenDog4Cfg,
+#     "GenDog5": GenDog5Cfg,
+#     "GenHumanoid1": GenHumanoid1Cfg,
+#     "GenHumanoid2": GenHumanoid2Cfg,
+#     "GenHumanoid3": GenHumanoid3Cfg,
+#     "GenHumanoid4": GenHumanoid4Cfg,
+#     "GenHumanoid5": GenHumanoid5Cfg,
+#     "GenHumanoid6": GenHumanoid6Cfg,
+#     "GenDogF0R0": GenDogF0R0KneeJoint0Cfg,
+#     "GenDogF0R1": GenDogF0R1KneeJoint0Cfg,
+#     "GenDogF1R0": GenDogF1R0KneeJoint0Cfg,
+#     "GenDogF2R2": GenDogF2R2KneeJoint0Cfg,
+#     "GenDogF2R3": GenDogF2R3KneeJoint0Cfg,
+#     "GenDogF3R2": GenDogF3R2KneeJoint0Cfg,
+#     "GenDogOriginal0": GenDogOriginalJoint0Cfg,
+#     "GenDogOriginal1": GenDogOriginalJoint1Cfg,
+#     "GenDogOriginal2": GenDogOriginalJoint2Cfg,
+#     "GenDogOriginal3": GenDogOriginalJoint3Cfg,
+#     "GenDogOriginal4": GenDogOriginalJoint4Cfg,
+#     "GenDogOriginal5": GenDogOriginalJoint5Cfg,
+#     "GenDogOriginal6": GenDogOriginalJoint6Cfg,
+#     "GenDogOriginal7": GenDogOriginalJoint7Cfg,
+#     "GenDogOriginal8": GenDogOriginalJoint8Cfg,
+# }
+#
+# for id, env_cfg_entry_point in id_entry_pair.items():
+#     rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
+#     gym.register(
+#         id=id,
+#         entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
+#         disable_env_checker=True,
+#         kwargs={
+#             "env_cfg_entry_point": env_cfg_entry_point,
+#             "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
+#         },
+#     )
 
-for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
-    gym.register(
-        id=id,
-        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
-        disable_env_checker=True,
-        kwargs={
-            "env_cfg_entry_point": env_cfg_entry_point,
-            "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
-        },
-    )
-
-"""
-Register customized humanoid configs.
-Due to the large number of configs, ideally we want to automate the process
-"""
-
-id_entry_pair = {
-    "GenHumanoidOriginalJoint0": GenHumanoidOriginalJoint0Cfg,
-    "GenHumanoidOriginalJoint1": GenHumanoidOriginalJoint1Cfg,
-    "GenHumanoidOriginalJoint2": GenHumanoidOriginalJoint2Cfg,
-    "GenHumanoidOriginalJoint3": GenHumanoidOriginalJoint3Cfg,
-    "GenHumanoidOriginalJoint4": GenHumanoidOriginalJoint4Cfg,
-    "GenHumanoidOriginalJoint5": GenHumanoidOriginalJoint5Cfg,
-    "GenHumanoidOriginalJoint6": GenHumanoidOriginalJoint6Cfg,
-    "GenHumanoidL0R0": GenHumanoidL0R0Cfg,
-    "GenHumanoidL2R2": GenHumanoidL2R2Cfg,
-    "GenHumanoidL3R3": GenHumanoidL3R3Cfg
-}
-
-for id, env_cfg_entry_point in id_entry_pair.items():
-    rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
-    gym.register(
-        id=id,
-        entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
-        disable_env_checker=True,
-        kwargs={
-            "env_cfg_entry_point": env_cfg_entry_point,
-            "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
-        },
-    )
+# """
+# Register customized humanoid configs.
+# Due to the large number of configs, ideally we want to automate the process
+# """
+#
+# id_entry_pair = {
+#     "GenHumanoidOriginalJoint0": GenHumanoidOriginalJoint0Cfg,
+#     "GenHumanoidOriginalJoint1": GenHumanoidOriginalJoint1Cfg,
+#     "GenHumanoidOriginalJoint2": GenHumanoidOriginalJoint2Cfg,
+#     "GenHumanoidOriginalJoint3": GenHumanoidOriginalJoint3Cfg,
+#     "GenHumanoidOriginalJoint4": GenHumanoidOriginalJoint4Cfg,
+#     "GenHumanoidOriginalJoint5": GenHumanoidOriginalJoint5Cfg,
+#     "GenHumanoidOriginalJoint6": GenHumanoidOriginalJoint6Cfg,
+#     "GenHumanoidL0R0": GenHumanoidL0R0Cfg,
+#     "GenHumanoidL2R2": GenHumanoidL2R2Cfg,
+#     "GenHumanoidL3R3": GenHumanoidL3R3Cfg
+# }
+#
+# for id, env_cfg_entry_point in id_entry_pair.items():
+#     rsl_rl_cfg_entry_point = f"{algorithm.__name__}.default_ppo_cfg:{id}PPORunnerCfg"
+#     gym.register(
+#         id=id,
+#         entry_point="berkeley_humanoid.tasks.environments.gen_direct_env:GenDirectEnv",
+#         disable_env_checker=True,
+#         kwargs={
+#             "env_cfg_entry_point": env_cfg_entry_point,
+#             "rsl_rl_cfg_entry_point": rsl_rl_cfg_entry_point
+#         },
+#     )
 
 
 """
