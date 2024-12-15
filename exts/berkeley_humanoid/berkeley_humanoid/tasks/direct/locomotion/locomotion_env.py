@@ -23,6 +23,9 @@ from .joint_position_controller import JointPositionAction
 
 from typing import Optional
 
+import os
+import json
+
 def normalize_angle(x):
     return torch.atan2(torch.sin(x), torch.cos(x))
 
@@ -78,6 +81,9 @@ class LocomotionEnv(DirectRLEnv):
                                               use_default_offset=self.cfg.controller_use_offset)
         
         ## Define the one policy initialized parameters below
+        # Get the position for self.relative_joint_position_normalized, axis for self.relative_joint_axis_local and bbox for self.robot_dimensions
+        self.get_robot_description_vec_json()
+
         self.joint_names = self.robot.data.joint_names
         self.foot_names = self.robot.data.body_names
         
@@ -175,6 +181,19 @@ class LocomotionEnv(DirectRLEnv):
             self.cfg.sim.dt,
         )
     
+    def get_robot_description_vec_json(self, file_name: str = "robot_description_vec.json"):
+        # Construct the path to the JSON file
+        json_path = os.path.join(
+            os.path.dirname(
+                os.path.dirname(self.cfg.robot.spawn.usd_path)
+            ),
+            file_name
+        )
+
+        # Open and load the JSON file
+        with open(json_path, "r") as f:
+            self.robot_description_vec_json = json.load(f)
+
     def quat_to_matrix(self, quat):
         """
         Convert a quaternion to a 3x3 rotation matrix.
@@ -211,13 +230,17 @@ class LocomotionEnv(DirectRLEnv):
         trunk_rotation_matrix = self.quat_to_matrix(trunk_orientation_quat).transpose(1, 2)
 
         # TODO: Implement the robot dimension with geometry bounding box and movable geometry; See below Temporary TODO
+        # Get the robot_dimensions from bbox in robot_description_vec.json file
+        robot_dimensions = torch.abs(torch.tensor(torch.tensor(self.robot_description_vec_json['bbox'][0]) - torch.tensor(self.robot_description_vec_json['bbox'][1])))
+        self.robot_dimensions = robot_dimensions.unsqueeze(0).repeat(self.num_envs, 1)
+
         # Calculate robot width, length and height
         num_geom = self.robot.data.body_pos_w.shape[1]
         relative_geom_positions = self.robot.data.body_pos_w - trunk_position_global.unsqueeze(1).repeat(1, num_geom, 1)
         for i in range(len(relative_geom_positions[1])):
             relative_geom_positions[:, i] = torch.matmul(trunk_rotation_matrix.transpose(1,2), relative_geom_positions[:, i].unsqueeze(2)).squeeze(2)
 
-        # Ignore the first geom (floor)
+        # Researved for relative_foot_position_normalized
         min_x,_ = torch.min(relative_geom_positions[:,:,0], dim=1)
         min_y,_ = torch.min(relative_geom_positions[:,:,1], dim=1)
         min_z,_ = torch.min(relative_geom_positions[:,:,2], dim=1)
@@ -225,21 +248,26 @@ class LocomotionEnv(DirectRLEnv):
         max_y,_ = torch.max(relative_geom_positions[:,:,1], dim=1)
         max_z,_ = torch.max(relative_geom_positions[:,:,2], dim=1)
         mins = torch.stack((min_x, min_y, min_z), dim=1)
-        self.robot_length = max_x - min_x
-        self.robot_width = max_y - min_y
-        self.robot_height = max_z - min_z
-        self.robot_dimensions = torch.stack((self.robot_length, self.robot_width, self.robot_height), dim=1)
+
+        # self.robot_length = max_x - min_x
+        # self.robot_width = max_y - min_y
+        # self.robot_height = max_z - min_z
+        # self.robot_dimensions = torch.stack((self.robot_length, self.robot_width, self.robot_height), dim=1)
 
         self.gains_and_action_scaling_factor = torch.tensor([0, 0, self.cfg.action_scale], device=self.sim.device)
         self.mass = torch.sum(self.robot.data.default_mass, dim=1).unsqueeze(1).to(self.sim.device)
 
         # Compute normalized joint positions and axes
         for i, joint_name in enumerate(self.joint_names):
+            
+            relative_joint_position_normalized = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['position']).unsqueeze(0).repeat(self.num_envs, 1) / self.robot_dimensions
+            # joint_position_global = self.robot.data.joint_pos[:, i].unsqueeze(1)  # Assuming joint positions are indexed similarly to body names
+            # joint_position_default = self.robot.data.default_joint_pos[:, i].unsqueeze(1)
+            # relative_joint_position_global = joint_position_global - joint_position_default
+            # relative_joint_position_normalized = relative_joint_position_global / (self.robot.data.soft_joint_pos_limits[:, i, 0] - self.robot.data.soft_joint_pos_limits[:, i, 1]).unsqueeze(1)
 
-            joint_position_global = self.robot.data.joint_pos[:, i].unsqueeze(1)  # Assuming joint positions are indexed similarly to body names
-            joint_position_default = self.robot.data.default_joint_pos[:, i].unsqueeze(1)
-            relative_joint_position_global = joint_position_global - joint_position_default
-            relative_joint_position_normalized = relative_joint_position_global / (self.robot.data.soft_joint_pos_limits[:, i, 0] - self.robot.data.soft_joint_pos_limits[:, i, 1]).unsqueeze(1)
+            # TODO: Get the value for relative_joint_axis_local
+            relative_joint_axis_local = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['axis']).unsqueeze(0).repeat(self.num_envs, 1)
 
             # joint_axis_global = self.robot.data.body_quat_w[i]  # Replace with actual axis retrieval if available
             # relative_joint_axis_local = torch.matmul(trunk_rotation_matrix, joint_axis_global)
@@ -247,7 +275,7 @@ class LocomotionEnv(DirectRLEnv):
             # Append joint description vector
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
-                # relative_joint_axis_local,
+                relative_joint_axis_local,
                 torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)),
                 torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)),
                 torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
