@@ -9,4 +9,5 @@ _orbit*
 wandb/
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
+exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
 .*

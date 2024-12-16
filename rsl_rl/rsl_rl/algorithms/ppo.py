@@ -36,7 +36,6 @@ class PPO:
         self.desired_kl = desired_kl
         self.schedule = schedule
         self.learning_rate = learning_rate
-        self.start_learning_rate = learning_rate
 
         # PPO components
         self.actor_critic = actor_critic
@@ -44,8 +43,6 @@ class PPO:
         self.storage = None  # initialized later
         self.optimizer = optim.Adam(self.actor_critic.parameters(), lr=learning_rate)
         self.transition = RolloutStorage.Transition()
-        self.update_step = 0
-        self.total_nr_updates = 0
 
         # PPO parameters
         self.clip_param = clip_param
@@ -57,11 +54,6 @@ class PPO:
         self.lam = lam
         self.max_grad_norm = max_grad_norm
         self.use_clipped_value_loss = use_clipped_value_loss
-    
-
-    def calculate_total_nr_updates(self, num_learning_iterations):
-        self.total_nr_updates = num_learning_iterations * self.num_mini_batches * self.num_learning_epochs
-
 
     def init_storage(self, num_envs, num_transitions_per_env, actor_obs_shape, critic_obs_shape, action_shape):
         self.storage = RolloutStorage(
@@ -154,9 +146,6 @@ class PPO:
 
                     for param_group in self.optimizer.param_groups:
                         param_group["lr"] = self.learning_rate
-            
-            if self.schedule == "linear":
-                self.learning_rate = self.start_learning_rate * (1 - self.update_step / self.total_nr_updates)
 
             # Surrogate loss
             ratio = torch.exp(actions_log_prob_batch - torch.squeeze(old_actions_log_prob_batch))
@@ -185,7 +174,6 @@ class PPO:
             nn.utils.clip_grad_norm_(self.actor_critic.parameters(), self.max_grad_norm)
             self.optimizer.step()
 
-            self.update_step += 1
             mean_value_loss += value_loss.item()
             mean_surrogate_loss += surrogate_loss.item()
 

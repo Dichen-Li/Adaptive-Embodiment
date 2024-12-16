@@ -17,6 +17,30 @@ from rsl_rl.modules import ActorCritic, ActorCriticRecurrent, EmpiricalNormaliza
 from rsl_rl.utils import store_code_state
 
 
+def sum_dicts(dict_list):
+    # Check if the list is empty
+    if not dict_list:
+        return {}
+
+    # Get the keys from the first dictionary
+    keys = set(dict_list[0].keys())
+
+    # Verify all dictionaries have the same keys
+    for d in dict_list:
+        if set(d.keys()) != keys:
+            raise ValueError("All dictionaries must have the same keys")
+
+    # Initialize a result dictionary with zero values for each key
+    result = {key: 0 for key in keys}
+
+    # Sum values for each key
+    for d in dict_list:
+        for key in keys:
+            result[key] += d[key]
+
+    return result
+
+
 class OnPolicyRunner:
     """On-policy runner for training and evaluation."""
 
@@ -94,7 +118,6 @@ class OnPolicyRunner:
         critic_obs = extras["observations"].get("critic", obs)
         obs, critic_obs = obs.to(self.device), critic_obs.to(self.device)
         self.train_mode()  # switch to train mode (for dropout for example)
-        self.alg.calculate_total_nr_updates(num_learning_iterations)
 
         ep_infos = []
         rewbuffer = deque(maxlen=100)
@@ -107,9 +130,16 @@ class OnPolicyRunner:
         for it in range(start_iter, tot_iter):
             start = time.time()
             # Rollout
+            reward_dict_list = []
             with torch.inference_mode():
                 for i in range(self.num_steps_per_env):
                     actions = self.alg.act(obs, critic_obs)
+                    # try:
+                    #     actions = self.alg.act(obs, critic_obs)
+                    # except Exception as e:
+                    #     import ipdb;
+                    #     ipdb.set_trace()
+
                     obs, rewards, dones, infos = self.env.step(actions.to(self.env.device))
                     # move to the right device
                     obs, critic_obs, rewards, dones = (
@@ -126,6 +156,7 @@ class OnPolicyRunner:
                         critic_obs = obs
                     # process the step
                     self.alg.process_env_step(rewards, dones, infos)
+                    reward_dict_list.append(self.env.env.env.reward_dict)
 
                     if self.log_dir is not None:
                         # Book keeping
@@ -156,6 +187,8 @@ class OnPolicyRunner:
             self.current_learning_iteration = it
             if self.log_dir is not None:
                 self.log(locals())
+                # import ipdb; ipdb.set_trace()
+                self.log_reward_dict(reward_dict_list, it)
             if it % self.save_interval == 0:
                 self.save(os.path.join(self.log_dir, f"model_{it}.pt"))
             ep_infos.clear()
@@ -168,6 +201,11 @@ class OnPolicyRunner:
                         self.writer.save_file(path)
 
         self.save(os.path.join(self.log_dir, f"model_{self.current_learning_iteration}.pt"))
+
+    def log_reward_dict(self, reward_dict_list, it):
+        summed_dict = sum_dicts(reward_dict_list)
+        for k, v in summed_dict.items():
+            self.writer.add_scalar(f"Reward/{k}", v.float().mean(), it)
 
     def log(self, locs: dict, width: int = 80, pad: int = 35):
         self.tot_timesteps += self.num_steps_per_env * self.env.num_envs
@@ -206,10 +244,10 @@ class OnPolicyRunner:
         self.writer.add_scalar("Perf/collection time", locs["collection_time"], locs["it"])
         self.writer.add_scalar("Perf/learning_time", locs["learn_time"], locs["it"])
         if len(locs["rewbuffer"]) > 0:
-            self.writer.add_scalar("Train/mean_return", statistics.mean(locs["rewbuffer"]), locs["it"])
+            self.writer.add_scalar("Train/mean_reward", statistics.mean(locs["rewbuffer"]), locs["it"])
             self.writer.add_scalar("Train/mean_episode_length", statistics.mean(locs["lenbuffer"]), locs["it"])
             if self.logger_type != "wandb":  # wandb does not support non-integer x-axis logging
-                self.writer.add_scalar("Train/mean_return/time", statistics.mean(locs["rewbuffer"]), self.tot_time)
+                self.writer.add_scalar("Train/mean_reward/time", statistics.mean(locs["rewbuffer"]), self.tot_time)
                 self.writer.add_scalar(
                     "Train/mean_episode_length/time", statistics.mean(locs["lenbuffer"]), self.tot_time
                 )
@@ -228,7 +266,7 @@ class OnPolicyRunner:
                 f"""{'Mean reward:':>{pad}} {statistics.mean(locs['rewbuffer']):.2f}\n"""
                 f"""{'Mean episode length:':>{pad}} {statistics.mean(locs['lenbuffer']):.2f}\n"""
             )
-            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_return']:.2f}\n"""
+            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_reward']:.2f}\n"""
             #   f"""{'Mean episode length/episode:':>{pad}} {locs['mean_trajectory_length']:.2f}\n""")
         else:
             log_string = (
@@ -240,7 +278,7 @@ class OnPolicyRunner:
                 f"""{'Surrogate loss:':>{pad}} {locs['mean_surrogate_loss']:.4f}\n"""
                 f"""{'Mean action noise std:':>{pad}} {mean_std.item():.2f}\n"""
             )
-            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_return']:.2f}\n"""
+            #   f"""{'Mean reward/step:':>{pad}} {locs['mean_reward']:.2f}\n"""
             #   f"""{'Mean episode length/episode:':>{pad}} {locs['mean_trajectory_length']:.2f}\n""")
 
         log_string += ep_string
