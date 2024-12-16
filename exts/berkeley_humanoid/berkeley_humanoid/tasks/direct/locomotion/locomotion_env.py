@@ -231,7 +231,9 @@ class LocomotionEnv(DirectRLEnv):
 
         # TODO: Implement the robot dimension with geometry bounding box and movable geometry; See below Temporary TODO
         # Get the robot_dimensions from bbox in robot_description_vec.json file
-        robot_dimensions = torch.abs(torch.tensor(torch.tensor(self.robot_description_vec_json['bbox'][0]) - torch.tensor(self.robot_description_vec_json['bbox'][1])))
+        bbox_corner_0, bbox_corner_1 = torch.tensor(self.robot_description_vec_json['bbox'][0], device=self.sim.device), torch.tensor(self.robot_description_vec_json['bbox'][1], device=self.sim.device)
+        robot_dimensions = torch.abs(bbox_corner_0 - bbox_corner_1)
+        robot_bbox_center = (bbox_corner_0 + bbox_corner_1) / 2
         self.robot_dimensions = robot_dimensions.unsqueeze(0).repeat(self.num_envs, 1)
 
         # Calculate robot width, length and height
@@ -259,15 +261,18 @@ class LocomotionEnv(DirectRLEnv):
 
         # Compute normalized joint positions and axes
         for i, joint_name in enumerate(self.joint_names):
-            
-            relative_joint_position_normalized = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['position']).unsqueeze(0).repeat(self.num_envs, 1) / self.robot_dimensions
+            relative_joint_position = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['position'], device=self.sim.device).unsqueeze(0).repeat(self.num_envs, 1)
+            # relative_joint_position = torch.matmul(trunk_rotation_matrix, relative_joint_position.unsqueeze(-1)).squeeze(-1)
+            relative_joint_position -= robot_bbox_center        # noisy center estimate as an approximation 
+            relative_joint_position_normalized = (relative_joint_position - mins) / (self.robot_dimensions + 1e-8)  # note the mins are based on links
+
             # joint_position_global = self.robot.data.joint_pos[:, i].unsqueeze(1)  # Assuming joint positions are indexed similarly to body names
             # joint_position_default = self.robot.data.default_joint_pos[:, i].unsqueeze(1)
             # relative_joint_position_global = joint_position_global - joint_position_default
             # relative_joint_position_normalized = relative_joint_position_global / (self.robot.data.soft_joint_pos_limits[:, i, 0] - self.robot.data.soft_joint_pos_limits[:, i, 1]).unsqueeze(1)
 
             # TODO: Get the value for relative_joint_axis_local
-            relative_joint_axis_local = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['axis']).unsqueeze(0).repeat(self.num_envs, 1)
+            relative_joint_axis_local = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['axis'], device=self.sim.device).unsqueeze(0).repeat(self.num_envs, 1)
 
             # joint_axis_global = self.robot.data.body_quat_w[i]  # Replace with actual axis retrieval if available
             # relative_joint_axis_local = torch.matmul(trunk_rotation_matrix, joint_axis_global)
@@ -360,7 +365,6 @@ class LocomotionEnv(DirectRLEnv):
         goal_velocity = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
         projected_gravity_vector = self.robot.data.projected_gravity_b
         height = self.robot.data.root_pos_w[:,2].unsqueeze(1)
-
 
         # General robot context
         gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor([100.0 / 2, 2.0 / 2, 0.8 / 2], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1))
