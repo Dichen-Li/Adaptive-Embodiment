@@ -15,6 +15,7 @@ parser.add_argument("--seed", type=int, default=0, help="Seed used for the envir
 parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
 parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
 parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
+parser.add_argument("--policy_file_directory", type=str, default=None, help="Store the specified policy_file_directory. Should be best_model.pt.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -207,7 +208,9 @@ def main():
     
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
-
+    # Specify the policy file directory if needed (instead of loading the newest one)
+    if args_cli.policy_file_directory != parser.get_default('policy_file_directory'):
+        policy_file_directory = args_cli.policy_file_directory
     # Create one policy runner for inference and load trained model parameters
     print(f"[INFO]: Loading model checkpoint from: {policy_file_directory}")
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
