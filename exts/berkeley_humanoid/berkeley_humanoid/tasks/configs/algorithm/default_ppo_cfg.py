@@ -36,7 +36,8 @@ class DefaultPPORunnerCfg:
     seed = 42
     device = "cuda:0"
     num_steps_per_env = 24
-    max_iterations = 20000
+    # max_iterations = 20000    # 20000 is sufficient for complete convergence and good sim-to-real transfer
+    max_iterations = 7000   # 7000 is minimally sufficient to see if the training is on the right track
     empirical_normalization = False
     policy = PolicyCfg()
     algorithm = AlgorithmCfg()
