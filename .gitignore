@@ -6,7 +6,9 @@ experiments/
 rl_x/
 training/
 _orbit*
+.vscode/
 wandb/
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
+log_dir/
 .*
