@@ -145,6 +145,8 @@ class LocomotionEnv(DirectRLEnv):
         self.urma_initialized = False
         self._setup_urma_obs_params()
 
+        self.handle_domain_randomization(all_envs=True)
+
     def _setup_urma_obs_params(self):
         """
         Migrated from branch isaac-v2.1. Initializing some attributes needed to generate urma observation.
@@ -428,8 +430,11 @@ class LocomotionEnv(DirectRLEnv):
         self.robot._joint_effort_target_sim = self.torques
 
 
-    def handle_domain_randomization(self):
-        env_randomization_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+    def handle_domain_randomization(self, all_envs=False):
+        if not all_envs:
+            env_randomization_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        else:
+            env_randomization_mask = torch.zeros((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_randomized_envs = env_randomization_mask.sum()
 
         # Action delay
@@ -449,7 +454,10 @@ class LocomotionEnv(DirectRLEnv):
         mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (self.joint_friction_min, self.joint_friction_max), (self.joint_armature_min, self.joint_armature_max), None, None, "abs")
 
         # Perturbations
-        env_perturbation_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        if not all_envs:
+            env_perturbation_mask = torch.rand((self.num_envs,), device=self.sim.device) < self.step_sampling_probability
+        else:
+            env_perturbation_mask = torch.ones((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_perturbed_envs = env_perturbation_mask.sum()
         perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_x_max - self.perturb_velocity_x_min) + self.perturb_velocity_x_min
         perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_y_max - self.perturb_velocity_y_min) + self.perturb_velocity_y_min
