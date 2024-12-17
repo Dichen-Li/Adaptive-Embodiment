@@ -13,7 +13,7 @@ parser.add_argument(
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
+parser.add_argument("--steps", type=int, default=3000, help="Number of steps per environment")
 parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
 parser.add_argument("--model_is_actor", action="store_true", default=False,
                     help="Indicate if the supervised model is actor=True/one_policy=False.")
@@ -225,7 +225,7 @@ def main():
     video_timestep = 0
 
     from utils import RewardDictLogger
-    reward_dict_logger = RewardDictLogger()
+    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
 
     # Main simulation loop
     while simulation_app.is_running():
@@ -234,12 +234,13 @@ def main():
             actions = one_policy_runner.infer(one_policy_observation)
 
             # Environment stepping
-            obs, _, _, extra = env.step(actions)
+            obs, rewards, dones, extra = env.step(actions)
+
             one_policy_observation = extra["observations"]["urma_obs"]
 
             # log reward
-            reward_dict_logger.update(env)
-            reward_dict_logger.print(curr_timestep)
+            reward_dict_logger.update(env, rewards, dones)
+            reward_dict_logger.print(curr_timestep, 'sum')
 
             curr_timestep += 1
 

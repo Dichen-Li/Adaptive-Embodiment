@@ -21,7 +21,7 @@ parser.add_argument("--video_length", type=int, default=200, help="Length of the
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
-parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
+parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 # append RSL-RL cli arguments
@@ -101,10 +101,11 @@ def main():
 
     # reset environment
     obs, _ = env.get_observations()
-    timestep = 0
+    video_timestep = 0
+    curr_timestep = 0
 
     from utils import RewardDictLogger
-    reward_dict_logger = RewardDictLogger()
+    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
 
     # simulate environment
     while simulation_app.is_running():
@@ -112,17 +113,18 @@ def main():
         with torch.inference_mode():
             # agent stepping
             actions = policy(obs)
-            # env stepping
-            obs, _, _, _ = env.step(actions)
+
+            # Environment stepping
+            obs, rewards, dones, extra = env.step(actions)
 
             # log reward
-            reward_dict_logger.update(env)
-            reward_dict_logger.print(timestep)
+            reward_dict_logger.update(env, rewards, dones)
+            reward_dict_logger.print(curr_timestep, 'sum')
 
         if args_cli.video:
-            timestep += 1
+            video_timestep += 1
             # Exit the play loop after recording one video
-            if timestep == args_cli.video_length:
+            if video_timestep == args_cli.video_length:
                 break
 
     # close the simulator

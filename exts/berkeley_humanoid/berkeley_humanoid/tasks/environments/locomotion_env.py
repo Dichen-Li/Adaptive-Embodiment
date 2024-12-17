@@ -522,7 +522,7 @@ class LocomotionEnv(DirectRLEnv):
             local_feet_pos
         )
 
-        self.extras = {"log": extras}
+        self.extras = {"log": extras}  # sum(extras.values()) is reward
 
         self.previous_actions = self.actions.clone()
         self.previous_feet_air_times = feet_contact_sensors.data.current_air_time[:, self.feet_contact_cfg.body_ids].clone()

@@ -37,52 +37,100 @@ class AverageMeter:
 
 
 class RewardDictLogger:
-    def __init__(self):
+    def __init__(self, num_envs):
         """
         Initializes the RewardDictLogger to track reward statistics.
+
+        Args:
+            num_envs (int): Number of parallel environments (N).
         """
         self.reward_avg_meter_dict = {}
+        self.cumulative_rewards = torch.zeros(num_envs).cuda()  # Track total rewards for each robot
+        self.full_trajectory_rewards = []  # Log summed rewards for completed robot trajectories
+        self.full_trajectory_term_rewards = {}  # Per-term rewards for completed robots
+        self.num_envs = num_envs
 
-    def update(self, env):
+    def update(self, env, rewards, dones):
         """
-        Updates the reward statistics from the environment's reward dictionary.
+        Updates reward statistics and cumulative rewards.
+
+        Args:
+            env: Environment object providing reward terms.
+            rewards (torch.Tensor): Reward tensor (N,).
+            dones (torch.Tensor): Done flags (N,) indicating robot termination.
         """
-        reward_dict = env.env.env.extras["log"]  # Access reward dictionary
+        reward_dict = env.env.env.extras["log"]  # Access reward terms
+
         for key, values in reward_dict.items():
             if key not in self.reward_avg_meter_dict:
                 self.reward_avg_meter_dict[key] = AverageMeter()
+
             mean_reward = values.mean().item()
             self.reward_avg_meter_dict[key].update(mean_reward)
 
+            # Convert to float tensor if required
+            values = values.detach() if values.requires_grad else values
+
+            # Initialize per-term rewards tensor if not already
+            if key not in self.full_trajectory_term_rewards:
+                self.full_trajectory_term_rewards[key] = torch.zeros_like(rewards)
+
+            # Accumulate rewards for current step
+            self.full_trajectory_term_rewards[key] += values
+
+        # Update cumulative rewards and handle robot termination
+        self.cumulative_rewards += rewards
+        for i in range(len(dones)):
+            if dones[i] == 1:  # Robot dies
+                # Log total reward for the robot
+                self.full_trajectory_rewards.append(self.cumulative_rewards[i].item())
+                self.cumulative_rewards[i] = 0.0  # Reset
+
+                # Log per-term rewards
+                for key in self.full_trajectory_term_rewards:
+                    self.full_trajectory_term_rewards[key][i] = 0.0  # Reset per-term reward
+
     def print(self, curr_timestep, mode="avg"):
         """
-        Prints the current reward statistics in a clean format.
+        Prints reward statistics based on the mode.
 
         Args:
             curr_timestep (int): Current timestep.
-            mode (str): "sum" to print cumulative sums, "avg" to print averages.
+            mode (str): "avg" or "sum" for average rewards or summed rewards.
         """
-        assert mode in ["sum", "avg"], "Mode must be 'sum' or 'avg'"
+        assert mode in ["avg", "sum"], "Mode must be 'sum' or 'avg'"
 
-        # Header
         print("[INFO] =========================================================")
         print(f"[INFO] Timestep: {curr_timestep}")
-        print(f"[INFO] Reward {'Sums' if mode == 'sum' else 'Averages'}:")
 
-        # Per-key reward printout
-        for key, meter in self.reward_avg_meter_dict.items():
-            value = meter.sum if mode == "sum" else meter.avg
-            print(f"  [INFO] {key:<20}: {value:.4f}")
+        if mode == "avg":
+            print("[INFO] Reward Averages (per timestep):")
+            total_avg = 0
+            for key, meter in self.reward_avg_meter_dict.items():
+                print(f"  [INFO] {key:<20}: {meter.avg:.4f}")
+                total_avg += meter.avg
+            print(f"[INFO] Sum of Averages    : {total_avg:.4f}")
 
-        # Total reward
-        if mode == "sum":
-            total_reward = sum(meter.sum for meter in self.reward_avg_meter_dict.values())
-            print(f"[INFO] Total Reward       : {total_reward:.4f}")
-        elif mode == "avg":
-            total_avg = sum(meter.avg for meter in self.reward_avg_meter_dict.values())
-            print(f"[INFO] Total Average      : {total_avg:.4f}")
+        elif mode == "sum":
+            print("[INFO] Reward Sums (per trajectory, averaged across envs):")
+            total_sum = 0
+            for key, meter in self.reward_avg_meter_dict.items():
+                term_sum = torch.mean(self.full_trajectory_term_rewards[key])
+                print(f"  [INFO] {key:<20}: {term_sum:.4f}")
+                total_sum += term_sum
+            print(f"[INFO] Sum of Rewards     : {total_sum:.4f}")
+
+            # Print cumulative rewards of completed trajectories
+            avg_full_reward = (
+                sum(self.full_trajectory_rewards) / len(self.full_trajectory_rewards)
+                if self.full_trajectory_rewards
+                else 0
+            )
+            print(f"[INFO] Full Trajectory Rewards Logged: {len(self.full_trajectory_rewards)}")
+            print(f"[INFO] Average Full Trajectory Reward: {avg_full_reward:.4f}")
 
         print("[INFO] =========================================================")
+
 
 
 def get_most_recent_h5py_record_path(base_path, task_name):
