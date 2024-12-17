@@ -16,7 +16,7 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.unitree import GO2_CFG
-
+# from berkeley_humanoid.assets.gen_quadrupeds import GO2_CFG
 
 @configclass
 class Go2EnvCfg(DirectRLEnvCfg):
@@ -58,7 +58,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
 
     # robot-specific config
     trunk_cfg = SceneEntityCfg("robot", body_names="base")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*base.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
     step_sampling_probability = 0.002
