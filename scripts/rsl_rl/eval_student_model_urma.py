@@ -1,6 +1,7 @@
 import argparse
 from omni.isaac.lab.app import AppLauncher
 import cli_args
+from utils import AverageMeter
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Evaluate a student model in simulation.")
@@ -32,8 +33,6 @@ if args_cli.video:
 app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
-"""Rest everything follows."""
-
 import gymnasium as gym
 import os
 import torch
@@ -51,13 +50,11 @@ from rsl_rl.modules import ActorCritic
 
 # Ready for defining the policy package
 import sys
-
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 
 from rsl_rl.env import VecEnv
 from silver_badger_torch.policy import get_policy
 from utils import one_policy_observation_to_inputs
-
 
 def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
@@ -74,13 +71,13 @@ def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
     # Step 1: Find the newest experiment folder
     experiment_folders = [
-        f for f in os.listdir(log_dir)
+        f for f in os.listdir(log_dir) 
         if os.path.isdir(os.path.join(log_dir, f))
     ]
     experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
     if not experiment_folders:
         raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
-
+    
     newest_folder = os.path.join(log_dir, experiment_folders[0])
     print(f"[INFO] Found newest experiment folder: {newest_folder}")
 
@@ -227,6 +224,9 @@ def main():
     curr_timestep = 0
     video_timestep = 0
 
+    from utils import RewardDictLogger
+    reward_dict_logger = RewardDictLogger()
+
     # Main simulation loop
     while simulation_app.is_running():
         with torch.inference_mode():
@@ -236,6 +236,10 @@ def main():
             # Environment stepping
             obs, _, _, extra = env.step(actions)
             one_policy_observation = extra["observations"]["urma_obs"]
+
+            # log reward
+            reward_dict_logger.update(env)
+            reward_dict_logger.print(curr_timestep)
 
             curr_timestep += 1
 

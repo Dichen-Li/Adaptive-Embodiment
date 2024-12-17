@@ -36,6 +36,55 @@ class AverageMeter:
         return f"Val: {self.val:.4f}, Avg: {self.avg:.4f}"
 
 
+class RewardDictLogger:
+    def __init__(self):
+        """
+        Initializes the RewardDictLogger to track reward statistics.
+        """
+        self.reward_avg_meter_dict = {}
+
+    def update(self, env):
+        """
+        Updates the reward statistics from the environment's reward dictionary.
+        """
+        reward_dict = env.env.env.reward_dict  # Access reward dictionary
+        for key, values in reward_dict.items():
+            if key not in self.reward_avg_meter_dict:
+                self.reward_avg_meter_dict[key] = AverageMeter()
+            mean_reward = values.mean().item()
+            self.reward_avg_meter_dict[key].update(mean_reward)
+
+    def print(self, curr_timestep, mode="avg"):
+        """
+        Prints the current reward statistics in a clean format.
+
+        Args:
+            curr_timestep (int): Current timestep.
+            mode (str): "sum" to print cumulative sums, "avg" to print averages.
+        """
+        assert mode in ["sum", "avg"], "Mode must be 'sum' or 'avg'"
+
+        # Header
+        print("[INFO] =========================================================")
+        print(f"[INFO] Timestep: {curr_timestep}")
+        print(f"[INFO] Reward {'Sums' if mode == 'sum' else 'Averages'}:")
+
+        # Per-key reward printout
+        for key, meter in self.reward_avg_meter_dict.items():
+            value = meter.sum if mode == "sum" else meter.avg
+            print(f"  [INFO] {key:<20}: {value:.2f}")
+
+        # Total reward
+        if mode == "sum":
+            total_reward = sum(meter.sum for meter in self.reward_avg_meter_dict.values())
+            print(f"[INFO] Total Reward       : {total_reward:.2f}")
+        elif mode == "avg":
+            total_avg = sum(meter.avg for meter in self.reward_avg_meter_dict.values())
+            print(f"[INFO] Total Average      : {total_avg:.2f}")
+
+        print("[INFO] =========================================================")
+
+
 def get_most_recent_h5py_record_path(base_path, task_name):
     """Find the most recent folder for a given task and return the path to its `h5py_record` subfolder."""
     task_path = os.path.join(base_path, task_name)
