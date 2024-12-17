@@ -45,7 +45,7 @@ class LocomotionEnv(DirectRLEnv):
 
         self.step_sampling_probability = self.cfg.step_sampling_probability
 
-        self.goal_velocities = torch.zeros((self.num_envs, 3), dtype=torch.float32, device=self.sim.device)
+        self.goal_velocities = torch.rand((self.num_envs, 3), device=self.sim.device).uniform_(-1.0, 1.0)
         self.previous_actions = torch.zeros((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
         self.previous_feet_air_times = torch.zeros((self.num_envs, self.nr_feet), dtype=torch.float32, device=self.sim.device)
 
@@ -259,7 +259,6 @@ class LocomotionEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
     def get_name_to_description_vector(self):
-        # TODO: Check if this function is robot-dependent, particularly the magic numbers
         name_to_description_vector = {}
 
         # Root (trunk) position and orientation
