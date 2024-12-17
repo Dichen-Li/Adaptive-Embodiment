@@ -47,7 +47,7 @@ class RewardDictLogger:
         """
         Updates the reward statistics from the environment's reward dictionary.
         """
-        reward_dict = env.env.env.reward_dict  # Access reward dictionary
+        reward_dict = env.env.env.extras["log"]  # Access reward dictionary
         for key, values in reward_dict.items():
             if key not in self.reward_avg_meter_dict:
                 self.reward_avg_meter_dict[key] = AverageMeter()
@@ -72,15 +72,15 @@ class RewardDictLogger:
         # Per-key reward printout
         for key, meter in self.reward_avg_meter_dict.items():
             value = meter.sum if mode == "sum" else meter.avg
-            print(f"  [INFO] {key:<20}: {value:.2f}")
+            print(f"  [INFO] {key:<20}: {value:.4f}")
 
         # Total reward
         if mode == "sum":
             total_reward = sum(meter.sum for meter in self.reward_avg_meter_dict.values())
-            print(f"[INFO] Total Reward       : {total_reward:.2f}")
+            print(f"[INFO] Total Reward       : {total_reward:.4f}")
         elif mode == "avg":
             total_avg = sum(meter.avg for meter in self.reward_avg_meter_dict.values())
-            print(f"[INFO] Total Average      : {total_avg:.2f}")
+            print(f"[INFO] Total Average      : {total_avg:.4f}")
 
         print("[INFO] =========================================================")
 
