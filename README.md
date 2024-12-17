@@ -199,7 +199,7 @@ that folder.
 
 [//]: # (To generate the dataset, run)
 ```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenDog1 --steps 1000
+python scripts/rsl_rl/play_collect_data.py --task GenDog1 --steps 1000 --headless
 ```
 You may interrupt data collection at any time and the files won't corrupt. 
 
