@@ -2,6 +2,8 @@ import yaml
 from types import SimpleNamespace
 import numpy as np
 import re
+import torch
+
 
 # Function to convert dict to SimpleNamespace recursively
 def dict_to_namespace(config_dict):
@@ -42,6 +44,29 @@ def load_config(file_path):
     config_dict = enforce_float_conversion(config_dict)
     return dict_to_namespace(config_dict)
 
+def quat_to_matrix(quat):
+    """
+    Convert a quaternion to a 3x3 rotation matrix.
+    Args:
+        quat (torch.tensor): Quaternion (w, x, y, z) with shape (N, 4).
+    Returns:
+        torch.tensor: Rotation matrix with shape (N, 3, 3).
+    """
+    w, x, y, z = quat[:, 0], quat[:, 1], quat[:, 2], quat[:, 3]
+
+    # Compute the rotation matrix elements
+    tx, ty, tz = 2.0 * x, 2.0 * y, 2.0 * z
+    twx, twy, twz = tx * w, ty * w, tz * w
+    txx, txy, txz = tx * x, tx * y, tx * z
+    tyy, tyz, tzz = ty * y, ty * z, tz * z
+
+    rotation_matrix = torch.stack([
+        1.0 - (tyy + tzz), txy - twz, txz + twy,
+        txy + twz, 1.0 - (txx + tzz), tyz - twx,
+        txz - twy, tyz + twx, 1.0 - (txx + tyy)
+    ], dim=-1).view(-1, 3, 3)
+
+    return rotation_matrix
 
 # # Example of loading the config
 # config = load_config("/home/research/github/embodiment-scaling-law/training/environments/robots/unitree_go1/config.yaml")
