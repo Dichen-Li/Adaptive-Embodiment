@@ -1,9 +1,13 @@
 import argparse
-
+import os
+import torch
 import tqdm
-from omni.isaac.lab.app import AppLauncher
 import cli_args
 from dataset import DatasetSaver  # isort: skip
+import numpy as np
+import gymnasium as gym
+from omni.isaac.lab.app import AppLauncher
+
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
@@ -15,7 +19,7 @@ parser.add_argument(
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
+parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -31,13 +35,6 @@ if args_cli.video:
 app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
-"""Rest everything follows."""
-
-
-import gymnasium as gym
-import os
-import torch
-
 from rsl_rl.runners import OnPolicyRunner
 
 # Import extensions to set up environment tasks
@@ -46,10 +43,6 @@ import berkeley_humanoid.tasks  # noqa: F401
 from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
-
-
-import os
-import torch
 
 
 def main():
@@ -102,8 +95,9 @@ def main():
 
     # Reset environment and start simulation
     obs, observations = env.get_observations()
-    one_policy_observation = observations["observations"]["one_policy"]
+    one_policy_observation = observations["observations"]["urma_obs"]
     # curr_timestep = 0
+    actions_std = None
 
     # Main simulation loop
     while simulation_app.is_running():
@@ -118,14 +112,22 @@ def main():
                     actions=actions.cpu().numpy(),
                 )
 
-                # Environment stepping
+                # To expand the training data distribution, we should inject noise when rolling out teacher policy
+                # Please don't use randomized actions as ground truth!
+
+                # First, record action std
+                if actions_std is None:
+                    actions_std = actions.std(0)       # compute std for every joint
+                    print(f'[INFO] Action std recorded: {actions_std}')
+
+                # Apply randomization 1/10 of the time so there is still quite some clean data
+                if np.random.randn() < 0.1:
+                    # actions = actions * (torch.randn_like(actions) * actions_std + 1)
+                    actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
+
+                # Stepping the environment
                 obs, _, _, extra = env.step(actions)
-                one_policy_observation = extra["observations"]["one_policy"]
-
-                # curr_timestep += 1
-
-                # if curr_timestep > args_cli.steps:
-                #     break
+                one_policy_observation = extra["observations"]["urma_obs"]
 
             # break the simulation loop
             break
