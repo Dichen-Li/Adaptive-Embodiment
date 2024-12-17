@@ -137,6 +137,13 @@ def update_height(robot_urdf_path, train_cfg_path, save_path, root_name):
         json.dump(train_cfg, f, indent=4)
 
 
+    #############################################
+    # Clean up
+    #############################################
+
+    viewer.close()
+
+
 if __name__ == '__main__':
     root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
     asset_dirs = [os.path.join(root_dir, name) for name in os.listdir(root_dir) if
