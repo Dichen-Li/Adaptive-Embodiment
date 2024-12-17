@@ -205,7 +205,7 @@ def main():
         from rsl_rl.modules import ActorCritic
         # metadata = train_dataset.metadata_list[0]
         # import ipdb; ipdb.set_trace()
-        actor_critic = ActorCritic(316, 316, 12)
+        actor_critic = ActorCritic(376, 376, 12)
         policy = actor_critic.actor.to(model_device)
     elif args_cli.model == 'naive_actor':
         from naive_actor import ActorMLP
