@@ -3,7 +3,7 @@ from omni.isaac.lab.app import AppLauncher
 import cli_args
 
 # add argparse arguments
-parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
+parser = argparse.ArgumentParser(description="Evaluate a student model in simulation.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
 parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
 parser.add_argument(
@@ -14,7 +14,9 @@ parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
 parser.add_argument("--steps", type=int, default=1000, help="Number of steps per environment")
 parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
-parser.add_argument("--model_is_actor", action="store_true", default=False, help="Indicate if the supervised model is actor=True/one_policy=False.")
+parser.add_argument("--model_is_actor", action="store_true", default=False,
+                    help="Indicate if the supervised model is actor=True/one_policy=False.")
+parser.add_argument("--ckpt_path", type=str, default=None, help="Store the specified policy file directory.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -31,7 +33,6 @@ app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
 """Rest everything follows."""
-
 
 import gymnasium as gym
 import os
@@ -50,11 +51,13 @@ from rsl_rl.modules import ActorCritic
 
 # Ready for defining the policy package
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 
 from rsl_rl.env import VecEnv
 from silver_badger_torch.policy import get_policy
 from utils import one_policy_observation_to_inputs
+
 
 def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
@@ -71,13 +74,13 @@ def find_newest_best_checkpoint(log_dir: str) -> tuple:
     """
     # Step 1: Find the newest experiment folder
     experiment_folders = [
-        f for f in os.listdir(log_dir) 
+        f for f in os.listdir(log_dir)
         if os.path.isdir(os.path.join(log_dir, f))
     ]
     experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
     if not experiment_folders:
         raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
-    
+
     newest_folder = os.path.join(log_dir, experiment_folders[0])
     print(f"[INFO] Found newest experiment folder: {newest_folder}")
 
@@ -89,12 +92,10 @@ def find_newest_best_checkpoint(log_dir: str) -> tuple:
     return (newest_folder, best_checkpoint_path)
 
 
-
-
 class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
 
-    def __init__(self, env: VecEnv, device: str ="cpu", model_is_actor: bool = False):
+    def __init__(self, env: VecEnv, device: str = "cpu", model_is_actor: bool = False):
         """
         Initialize the one policy runner.
 
@@ -107,19 +108,19 @@ class InferenceOnePolicyRunner:
         else:
             from silver_badger_torch.policy import get_policy
             policy = get_policy(device)
-        
+
         self.policy = policy
         self.device = device
         self.env = env
 
-    def get_inference_policy(self, device: str ='cpu'):
+    def get_inference_policy(self, device: str = 'cpu'):
         """
         Prepare and return the inference-ready policy network.
 
         Returns:
             nn.Module: The policy network set to evaluation mode and moved to the correct device.
         """
-        self.device  = device
+        self.device = device
         self.policy.eval()  # Ensure evaluation mode
         self.policy.to(self.device)  # Ensure the policy is on the correct device
         print("[INFO] Inference policy is ready.")
@@ -147,7 +148,6 @@ class InferenceOnePolicyRunner:
         print(f"[INFO] Checkpoint loaded successfully from {best_checkpoint_path}")
 
         return checkpoint["epoch"]
-
 
     def infer(self, one_policy_observation: torch.Tensor):
         """
@@ -178,6 +178,7 @@ class InferenceOnePolicyRunner:
 
         return action
 
+
 def main():
     """Play with RSL-RL agent."""
     # parse configuration
@@ -188,7 +189,7 @@ def main():
 
     # specify directory for logging experiments
     policy_root_directory = args_cli.log_dir
-    (policy_folder_directory, policy_file_directory) = find_newest_best_checkpoint(policy_root_directory)
+    (policy_folder_directory, policy_file_path) = find_newest_best_checkpoint(policy_root_directory)
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
@@ -204,20 +205,25 @@ def main():
         print("[INFO] Recording videos during training.")
         print_dict(video_kwargs, nesting=4)
         env = gym.wrappers.RecordVideo(env, **video_kwargs)
-    
+
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
 
+    # Specify the policy file directory if needed (instead of loading the newest one)
+    if args_cli.ckpt_path != parser.get_default('policy_file_directory'):
+        policy_file_path = args_cli.ckpt_path
+
     # Create one policy runner for inference and load trained model parameters
-    print(f"[INFO]: Loading model checkpoint from: {policy_file_directory}")
+    print(f"[INFO]: Loading model checkpoint from: {policy_file_path}")
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     # load previously trained model
     one_policy_runner = InferenceOnePolicyRunner(env, device=model_device, model_is_actor=args_cli.model_is_actor)
-    one_policy_runner.load(policy_file_directory)
+    one_policy_runner.load(policy_file_path)
 
     # Reset environment and start simulation
     obs, observations = env.get_observations()
-    one_policy_observation = observations["observations"]["one_policy"]
+    one_policy_observation = observations["observations"]["urma_obs"]
     curr_timestep = 0
     video_timestep = 0
 
@@ -226,10 +232,10 @@ def main():
         with torch.inference_mode():
             # Agent stepping
             actions = one_policy_runner.infer(one_policy_observation)
-            
+
             # Environment stepping
             obs, _, _, extra = env.step(actions)
-            one_policy_observation = extra["observations"]["one_policy"]
+            one_policy_observation = extra["observations"]["urma_obs"]
 
             curr_timestep += 1
 

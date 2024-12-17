@@ -15,14 +15,14 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
     parser.add_argument("--tasks", nargs="+", type=str, default=None, required=True,
                         help="List of tasks to process.")
-    parser.add_argument("--num_epochs", type=int, default=500, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=4096, help="Batch size. 4096*16 takes 10G")
+    parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
+    parser.add_argument("--batch_size", type=int, default=512, help="Batch size. 4096*16 takes 10G")
     parser.add_argument("--exp_name", type=str, default=None,
                         help="Name of the experiment. If provided, the current date and time will be appended. "
                              "Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
-    parser.add_argument("--lr", type=float, default=1.25e-4, help="unit learning rate (for a batch size of 4096)")
+    parser.add_argument("--lr", type=float, default=3e-4, help="unit learning rate (for a batch size of 512)")
     parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loder.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
@@ -44,7 +44,11 @@ def parse_arguments():
         args.exp_name = current_datetime
 
     # Process learning rate
-    args.lr = args.lr * (args.batch_size / 4096)
+    # args.lr = args.lr * (args.batch_size / 4096)
+    args.lr = args.lr * (args.batch_size / 512)
+
+    # For learning rate:
+    # 1.25e-4 seems to work well with batch size 4096; however, it seems good to use 3e-4 with batch size 512
 
     return args
 
@@ -214,8 +218,8 @@ def main():
 
     criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
-    scheduler = None
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
+    # scheduler = None
 
     # Train the policy
     train(

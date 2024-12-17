@@ -199,7 +199,7 @@ that folder.
 
 [//]: # (To generate the dataset, run)
 ```angular2html
-python scripts/rsl_rl/play_collect_data.py --task GenDog1 --steps 1000 --headless
+python scripts/rsl_rl/play_collect_data.py --task Gendog100 --steps 2000 --headless
 ```
 You may interrupt data collection at any time and the files won't corrupt. 
 
@@ -213,9 +213,9 @@ To train a student policy, run the following command, which will load the datase
 [//]: # (To supervisely train the student model from multiple teacher policies, run)
 
 ```angular2html
-python scripts/rsl_rl/run_distillation.py --tasks GenDog1 GenDog2 GenHumanoid1 --model urma --exp_name {exp_name}
+python scripts/rsl_rl/run_distillation.py --tasks Gendog10_gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4 Gendog100_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2 --model urma --exp_name urma_10_100_randomized_additive --batch_size 512 --lr 3e-4 --num_workers 16
 ```
-where `model` could also be `"rsl_rl_actor", "naive_actor". 
+where `model` could also be "rsl_rl_actor", "naive_actor". Please beware that the memory usage increases linearly with `num_workers`. 
 
 The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, consider increasing the value of `--max_files_in_memory`, or let Bo know to improve the dataset class. 
 
@@ -236,11 +236,11 @@ Finally, load the policy network and test it in the simulation environment.
 
 To visualize the trained URMA policy, run
 ```angular2html
-python scripts/rsl_rl/eval_student_model_urma.py --task GenDog1 
+python scripts/rsl_rl/eval_student_model_urma.py --task Gendog10 --ckpt_path log_dir/2024-12-15_17-30-35_Gendog10_100_URMA_v0_reference/best_model.pt 
 ```
 If the model is an MLP, run
 ```angular2html
-python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog1
+python scripts/rsl_rl/eval_student_model_mlp.py --task Gendog10
 ```
 
 If you wish to store videos, which might slow down simulation, add `--video --video_length 200` and the corresponding video will be stored in the directory: `log_dir/{experiment_name}/one_policy_videos/{task}`. 
