@@ -20,14 +20,6 @@ def visualize(viewer, scene, robot):
         scene.update_render()
         viewer.render()
 
-
-def find_link_by_name(articulation: sapien.Articulation, name: str):
-    for link in articulation.get_links():
-        if link.get_name() == name:
-            return link
-    return None
-
-
 # Function to compute nominal joint positions based on regex matching
 def compute_nominal_joint_positions(joint_names, nominal_positions_cfg):
     """
@@ -65,9 +57,10 @@ def get_axis_aligned_bbox_for_articulation(art: sapien.Articulation):
                     [-x, y, z], [-x, y, -z], [-x, -y, z], [-x, -y, -z]
                 ])
             elif shape.type == 'sphere':
-                x = shape.geometry.radius
+                x = y = z = shape.geometry.radius
                 vertices = np.array([
-                    [x, 0, 0], [-x, 0, 0], [0, x, 0], [0, -x, 0], [0, 0, x], [0, 0, -x]
+                    [x, y, z], [x, y, -z], [x, -y, z], [x, -y, -z],
+                    [-x, y, z], [-x, y, -z], [-x, -y, z], [-x, -y, -z]
                 ])
             elif shape.type == 'capsule':
                 x = y = shape.geometry.radius
@@ -84,7 +77,7 @@ def get_axis_aligned_bbox_for_articulation(art: sapien.Articulation):
     return mins, maxs
 
 
-def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
+def update_height(robot_urdf_path, train_cfg_path, save_path, root_name):
     #############################################
     # Set up the engine, renderer and scene
     #############################################
@@ -100,10 +93,10 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     scene.set_ambient_light([0.5, 0.5, 0.5])
     scene.add_directional_light([0, 1, -1], [0.5, 0.5, 0.5])
 
-    # viewer = Viewer(renderer)
-    # viewer.set_scene(scene)
-    # viewer.set_camera_xyz(x=-2, y=0, z=1)
-    # viewer.set_camera_rpy(r=0, p=-0.3, y=0)
+    viewer = Viewer(renderer)
+    viewer.set_scene(scene)
+    viewer.set_camera_xyz(x=-2, y=0, z=1)
+    viewer.set_camera_rpy(r=0, p=-0.3, y=0)
 
     #############################################
     # Load robot URDF
@@ -118,7 +111,7 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     with open(train_cfg_path, "r") as f:
         train_cfg = json.load(f)
     assert robot.get_links()[0].name == root_name, f"Root link is not {root_name}"
-    robot.set_root_pose(sapien.Pose([0, 0, train_cfg['drop_height']], [1, 0, 0, 0]))
+    robot.set_root_pose(sapien.Pose([0, 0, 0], [1, 0, 0, 0]))
     # joint_names = [j.name for j in robot.get_joints()]
     active_joint_names = [j.name for j in robot.get_active_joints()]
     init_qpos = compute_nominal_joint_positions(
@@ -128,46 +121,20 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     # visualize(viewer, scene, robot)
 
     #############################################
-    # Extract information from URDF
+    # Update height
     #############################################
-    info = {}
-
-    # # Joint Connectivity
-    # joint_names = [j.name for j in robot.get_joints()]
-    # active_joint_names = [j.name for j in robot.get_active_joints()]
-    # print(f"Joint names: {joint_names}")
-    # print(f"Active joint names: {active_joint_names}")
-    # print('passive joint names:')
-    # for j in joint_names:
-    #     if j not in active_joint_names:
-    #         print(j)
-    # import pdb; pdb.set_trace()
-
-    # Joint axis and position
-    joint_info = {}
-    for joint in robot.get_active_joints():
-        joint_pose = joint.get_global_pose()
-        joint_axis = joint_pose.to_transformation_matrix()[:3, 0]
-        joint_pos = joint_pose.p
-        # print(f"===============Joint {joint.name}===============")
-        # print(f"Axis: {joint_axis}")
-        # print(f"Position: {joint_pos}")
-        joint_info[joint.name] = {
-            'axis': joint_axis.tolist(),
-            'position': joint_pos.tolist(),
-        }
-
-    info['joint_info'] = joint_info
-
+    
     # Robot dimensions (3d bounding box)
-    bbox = get_axis_aligned_bbox_for_articulation(robot)
-    # print('================Robot Bounding Box================')
-    # print(bbox)
-    info['bbox'] = list([x.tolist() for x in bbox])
+    mins, maxs = get_axis_aligned_bbox_for_articulation(robot)
+    z_lower_bound = mins[2]
+    robot.set_root_pose(sapien.Pose([0, 0, -z_lower_bound], [1, 0, 0, 0]))
+    # visualize(viewer, scene, robot)
+
 
     # Save information to file
+    train_cfg['drop_height'] = -z_lower_bound
     with open(save_path, 'w') as f:
-        json.dump(info, f)
+        json.dump(train_cfg, f, indent=4)
 
 
 if __name__ == '__main__':
@@ -176,9 +143,9 @@ if __name__ == '__main__':
                   os.path.isdir(os.path.join(root_dir, name))]
 
     for asset_dir in tqdm(asset_dirs):
-        extract_info(
+        update_height(
             robot_urdf_path=f'{asset_dir}/robot.urdf',
             train_cfg_path=f'{asset_dir}/train_cfg.json',
-            save_path=f'{asset_dir}/robot_description_vec.json',  # modify it to whatever you want
-            root_name="trunk"  # trunk for dogs and hexapods, pelvis for humanoids
+            save_path=f'{asset_dir}/train_cfg_v2.json',  # modify it to whatever you want
+            root_name="trunk",  # trunk for dogs and hexapods, pelvis for humanoids
         )
