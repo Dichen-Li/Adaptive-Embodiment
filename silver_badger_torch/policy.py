@@ -18,7 +18,7 @@ class Policy(nn.Module):
         self.policy_std_min_clip = policy_std_min_clip
         self.policy_std_max_clip = policy_std_max_clip
 
-        self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
+        self.dynamic_joint_state_mask1 = nn.Linear(23, 64)
         self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
         self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
         self.latent_dynamic_joint_state = nn.Linear(3, 4)
@@ -30,7 +30,7 @@ class Policy(nn.Module):
         self.action_layer_norm = nn.LayerNorm(512, eps=1e-6)
         self.action_latent2 = nn.Linear(512, 256)
         self.action_latent3 = nn.Linear(256, 128)
-        self.action_description_latent1 = nn.Linear(18, 128)
+        self.action_description_latent1 = nn.Linear(23, 128)
         self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
         self.action_description_latent2 = nn.Linear(128, 128)
         self.policy_mean_layer1 = nn.Linear(260, 128)
@@ -38,7 +38,7 @@ class Policy(nn.Module):
         self.policy_mean_layer2 = nn.Linear(128, 1)
         self.policy_logstd_layer = nn.Linear(128, 1)
 
-        # self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
+        # self.dynamic_joint_state_mask1 = nn.Linear(23, 64)
         # self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
         # self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
         # self.latent_dynamic_joint_state = nn.Linear(3, 4)
@@ -50,7 +50,7 @@ class Policy(nn.Module):
         # self.action_layer_norm = nn.LayerNorm(512 * 2, eps=1e-6)
         # self.action_latent2 = nn.Linear(512 * 2, 256 * 2)
         # self.action_latent3 = nn.Linear(256 * 2, 128)
-        # self.action_description_latent1 = nn.Linear(18, 128)
+        # self.action_description_latent1 = nn.Linear(23, 128)
         # self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
         # self.action_description_latent2 = nn.Linear(128, 128)
         # self.policy_mean_layer1 = nn.Linear(260, 128 * 2)
@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
     policy = get_policy(model_device)
 
-    dummy_dynamic_joint_description = np.zeros((1, 13, 18))
+    dummy_dynamic_joint_description = np.zeros((1, 13, 23))
     dummy_dynamic_joint_state = np.zeros((1, 13, 3))
     dummy_dynamic_foot_description = np.zeros((1, 4, 10))
     dummy_dynamic_foot_state = np.zeros((1, 4, 2))
