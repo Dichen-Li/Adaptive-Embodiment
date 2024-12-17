@@ -22,6 +22,7 @@ parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
+parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 # append RSL-RL cli arguments
@@ -120,6 +121,10 @@ def main():
             # log reward
             reward_dict_logger.update(env, rewards, dones)
             reward_dict_logger.print(curr_timestep, 'sum')
+
+        curr_timestep += 1
+        if curr_timestep > args_cli.steps:
+            break
 
         if args_cli.video:
             video_timestep += 1

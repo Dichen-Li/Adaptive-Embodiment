@@ -13,7 +13,7 @@ parser.add_argument(
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--steps", type=int, default=3000, help="Number of steps per environment")
+parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
 parser.add_argument("--model_is_actor", action="store_true", default=False,
                     help="Indicate if the supervised model is actor=True/one_policy=False.")
@@ -243,9 +243,9 @@ def main():
             reward_dict_logger.print(curr_timestep, 'sum')
 
             curr_timestep += 1
-
             if curr_timestep > args_cli.steps:
                 break
+
             if args_cli.video:
                 video_timestep += 1
                 # Exit the play loop after recording one video
