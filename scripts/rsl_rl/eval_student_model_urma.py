@@ -1,6 +1,7 @@
 import argparse
 from omni.isaac.lab.app import AppLauncher
 import cli_args
+from utils import AverageMeter
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Evaluate a student model in simulation.")
@@ -226,6 +227,9 @@ def main():
     curr_timestep = 0
     video_timestep = 0
 
+    from utils import RewardDictLogger
+    reward_dict_logger = RewardDictLogger()
+
     # Main simulation loop
     while simulation_app.is_running():
         with torch.inference_mode():
@@ -234,9 +238,11 @@ def main():
             
             # Environment stepping
             obs, _, _, extra = env.step(actions)
-            x1, x2, x3, x4 = env.step(actions)
-            import ipdb; ipdb.set_trace()
             one_policy_observation = extra["observations"]["one_policy"]
+
+            # log reward
+            reward_dict_logger.update(env)
+            reward_dict_logger.print(curr_timestep)
 
             curr_timestep += 1
 

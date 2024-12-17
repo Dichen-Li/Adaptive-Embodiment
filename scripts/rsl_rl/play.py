@@ -101,6 +101,10 @@ def main():
     # reset environment
     obs, _ = env.get_observations()
     timestep = 0
+
+    from utils import RewardDictLogger
+    reward_dict_logger = RewardDictLogger()
+
     # simulate environment
     while simulation_app.is_running():
         # run everything in inference mode
@@ -109,6 +113,11 @@ def main():
             actions = policy(obs)
             # env stepping
             obs, _, _, _ = env.step(actions)
+
+            # log reward
+            reward_dict_logger.update(env)
+            reward_dict_logger.print(timestep)
+
         if args_cli.video:
             timestep += 1
             # Exit the play loop after recording one video
