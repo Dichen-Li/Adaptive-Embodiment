@@ -453,14 +453,14 @@ class LocomotionEnv(DirectRLEnv):
         actions = self.actions  # actions at prev step
         # base_lin_vel, base_ang_vel, joint_pos_rel, joint_vel_rel could explode
         # import ipdb; ipdb.set_trace()
-        obs = torch.cat(
+        normal_obs = torch.cat(
             [base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
              self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1
         )
 
         ## Define the one policy observations below
         # Copy the initial observation for update
-        observation = self.initial_observation.clone()
+        urma_obs = self.initial_observation.clone()
 
         # Get the foot contacts with ground
         undesired_contacts = self.get_contacts_without_sum(self.reward_cfgs['feet_ground_contact_cfg'],
@@ -473,18 +473,17 @@ class LocomotionEnv(DirectRLEnv):
         )
 
         # Update observations every step
-        observation[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
-        observation[:, self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
-        observation[:, self.joint_previous_actions_update_obs_idx] = self.actions
+        urma_obs[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
+        urma_obs[:, self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] = self.actions
         # note for the undesired_contacts dimension
-        observation[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
-        observation[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
-        observation[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
-        observation[:, self.goal_velocity_update_obs_idx] = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        observation[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
-        observation[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2].unsqueeze(1)
-
+        urma_obs[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
+        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
+        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
+        urma_obs[:, self.goal_velocity_update_obs_idx] = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
+        urma_obs[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
+        urma_obs[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2].unsqueeze(1)
 
         # Add noise
         # observation = self.observation_noise_function.modify_observation(observation)
@@ -505,14 +504,14 @@ class LocomotionEnv(DirectRLEnv):
         # observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)  # range from -3 to 3
         # observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)  # the quotient ranges from 0 to 1.x? 
 
-        observation[:, self.joint_positions_update_obs_idx] /= 3.14      # max is only 1.06? mean 0.0
-        observation[:, self.joint_velocities_update_obs_idx] /= 3    # range from -3 to 3?   
-        observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
-        observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0 
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
-        observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1? 
-        observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
-        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0, 2.0)  # the quotient ranges from 0 to 1.x? 
+        urma_obs[:, self.joint_positions_update_obs_idx] /= 3.14      # max is only 1.06? mean 0.0
+        urma_obs[:, self.joint_velocities_update_obs_idx] /= 3    # range from -3 to 3?
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
+        urma_obs[:, self.foot_ground_contact_update_obs_idx] = (urma_obs[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0
+        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
+        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(urma_obs[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1?
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(urma_obs[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
+        urma_obs[:, self.height_update_obs_idx] = torch.clip((urma_obs[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0, 2.0)  # the quotient ranges from 0 to 1.x?
 
         ## Define the one policy observations above
 
@@ -542,7 +541,7 @@ class LocomotionEnv(DirectRLEnv):
         #     dim=-1,
         # )
 
-        observations = {"policy": obs, "one_policy": observation}
+        observations = {"policy": normal_obs, "one_policy": urma_obs}
 
         return observations
 
