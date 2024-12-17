@@ -52,7 +52,7 @@ actuators = {
         effort_limit=23.5,
         saturation_effort=23.5,
         velocity_limit=30.0,
-        stiffness=25.0,
+        stiffness=20.0,
         damping=0.5,
         friction=0.0,
     ),
@@ -290,10 +290,38 @@ GEN_DOG_ORIGINAL_5_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
+
+"""
+Sanity check: import Go2 here to see if the config makes sense 
+"""
+
+# GO2_CFG = ArticulationCfg(
+#     spawn=sim_utils.UsdFileCfg(
+#         usd_path=f"{ISAAC_ASSET_DIR}/Robots/Unitree/Go2/go2.usd",
+#         activate_contact_sensors=activate_contact_sensors,
+#         rigid_props=rigid_props,
+#         articulation_props=articulation_props,
+#     ),
+#     init_state=ArticulationCfg.InitialStateCfg(
+#         pos=(0.0, 0.0, 0.325),
+#         joint_pos={
+#             ".*L_hip_joint": 0.1,
+#             ".*R_hip_joint": -0.1,
+#             "F[L,R]_thigh_joint": 0.8,
+#             "R[L,R]_thigh_joint": 1.0,
+#             ".*_calf_joint": -1.5,
+#         },
+#         # joint_pos={".*": 0.0},
+#         joint_vel={".*": 0.0},
+#     ),
+#     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+#     actuators=actuators,
+#     prim_path=prim_path
+# )
+
 """
 GenDog
 """
-
 
 GEN_DOG_10_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
@@ -303,7 +331,7 @@ GEN_DOG_10_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
+        pos=(0.0, 0.0, 0.54 - 0.15),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00
@@ -1888,7 +1916,7 @@ GEN_DOG_100_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.75),
+        pos=(0.0, 0.0, 0.75 - 0.3),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
@@ -6144,7 +6172,7 @@ GEN_DOG_300_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.06),
+        pos=(0.0, 0.0, 1.06 - 0.4),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
             ".*_thigh_joint": 0.00,
