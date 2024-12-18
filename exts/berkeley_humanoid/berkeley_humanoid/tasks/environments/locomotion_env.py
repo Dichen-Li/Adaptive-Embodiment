@@ -156,11 +156,9 @@ class LocomotionEnv(DirectRLEnv):
         self.joint_names = self.robot.data.joint_names
         self.foot_names = self.robot.data.body_names
 
-        multi_robot_max_observation_size = -1
-        self.joint_nr_direct_child_joints = [int("foot" in name) for name in self.foot_names]
         self.name_to_description_vector = self.get_name_to_description_vector()
-        self.initial_observation = self._initialize_urma_observations(multi_robot_max_observation_size)
-        self.observation_name_to_id = self._get_observation_space(multi_robot_max_observation_size)
+        self.initial_observation = self._initialize_urma_observations()
+        self.observation_name_to_id = self._get_observation_space()
 
         # Idx that need to be updated every step
         self.joint_positions_update_obs_idx = [self.observation_name_to_id[joint_name + "_position"] for joint_name in self.joint_names]
@@ -175,7 +173,7 @@ class LocomotionEnv(DirectRLEnv):
         self.urma_initialized = True
         print("LocomotionEnv init done")
 
-    def _get_observation_space(self, multi_robot_max_observation_size):
+    def _get_observation_space(self):
         observation_names = []
 
         # Dynamic observations
@@ -313,11 +311,11 @@ class LocomotionEnv(DirectRLEnv):
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
                 relative_joint_axis_local,
-                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nr child joints
-                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nominal position
-                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max torque
-                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max velocity
-                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)), # TODO: min and max control limits
+                self.joint_nominal_positions[:, i].unsqueeze(1) / 4.6,
+                (self.joint_max_torque[:, i].unsqueeze(1) / 500.0) - 1.0,
+                (self.joint_max_velocity[:, i].unsqueeze(1) / 17.5) - 1.0,
+                self.robot.data.soft_joint_pos_limits[:, i, 0].unsqueeze(1) / 4.6,
+                self.robot.data.soft_joint_pos_limits[:, i, 1].unsqueeze(1) / 4.6, 
                 ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 (self.mass / 85.0) - 1.0,
                 (self.robot_dimensions / 1.0) - 1.0,
@@ -664,7 +662,7 @@ class LocomotionEnv(DirectRLEnv):
         air_time = torch.clamp(air_time, max=threshold_max-threshold_min)
         return air_time
 
-    def _initialize_urma_observations(self, multi_robot_max_observation_size):
+    def _initialize_urma_observations(self):
         # Dynamic observations
         dynamic_joint_observations = torch.empty((self.num_envs, 0), device=self.sim.device)
         for i, joint_name in enumerate(self.joint_names):
