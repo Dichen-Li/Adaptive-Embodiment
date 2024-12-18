@@ -280,7 +280,8 @@ class LocomotionDataset(Dataset):
         self.cache_query_time = AverageMeter()
 
         # Verbose output
-        print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders.")
+        print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
+              f"\n\tGot {len(self.folder_idx_to_file_name)} robots: {list(self.folder_idx_to_file_name.values())}")
 
     def _load_metadata(self, folder_path):
         """
@@ -305,7 +306,10 @@ class LocomotionDataset(Dataset):
         Create a mapping of file indices to (folder_idx, file_idx).
         Segregates files into train/validation sets based on val_ratio.
         """
+        self.folder_idx_to_file_name = {}
         for folder_idx, folder_path in enumerate(self.folder_paths):
+            # example path: 'logs/rsl_rl/Gendog10_gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/2024-12-15_15-19-08/h5py_record'
+            self.folder_idx_to_file_name[folder_idx] = folder_path.split("/")[-3]
             metadata = self.metadata_list[folder_idx]
             hdf5_files = sorted(
                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
@@ -428,7 +432,7 @@ class LocomotionDataset(Dataset):
         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
 
         # Return the transformed components
-        return transformed_sample[:-1], transformed_sample[-1]
+        return transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx]
 
     def _transform_sample(self, input_sample, target_sample, metadata):
         """
@@ -483,7 +487,8 @@ class LocomotionDataset(Dataset):
                 - The second element is the batched target tensor.
         """
         # Split batch into inputs and targets
-        inputs, targets = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        inputs, targets, robot_names = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        assert len(set(robot_names)) == 1, f"got different robot names in a batch: {set(robot_names)}"
 
         # Transpose the inputs to group by component
         inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
@@ -494,7 +499,7 @@ class LocomotionDataset(Dataset):
         # Stack the targets
         batched_targets = torch.stack(targets)
 
-        return batched_inputs, batched_targets
+        return batched_inputs, batched_targets, robot_names[0]
 
     def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
