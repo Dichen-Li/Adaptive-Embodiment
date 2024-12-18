@@ -177,6 +177,16 @@ RuntimeError: Index put requires the source and destination dtypes match, got Fl
 ```
 This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
 
+
+## Use SAPIEN
+We use SAPIEN to compute description vector, initial robot height, etc. To use these scripts, we first install SAPIEN 2.2.2:
+```aiignore
+pip install sapien==2.2.2
+conda install -y networkx">=2.5"
+```
+Then we can run `generation/get_description_vector_sapien.py` or `generation/update_init_height_sapien.py`. These
+scripts don't have any args but you need to adjust the paths in the code yourself.
+
 ## Policy distillation
 This section introduces how to perform policy distillation. 
 
