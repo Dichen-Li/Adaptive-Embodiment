@@ -302,7 +302,7 @@ GEN_HEXAPOD_10_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -322,7 +322,7 @@ GEN_HEXAPOD_9_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -342,7 +342,7 @@ GEN_HEXAPOD_8_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -362,7 +362,7 @@ GEN_HEXAPOD_7_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.54),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -382,7 +382,7 @@ GEN_HEXAPOD_6_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -402,7 +402,7 @@ GEN_HEXAPOD_5_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -422,7 +422,7 @@ GEN_HEXAPOD_4_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -442,7 +442,7 @@ GEN_HEXAPOD_3_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.54),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -462,7 +462,7 @@ GEN_HEXAPOD_2_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -482,7 +482,7 @@ GEN_HEXAPOD_0_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -502,7 +502,7 @@ GEN_HEXAPOD_1_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79
@@ -522,7 +522,7 @@ GEN_HEXAPOD_21_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -543,7 +543,7 @@ GEN_HEXAPOD_20_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -564,7 +564,7 @@ GEN_HEXAPOD_19_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -585,7 +585,7 @@ GEN_HEXAPOD_18_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -606,7 +606,7 @@ GEN_HEXAPOD_17_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -627,7 +627,7 @@ GEN_HEXAPOD_16_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -648,7 +648,7 @@ GEN_HEXAPOD_15_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -669,7 +669,7 @@ GEN_HEXAPOD_14_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -690,7 +690,7 @@ GEN_HEXAPOD_13_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -711,7 +711,7 @@ GEN_HEXAPOD_11_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -732,7 +732,7 @@ GEN_HEXAPOD_12_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -753,7 +753,7 @@ GEN_HEXAPOD_43_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -774,7 +774,7 @@ GEN_HEXAPOD_42_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -795,7 +795,7 @@ GEN_HEXAPOD_41_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -816,7 +816,7 @@ GEN_HEXAPOD_40_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -837,7 +837,7 @@ GEN_HEXAPOD_39_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -858,7 +858,7 @@ GEN_HEXAPOD_38_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -879,7 +879,7 @@ GEN_HEXAPOD_37_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -900,7 +900,7 @@ GEN_HEXAPOD_36_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -921,7 +921,7 @@ GEN_HEXAPOD_35_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -942,7 +942,7 @@ GEN_HEXAPOD_33_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -963,7 +963,7 @@ GEN_HEXAPOD_34_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -984,7 +984,7 @@ GEN_HEXAPOD_32_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1005,7 +1005,7 @@ GEN_HEXAPOD_31_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1026,7 +1026,7 @@ GEN_HEXAPOD_30_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1047,7 +1047,7 @@ GEN_HEXAPOD_29_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1068,7 +1068,7 @@ GEN_HEXAPOD_28_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1089,7 +1089,7 @@ GEN_HEXAPOD_27_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1110,7 +1110,7 @@ GEN_HEXAPOD_26_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1131,7 +1131,7 @@ GEN_HEXAPOD_25_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1152,7 +1152,7 @@ GEN_HEXAPOD_24_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1173,7 +1173,7 @@ GEN_HEXAPOD_22_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1194,7 +1194,7 @@ GEN_HEXAPOD_23_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1215,7 +1215,7 @@ GEN_HEXAPOD_65_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1236,7 +1236,7 @@ GEN_HEXAPOD_64_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1257,7 +1257,7 @@ GEN_HEXAPOD_63_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1278,7 +1278,7 @@ GEN_HEXAPOD_62_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1299,7 +1299,7 @@ GEN_HEXAPOD_61_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1320,7 +1320,7 @@ GEN_HEXAPOD_60_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1341,7 +1341,7 @@ GEN_HEXAPOD_59_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1362,7 +1362,7 @@ GEN_HEXAPOD_58_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1383,7 +1383,7 @@ GEN_HEXAPOD_57_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1404,7 +1404,7 @@ GEN_HEXAPOD_55_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1425,7 +1425,7 @@ GEN_HEXAPOD_56_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1446,7 +1446,7 @@ GEN_HEXAPOD_54_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1467,7 +1467,7 @@ GEN_HEXAPOD_53_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1488,7 +1488,7 @@ GEN_HEXAPOD_52_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1509,7 +1509,7 @@ GEN_HEXAPOD_51_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1530,7 +1530,7 @@ GEN_HEXAPOD_50_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1551,7 +1551,7 @@ GEN_HEXAPOD_49_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1572,7 +1572,7 @@ GEN_HEXAPOD_48_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1593,7 +1593,7 @@ GEN_HEXAPOD_47_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1614,7 +1614,7 @@ GEN_HEXAPOD_46_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1635,7 +1635,7 @@ GEN_HEXAPOD_44_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1656,7 +1656,7 @@ GEN_HEXAPOD_45_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1677,7 +1677,7 @@ GEN_HEXAPOD_87_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1698,7 +1698,7 @@ GEN_HEXAPOD_86_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1719,7 +1719,7 @@ GEN_HEXAPOD_85_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1740,7 +1740,7 @@ GEN_HEXAPOD_84_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1761,7 +1761,7 @@ GEN_HEXAPOD_83_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1782,7 +1782,7 @@ GEN_HEXAPOD_82_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1803,7 +1803,7 @@ GEN_HEXAPOD_81_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1824,7 +1824,7 @@ GEN_HEXAPOD_80_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1845,7 +1845,7 @@ GEN_HEXAPOD_79_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1866,7 +1866,7 @@ GEN_HEXAPOD_77_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1887,7 +1887,7 @@ GEN_HEXAPOD_78_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1908,7 +1908,7 @@ GEN_HEXAPOD_76_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1929,7 +1929,7 @@ GEN_HEXAPOD_75_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1950,7 +1950,7 @@ GEN_HEXAPOD_74_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1971,7 +1971,7 @@ GEN_HEXAPOD_73_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -1992,7 +1992,7 @@ GEN_HEXAPOD_72_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2013,7 +2013,7 @@ GEN_HEXAPOD_71_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2034,7 +2034,7 @@ GEN_HEXAPOD_70_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2055,7 +2055,7 @@ GEN_HEXAPOD_69_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2076,7 +2076,7 @@ GEN_HEXAPOD_68_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2097,7 +2097,7 @@ GEN_HEXAPOD_66_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2118,7 +2118,7 @@ GEN_HEXAPOD_67_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2139,7 +2139,7 @@ GEN_HEXAPOD_109_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2160,7 +2160,7 @@ GEN_HEXAPOD_108_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2181,7 +2181,7 @@ GEN_HEXAPOD_107_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2202,7 +2202,7 @@ GEN_HEXAPOD_106_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2223,7 +2223,7 @@ GEN_HEXAPOD_105_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2244,7 +2244,7 @@ GEN_HEXAPOD_104_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2265,7 +2265,7 @@ GEN_HEXAPOD_103_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2286,7 +2286,7 @@ GEN_HEXAPOD_102_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2307,7 +2307,7 @@ GEN_HEXAPOD_101_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2328,7 +2328,7 @@ GEN_HEXAPOD_99_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2349,7 +2349,7 @@ GEN_HEXAPOD_100_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2370,7 +2370,7 @@ GEN_HEXAPOD_98_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2391,7 +2391,7 @@ GEN_HEXAPOD_97_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2412,7 +2412,7 @@ GEN_HEXAPOD_96_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2433,7 +2433,7 @@ GEN_HEXAPOD_95_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2454,7 +2454,7 @@ GEN_HEXAPOD_94_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2475,7 +2475,7 @@ GEN_HEXAPOD_93_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2496,7 +2496,7 @@ GEN_HEXAPOD_92_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.53),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2517,7 +2517,7 @@ GEN_HEXAPOD_91_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.60),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2538,7 +2538,7 @@ GEN_HEXAPOD_90_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2559,7 +2559,7 @@ GEN_HEXAPOD_88_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2580,7 +2580,7 @@ GEN_HEXAPOD_89_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.85),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2601,7 +2601,7 @@ GEN_HEXAPOD_120_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2623,7 +2623,7 @@ GEN_HEXAPOD_119_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2645,7 +2645,7 @@ GEN_HEXAPOD_118_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2667,7 +2667,7 @@ GEN_HEXAPOD_117_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2689,7 +2689,7 @@ GEN_HEXAPOD_116_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2711,7 +2711,7 @@ GEN_HEXAPOD_115_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2733,7 +2733,7 @@ GEN_HEXAPOD_114_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2755,7 +2755,7 @@ GEN_HEXAPOD_113_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2777,7 +2777,7 @@ GEN_HEXAPOD_112_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2799,7 +2799,7 @@ GEN_HEXAPOD_110_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2821,7 +2821,7 @@ GEN_HEXAPOD_111_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2843,7 +2843,7 @@ GEN_HEXAPOD_142_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2865,7 +2865,7 @@ GEN_HEXAPOD_141_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2887,7 +2887,7 @@ GEN_HEXAPOD_140_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2909,7 +2909,7 @@ GEN_HEXAPOD_139_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2931,7 +2931,7 @@ GEN_HEXAPOD_138_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2953,7 +2953,7 @@ GEN_HEXAPOD_137_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2975,7 +2975,7 @@ GEN_HEXAPOD_136_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -2997,7 +2997,7 @@ GEN_HEXAPOD_135_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3019,7 +3019,7 @@ GEN_HEXAPOD_134_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3041,7 +3041,7 @@ GEN_HEXAPOD_132_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3063,7 +3063,7 @@ GEN_HEXAPOD_133_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3085,7 +3085,7 @@ GEN_HEXAPOD_131_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3107,7 +3107,7 @@ GEN_HEXAPOD_130_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3129,7 +3129,7 @@ GEN_HEXAPOD_129_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3151,7 +3151,7 @@ GEN_HEXAPOD_128_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3173,7 +3173,7 @@ GEN_HEXAPOD_127_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3195,7 +3195,7 @@ GEN_HEXAPOD_126_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3217,7 +3217,7 @@ GEN_HEXAPOD_125_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3239,7 +3239,7 @@ GEN_HEXAPOD_124_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3261,7 +3261,7 @@ GEN_HEXAPOD_123_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3283,7 +3283,7 @@ GEN_HEXAPOD_121_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3305,7 +3305,7 @@ GEN_HEXAPOD_122_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3327,7 +3327,7 @@ GEN_HEXAPOD_164_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3349,7 +3349,7 @@ GEN_HEXAPOD_163_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3371,7 +3371,7 @@ GEN_HEXAPOD_162_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3393,7 +3393,7 @@ GEN_HEXAPOD_161_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3415,7 +3415,7 @@ GEN_HEXAPOD_160_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3437,7 +3437,7 @@ GEN_HEXAPOD_159_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3459,7 +3459,7 @@ GEN_HEXAPOD_158_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3481,7 +3481,7 @@ GEN_HEXAPOD_157_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3503,7 +3503,7 @@ GEN_HEXAPOD_156_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3525,7 +3525,7 @@ GEN_HEXAPOD_154_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3547,7 +3547,7 @@ GEN_HEXAPOD_155_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3569,7 +3569,7 @@ GEN_HEXAPOD_153_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3591,7 +3591,7 @@ GEN_HEXAPOD_152_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3613,7 +3613,7 @@ GEN_HEXAPOD_151_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3635,7 +3635,7 @@ GEN_HEXAPOD_150_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3657,7 +3657,7 @@ GEN_HEXAPOD_149_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3679,7 +3679,7 @@ GEN_HEXAPOD_148_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3701,7 +3701,7 @@ GEN_HEXAPOD_147_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3723,7 +3723,7 @@ GEN_HEXAPOD_146_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3745,7 +3745,7 @@ GEN_HEXAPOD_145_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3767,7 +3767,7 @@ GEN_HEXAPOD_143_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3789,7 +3789,7 @@ GEN_HEXAPOD_144_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3811,7 +3811,7 @@ GEN_HEXAPOD_186_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3833,7 +3833,7 @@ GEN_HEXAPOD_185_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3855,7 +3855,7 @@ GEN_HEXAPOD_184_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3877,7 +3877,7 @@ GEN_HEXAPOD_183_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3899,7 +3899,7 @@ GEN_HEXAPOD_182_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3921,7 +3921,7 @@ GEN_HEXAPOD_181_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3943,7 +3943,7 @@ GEN_HEXAPOD_180_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3965,7 +3965,7 @@ GEN_HEXAPOD_179_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -3987,7 +3987,7 @@ GEN_HEXAPOD_178_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4009,7 +4009,7 @@ GEN_HEXAPOD_176_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4031,7 +4031,7 @@ GEN_HEXAPOD_177_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4053,7 +4053,7 @@ GEN_HEXAPOD_175_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4075,7 +4075,7 @@ GEN_HEXAPOD_174_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4097,7 +4097,7 @@ GEN_HEXAPOD_173_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4119,7 +4119,7 @@ GEN_HEXAPOD_172_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4141,7 +4141,7 @@ GEN_HEXAPOD_171_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4163,7 +4163,7 @@ GEN_HEXAPOD_170_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4185,7 +4185,7 @@ GEN_HEXAPOD_169_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4207,7 +4207,7 @@ GEN_HEXAPOD_168_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4229,7 +4229,7 @@ GEN_HEXAPOD_167_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4251,7 +4251,7 @@ GEN_HEXAPOD_165_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4273,7 +4273,7 @@ GEN_HEXAPOD_166_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4295,7 +4295,7 @@ GEN_HEXAPOD_208_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4317,7 +4317,7 @@ GEN_HEXAPOD_207_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4339,7 +4339,7 @@ GEN_HEXAPOD_206_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4361,7 +4361,7 @@ GEN_HEXAPOD_205_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4383,7 +4383,7 @@ GEN_HEXAPOD_204_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4405,7 +4405,7 @@ GEN_HEXAPOD_203_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4427,7 +4427,7 @@ GEN_HEXAPOD_202_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4449,7 +4449,7 @@ GEN_HEXAPOD_201_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4471,7 +4471,7 @@ GEN_HEXAPOD_200_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4493,7 +4493,7 @@ GEN_HEXAPOD_198_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4515,7 +4515,7 @@ GEN_HEXAPOD_199_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4537,7 +4537,7 @@ GEN_HEXAPOD_197_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4559,7 +4559,7 @@ GEN_HEXAPOD_196_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.89),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4581,7 +4581,7 @@ GEN_HEXAPOD_195_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4603,7 +4603,7 @@ GEN_HEXAPOD_194_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.05),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4625,7 +4625,7 @@ GEN_HEXAPOD_193_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.83),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4647,7 +4647,7 @@ GEN_HEXAPOD_192_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.95),
+        pos=(0.0, 0.0, 0.71),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4669,7 +4669,7 @@ GEN_HEXAPOD_191_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.07),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4691,7 +4691,7 @@ GEN_HEXAPOD_190_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.19),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4713,7 +4713,7 @@ GEN_HEXAPOD_189_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.81),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4735,7 +4735,7 @@ GEN_HEXAPOD_187_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.01),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4757,7 +4757,7 @@ GEN_HEXAPOD_188_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.21),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4779,7 +4779,7 @@ GEN_HEXAPOD_219_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4801,7 +4801,7 @@ GEN_HEXAPOD_218_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4823,7 +4823,7 @@ GEN_HEXAPOD_217_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4845,7 +4845,7 @@ GEN_HEXAPOD_216_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4867,7 +4867,7 @@ GEN_HEXAPOD_215_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4889,7 +4889,7 @@ GEN_HEXAPOD_214_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4911,7 +4911,7 @@ GEN_HEXAPOD_213_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4933,7 +4933,7 @@ GEN_HEXAPOD_212_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4955,7 +4955,7 @@ GEN_HEXAPOD_211_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4977,7 +4977,7 @@ GEN_HEXAPOD_209_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -4999,7 +4999,7 @@ GEN_HEXAPOD_210_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5021,7 +5021,7 @@ GEN_HEXAPOD_241_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5043,7 +5043,7 @@ GEN_HEXAPOD_240_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5065,7 +5065,7 @@ GEN_HEXAPOD_239_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5087,7 +5087,7 @@ GEN_HEXAPOD_238_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5109,7 +5109,7 @@ GEN_HEXAPOD_237_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5131,7 +5131,7 @@ GEN_HEXAPOD_236_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5153,7 +5153,7 @@ GEN_HEXAPOD_235_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5175,7 +5175,7 @@ GEN_HEXAPOD_234_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5197,7 +5197,7 @@ GEN_HEXAPOD_233_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5219,7 +5219,7 @@ GEN_HEXAPOD_231_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5241,7 +5241,7 @@ GEN_HEXAPOD_232_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5263,7 +5263,7 @@ GEN_HEXAPOD_230_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5285,7 +5285,7 @@ GEN_HEXAPOD_229_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5307,7 +5307,7 @@ GEN_HEXAPOD_228_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5329,7 +5329,7 @@ GEN_HEXAPOD_227_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5351,7 +5351,7 @@ GEN_HEXAPOD_226_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5373,7 +5373,7 @@ GEN_HEXAPOD_225_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5395,7 +5395,7 @@ GEN_HEXAPOD_224_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5417,7 +5417,7 @@ GEN_HEXAPOD_223_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5439,7 +5439,7 @@ GEN_HEXAPOD_222_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5461,7 +5461,7 @@ GEN_HEXAPOD_220_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5483,7 +5483,7 @@ GEN_HEXAPOD_221_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5505,7 +5505,7 @@ GEN_HEXAPOD_263_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5527,7 +5527,7 @@ GEN_HEXAPOD_262_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5549,7 +5549,7 @@ GEN_HEXAPOD_261_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5571,7 +5571,7 @@ GEN_HEXAPOD_260_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5593,7 +5593,7 @@ GEN_HEXAPOD_259_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5615,7 +5615,7 @@ GEN_HEXAPOD_258_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5637,7 +5637,7 @@ GEN_HEXAPOD_257_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5659,7 +5659,7 @@ GEN_HEXAPOD_256_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5681,7 +5681,7 @@ GEN_HEXAPOD_255_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5703,7 +5703,7 @@ GEN_HEXAPOD_253_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5725,7 +5725,7 @@ GEN_HEXAPOD_254_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5747,7 +5747,7 @@ GEN_HEXAPOD_252_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5769,7 +5769,7 @@ GEN_HEXAPOD_251_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5791,7 +5791,7 @@ GEN_HEXAPOD_250_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5813,7 +5813,7 @@ GEN_HEXAPOD_249_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5835,7 +5835,7 @@ GEN_HEXAPOD_248_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5857,7 +5857,7 @@ GEN_HEXAPOD_247_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5879,7 +5879,7 @@ GEN_HEXAPOD_246_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5901,7 +5901,7 @@ GEN_HEXAPOD_245_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5923,7 +5923,7 @@ GEN_HEXAPOD_244_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5945,7 +5945,7 @@ GEN_HEXAPOD_242_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5967,7 +5967,7 @@ GEN_HEXAPOD_243_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -5989,7 +5989,7 @@ GEN_HEXAPOD_285_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6011,7 +6011,7 @@ GEN_HEXAPOD_284_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6033,7 +6033,7 @@ GEN_HEXAPOD_283_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6055,7 +6055,7 @@ GEN_HEXAPOD_282_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6077,7 +6077,7 @@ GEN_HEXAPOD_281_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6099,7 +6099,7 @@ GEN_HEXAPOD_280_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6121,7 +6121,7 @@ GEN_HEXAPOD_279_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6143,7 +6143,7 @@ GEN_HEXAPOD_278_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6165,7 +6165,7 @@ GEN_HEXAPOD_277_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6187,7 +6187,7 @@ GEN_HEXAPOD_275_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6209,7 +6209,7 @@ GEN_HEXAPOD_276_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6231,7 +6231,7 @@ GEN_HEXAPOD_274_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6253,7 +6253,7 @@ GEN_HEXAPOD_273_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6275,7 +6275,7 @@ GEN_HEXAPOD_272_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6297,7 +6297,7 @@ GEN_HEXAPOD_271_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6319,7 +6319,7 @@ GEN_HEXAPOD_270_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6341,7 +6341,7 @@ GEN_HEXAPOD_269_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6363,7 +6363,7 @@ GEN_HEXAPOD_268_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6385,7 +6385,7 @@ GEN_HEXAPOD_267_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6407,7 +6407,7 @@ GEN_HEXAPOD_266_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6429,7 +6429,7 @@ GEN_HEXAPOD_264_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6451,7 +6451,7 @@ GEN_HEXAPOD_265_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6473,7 +6473,7 @@ GEN_HEXAPOD_307_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6495,7 +6495,7 @@ GEN_HEXAPOD_306_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6517,7 +6517,7 @@ GEN_HEXAPOD_305_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6539,7 +6539,7 @@ GEN_HEXAPOD_304_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6561,7 +6561,7 @@ GEN_HEXAPOD_303_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6583,7 +6583,7 @@ GEN_HEXAPOD_302_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6605,7 +6605,7 @@ GEN_HEXAPOD_301_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6627,7 +6627,7 @@ GEN_HEXAPOD_300_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6649,7 +6649,7 @@ GEN_HEXAPOD_299_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6671,7 +6671,7 @@ GEN_HEXAPOD_297_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6693,7 +6693,7 @@ GEN_HEXAPOD_298_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6715,7 +6715,7 @@ GEN_HEXAPOD_296_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.77),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6737,7 +6737,7 @@ GEN_HEXAPOD_295_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.85),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6759,7 +6759,7 @@ GEN_HEXAPOD_294_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.15),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6781,7 +6781,7 @@ GEN_HEXAPOD_293_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.85),
+        pos=(0.0, 0.0, 1.45),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6803,7 +6803,7 @@ GEN_HEXAPOD_292_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.13),
+        pos=(0.0, 0.0, 0.89),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6825,7 +6825,7 @@ GEN_HEXAPOD_291_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25),
+        pos=(0.0, 0.0, 0.96),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6847,7 +6847,7 @@ GEN_HEXAPOD_290_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.37),
+        pos=(0.0, 0.0, 1.03),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6869,7 +6869,7 @@ GEN_HEXAPOD_289_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.49),
+        pos=(0.0, 0.0, 1.10),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6891,7 +6891,7 @@ GEN_HEXAPOD_288_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.05),
+        pos=(0.0, 0.0, 0.81),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6913,7 +6913,7 @@ GEN_HEXAPOD_286_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.31),
+        pos=(0.0, 0.0, 1.00),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,
@@ -6935,7 +6935,7 @@ GEN_HEXAPOD_287_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57),
+        pos=(0.0, 0.0, 1.19),
         joint_pos={
             ".*_hip_joint": 0.00,
             ".*_thigh_joint": 0.79,

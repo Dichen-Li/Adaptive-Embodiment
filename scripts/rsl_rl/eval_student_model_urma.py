@@ -159,8 +159,6 @@ class InferenceOnePolicyRunner:
         (
             dynamic_joint_description,
             dynamic_joint_state,
-            dynamic_foot_description,
-            dynamic_foot_state,
             general_policy_state
         ) = one_policy_observation_to_inputs(one_policy_observation, self.env.unwrapped, self.device)
         # Feed processed data into the policy network
@@ -168,8 +166,6 @@ class InferenceOnePolicyRunner:
             action = self.policy(
                 dynamic_joint_description,
                 dynamic_joint_state,
-                dynamic_foot_description,
-                dynamic_foot_state,
                 general_policy_state
             )
 

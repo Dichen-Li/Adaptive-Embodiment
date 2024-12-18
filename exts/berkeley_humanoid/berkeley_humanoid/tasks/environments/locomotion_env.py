@@ -166,8 +166,6 @@ class LocomotionEnv(DirectRLEnv):
         self.joint_positions_update_obs_idx = [self.observation_name_to_id[joint_name + "_position"] for joint_name in self.joint_names]
         self.joint_velocities_update_obs_idx = [self.observation_name_to_id[joint_name + "_velocity"] for joint_name in self.joint_names]
         self.joint_previous_actions_update_obs_idx = [self.observation_name_to_id[joint_name + "_previous_action"] for joint_name in self.joint_names]
-        self.foot_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
-        self.foot_time_since_last_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_cycles_since_last_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
         self.trunk_linear_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "z_velocity"]]
         self.trunk_angular_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["roll_velocity", "pitch_velocity", "yaw_velocity"]]
         self.goal_velocity_update_obs_idx = [self.observation_name_to_id["goal_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "yaw_velocity"]]
@@ -190,16 +188,6 @@ class LocomotionEnv(DirectRLEnv):
                 joint_name + "_position", joint_name + "_velocity", joint_name + "_previous_action",
             ])
 
-        self.nr_dynamic_foot_observations = len([foot_name for foot_name in self.foot_names if "foot" in foot_name])
-        self.single_dynamic_foot_observation_length = self.dynamic_foot_description_size + 2
-        self.dynamic_foot_observation_length = self.single_dynamic_foot_observation_length * self.nr_dynamic_foot_observations
-        for foot_name in self.foot_names:
-            if "foot" in foot_name:
-                observation_names.extend([foot_name + "_description_" + str(i) for i in range(self.dynamic_foot_description_size)])
-                observation_names.extend([
-                    foot_name + "_ground_contact", foot_name + "_cycles_since_last_ground_contact",
-                ])
-
         # General observations
         observation_names.extend([
             "trunk_x_velocity", "trunk_y_velocity", "trunk_z_velocity",
@@ -214,11 +202,6 @@ class LocomotionEnv(DirectRLEnv):
         observation_names.extend(["p_gain", "d_gain", "action_scaling_factor"])
         observation_names.append("mass")
         observation_names.extend(["robot_length", "robot_width", "robot_height"])
-
-        self.missing_nr_of_observations = 0
-        if multi_robot_max_observation_size != -1:
-            self.missing_nr_of_observations = multi_robot_max_observation_size - len(observation_names)
-            observation_names.extend(["padding_" + str(i) for i in range(self.missing_nr_of_observations)])
 
         name_to_idx = {name: idx for idx, name in enumerate(observation_names)}
 
@@ -330,49 +313,17 @@ class LocomotionEnv(DirectRLEnv):
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
                 relative_joint_axis_local,
-                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.1 / 5.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.01 / 0.1) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0 / 15.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.03 / 0.6) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)),
-                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4],
-                                                                      device=self.sim.device)) - 1.0).repeat(
-                    (self.num_envs, 1)),
+                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nr child joints
+                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nominal position
+                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max torque
+                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max velocity
+                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)), # TODO: min and max control limits
+                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 (self.mass / 85.0) - 1.0,
                 (self.robot_dimensions / 1.0) - 1.0,
             ], dim=1)
-
-        # Compute normalized foot positions
-        for i, foot_name in enumerate(self.foot_names):
-            if "foot" not in foot_name:  # Skip non-foot bodies
-                continue
-
-            foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
-            relative_foot_position_global = foot_position_global - trunk_position_global
-            relative_foot_position_local = torch.matmul(trunk_rotation_matrix,
-                                                        relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            # TODO: now we are using a hack of adding epsilon to robot_dimensions, but remember that we are not using link to compute size
-            relative_foot_position_normalized = (relative_foot_position_local - mins) / (self.robot_dimensions + 1e-8)
-
-            # Append foot description vector
-            name_to_description_vector[foot_name] = torch.cat([
-                (relative_foot_position_normalized / 0.5) - 1.0,
-                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4],
-                                                                      device=self.sim.device)) - 1.0).repeat(
-                    (self.num_envs, 1)),
-                ((self.mass / 85.0) - 1.0),
-                (self.robot_dimensions / 1.0) - 1.0,
-            ], dim=1)
-
+        
         self.dynamic_joint_description_size = name_to_description_vector[self.joint_names[0]].shape[1]
-        for foot_name in self.foot_names:
-            if "foot" in foot_name:
-                self.dynamic_foot_description_size = name_to_description_vector[foot_name].shape[1]
-                break
 
         return name_to_description_vector
 
@@ -728,30 +679,6 @@ class LocomotionEnv(DirectRLEnv):
             # Concatenate along dimension 0 for subsequent observations
             dynamic_joint_observations = torch.cat((dynamic_joint_observations, current_observation), dim=1)
 
-        # Get the foot contacts with ground
-        undesired_contacts = self.get_contacts_without_sum(self.feet_contact_cfg,
-                                                           threshold=1.0)
-        # Get the time since last foot contact with ground
-        feet_air_time = self.get_feet_air_time(
-            self.feet_contact_cfg,
-            threshold_min=0.2, threshold_max=0.5
-        )
-
-        # from training.environments.unitree_go1.info import touchdown_feet
-        # Dynamic observations
-        dynamic_foot_observations = torch.empty((self.num_envs, 0),
-                                                device=self.sim.device)  # Start with None for the first iteration
-        foot_index = 0
-        for i, foot_name in enumerate(self.foot_names):
-            if "foot" in foot_name:
-                # Concatenate all the current observations into one tensor
-                current_observation = torch.cat((self.name_to_description_vector[foot_name],
-                                                 undesired_contacts[:, foot_index].unsqueeze(1),
-                                                 feet_air_time[:, foot_index].unsqueeze(1)), dim=1)
-                foot_index += 1
-                # Concatenate along dimension 0 for subsequent observations
-                dynamic_foot_observations = torch.cat((dynamic_foot_observations, current_observation), dim=1)
-
         # General observations
         trunk_linear_velocity = self.robot.data.root_lin_vel_b
         trunk_angular_velocity = self.robot.data.root_ang_vel_b
@@ -767,16 +694,8 @@ class LocomotionEnv(DirectRLEnv):
         mass = (self.mass / (170.0 / 2)) - 1.0
         robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0)
 
-        # Padding
-        padding = torch.empty((self.num_envs, 0), device=self.sim.device)
-        # if multi_robot_max_observation_size != -1:
-        #     padding = torch.zeros(self.missing_nr_of_observations, dtype=torch.float32)
-
-        # Temporary value for expanding scalar to env_num tensor
-
         observation = torch.cat([
             dynamic_joint_observations,
-            dynamic_foot_observations,
             trunk_linear_velocity,
             trunk_angular_velocity,
             goal_velocity,
@@ -785,7 +704,6 @@ class LocomotionEnv(DirectRLEnv):
             gains_and_action_scaling_factor,
             mass,
             robot_dimensions,
-            padding,
         ], dim=1)
 
         return observation
@@ -796,24 +714,12 @@ class LocomotionEnv(DirectRLEnv):
         """
         urma_obs = self.initial_observation.clone()
 
-        # Get the foot contacts with ground
-        undesired_contacts = self.get_contacts_without_sum(self.feet_contact_cfg,
-                                                           threshold=1.0)
-
-        # Get the time since last foot contact with ground
-        feet_air_time = self.get_feet_air_time(
-            self.feet_contact_cfg,
-            threshold_min=0.2, threshold_max=0.5
-        )
-
         # Update observations every step
         urma_obs[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
         urma_obs[:,
         self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         urma_obs[:, self.joint_previous_actions_update_obs_idx] = self.actions
         # note for the undesired_contacts dimension
-        urma_obs[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
-        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
         urma_obs[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
         urma_obs[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
         # urma_obs[:, self.goal_velocity_update_obs_idx] = torch.cat(
@@ -825,11 +731,7 @@ class LocomotionEnv(DirectRLEnv):
         urma_obs[:, self.joint_positions_update_obs_idx] /= 3.14  # max is only 1.06? mean 0.0
         urma_obs[:, self.joint_velocities_update_obs_idx] /= 3  # range from -3 to 3?
         urma_obs[:, self.joint_previous_actions_update_obs_idx] /= 10.0  # looks reasonable; range from -10 to 10
-        urma_obs[:, self.foot_ground_contact_update_obs_idx] = (urma_obs[:,
-                                                                self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0  # taking either 1 or 0
-        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip(
-            (urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0,
-            1.0)  # range from -0.3 to 0.3?
+
         urma_obs[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(
             urma_obs[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1?
         urma_obs[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(
