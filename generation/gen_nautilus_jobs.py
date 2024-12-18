@@ -2,11 +2,11 @@ import os
 
 # Configuration
 num_tasks = 308  # Total number of tasks
-tasks_prefix = "Genhumanoid"
+tasks_prefix = "Gendog"
 tasks_suffix = ""  # Add any suffix if needed
-tasks_per_job = 30  # Number of tasks per job
+tasks_per_job = 26  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "bai-job-humanoid-{job_index}"
+job_name_template = "bai-job-quadruped-{job_index}-dec17"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 
@@ -80,6 +80,7 @@ for i in range(0, num_tasks, tasks_per_job):
     parallel_commands = " &\n              ".join(
         f"source ~/.bashrc && cd /bai-fast-vol/code/embodiment-scaling-law && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl/ && "   # only for sim2real_learning branch
         f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)}"
         for group in task_groups if group
     )
