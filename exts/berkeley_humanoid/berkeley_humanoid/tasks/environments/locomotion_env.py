@@ -203,11 +203,6 @@ class LocomotionEnv(DirectRLEnv):
         observation_names.append("mass")
         observation_names.extend(["robot_length", "robot_width", "robot_height"])
 
-        self.missing_nr_of_observations = 0
-        if multi_robot_max_observation_size != -1:
-            self.missing_nr_of_observations = multi_robot_max_observation_size - len(observation_names)
-            observation_names.extend(["padding_" + str(i) for i in range(self.missing_nr_of_observations)])
-
         name_to_idx = {name: idx for idx, name in enumerate(observation_names)}
 
         self.one_policy_observation_length = len(name_to_idx)
@@ -318,21 +313,17 @@ class LocomotionEnv(DirectRLEnv):
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
                 relative_joint_axis_local,
-                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.1 / 5.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.01 / 0.1) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0 / 15.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.03 / 0.6) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)),
-                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4],
-                                                                      device=self.sim.device)) - 1.0).repeat(
-                    (self.num_envs, 1)),
+                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nr child joints
+                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: nominal position
+                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max torque
+                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)), # TODO: max velocity
+                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)), # TODO: min and max control limits
+                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 (self.mass / 85.0) - 1.0,
                 (self.robot_dimensions / 1.0) - 1.0,
             ], dim=1)
+        
+        self.dynamic_joint_description_size = name_to_description_vector[self.joint_names[0]].shape[1]
 
         return name_to_description_vector
 
