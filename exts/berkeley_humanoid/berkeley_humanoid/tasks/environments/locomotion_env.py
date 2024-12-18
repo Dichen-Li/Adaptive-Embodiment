@@ -164,11 +164,9 @@ class LocomotionEnv(DirectRLEnv):
         self.joint_positions_update_obs_idx = [self.observation_name_to_id[joint_name + "_position"] for joint_name in self.joint_names]
         self.joint_velocities_update_obs_idx = [self.observation_name_to_id[joint_name + "_velocity"] for joint_name in self.joint_names]
         self.joint_previous_actions_update_obs_idx = [self.observation_name_to_id[joint_name + "_previous_action"] for joint_name in self.joint_names]
-        self.trunk_linear_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "z_velocity"]]
         self.trunk_angular_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["roll_velocity", "pitch_velocity", "yaw_velocity"]]
         self.goal_velocity_update_obs_idx = [self.observation_name_to_id["goal_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "yaw_velocity"]]
         self.projected_gravity_update_obs_idx = [self.observation_name_to_id["projected_gravity_" + observation_name] for observation_name in ["x", "y", "z"]]
-        self.height_update_obs_idx = [self.observation_name_to_id["height_0"]]
 
         self.urma_initialized = True
         print("LocomotionEnv init done")
@@ -188,13 +186,11 @@ class LocomotionEnv(DirectRLEnv):
 
         # General observations
         observation_names.extend([
-            "trunk_x_velocity", "trunk_y_velocity", "trunk_z_velocity",
             "trunk_roll_velocity", "trunk_pitch_velocity", "trunk_yaw_velocity",
         ])
 
         observation_names.extend(["goal_x_velocity", "goal_y_velocity", "goal_yaw_velocity"])
         observation_names.extend(["projected_gravity_x", "projected_gravity_y", "projected_gravity_z"])
-        observation_names.append("height_0")
 
         # General robot context
         observation_names.extend(["p_gain", "d_gain", "action_scaling_factor"])
@@ -603,7 +599,7 @@ class LocomotionEnv(DirectRLEnv):
         ]
 
         if self.urma_initialized:
-            urma_obs = self._get_urma_observations()
+            urma_obs = self._get_urma_observations(observation)
             return {"policy": policy_observation, "critic": observation, "urma_obs": urma_obs}
 
         return {"policy": policy_observation, "critic": observation}
@@ -667,24 +663,16 @@ class LocomotionEnv(DirectRLEnv):
         dynamic_joint_observations = torch.empty((self.num_envs, 0), device=self.sim.device)
         for i, joint_name in enumerate(self.joint_names):
             desc_vector = self.name_to_description_vector[joint_name]
-            joint_pos_rel = (self.robot.data.joint_pos[:, i] - self.robot.data.default_joint_pos[:, i]).unsqueeze(1)
-            joint_vel_rel = (self.robot.data.joint_vel[:, i] - self.robot.data.default_joint_vel[:, i]).unsqueeze(1)
-            action = self.actions[:, i].unsqueeze(1)
-
-            # Concatenate all the current observations into one tensor
+            joint_pos_rel = torch.zeros((self.num_envs, 1), device=self.sim.device)
+            joint_vel_rel = torch.zeros((self.num_envs, 1), device=self.sim.device)
+            action = torch.zeros((self.num_envs, 1), device=self.sim.device)
             current_observation = torch.cat((desc_vector, joint_pos_rel, joint_vel_rel, action), dim=1)
-
-            # Concatenate along dimension 0 for subsequent observations
             dynamic_joint_observations = torch.cat((dynamic_joint_observations, current_observation), dim=1)
 
         # General observations
-        trunk_linear_velocity = self.robot.data.root_lin_vel_b
-        trunk_angular_velocity = self.robot.data.root_ang_vel_b
-        # self.target_x_vel, self.target_y_vel, self.target_yaw_vel = self.command_generator.get_next_command()
-        # goal_velocity = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        goal_velocity = self.goal_velocities.clone()
-        projected_gravity_vector = self.robot.data.projected_gravity_b
-        height = self.robot.data.root_pos_w[:, 2].unsqueeze(1)
+        trunk_angular_velocity = torch.zeros((self.num_envs, 3), device=self.sim.device)
+        goal_velocity = torch.zeros((self.num_envs, 3), device=self.sim.device)
+        projected_gravity_vector = torch.zeros((self.num_envs, 3), device=self.sim.device)
 
         # General robot context
         gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor(
@@ -694,11 +682,9 @@ class LocomotionEnv(DirectRLEnv):
 
         observation = torch.cat([
             dynamic_joint_observations,
-            trunk_linear_velocity,
             trunk_angular_velocity,
             goal_velocity,
             projected_gravity_vector,
-            height,
             gains_and_action_scaling_factor,
             mass,
             robot_dimensions,
@@ -706,37 +692,19 @@ class LocomotionEnv(DirectRLEnv):
 
         return observation
 
-    def _get_urma_observations(self):
+    def _get_urma_observations(self, expert_observation: torch.Tensor) -> torch.Tensor:
         """
         Returns the observations for the URMA.
         """
         urma_obs = self.initial_observation.clone()
 
         # Update observations every step
-        urma_obs[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
-        urma_obs[:,
-        self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
-        urma_obs[:, self.joint_previous_actions_update_obs_idx] = self.actions
-        # note for the undesired_contacts dimension
-        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
-        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
-        # urma_obs[:, self.goal_velocity_update_obs_idx] = torch.cat(
-        #     (self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        urma_obs[:, self.goal_velocity_update_obs_idx] = self.goal_velocities.clone()
-        urma_obs[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
-        urma_obs[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:, 2].unsqueeze(1)
-
-        urma_obs[:, self.joint_positions_update_obs_idx] /= 3.14  # max is only 1.06? mean 0.0
-        urma_obs[:, self.joint_velocities_update_obs_idx] /= 3  # range from -3 to 3?
-        urma_obs[:, self.joint_previous_actions_update_obs_idx] /= 10.0  # looks reasonable; range from -10 to 10
-
-        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(
-            urma_obs[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1?
-        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(
-            urma_obs[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
-        urma_obs[:, self.height_update_obs_idx] = torch.clip(
-            (urma_obs[:, self.height_update_obs_idx] / (2 * self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0,
-            2.0)  # the quotient ranges from 0 to 1.x?
+        urma_obs[:, self.joint_positions_update_obs_idx] = expert_observation[:, self.joint_positions_obs_idx]
+        urma_obs[:, self.joint_velocities_update_obs_idx] = expert_observation[:, self.joint_velocities_obs_idx]
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] = expert_observation[:, self.joint_previous_actions_obs_idx]
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = expert_observation[:, self.trunk_angular_velocity_obs_idx]
+        urma_obs[:, self.goal_velocity_update_obs_idx] = expert_observation[:, self.goal_velocities_obs_idx]
+        urma_obs[:, self.projected_gravity_update_obs_idx] = expert_observation[:, self.projected_gravity_vector_obs_idx]
 
         return urma_obs
 
