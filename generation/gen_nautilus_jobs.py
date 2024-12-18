@@ -9,6 +9,7 @@ num_parallel_commands = 4  # Number of parallel commands per job
 job_name_template = "bai-job-quadruped-{job_index}-dec18"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
+deletion_script = "delete_jobs.sh"  # Batch deletion script
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -38,11 +39,11 @@ spec:
           resources:
             requests:
               cpu: "8"
-              memory: "8Gi"
+              memory: "14Gi"
               nvidia.com/gpu: "1"
             limits:
               cpu: "12"
-              memory: "12Gi"
+              memory: "20Gi"
               nvidia.com/gpu: "1"
           volumeMounts:
             - name: dshm
@@ -74,6 +75,7 @@ spec:
 
 # Create YAML files and collect job names
 job_files = []
+job_names = []
 for i in range(0, num_tasks, tasks_per_job):
     # Collect tasks for the current job
     tasks = [f"{tasks_prefix}{j}{tasks_suffix}" for j in range(i, min(i + tasks_per_job, num_tasks))]
@@ -89,13 +91,15 @@ for i in range(0, num_tasks, tasks_per_job):
     )
     parallel_commands += " & wait"  # Ensure all parallel commands complete
 
-    job_name = job_name_template.format(job_index=i // tasks_per_job)
+    job_index = i // tasks_per_job
+    job_name = job_name_template.format(job_index=job_index)
     yaml_content = yaml_template.format(job_name=job_name, parallel_commands=parallel_commands)
 
     job_file = os.path.join(output_folder, f"{job_name}.yaml")
     with open(job_file, "w") as f:
         f.write(yaml_content)
     job_files.append(job_file)
+    job_names.append(job_name)
 
 # Generate submission script
 with open(submission_script, "w") as f:
@@ -106,4 +110,13 @@ with open(submission_script, "w") as f:
 # Make the submission script executable
 os.chmod(submission_script, 0o755)
 
-print(f"Generated {len(job_files)} job YAML files in '{output_folder}' and submission script '{submission_script}'.")
+# Generate deletion script
+with open(deletion_script, "w") as f:
+    f.write("#!/bin/bash\n\n")
+    for job_name in job_names:
+        f.write(f"kubectl delete job {job_name}\n")
+
+# Make the deletion script executable
+os.chmod(deletion_script, 0o755)
+
+print(f"Generated {len(job_files)} job YAML files in '{output_folder}', submission script '{submission_script}', and deletion script '{deletion_script}'.")
