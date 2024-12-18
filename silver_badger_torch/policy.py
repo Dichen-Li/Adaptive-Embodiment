@@ -6,11 +6,10 @@ import os
 import ipdb
 
 class Policy(nn.Module):
-    def __init__(self, joint_log_softmax_temperature,
+    def __init__(self, initial_softmax_temperature,
                  softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip,
                  policy_std_max_clip):
         super(Policy, self).__init__()
-        self.joint_log_softmax_temperature = joint_log_softmax_temperature
         self.softmax_temperature_min = softmax_temperature_min
         self.stability_epsilon = stability_epsilon
         self.policy_mean_abs_clip = policy_mean_abs_clip
@@ -20,6 +19,7 @@ class Policy(nn.Module):
         self.dynamic_joint_state_mask1 = nn.Linear(23, 64)
         self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
         self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
+        self.joint_log_softmax_temperature = nn.Parameter(torch.tensor([initial_softmax_temperature - self.softmax_temperature_min]).log())
         self.latent_dynamic_joint_state = nn.Linear(3, 4)
         self.action_latent1 = nn.Linear(400, 512)
         self.action_layer_norm = nn.LayerNorm(512, eps=1e-6)
@@ -92,14 +92,14 @@ class Policy(nn.Module):
 
 
 def get_policy(model_device: str):
-    joint_log_softmax_temperature = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/joint_log_softmax_temperature.npy")), device=model_device)
+    initial_softmax_temperature = 1.0
     softmax_temperature_min = 0.015
     stability_epsilon = 0.00000001
     policy_mean_abs_clip = 10.0  # 10.0. This value should be adjusted based on data? Or the data should be normalized.
     policy_std_min_clip = 0.00000001
     policy_std_max_clip = 2.0
 
-    policy = Policy(joint_log_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip)
+    policy = Policy(initial_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip)
     # policy = torch.jit.script(policy)
     policy.to(model_device)
 
