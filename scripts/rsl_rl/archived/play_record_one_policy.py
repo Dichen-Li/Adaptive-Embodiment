@@ -1,28 +1,17 @@
-# Copyright (c) 2022-2024, The Berkeley Humanoid Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-"""Script to play a checkpoint if an RL agent from RSL-RL."""
-
-"""Launch Isaac Sim Simulator first."""
-
 import argparse
-
 from omni.isaac.lab.app import AppLauncher
-
-# local imports
 import cli_args  # isort: skip
+from dataset import LocomotionDataset
+
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
-parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
+parser.add_argument("--video_length", type=int, default=20, help="Length of the recorded video (in steps).")
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
-parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
-parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
+parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 # append RSL-RL cli arguments
@@ -96,18 +85,32 @@ def main():
     # obtain the trained policy for inference
     policy = ppo_runner.get_inference_policy(device=env.unwrapped.device)
 
-    # export policy to onnx
-    export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
-    export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
+    # # export policy to onnx
+    # export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
+    # export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
 
+    import h5py
+    h5py_timestep = 0
+    h5py_record_length = 200
+    # Define the file path
+    h5py_record_root_path = os.path.join(log_dir, "h5py_record")
+    if not os.path.exists(h5py_record_root_path):
+        os.makedirs(h5py_record_root_path)
+        print(f"Directory '{h5py_record_root_path}' created.")
+    h5py_record_file_path = os.path.join(h5py_record_root_path, "obs_actions.h5")
+    with h5py.File(h5py_record_file_path, "a") as f:
+    # Create datasets if they do not exist
+        if "one_policy_observation" not in f:
+            one_policy_observation_shape = (env.num_envs, env.unwrapped.one_policy_observation_length)
+            f.create_dataset("one_policy_observation", shape=(0,) + one_policy_observation_shape, maxshape=(None,) + one_policy_observation_shape, dtype="float32")
+        if "actions" not in f:
+            action_shape = env.action_space.shape
+            f.create_dataset("actions", shape=(0,) + action_shape, maxshape=(None,) + action_shape, dtype="float32")
+    
     # reset environment
-    obs, _ = env.get_observations()
-    video_timestep = 0
-    curr_timestep = 0
-
-    from utils import RewardDictLogger
-    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
-
+    obs, observations = env.get_observations()
+    one_policy_observation =  observations['observations']['one_policy']
+    timestep = 0
     # simulate environment
     while simulation_app.is_running():
         # run everything in inference mode
@@ -115,21 +118,25 @@ def main():
             # agent stepping
             actions = policy(obs)
 
-            # Environment stepping
-            obs, rewards, dones, extra = env.step(actions)
+            with h5py.File(h5py_record_file_path, "a") as f:
+                # Append the current observation and action to the HDF5 file
+                f["one_policy_observation"].resize((f["one_policy_observation"].shape[0] + 1,) + one_policy_observation.shape)
+                f["actions"].resize((f["actions"].shape[0] + 1,) + actions.shape)
+                f["one_policy_observation"][-1] = one_policy_observation.cpu().numpy()
+                f["actions"][-1] = actions.cpu().numpy()
 
-            # log reward
-            reward_dict_logger.update(env, rewards, dones)
-            reward_dict_logger.print(curr_timestep, 'sum')
-
-        curr_timestep += 1
-        if curr_timestep > args_cli.steps:
-            break
-
+            # env stepping
+            obs, _, _, extra = env.step(actions)
+            one_policy_observation = extra['observations']['one_policy']
+        
+        h5py_timestep += 1
+        if h5py_timestep == h5py_record_length:
+                break
+        
         if args_cli.video:
-            video_timestep += 1
+            timestep += 1
             # Exit the play loop after recording one video
-            if video_timestep == args_cli.video_length:
+            if timestep == args_cli.video_length:
                 break
 
     # close the simulator

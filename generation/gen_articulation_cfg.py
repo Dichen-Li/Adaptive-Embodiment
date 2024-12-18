@@ -15,7 +15,7 @@ def generate_code(base_dir, output_file):
     with open(output_file, 'w') as f_out:
         for idx, robot_folder in enumerate(robot_folders, start=1):
             # Define paths to train_cfg.json and USD file
-            train_cfg_path = os.path.join(robot_folder, 'train_cfg.json')
+            train_cfg_path = os.path.join(robot_folder, 'train_cfg_v2.json')
             usd_file_path = os.path.join(robot_folder, 'usd_file', 'robot.usd')
 
             # Skip if required files do not exist
@@ -30,13 +30,13 @@ def generate_code(base_dir, output_file):
             # Extract robot_name; raise an error if it's missing
             robot_name = train_cfg.get("robot_name")
             if not robot_name:
-                raise ValueError(f"'robot_name' is missing in train_cfg.json for folder: {robot_folder}")
+                raise ValueError(f"'robot_name' is missing in train_cfg_v2.json for folder: {robot_folder}")
 
             # Generate CFG name
             cfg_name = f"{robot_name.upper()}_CFG"  # Consistent CFG naming
 
             # Extract relevant values
-            drop_height = train_cfg.get("drop_height", 0.5)
+            drop_height = train_cfg.get("drop_height", 0.5) + 0.05   # add a 5cm buffer
             joint_positions = train_cfg.get("nominal_joint_positions", {})
             joint_positions_str = ",\n            ".join(
                 f'"{k}": {v:.2f}' for k, v in joint_positions.items()
@@ -75,6 +75,6 @@ def generate_code(base_dir, output_file):
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods"  # Replace with the actual directory containing robot folders
+base_dir = "/home/albert/Data/gen_embodiments_1122_des_vec_adj_height/gen_dogs"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)

@@ -1,34 +1,31 @@
-# Copyright (c) 2022-2024, The Berkeley Humanoid Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
-"""Script to play a checkpoint if an RL agent from RSL-RL."""
-
-"""Launch Isaac Sim Simulator first."""
-
 import argparse
-
+import os
+import torch
+import tqdm
+import cli_args
+from dataset import DatasetSaver  # isort: skip
+import numpy as np
+import gymnasium as gym
 from omni.isaac.lab.app import AppLauncher
 
-# local imports
-import cli_args  # isort: skip
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
-parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
+parser.add_argument("--video_length", type=int, default=20, help="Length of the recorded video (in steps).")
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
-parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
-parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
+parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
+parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
+
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
+
 args_cli = parser.parse_args()
 # always enable cameras to record video
 if args_cli.video:
@@ -38,22 +35,14 @@ if args_cli.video:
 app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
-"""Rest everything follows."""
-
-
-import gymnasium as gym
-import os
-import torch
-
 from rsl_rl.runners import OnPolicyRunner
-from rsl_rl.env.isaac_lab_vec_env import IsaacLabVecEnvWrapper
 
 # Import extensions to set up environment tasks
 import berkeley_humanoid.tasks  # noqa: F401
 
 from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
-from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import export_policy_as_onnx
+from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
 
 
 def main():
@@ -62,7 +51,7 @@ def main():
     env_cfg = parse_env_cfg(
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
-    agent_cfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
+    agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
     # specify directory for logging experiments
     log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
@@ -73,6 +62,7 @@ def main():
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
+
     # wrap for video recording
     if args_cli.video:
         video_kwargs = {
@@ -85,7 +75,7 @@ def main():
         print_dict(video_kwargs, nesting=4)
         env = gym.wrappers.RecordVideo(env, **video_kwargs)
     # wrap around environment for rsl-rl
-    env = IsaacLabVecEnvWrapper(env)
+    env = RslRlVecEnvWrapper(env)
 
     print(f"[INFO]: Loading model checkpoint from: {resume_path}")
 
@@ -96,41 +86,55 @@ def main():
     # obtain the trained policy for inference
     policy = ppo_runner.get_inference_policy(device=env.unwrapped.device)
 
-    # export policy to onnx
-    export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
-    export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
+    # Initialize DatasetManager
+    dataset_manager = DatasetSaver(
+        record_path=os.path.join(log_dir, "h5py_record"),
+        max_steps_per_file=200,
+        env=env
+    )
 
-    # reset environment
-    obs, _ = env.get_observations()
-    video_timestep = 0
-    curr_timestep = 0
+    # Reset environment and start simulation
+    obs, observations = env.get_observations()
+    one_policy_observation = observations["observations"]["urma_obs"]
+    # curr_timestep = 0
+    actions_std = None
 
-    from utils import RewardDictLogger
-    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
-
-    # simulate environment
+    # Main simulation loop
     while simulation_app.is_running():
-        # run everything in inference mode
         with torch.inference_mode():
-            # agent stepping
-            actions = policy(obs)
+            for _ in tqdm.tqdm(range(args_cli.steps)):
+                # Agent stepping
+                actions = policy(obs)
 
-            # Environment stepping
-            obs, rewards, dones, extra = env.step(actions)
+                # Reshape and save data
+                dataset_manager.save_data(
+                    one_policy_observation=one_policy_observation.cpu().numpy(),
+                    actions=actions.cpu().numpy(),
+                )
 
-            # log reward
-            reward_dict_logger.update(env, rewards, dones)
-            reward_dict_logger.print(curr_timestep, 'sum')
+                # To expand the training data distribution, we should inject noise when rolling out teacher policy
+                # Please don't use randomized actions as ground truth!
 
-        curr_timestep += 1
-        if curr_timestep > args_cli.steps:
+                # First, record action std
+                if actions_std is None:
+                    actions_std = actions.std(0)       # compute std for every joint
+                    print(f'[INFO] Action std recorded: {actions_std}')
+
+                # Apply strong randomization 1/20 of the time so there is still quite some clean data
+                if np.random.randn() < 0.05:
+                    # actions = actions * (torch.randn_like(actions) * actions_std + 1)
+                    actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
+
+                # Stepping the environment
+                obs, _, _, extra = env.step(actions)
+                one_policy_observation = extra["observations"]["urma_obs"]
+
+            # break the simulation loop
             break
 
-        if args_cli.video:
-            video_timestep += 1
-            # Exit the play loop after recording one video
-            if video_timestep == args_cli.video_length:
-                break
+    # if args_cli.video:
+    #     if h5py_timestep >= args_cli.video_length:
+    #         break
 
     # close the simulator
     env.close()

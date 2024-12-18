@@ -52,19 +52,19 @@ def parse_rsl_rl_cfg(task_name: str, args_cli: argparse.Namespace):
     # override the default configuration with CLI arguments
     if args_cli.seed is not None:
         rslrl_cfg.seed = args_cli.seed
-    if args_cli.resume is not None:
-        rslrl_cfg.resume = args_cli.resume
-    if args_cli.load_run is not None:
-        rslrl_cfg.load_run = args_cli.load_run
-    if args_cli.checkpoint is not None:
-        rslrl_cfg.load_checkpoint = args_cli.checkpoint
-    if args_cli.run_name is not None:
-        rslrl_cfg.run_name = args_cli.run_name
-    if args_cli.logger is not None:
-        rslrl_cfg.logger = args_cli.logger
-    # set the project name for wandb and neptune
-    if rslrl_cfg.logger in {"wandb", "neptune"} and args_cli.log_project_name:
-        rslrl_cfg.wandb_project = args_cli.log_project_name
-        rslrl_cfg.neptune_project = args_cli.log_project_name
+    # if args_cli.resume is not None:
+    #     rslrl_cfg.resume = args_cli.resume
+    # if args_cli.load_run is not None:
+    #     rslrl_cfg.load_run = args_cli.load_run
+    # if args_cli.checkpoint is not None:
+    #     rslrl_cfg.load_checkpoint = args_cli.checkpoint
+    # if args_cli.run_name is not None:
+    #     rslrl_cfg.run_name = args_cli.run_name
+    # if args_cli.logger is not None:
+    #     rslrl_cfg.logger = args_cli.logger
+    # # set the project name for wandb and neptune
+    # if rslrl_cfg.logger in {"wandb", "neptune"} and args_cli.log_project_name:
+    #     rslrl_cfg.wandb_project = args_cli.log_project_name
+    #     rslrl_cfg.neptune_project = args_cli.log_project_name
 
     return rslrl_cfg

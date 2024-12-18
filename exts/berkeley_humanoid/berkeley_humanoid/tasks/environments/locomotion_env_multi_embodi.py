@@ -1,15 +1,33 @@
+# Copyright (c) 2022-2024, The Isaac Lab Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from __future__ import annotations
 
-import math
-import omni.isaac.lab.sim as sim_utils
 import torch
+import math
+
 import omni.isaac.core.utils.torch as torch_utils
+from berkeley_humanoid.tasks.direct.locomotion.command_function import RandomCommands
 from omni.isaac.core.utils.torch.rotations import compute_heading_and_up, compute_rot, quat_conjugate
+
+import omni.isaac.lab.sim as sim_utils
 from omni.isaac.lab.assets import Articulation
 from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
+
+from omni.isaac.lab.managers import SceneEntityCfg
 from omni.isaac.lab.sensors import ContactSensor
 
-from .command_function import RandomCommands
+from .joint_position_controller import JointPositionAction
+
+from typing import Optional
+
+import os
+import json
+
+def normalize_angle(x):
+    return torch.atan2(torch.sin(x), torch.cos(x))
 
 
 def track_vel_exp(curr, target, std=math.sqrt(0.25)):
@@ -23,27 +41,7 @@ def track_vel_exp(curr, target, std=math.sqrt(0.25)):
     return lin_vel_error
 
 
-class JointPositionAction:
-    def __init__(self, env, scale, use_default_offset):
-        self.env = env
-        self.scale = scale
-        self.use_default_offset = use_default_offset
-        self.default_offset = self.env.robot.data.default_joint_pos
-
-    def process_action(self, action):
-        """
-        Returns processed joint position action, given raw actions
-        predicted by the model
-        :param action: raw action from policy
-        :return: target joint positions to be achieved by the robot
-        """
-        processed_action = action * self.scale
-        if self.use_default_offset:
-            processed_action += self.default_offset
-        return processed_action
-
-
-class LocomotionEnvMultiEmbodiment(DirectRLEnv):
+class LocomotionEnv(DirectRLEnv):
     cfg: DirectRLEnvCfg
 
     def __init__(self, cfg: DirectRLEnvCfg, render_mode: str | None = None, **kwargs):
@@ -81,11 +79,14 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
 
         self.controller = JointPositionAction(self, self.cfg.action_scale,
                                               use_default_offset=self.cfg.controller_use_offset)
-
+        
         ## Define the one policy initialized parameters below
+        # Get the position for self.relative_joint_position_normalized, axis for self.relative_joint_axis_local and bbox for self.robot_dimensions
+        self.get_robot_description_vec_json()
+
         self.joint_names = self.robot.data.joint_names
         self.foot_names = self.robot.data.body_names
-
+        
         multi_robot_max_observation_size = -1
         self.joint_nr_direct_child_joints = [int("foot" in name) for name in self.foot_names]
         self.name_to_description_vector = self.get_name_to_description_vector()
@@ -179,6 +180,19 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
             self.prev_potentials,
             self.cfg.sim.dt,
         )
+    
+    def get_robot_description_vec_json(self, file_name: str = "robot_description_vec.json"):
+        # Construct the path to the JSON file
+        json_path = os.path.join(
+            os.path.dirname(
+                os.path.dirname(self.cfg.robot.spawn.usd_path)
+            ),
+            file_name
+        )
+
+        # Open and load the JSON file
+        with open(json_path, "r") as f:
+            self.robot_description_vec_json = json.load(f)
 
     def quat_to_matrix(self, quat):
         """
@@ -215,13 +229,20 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         # Convert trunk orientation to rotation matrix
         trunk_rotation_matrix = self.quat_to_matrix(trunk_orientation_quat).transpose(1, 2)
 
+        # TODO: Implement the robot dimension with geometry bounding box and movable geometry; See below Temporary TODO
+        # Get the robot_dimensions from bbox in robot_description_vec.json file
+        bbox_corner_0, bbox_corner_1 = torch.tensor(self.robot_description_vec_json['bbox'][0], device=self.sim.device), torch.tensor(self.robot_description_vec_json['bbox'][1], device=self.sim.device)
+        robot_dimensions = torch.abs(bbox_corner_0 - bbox_corner_1)
+        robot_bbox_center = (bbox_corner_0 + bbox_corner_1) / 2
+        self.robot_dimensions = robot_dimensions.unsqueeze(0).repeat(self.num_envs, 1)
+
         # Calculate robot width, length and height
         num_geom = self.robot.data.body_pos_w.shape[1]
         relative_geom_positions = self.robot.data.body_pos_w - trunk_position_global.unsqueeze(1).repeat(1, num_geom, 1)
         for i in range(len(relative_geom_positions[1])):
             relative_geom_positions[:, i] = torch.matmul(trunk_rotation_matrix.transpose(1,2), relative_geom_positions[:, i].unsqueeze(2)).squeeze(2)
 
-        # Ignore the first geom (floor)
+        # Researved for relative_foot_position_normalized
         min_x,_ = torch.min(relative_geom_positions[:,:,0], dim=1)
         min_y,_ = torch.min(relative_geom_positions[:,:,1], dim=1)
         min_z,_ = torch.min(relative_geom_positions[:,:,2], dim=1)
@@ -229,21 +250,29 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         max_y,_ = torch.max(relative_geom_positions[:,:,1], dim=1)
         max_z,_ = torch.max(relative_geom_positions[:,:,2], dim=1)
         mins = torch.stack((min_x, min_y, min_z), dim=1)
-        self.robot_length = max_x - min_x
-        self.robot_width = max_y - min_y
-        self.robot_height = max_z - min_z
-        self.robot_dimensions = torch.stack((self.robot_length, self.robot_width, self.robot_height), dim=1)
+
+        # self.robot_length = max_x - min_x
+        # self.robot_width = max_y - min_y
+        # self.robot_height = max_z - min_z
+        # self.robot_dimensions = torch.stack((self.robot_length, self.robot_width, self.robot_height), dim=1)
 
         self.gains_and_action_scaling_factor = torch.tensor([0, 0, self.cfg.action_scale], device=self.sim.device)
         self.mass = torch.sum(self.robot.data.default_mass, dim=1).unsqueeze(1).to(self.sim.device)
 
         # Compute normalized joint positions and axes
         for i, joint_name in enumerate(self.joint_names):
+            relative_joint_position = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['position'], device=self.sim.device).unsqueeze(0).repeat(self.num_envs, 1)
+            # relative_joint_position = torch.matmul(trunk_rotation_matrix, relative_joint_position.unsqueeze(-1)).squeeze(-1)
+            relative_joint_position -= robot_bbox_center        # noisy center estimate as an approximation 
+            relative_joint_position_normalized = (relative_joint_position - mins) / (self.robot_dimensions + 1e-8)  # note the mins are based on links
 
-            joint_position_global = self.robot.data.joint_pos[:, i].unsqueeze(1)  # Assuming joint positions are indexed similarly to body names
-            joint_position_default = self.robot.data.default_joint_pos[:, i].unsqueeze(1)
-            relative_joint_position_global = joint_position_global - joint_position_default
-            relative_joint_position_normalized = relative_joint_position_global / (self.robot.data.soft_joint_pos_limits[:, i, 0] - self.robot.data.soft_joint_pos_limits[:, i, 1]).unsqueeze(1)
+            # joint_position_global = self.robot.data.joint_pos[:, i].unsqueeze(1)  # Assuming joint positions are indexed similarly to body names
+            # joint_position_default = self.robot.data.default_joint_pos[:, i].unsqueeze(1)
+            # relative_joint_position_global = joint_position_global - joint_position_default
+            # relative_joint_position_normalized = relative_joint_position_global / (self.robot.data.soft_joint_pos_limits[:, i, 0] - self.robot.data.soft_joint_pos_limits[:, i, 1]).unsqueeze(1)
+
+            # TODO: Get the value for relative_joint_axis_local
+            relative_joint_axis_local = torch.tensor(self.robot_description_vec_json['joint_info'][joint_name]['axis'], device=self.sim.device).unsqueeze(0).repeat(self.num_envs, 1)
 
             # joint_axis_global = self.robot.data.body_quat_w[i]  # Replace with actual axis retrieval if available
             # relative_joint_axis_local = torch.matmul(trunk_rotation_matrix, joint_axis_global)
@@ -251,7 +280,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
             # Append joint description vector
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
-                # relative_joint_axis_local,
+                relative_joint_axis_local,
                 torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)),
                 torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)),
                 torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
@@ -270,11 +299,12 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         for i, foot_name in enumerate(self.foot_names):
             if "foot" not in foot_name:  # Skip non-foot bodies
                 continue
-
+            
             foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
             relative_foot_position_global = foot_position_global - trunk_position_global
             relative_foot_position_local = torch.matmul(trunk_rotation_matrix, relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            relative_foot_position_normalized = (relative_foot_position_local - mins) / self.robot_dimensions
+            # TODO: now we are using a hack of adding epsilon to robot_dimensions, but remember that we are not using link to compute size
+            relative_foot_position_normalized = (relative_foot_position_local - mins) / (self.robot_dimensions + 1e-8)
 
             # Append foot description vector
             name_to_description_vector[foot_name] = torch.cat([
@@ -291,7 +321,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
                 break
 
         return name_to_description_vector
-
+    
     def get_initial_observation(self, multi_robot_max_observation_size):
         # Dynamic observations
         dynamic_joint_observations = torch.empty((self.num_envs, 0), device=self.sim.device)
@@ -336,7 +366,6 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         projected_gravity_vector = self.robot.data.projected_gravity_b
         height = self.robot.data.root_pos_w[:,2].unsqueeze(1)
 
-
         # General robot context
         gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor([100.0 / 2, 2.0 / 2, 0.8 / 2], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1))
         mass = (self.mass / (170.0 / 2)) - 1.0
@@ -364,7 +393,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         ], dim=1)
 
         return observation
-
+    
     def get_observation_space(self, multi_robot_max_observation_size):
         observation_names = []
 
@@ -423,20 +452,20 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         joint_vel_rel = self.robot.data.joint_vel - self.robot.data.default_joint_vel
         actions = self.actions  # actions at prev step
         # base_lin_vel, base_ang_vel, joint_pos_rel, joint_vel_rel could explode
-
-        obs = torch.cat(
+        # import ipdb; ipdb.set_trace()
+        normal_obs = torch.cat(
             [base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
              self.target_yaw_vel, joint_pos_rel, joint_vel_rel, actions], dim=1
         )
 
         ## Define the one policy observations below
         # Copy the initial observation for update
-        observation = self.initial_observation.clone()
+        urma_obs = self.initial_observation.clone()
 
         # Get the foot contacts with ground
         undesired_contacts = self.get_contacts_without_sum(self.reward_cfgs['feet_ground_contact_cfg'],
                                                          threshold=1.0)
-
+        
         # Get the time since last foot contact with ground
         feet_air_time = self.get_feet_air_time(
             self.reward_cfgs['feet_ground_contact_cfg'],
@@ -444,33 +473,46 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         )
 
         # Update observations every step
-        observation[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
-        observation[:, self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
-        observation[:, self.joint_previous_actions_update_obs_idx] = self.actions
+        urma_obs[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
+        urma_obs[:, self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] = self.actions
         # note for the undesired_contacts dimension
-        observation[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
-        observation[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
-        observation[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
-        observation[:, self.goal_velocity_update_obs_idx] = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        observation[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
-        observation[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2].unsqueeze(1)
+        urma_obs[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
+        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
+        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
+        urma_obs[:, self.goal_velocity_update_obs_idx] = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
+        urma_obs[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
+        urma_obs[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:,2].unsqueeze(1)
 
         # Add noise
         # observation = self.observation_noise_function.modify_observation(observation)
 
         # # Dropout
         # observation = self.observation_dropout_function.modify_observation(observation)
+        # import random
+        # if random.random() > 0.995:
+        #     import ipdb; ipdb.set_trace()
 
-        # Normalize and clip
-        observation[:, self.joint_positions_update_obs_idx] /= 4.6
-        observation[:, self.joint_velocities_update_obs_idx] /= 35.0
-        observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0
-        observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0
-        observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)
-        observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)
-        observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)
-        observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)
+        # # Normalize and clip
+        # observation[:, self.joint_positions_update_obs_idx] /= 4.6      # max is only 1.06? mean 0.0
+        # observation[:, self.joint_velocities_update_obs_idx] /= 35.0    # range from -3 to 3?   
+        # observation[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
+        # observation[:, self.foot_ground_contact_update_obs_idx] = (observation[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0 
+        # observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((observation[:, self.foot_time_since_last_ground_contact_update_obs_idx] / (5.0 / 2)) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
+        # observation[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_linear_vel_update_obs_idx] / 10.0, -1.0, 1.0)  # range from -1.x to 1? 
+        # observation[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(observation[:, self.trunk_angular_vel_update_obs_idx] / 50.0, -1.0, 1.0)  # range from -3 to 3
+        # observation[:, self.height_update_obs_idx] = torch.clip((observation[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -1.0, 1.0)  # the quotient ranges from 0 to 1.x? 
+
+        urma_obs[:, self.joint_positions_update_obs_idx] /= 3.14      # max is only 1.06? mean 0.0
+        urma_obs[:, self.joint_velocities_update_obs_idx] /= 3    # range from -3 to 3?
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] /= 10.0      # looks reasonable; range from -10 to 10
+        urma_obs[:, self.foot_ground_contact_update_obs_idx] = (urma_obs[:, self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0 # taking either 1 or 0
+        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip((urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0, 1.0)    # range from -0.3 to 0.3?
+        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(urma_obs[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1?
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(urma_obs[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
+        urma_obs[:, self.height_update_obs_idx] = torch.clip((urma_obs[:, self.height_update_obs_idx] / (2*self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0, 2.0)  # the quotient ranges from 0 to 1.x?
+
         ## Define the one policy observations above
 
         # for i, x in enumerate([base_lin_vel, base_ang_vel, projected_gravity_b, self.target_x_vel, self.target_y_vel,
@@ -499,7 +541,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         #     dim=-1,
         # )
 
-        observations = {"policy": obs, "one_policy": observation}
+        observations = {"policy": normal_obs, "one_policy": urma_obs}
 
         return observations
 
@@ -541,7 +583,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         # no reward for large steps
         air_time = torch.clamp(air_time, max=threshold_max-threshold_min)
         return air_time
-
+    
     def get_feet_slide_reward(self, sensor_cfg, asset_cfg):
         """
         Penalize feet sliding, where sliding is defined by the leg having contact AND velocity
@@ -568,7 +610,7 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         # sum over contacts for each environment
         #TODO: check if the returned data type (Long) makes sense for this reward
         return torch.sum(is_contact, dim=1)
-
+    
     def get_contacts_without_sum(self, sensor_cfg, threshold) -> torch.Tensor:
         """Penalize undesired contacts as the number of violations that are above a threshold."""
         # # create sensor cfg
@@ -719,6 +761,61 @@ class LocomotionEnvMultiEmbodiment(DirectRLEnv):
         self.potentials[env_ids] = -torch.norm(to_target, p=2, dim=-1) / self.cfg.sim.dt
 
         self._compute_intermediate_values()
+
+
+# # @torch.jit.script
+# def compute_rewards(
+#     actions: torch.Tensor,
+#     reset_terminated: torch.Tensor,
+#     up_weight: float,
+#     heading_weight: float,
+#     heading_proj: torch.Tensor,
+#     up_proj: torch.Tensor,
+#     dof_vel: torch.Tensor,
+#     dof_pos_scaled: torch.Tensor,
+#     potentials: torch.Tensor,
+#     prev_potentials: torch.Tensor,
+#     actions_cost_scale: float,
+#     energy_cost_scale: float,
+#     dof_vel_scale: float,
+#     death_cost: float,
+#     alive_reward_scale: float,
+#     motor_effort_ratio: torch.Tensor,
+# ):
+#     heading_weight_tensor = torch.ones_like(heading_proj) * heading_weight
+#     heading_reward = torch.where(heading_proj > 0.8, heading_weight_tensor, heading_weight * heading_proj / 0.8)
+#
+#     # aligning up axis of robot and environment
+#     up_reward = torch.zeros_like(heading_reward)
+#     up_reward = torch.where(up_proj > 0.93, up_reward + up_weight, up_reward)
+#
+#     # energy penalty for movement
+#     actions_cost = torch.sum(actions**2, dim=-1)
+#     electricity_cost = torch.sum(
+#         torch.abs(actions * dof_vel * dof_vel_scale) * motor_effort_ratio.unsqueeze(0),
+#         dim=-1,
+#     )
+#
+#     # dof at limit cost
+#     dof_at_limit_cost = torch.sum(dof_pos_scaled > 0.98, dim=-1)
+#
+#     # reward for duration of staying alive
+#     alive_reward = torch.ones_like(potentials) * alive_reward_scale
+#     progress_reward = potentials - prev_potentials
+#
+#     total_reward = (
+#         progress_reward
+#         + alive_reward
+#         + up_reward
+#         + heading_reward
+#         - actions_cost_scale * actions_cost
+#         - energy_cost_scale * electricity_cost
+#         - dof_at_limit_cost
+#     )
+#
+#     # adjust reward for fallen agents
+#     total_reward = torch.where(reset_terminated, torch.ones_like(total_reward) * death_cost, total_reward)
+#     return total_reward
 
 
 @torch.jit.script

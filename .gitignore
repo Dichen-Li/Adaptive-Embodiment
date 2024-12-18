@@ -7,8 +7,10 @@ rl_x/
 rsl_rl/
 training/
 _orbit*
+.vscode/
 wandb/
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+log_dir/
 .*
