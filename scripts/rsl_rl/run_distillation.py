@@ -26,6 +26,7 @@ def parse_arguments():
     parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loder.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
+    parser.add_argument("--gradient_acc_steps", type=int, default=1, help="Number of batches before one gradient update.")
     parser.add_argument(
         "--model",
         type=str,
@@ -54,7 +55,7 @@ def parse_arguments():
 
 
 def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num_epochs, model_device,
-          log_dir, checkpoint_interval, model):
+          log_dir, checkpoint_interval, model, gradient_acc_steps):
     """Training loop with validation, TensorBoard logging, and checkpoint saving."""
     writer = SummaryWriter(log_dir=log_dir)
     train_loss_meter = AverageMeter()
@@ -69,7 +70,7 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
         with tqdm.tqdm(train_loader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            for batch_inputs, batch_targets in pbar:
+            for index, (batch_inputs, batch_targets) in enumerate(pbar):
                 # Move data to device
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
@@ -87,7 +88,10 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                 # Backward pass and optimization
                 optimizer.zero_grad()
                 loss.backward()
-                optimizer.step()
+
+                # backward only when we have accumulated gradients for enough batches
+                if index % gradient_acc_steps == gradient_acc_steps - 1:
+                    optimizer.step()
 
                 # Update training loss tracker
                 train_loss_meter.update(loss.item(), n=batch_targets.size(0))
@@ -233,7 +237,8 @@ def main():
         model_device=model_device,
         log_dir=log_dir,
         checkpoint_interval=args_cli.checkpoint_interval,
-        model=args_cli.model
+        model=args_cli.model,
+        gradient_acc_steps=args_cli.gradient_acc_steps
     )
 
 
