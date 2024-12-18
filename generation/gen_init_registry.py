@@ -50,7 +50,7 @@ def generate_robot_registration_with_consistent_names(base_dir, output_file):
 
         # Write the registration loop
         f_out.write("for id, env_cfg_entry_point in id_entry_pair.items():\n")
-        f_out.write("    rsl_rl_cfg_entry_point = f\"{agents.__name__}.gen_quadruped_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg\"\n")
+        f_out.write("    rsl_rl_cfg_entry_point = f\"{agents.__name__}.gen_hexapod_1k_ppo_cfg:{id.capitalize()}PPORunnerCfg\"\n")
         f_out.write("    gym.register(\n")
         f_out.write("        id=id,\n")
         f_out.write("        entry_point=\"berkeley_humanoid.tasks.environments:GenDirectEnv\",\n")
@@ -65,6 +65,6 @@ def generate_robot_registration_with_consistent_names(base_dir, output_file):
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs"  # Replace with the actual directory containing robot folders
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods"  # Replace with the actual directory containing robot folders
 output_file = "generated_robot_registration.py"  # Output file for the generated registration code
 generate_robot_registration_with_consistent_names(base_dir, output_file)
