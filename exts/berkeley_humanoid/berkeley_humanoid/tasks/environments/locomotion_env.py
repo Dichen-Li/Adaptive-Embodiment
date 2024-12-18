@@ -470,7 +470,7 @@ def axis_angle_to_quaternion(axis_angle: torch.Tensor) -> torch.Tensor:
     return quaternions
 
 
-@torch.jit.script
+# @torch.jit.script
 def compute_rewards(
     curriculum_coeff: float,
     tracking_xy_velocity_command_coeff: float,

@@ -107,7 +107,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
         print(f"Generated {len(robot_folders)} class definitions.")
 
 # Example usage
-cfg_class_parent = 'Go2EnvCfg'   # Change as needed
+cfg_class_parent = 'GenHexapodEnvCfg'   # Change as needed
 base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods"  # Replace with the actual directory containing robot folders
 output_file = "robot_classes.py"  # Output file for the generated class definitions
 generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent)
