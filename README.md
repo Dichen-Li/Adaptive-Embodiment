@@ -185,7 +185,12 @@ pip install sapien==2.2.2
 conda install -y networkx">=2.5"
 ```
 Then we can run `generation/get_description_vector_sapien.py` or `generation/update_init_height_sapien.py`. These
-scripts don't have any args but you need to adjust the paths in the code yourself.
+scripts don't have any args, but you need to adjust the paths in the code yourself.
+
+P.S.The following error is okay. Just ignore it:
+```aiignore
+[2024-12-17 20:39:12.722] [SAPIEN] [error] Cylinder collision is not supported. Replaced with a capsule
+```
 
 ## Policy distillation
 This section introduces how to perform policy distillation. 
