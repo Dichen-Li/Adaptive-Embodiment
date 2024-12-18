@@ -104,6 +104,9 @@ python gen_nautilus_jobs.py
 ```
 you should see a folder `jobs` containing all the job files. You can run `submit_jobs.sh` to submit them all at once.
 
+IMPORTANT: Please modify the `log_dir` in `/home/albert/github/embodiment-scaling-law-sim2real/scripts/train_batch_nautilus.sh`, which is
+the directory where all program outputs will be redirected to. If you don't change it to your directory, the files will be written to Bo's storage. 
+
 ## Examine batch training results on nautilus server
 After running the training scripts for many robots, we need to batch examine the output logs and checkpoints produced by
 the program. Some util scripts have been implemented to ease manual checking.
