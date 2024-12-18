@@ -18,15 +18,9 @@ class DatasetSaver:
         "single_dynamic_joint_observation_length",
         "dynamic_joint_observation_length",
         "dynamic_joint_description_size",
-        "nr_dynamic_foot_observations",
-        "single_dynamic_foot_observation_length",
-        "dynamic_foot_observation_length",
-        "dynamic_foot_description_size",
         "joint_positions_update_obs_idx",
         "joint_velocities_update_obs_idx",
         "joint_previous_actions_update_obs_idx",
-        "foot_ground_contact_update_obs_idx",
-        "foot_time_since_last_ground_contact_update_obs_idx",
         "trunk_linear_vel_update_obs_idx",
         "trunk_angular_vel_update_obs_idx",
         "goal_velocity_update_obs_idx",
@@ -243,20 +237,6 @@ class LocomotionDatasetSingle:
             "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
             "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
             "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
-        }
-
-    def get_dynamic_foot_params(self):
-        """
-        Retrieve dynamic foot parameters from the metadata.
-
-        Returns:
-            dict: Dynamic foot parameters.
-        """
-        return {
-            "nr_dynamic_foot_observations": self.metadata["nr_dynamic_foot_observations"],
-            "single_dynamic_foot_observation_length": self.metadata["single_dynamic_foot_observation_length"],
-            "dynamic_foot_observation_length": self.metadata["dynamic_foot_observation_length"],
-            "dynamic_foot_description_size": self.metadata["dynamic_foot_description_size"],
         }
 
 
@@ -478,21 +458,6 @@ class LocomotionDataset(Dataset):
         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
 
-        # Dynamic Foot Data Transformation
-        dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
-        nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
-        single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
-        dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
-
-        dynamic_foot_start = dynamic_joint_observation_length
-        dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
-        dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end]  # Focus only on last dim
-        dynamic_foot_combined_state = dynamic_foot_combined_state.view(
-            nr_dynamic_foot_observations, single_dynamic_foot_observation_length
-        )
-        dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
-        dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
-
         # General Policy State Transformation
         general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
 
@@ -500,8 +465,6 @@ class LocomotionDataset(Dataset):
         return (
             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
             dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
-            dynamic_foot_description,  # Shape: (nr_dynamic_foot_observations, dynamic_foot_description_size)
-            dynamic_foot_state,  # Shape: (nr_dynamic_foot_observations, remaining_length)
             general_policy_state,  # Shape: (<concatenated_dim>)
             target  # Shape: (12,)
         )
