@@ -99,10 +99,13 @@ def main():
     # curr_timestep = 0
     actions_std = None
 
+    from utils import RewardDictLogger
+    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
+
     # Main simulation loop
     while simulation_app.is_running():
         with torch.inference_mode():
-            for _ in tqdm.tqdm(range(args_cli.steps)):
+            for curr_timestep in tqdm.tqdm(range(args_cli.steps)):
                 # Agent stepping
                 actions = policy(obs)
 
@@ -126,8 +129,12 @@ def main():
                     actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
 
                 # Stepping the environment
-                obs, _, _, extra = env.step(actions)
+                obs, rewards, dones, extra = env.step(actions)
                 one_policy_observation = extra["observations"]["urma_obs"]
+
+                # log reward
+                reward_dict_logger.update(env, rewards, dones)
+                reward_dict_logger.print(curr_timestep, 'sum')
 
             # break the simulation loop
             break
