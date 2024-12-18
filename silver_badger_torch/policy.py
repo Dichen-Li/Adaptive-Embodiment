@@ -95,7 +95,7 @@ def get_policy(model_device: str):
     joint_log_softmax_temperature = torch.tensor(np.load(os.path.join(os.path.dirname(__file__), "jax_nn_weights/joint_log_softmax_temperature.npy")), device=model_device)
     softmax_temperature_min = 0.015
     stability_epsilon = 0.00000001
-    policy_mean_abs_clip = 50  # 10.0. This value should be adjusted based on data? Or the data should be normalized.
+    policy_mean_abs_clip = 10.0  # 10.0. This value should be adjusted based on data? Or the data should be normalized.
     policy_std_min_clip = 0.00000001
     policy_std_max_clip = 2.0
 
