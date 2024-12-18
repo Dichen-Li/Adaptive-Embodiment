@@ -4,9 +4,9 @@ import os
 num_tasks = 308  # Total number of tasks
 tasks_prefix = "Gendog"
 tasks_suffix = ""  # Add any suffix if needed
-tasks_per_job = 26  # Number of tasks per job
+tasks_per_job = 21  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "bai-job-quadruped-{job_index}-dec17"
+job_name_template = "bai-job-quadruped-{job_index}-dec18"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 
@@ -22,6 +22,9 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 604800
   template:
+    metadata:
+      labels:
+        nautilus.io/rl: "true"
     spec:
       containers:
         - name: gpu-container
@@ -35,11 +38,11 @@ spec:
           resources:
             requests:
               cpu: "8"
-              memory: "16Gi"
+              memory: "8Gi"
               nvidia.com/gpu: "1"
             limits:
-              cpu: "16"
-              memory: "32Gi"
+              cpu: "12"
+              memory: "12Gi"
               nvidia.com/gpu: "1"
           volumeMounts:
             - name: dshm
