@@ -4,7 +4,6 @@ logs/
 IsaacLab/
 experiments/
 rl_x/
-rsl_rl/
 training/
 _orbit*
 .vscode/
