@@ -688,30 +688,6 @@ class LocomotionEnv(DirectRLEnv):
             # Concatenate along dimension 0 for subsequent observations
             dynamic_joint_observations = torch.cat((dynamic_joint_observations, current_observation), dim=1)
 
-        # Get the foot contacts with ground
-        undesired_contacts = self.get_contacts_without_sum(self.feet_contact_cfg,
-                                                           threshold=1.0)
-        # Get the time since last foot contact with ground
-        feet_air_time = self.get_feet_air_time(
-            self.feet_contact_cfg,
-            threshold_min=0.2, threshold_max=0.5
-        )
-
-        # from training.environments.unitree_go1.info import touchdown_feet
-        # Dynamic observations
-        dynamic_foot_observations = torch.empty((self.num_envs, 0),
-                                                device=self.sim.device)  # Start with None for the first iteration
-        foot_index = 0
-        for i, foot_name in enumerate(self.foot_names):
-            if "foot" in foot_name:
-                # Concatenate all the current observations into one tensor
-                current_observation = torch.cat((self.name_to_description_vector[foot_name],
-                                                 undesired_contacts[:, foot_index].unsqueeze(1),
-                                                 feet_air_time[:, foot_index].unsqueeze(1)), dim=1)
-                foot_index += 1
-                # Concatenate along dimension 0 for subsequent observations
-                dynamic_foot_observations = torch.cat((dynamic_foot_observations, current_observation), dim=1)
-
         # General observations
         trunk_linear_velocity = self.robot.data.root_lin_vel_b
         trunk_angular_velocity = self.robot.data.root_ang_vel_b
@@ -727,16 +703,8 @@ class LocomotionEnv(DirectRLEnv):
         mass = (self.mass / (170.0 / 2)) - 1.0
         robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0)
 
-        # Padding
-        padding = torch.empty((self.num_envs, 0), device=self.sim.device)
-        # if multi_robot_max_observation_size != -1:
-        #     padding = torch.zeros(self.missing_nr_of_observations, dtype=torch.float32)
-
-        # Temporary value for expanding scalar to env_num tensor
-
         observation = torch.cat([
             dynamic_joint_observations,
-            dynamic_foot_observations,
             trunk_linear_velocity,
             trunk_angular_velocity,
             goal_velocity,
@@ -745,7 +713,6 @@ class LocomotionEnv(DirectRLEnv):
             gains_and_action_scaling_factor,
             mass,
             robot_dimensions,
-            padding,
         ], dim=1)
 
         return observation
