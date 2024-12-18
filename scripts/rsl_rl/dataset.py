@@ -260,18 +260,6 @@ class LocomotionDatasetSingle:
         }
 
 
-# cache = ThreadSafeDict(max_size=16)
-
-# from multiprocessing import Manager
-#
-# # Create a manager and shared dictionary
-# manager = Manager()
-# global_cache_dict = manager.dict()
-#
-# # Create a ThreadSafeDict using the shared dictionary
-# global_cache = ThreadSafeDict(max_size=16, manager_dict=global_cache_dict)
-
-
 class LocomotionDataset(Dataset):
     def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio):
         """
@@ -612,6 +600,14 @@ class LocomotionDataset(Dataset):
         Returns:
             DataLoader: The configured DataLoader instance.
         """
+
+        if num_workers > len(self.file_indices):
+            import warnings
+            warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
+             f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
+             f"This is likely due to multiple threads reading the same file. I will set num_workers to {max(2, len(self.file_indices))}")
+            num_workers = max(2, len(self.file_indices))        # 2 is a safe number, tested
+
         return DataLoader(
             self,
             batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
@@ -619,54 +615,55 @@ class LocomotionDataset(Dataset):
             num_workers=num_workers,
         )
 
+
+"""
+The below dataset load all files into the memory, which is used as a reference for the fastest data loader. 
+"""
+
+# import os
+# import h5py
+# import torch
+# import numpy as np
+# from torch.utils.data import Dataset, DataLoader
+# import yaml
+#
 #
 # class LocomotionDataset(Dataset):
-#     def __init__(self, folder_paths, max_files_in_memory=128):
+#     def __init__(self, folder_paths, train_mode, val_ratio, **kwargs):
 #         """
-#         Initialize the LocomotionDataset.
+#         Dataset class that loads all data into memory during initialization.
 #
 #         Args:
 #             folder_paths (list): List of paths to dataset folders.
-#             max_files_in_memory (int): Maximum number of files to keep in memory.
+#             train_mode (bool): If True, loads training set; otherwise loads validation set.
+#             val_ratio (float): Ratio of files to be used for validation.
 #         """
 #         self.folder_paths = folder_paths
-#         self.max_files_in_memory = max_files_in_memory
+#         self.train_mode = train_mode
+#         self.val_ratio = val_ratio
 #         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
-#         self.file_indices = []
-#         self.total_samples = 0
+#         self.data = []
 #
-#         # A thread-safe dictionary for caching files
-#         self.cache = ThreadSafeDict(max_size=max_files_in_memory)
+#         # Load all data into memory
+#         self._load_all_files()
 #
-#         # Compute the number of samples in the dataset
-#         self._prepare_file_indices()
-#
-#         # verbose
-#         print(f'Received folder paths: {folder_paths}')
-#         print(f'Total number of samples: {len(self)}')
+#         print(f"[INFO]: Loaded {len(self.data)} samples into memory.")
 #
 #     def _load_metadata(self, folder_path):
 #         """
 #         Load metadata from the YAML file in a dataset folder.
-#
-#         Args:
-#             folder_path (str): Path to the folder.
-#
-#         Returns:
-#             dict: Metadata containing environment parameters.
 #         """
 #         metadata_path = os.path.join(folder_path, "metadata.yaml")
 #         if not os.path.exists(metadata_path):
-#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+#             raise FileNotFoundError(f"[ERROR]: Metadata file not found at {metadata_path}")
 #
 #         with open(metadata_path, "r") as metadata_file:
 #             metadata = yaml.safe_load(metadata_file)
 #         return metadata
 #
-#     def _prepare_file_indices(self):
+#     def _load_all_files(self):
 #         """
-#         Create a mapping of global indices to (folder_idx, file_idx, step, env).
-#         Also computes the total number of samples.
+#         Load all .h5 files from the given folder paths into memory.
 #         """
 #         for folder_idx, folder_path in enumerate(self.folder_paths):
 #             metadata = self.metadata_list[folder_idx]
@@ -674,94 +671,51 @@ class LocomotionDataset(Dataset):
 #                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
 #                 key=lambda x: int(x.split('_')[-1].split('.')[0])
 #             )
-#             steps_per_file = metadata["steps_per_file"]
-#             parallel_envs = metadata["parallel_envs"]
 #
-#             for file_idx, file_name in enumerate(hdf5_files):
+#             # Split files into train/val sets
+#             total_files = len(hdf5_files)
+#             num_val_files = max(1, int(total_files * self.val_ratio))
+#             selected_files = hdf5_files[num_val_files:] if self.train_mode else hdf5_files[:num_val_files]
+#
+#             # Load each file into memory
+#             for file_name in selected_files:
+#                 file_path = os.path.join(folder_path, file_name)
+#                 with h5py.File(file_path, "r") as data_file:
+#                     inputs = np.array(data_file["one_policy_observation"][:])
+#                     targets = np.array(data_file["actions"][:])
+#
+#                 steps_per_file = metadata["steps_per_file"]
+#                 parallel_envs = metadata["parallel_envs"]
+#
+#                 # Validate shapes
+#                 if inputs.shape != (steps_per_file, parallel_envs, inputs.shape[-1]):
+#                     raise ValueError(f"[ERROR]: Input shape mismatch in file {file_path}.")
+#                 if targets.shape != (steps_per_file, parallel_envs, targets.shape[-1]):
+#                     raise ValueError(f"[ERROR]: Target shape mismatch in file {file_path}.")
+#
+#                 # Flatten the data and store it in self.data
 #                 for step in range(steps_per_file):
 #                     for env in range(parallel_envs):
-#                         self.file_indices.append((folder_idx, file_idx, step, env))
-#             self.total_samples += len(hdf5_files) * steps_per_file * parallel_envs
+#                         self.data.append((inputs[step, env], targets[step, env]))
 #
 #     def __len__(self):
 #         """
 #         Get the total number of samples in the dataset.
 #         """
-#         return self.total_samples
-#
-#     def _load_file(self, folder_idx, file_idx):
-#         """
-#         Load a specific HDF5 file into memory.
-#
-#         Args:
-#             folder_idx (int): Index of the folder.
-#             file_idx (int): Index of the file within the folder.
-#
-#         Returns:
-#             tuple: (inputs, targets) from the HDF5 file.
-#         """
-#         folder_path = self.folder_paths[folder_idx]
-#         metadata = self.metadata_list[folder_idx]
-#
-#         hdf5_files = sorted(
-#             [f for f in os.listdir(folder_path) if f.endswith(".h5")],
-#             key=lambda x: int(x.split('_')[-1].split('.')[0])
-#         )
-#         file_path = os.path.join(folder_path, hdf5_files[file_idx])
-#         print(f'[INFO]: Loading file {file_path}')
-#
-#         with h5py.File(file_path, "r") as data_file:
-#             inputs = np.array(data_file["one_policy_observation"][:])
-#             targets = np.array(data_file["actions"][:])
-#
-#         # Validate shapes
-#         steps_per_file = metadata["steps_per_file"]
-#         parallel_envs = metadata["parallel_envs"]
-#         if inputs.shape != (steps_per_file, parallel_envs, inputs.shape[-1]):
-#             raise ValueError(f"Input shape mismatch in file {file_path}.")
-#         if targets.shape != (steps_per_file, parallel_envs, targets.shape[-1]):
-#             raise ValueError(f"Target shape mismatch in file {file_path}.")
-#
-#         return inputs, targets
-#
-#     def _cache_file(self, folder_idx, file_idx):
-#         """
-#         Cache a specific file, loading it if not already cached.
-#
-#         Args:
-#             folder_idx (int): Folder index.
-#             file_idx (int): File index within the folder.
-#
-#         Returns:
-#             tuple: (inputs, targets) from the file.
-#         """
-#         cache_key = (folder_idx, file_idx)
-#         cached_file = self.cache.get(cache_key)
-#         if cached_file is None:
-#             inputs, targets = self._load_file(folder_idx, file_idx)
-#             self.cache.put(cache_key, (inputs, targets))
-#         return self.cache.get(cache_key)
+#         return len(self.data)
 #
 #     def __getitem__(self, index):
 #         """
-#         Get a sample from the dataset.
+#         Retrieve a single sample from the dataset.
 #
 #         Args:
 #             index (int): Index of the sample.
 #
 #         Returns:
-#             tuple: Transformed input and target for the sample.
+#             tuple: Transformed input and target.
 #         """
-#         folder_idx, file_idx, step, env = self.file_indices[index]
-#         inputs, targets = self._cache_file(folder_idx, file_idx)
-#
-#         # Extract specific sample
-#         input_sample = inputs[step, env]
-#         target_sample = targets[step, env]
-#         metadata = self.metadata_list[folder_idx]
-#
-#         # Transform the sample
-#         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+#         input_sample, target_sample = self.data[index]
+#         transformed_sample = self._transform_sample(input_sample, target_sample, self.metadata_list[0])
 #         return transformed_sample[:-1], transformed_sample[-1]
 #
 #     def _transform_sample(self, input_sample, target_sample, metadata):
@@ -820,56 +774,16 @@ class LocomotionDataset(Dataset):
 #             target  # Shape: (12,)
 #         )
 #
-#     def collate_fn(self, batch):
-#         """
-#         Collate function to combine samples into a batch.
-#
-#         Args:
-#             batch (list): List of samples, where each sample is a 2-tuple:
-#                           (inputs, target).
-#
-#         Returns:
-#             tuple: A 2-tuple where:
-#                 - The first element is batched inputs.
-#                 - The second element is the batched target tensor.
-#         """
-#         inputs, targets = zip(*batch)
-#         batched_inputs = torch.stack(inputs)
-#         batched_targets = torch.stack(targets)
-#         return batched_inputs, batched_targets
-#
-#     def get_batch_indices(self, batch_size, shuffle=True):
-#         """
-#         Generate all indices for the dataset, ensuring batches come from the same folder
-#         and merging them in the specified order.
-#
-#         Args:
-#             batch_size (int): The size of each batch.
-#             shuffle (bool): Whether to shuffle the dataset.
-#
-#         Returns:
-#             list: A list of indices, where each sublist contains indices for a batch.
-#         """
-#         indices = list(range(len(self)))
-#         if shuffle:
-#             np.random.shuffle(indices)
-#
-#         return [indices[i:i + batch_size] for i in range(0, len(indices), batch_size)]
-#
-#     def get_data_loader(self, batch_size, shuffle=True, num_workers=16):
+#     def get_data_loader(self, batch_size, shuffle=True, num_workers=0):
 #         """
 #         Create a DataLoader for the dataset.
 #
 #         Args:
-#             batch_size (int): Batch size for the DataLoader.
-#             shuffle (bool): Whether to shuffle the dataset.
+#             batch_size (int): Batch size.
+#             shuffle (bool): Whether to shuffle the data.
+#             num_workers (int): Number of worker processes.
 #
 #         Returns:
-#             DataLoader: The configured DataLoader instance.
+#             DataLoader: Configured DataLoader.
 #         """
-#         return DataLoader(
-#             self,
-#             batch_sampler=self.get_batch_indices(batch_size, shuffle),
-#             collate_fn=self.collate_fn,
-#             num_workers=num_workers,
-#         )
+#         return DataLoader(self, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
