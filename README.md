@@ -111,18 +111,18 @@ the program. Some util scripts have been implemented to ease manual checking.
 can check these files to see if there are `Error` or `Traceback`. The following script can do this for you (please
 adapt the arg values for your own case):
 ```angular2html
-cd scripts
-python check_logs_traceback.py --root ../../jobs-logs/ --keyword Gendog --max-index 308
+python scripts/check_logs_traceback.py --root /bai-fast-vol/code/jobs-logs --keyword Gendog --max-index 308 --num-lines 10
 ```
+It will check all logs beginning with keyword (`Gendog0`-`Gendog308`) and print out the last `10` lines if there is any error.
+If you are unsure what each arg means or want to check what the optional args not specified here, use `--help`. This also applies
+to the command detailed below. 
 2. Check tensorboard logs. The training programs should produce checkpoints (though, please note that even if IsaacLab 
 throws errors, training can still resume sometimes; thus, please check `.out` as well). To check if there are checkpoints
 produced for every robot, below is an example command: 
 ```angular2html
-cd scripts
-python check_tf_checkpoints.py --root ../logs/rsl_rl --keyword Gendog --max-index 308 --min-epoch 3000
+python scripts/check_tf_checkpoints.py --keyword Gendog --max-index 308 --min-epoch 3000
 ```
-The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete logs.
-
+The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete runs.
 
 ## How to add single robot manually
 Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
