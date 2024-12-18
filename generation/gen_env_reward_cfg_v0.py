@@ -71,7 +71,7 @@ def generate_robot_classes_from_config(base_dir, output_file):
             # Generate the class definition
             class_definition = (
                 f"@configclass\n"
-                f"class {class_name}({cfg_class_name}):\n"
+                f"class {class_name}({cfg_class_parent}):\n"
                 f"    action_space = {action_space}\n"
                 f"    robot: ArticulationCfg = {cfg_name}\n"
                 f"    reward_cfgs = {{\n"

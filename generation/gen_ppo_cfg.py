@@ -54,6 +54,6 @@ class {class_name}(DefaultPPORunnerCfg):
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids"  # Replace with the actual directory containing robot folders
+base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods"  # Replace with the actual directory containing robot folders
 output_file = "ppo_cfg.py"  # Output file for the generated class definitions
 generate_runner_configs_with_adapted_names(base_dir, output_file)

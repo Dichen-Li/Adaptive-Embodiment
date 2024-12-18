@@ -36,6 +36,8 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
     action_space = 15
     observation_space = 69
 
+    action_dt = dt * decimation
+
     # simulation
     sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
     terrain = TerrainImporterCfg(
