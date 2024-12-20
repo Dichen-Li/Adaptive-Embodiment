@@ -412,19 +412,18 @@ class LocomotionDataset(Dataset):
         # # Expecting index as (folder_idx, file_idx, step, env)
         folder_idx, file_idx, step, env = index
 
-        # check if the batch data comes from the expected files
-        # TODO: Please think of a more principled approach. The current one may alter data distribution
-        # print(torch.utils.data.get_worker_info(), f'files={self.worker_idx_to_folder_file_idx[torch.utils.data.get_worker_info().id]}')
+        # To make sure the worker does not get sample that should be processed by other workers
+        # This shouldn't happen at all, in theory.
         worker_id = torch.utils.data.get_worker_info().id
         if (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
-            cache_keys = self.cache.keys()
-            folder_idx, file_idx = random.choice(list(cache_keys))
-            self.counter_not_in_scope += 1
-            if self.counter_not_in_scope % 100000 == 0:
-                print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
-                         f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
-            # raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
-            #                  f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+            # cache_keys = self.cache.keys()
+            # folder_idx, file_idx = random.choice(list(cache_keys))
+            # self.counter_not_in_scope += 1
+            # if self.counter_not_in_scope % 1000 == 0:
+            #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+            #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+            raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+                             f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         # import time
@@ -490,7 +489,6 @@ class LocomotionDataset(Dataset):
         general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
         general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
 
-
         # Return transformed inputs and target
         return (
             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
@@ -531,7 +529,7 @@ class LocomotionDataset(Dataset):
         """
         Generate all indices for the dataset, ensuring (1) batches are interleaved across workers,
         (2) each worker processes batches from a specific file in sequence, and (3) adjacent batches
-        for one worker com from the same file.
+        for one worker come from the same file.
 
         The expectation is:
         Worker 1: [batch from K1.h5] [batch from K1.h5] ... [batch from K3.h5] [batch from K3.h5]
@@ -573,20 +571,31 @@ class LocomotionDataset(Dataset):
             for batch in file_batches[key]:
                 interleaved_batches[i % num_workers].append(batch)
 
-        # Interleave batches from all workers to form the final sequence
-        final_batches = []
+        # Interleave batches from all workers to form the final sequence for data loader
+        # Here we need to make sure every worker has the same number of samples to process
+        # otherwise the workers that finish their job earlier will be assigned to join
+        # other worker's job queue, which may create the condition where multiple workers
+        # read the same file from the disk, making the system incredibly slow
+        final_samples = []
+        duplicates = 0
         max_batches_per_worker = max(len(worker_batches) for worker_batches in interleaved_batches)
         for i in range(max_batches_per_worker):
             for worker_batches in interleaved_batches:
-                if i < len(worker_batches):
-                    final_batches.append(worker_batches[i])
+                if i < len(worker_batches):     # to avoid out of bound,
+                    final_samples.append(worker_batches[i])
+                else:  # when there are no sufficient samples
+                    duplicates += 1
+                    final_samples.append(random.choice(worker_batches))
+
+        print(f'[INFO]: duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
+              f'({duplicates/len(final_samples)*100:.2f}%)')
 
         # Create a mapping of worker indices to (folder_idx, file_idx) pairs
         self.worker_idx_to_folder_file_idx = {worker_idx: set() for worker_idx in range(num_workers)}
         for i, key in enumerate(file_keys):
             self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
 
-        return final_batches
+        return final_samples
 
     def get_data_loader(self, batch_size, shuffle=True, num_workers=16, **kwargs):
         """
