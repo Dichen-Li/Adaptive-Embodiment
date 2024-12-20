@@ -58,8 +58,8 @@ def get_meter_dict_avg(meter_dicts):
     return sum([meter.avg for meter in meter_dicts.values()])/len(meter_dicts)
 
 
-def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num_epochs, model_device,
-          log_dir, checkpoint_interval, model, gradient_acc_steps):
+def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, num_epochs, model_device,
+          log_dir, checkpoint_interval, model, gradient_acc_steps, batch_size, num_workers):
     """Training loop with validation, TensorBoard logging, and checkpoint saving."""
     writer = SummaryWriter(log_dir=log_dir)
     train_loss_meters = {}
@@ -74,15 +74,26 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
             meter.reset()
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
-        with tqdm.tqdm(train_loader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
+        train_dataloader = train_dataset.get_data_loader(
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True
+        )
+
+        with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
             for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+
+                # times = []
+                # import time
+                # start_time = time.time()
+
                 # Move data to device
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
 
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # start_time = time.time()
+
                 if model == 'urma':
-                    # print([x.shape for x in batch_inputs])
-                    # import ipdb; ipdb.set_trace()
                     batch_predictions = policy(*batch_inputs)
                 else:
                     one_input = torch.cat([
@@ -90,15 +101,31 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     ], dim=1)
                     batch_predictions = policy(one_input)
 
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # start_time = time.time()
+
                 loss = criterion(batch_predictions, batch_targets)
+
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # start_time = time.time()
 
                 # Backward pass and optimization
                 optimizer.zero_grad()
                 loss.backward()
 
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # start_time = time.time()
+
                 # backward only when we have accumulated gradients for enough batches
                 if index % gradient_acc_steps == gradient_acc_steps - 1:
                     optimizer.step()
+
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # start_time = time.time()
 
                 # Update training loss tracker
                 if data_source_name not in train_loss_meters:
@@ -107,6 +134,11 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
                 # Update progress bar with current loss
                 pbar.set_postfix({"Loss": f"{get_meter_dict_avg(train_loss_meters):.4f}"})
+
+                # end_time = time.time()
+                # times.append(end_time - start_time)
+                # if index % 1000 == 0:
+                #     print(f'times: {times}')
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -119,9 +151,13 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
             meter.reset()
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
+        val_dataloader = val_dataset.get_data_loader(
+            batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True
+        )
+
         with torch.no_grad():
-            with tqdm.tqdm(val_loader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                for batch_inputs, batch_targets, data_source_name in pbar:
+            with tqdm.tqdm(val_dataloader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
+                for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
                     # Move data to device
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
@@ -145,7 +181,7 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     pbar.set_postfix(
                         {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
 
-        # Log training loss to TensorBoard
+        # Log validation loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
 
@@ -187,9 +223,6 @@ def main():
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory
     )
-    train_loader = train_dataset.get_data_loader(
-        batch_size=args_cli.batch_size, shuffle=True, num_workers=args_cli.num_workers
-    )
 
     # Validation dataset
     val_dataset = LocomotionDataset(
@@ -197,9 +230,6 @@ def main():
         train_mode=False,
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory
-    )
-    val_loader = val_dataset.get_data_loader(
-        batch_size=args_cli.batch_size, shuffle=False, num_workers=args_cli.num_workers
     )
 
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -209,10 +239,10 @@ def main():
         from silver_badger_torch.policy import get_policy
         policy = get_policy(model_device)
 
-        # load checkpoint if needed
-        # checkpoint_path = "log_dir/2024-12-08_14-55-29_initial_urma/checkpoint_epoch_77.pt"
+        # # load checkpoint if needed
+        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/2024-12-20_01-36-32_debug/best_model.pt"
         # checkpoint = torch.load(checkpoint_path, map_location=model_device)
-        # policy.load_state_dict(checkpoint["state_dict"])
+        # policy.load_state_dict(checkpoint["state_dict"], strict=False)
 
         # from supervised_actor.policy import get_policy
         # metadata = train_dataset.metadata_list[0]
@@ -246,14 +276,16 @@ def main():
         criterion=criterion,
         optimizer=optimizer,
         scheduler=scheduler,
-        train_loader=train_loader,
-        val_loader=val_loader,
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
         num_epochs=args_cli.num_epochs,
         model_device=model_device,
         log_dir=log_dir,
         checkpoint_interval=args_cli.checkpoint_interval,
         model=args_cli.model,
-        gradient_acc_steps=args_cli.gradient_acc_steps
+        gradient_acc_steps=args_cli.gradient_acc_steps,
+        batch_size=args_cli.batch_size,
+        num_workers=args_cli.num_workers
     )
 
 
