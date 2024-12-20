@@ -313,6 +313,7 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     initial_state_yaw_angle_factor = 1.0
     initial_state_joint_nominal_position_factor = 0.5
     initial_state_joint_velocity_factor = 0.5
+    initial_state_joint_velocity_clip = 20
     initial_state_max_linear_velocity = 0.5
     initial_state_max_angular_velocity = 0.5
 
