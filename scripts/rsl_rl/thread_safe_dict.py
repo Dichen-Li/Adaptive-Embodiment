@@ -45,8 +45,7 @@ class ThreadSafeDict:
             list: A list of all keys in the dictionary.
         """
         with self.lock:
-            return list(self.dict.keys())
-
+            return self.dict.keys()
 
 #
 # class ThreadSafeDict:

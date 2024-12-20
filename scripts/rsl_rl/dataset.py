@@ -1,4 +1,5 @@
 import os
+import random
 
 import h5py
 import numpy as np
@@ -138,104 +139,104 @@ class DatasetSaver:
         """
         self.close()
 
-
-class LocomotionDatasetSingle:
-    def __init__(self, folder_path):
-        """
-        Initialize the LocomotionDataset.
-
-        Args:
-            folder_path (str): Path to the folder containing HDF5 files and metadata.
-        """
-        self.folder_path = folder_path
-        self.metadata = self._load_metadata()
-        self.inputs = []
-        self.targets = []
-
-    def _load_metadata(self):
-        """
-        Load metadata from the YAML file in the dataset folder.
-
-        Returns:
-            dict: Metadata containing environment parameters.
-        """
-        metadata_path = os.path.join(self.folder_path, "metadata.yaml")
-        if not os.path.exists(metadata_path):
-            raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-
-        with open(metadata_path, "r") as metadata_file:
-            metadata = yaml.safe_load(metadata_file)
-        print(f"[INFO]: Loaded metadata from {metadata_path}")
-        return metadata
-
-    def _load_hdf5_files(self):
-        """
-        Load data from all HDF5 files in the folder, sorted numerically by index,
-        and check for None/NaN values in the data.
-        """
-        hdf5_files = sorted(
-            [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
-            key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
-        )
-
-        if not hdf5_files:
-            raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
-
-        for file_name in hdf5_files:
-            file_path = os.path.join(self.folder_path, file_name)
-            # print(f"[INFO]: Loading file {file_path}")
-
-            with h5py.File(file_path, "r") as data_file:
-                inputs = data_file["one_policy_observation"][:]
-                targets = data_file["actions"][:]
-
-                # Check for None or NaN values
-                if np.any(inputs == None) or np.any(targets == None):  # Check for None
-                    raise ValueError(f"None values found in file: {file_path}")
-                if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
-                    raise ValueError(f"NaN values found in file: {file_path}")
-
-                self.inputs.append(inputs)
-                self.targets.append(targets)
-
-        # Concatenate data from all files
-        self.inputs = np.concatenate(self.inputs, axis=0)
-        self.targets = np.concatenate(self.targets, axis=0)
-        print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
-
-    def get_data_loader(self, batch_size=8, shuffle=True):
-        """
-        Create a DataLoader for the dataset.
-
-        Args:
-            batch_size (int): Batch size for the DataLoader.
-            shuffle (bool): Whether to shuffle the dataset.
-
-        Returns:
-            DataLoader: DataLoader object for the dataset.
-        """
-        if not self.inputs or not self.targets:
-            self._load_hdf5_files()
-
-        dataset = TensorDataset(
-            torch.tensor(self.inputs, dtype=torch.float32),
-            torch.tensor(self.targets, dtype=torch.float32),
-        )
-        return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
-
-    def get_dynamic_joint_params(self):
-        """
-        Retrieve dynamic joint parameters from the metadata.
-
-        Returns:
-            dict: Dynamic joint parameters.
-        """
-        return {
-            "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
-            "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
-            "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
-            "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
-        }
+#
+# class LocomotionDatasetSingle:
+#     def __init__(self, folder_path):
+#         """
+#         Initialize the LocomotionDataset.
+#
+#         Args:
+#             folder_path (str): Path to the folder containing HDF5 files and metadata.
+#         """
+#         self.folder_path = folder_path
+#         self.metadata = self._load_metadata()
+#         self.inputs = []
+#         self.targets = []
+#
+#     def _load_metadata(self):
+#         """
+#         Load metadata from the YAML file in the dataset folder.
+#
+#         Returns:
+#             dict: Metadata containing environment parameters.
+#         """
+#         metadata_path = os.path.join(self.folder_path, "metadata.yaml")
+#         if not os.path.exists(metadata_path):
+#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+#
+#         with open(metadata_path, "r") as metadata_file:
+#             metadata = yaml.safe_load(metadata_file)
+#         print(f"[INFO]: Loaded metadata from {metadata_path}")
+#         return metadata
+#
+#     def _load_hdf5_files(self):
+#         """
+#         Load data from all HDF5 files in the folder, sorted numerically by index,
+#         and check for None/NaN values in the data.
+#         """
+#         hdf5_files = sorted(
+#             [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
+#             key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
+#         )
+#
+#         if not hdf5_files:
+#             raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
+#
+#         for file_name in hdf5_files:
+#             file_path = os.path.join(self.folder_path, file_name)
+#             # print(f"[INFO]: Loading file {file_path}")
+#
+#             with h5py.File(file_path, "r") as data_file:
+#                 inputs = data_file["one_policy_observation"][:]
+#                 targets = data_file["actions"][:]
+#
+#                 # Check for None or NaN values
+#                 if np.any(inputs == None) or np.any(targets == None):  # Check for None
+#                     raise ValueError(f"None values found in file: {file_path}")
+#                 if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
+#                     raise ValueError(f"NaN values found in file: {file_path}")
+#
+#                 self.inputs.append(inputs)
+#                 self.targets.append(targets)
+#
+#         # Concatenate data from all files
+#         self.inputs = np.concatenate(self.inputs, axis=0)
+#         self.targets = np.concatenate(self.targets, axis=0)
+#         print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
+#
+#     def get_data_loader(self, batch_size=8, shuffle=True):
+#         """
+#         Create a DataLoader for the dataset.
+#
+#         Args:
+#             batch_size (int): Batch size for the DataLoader.
+#             shuffle (bool): Whether to shuffle the dataset.
+#
+#         Returns:
+#             DataLoader: DataLoader object for the dataset.
+#         """
+#         if not self.inputs or not self.targets:
+#             self._load_hdf5_files()
+#
+#         dataset = TensorDataset(
+#             torch.tensor(self.inputs, dtype=torch.float32),
+#             torch.tensor(self.targets, dtype=torch.float32),
+#         )
+#         return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+#
+#     def get_dynamic_joint_params(self):
+#         """
+#         Retrieve dynamic joint parameters from the metadata.
+#
+#         Returns:
+#             dict: Dynamic joint parameters.
+#         """
+#         return {
+#             "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
+#             "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
+#             "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
+#             "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
+#         }
 
 
 class LocomotionDataset(Dataset):
@@ -276,6 +277,9 @@ class LocomotionDataset(Dataset):
         # Compute hit rate for caching, for debugging purpose
         # self.cache_hit_count = AverageMeter()
         self.cache_query_time = AverageMeter()
+
+        # record the number of times the data index is not in the worker's scope
+        self.counter_not_in_scope = 0
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
@@ -402,11 +406,25 @@ class LocomotionDataset(Dataset):
         Returns:
             tuple: Transformed input and target for the sample.
         """
-        # print(index)
-        # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
-
-        # Expecting index as (folder_idx, file_idx, step, env)
+        # # print(index)
+        # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
+        #
+        # # Expecting index as (folder_idx, file_idx, step, env)
         folder_idx, file_idx, step, env = index
+
+        # check if the batch data comes from the expected files
+        # TODO: Please think of a more principled approach. The current one may alter data distribution
+        # print(torch.utils.data.get_worker_info(), f'files={self.worker_idx_to_folder_file_idx[torch.utils.data.get_worker_info().id]}')
+        worker_id = torch.utils.data.get_worker_info().id
+        if (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
+            cache_keys = self.cache.keys()
+            folder_idx, file_idx = random.choice(list(cache_keys))
+            self.counter_not_in_scope += 1
+            if self.counter_not_in_scope % 100000 == 0:
+                print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+                         f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+            # raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+            #                  f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         # import time
@@ -428,6 +446,11 @@ class LocomotionDataset(Dataset):
 
         # Transform the sample
         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        # print([x.shape for x in transformed_sample])
+        # import ipdb; ipdb.set_trace()
+
+        # folder_idx, file_idx, step, env = index
+        # transformed_sample = [torch.zeros(8, 18), torch.zeros(8, 3), torch.zeros(16), torch.zeros(8)]
 
         # Return the transformed components
         return transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx]
@@ -558,9 +581,14 @@ class LocomotionDataset(Dataset):
                 if i < len(worker_batches):
                     final_batches.append(worker_batches[i])
 
+        # Create a mapping of worker indices to (folder_idx, file_idx) pairs
+        self.worker_idx_to_folder_file_idx = {worker_idx: set() for worker_idx in range(num_workers)}
+        for i, key in enumerate(file_keys):
+            self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
+
         return final_batches
 
-    def get_data_loader(self, batch_size, shuffle=True, num_workers=16):
+    def get_data_loader(self, batch_size, shuffle=True, num_workers=16, **kwargs):
         """
         Create a DataLoader for the dataset.
 
@@ -584,6 +612,7 @@ class LocomotionDataset(Dataset):
             batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
+            **kwargs
         )
 
 
