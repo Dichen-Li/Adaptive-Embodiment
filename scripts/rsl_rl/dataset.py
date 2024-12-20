@@ -21,11 +21,9 @@ class DatasetSaver:
         "joint_positions_update_obs_idx",
         "joint_velocities_update_obs_idx",
         "joint_previous_actions_update_obs_idx",
-        "trunk_linear_vel_update_obs_idx",
         "trunk_angular_vel_update_obs_idx",
         "goal_velocity_update_obs_idx",
         "projected_gravity_update_obs_idx",
-        "height_update_obs_idx",
     ]
 
     def __init__(self, record_path, env, max_steps_per_file, buffer_size=1):
@@ -463,7 +461,7 @@ class LocomotionDataset(Dataset):
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
 
         # General Policy State Transformation
-        general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
+        general_policy_state = state[..., -16:]
 
         # Return transformed inputs and target
         return (

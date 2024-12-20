@@ -12,6 +12,7 @@ class PolicyCfg:
     actor_hidden_dims = [512, 256, 128]
     critic_hidden_dims = [512, 256, 128]
     activation = "elu"
+    policy_mean_abs_clip = 10.0
 
 
 @configclass

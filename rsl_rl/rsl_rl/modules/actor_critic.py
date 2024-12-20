@@ -21,6 +21,7 @@ class ActorCritic(nn.Module):
         critic_hidden_dims=[256, 256, 256],
         activation="elu",
         init_noise_std=1.0,
+        policy_mean_abs_clip=10.0,
         **kwargs,
     ):
         if kwargs:
@@ -66,6 +67,8 @@ class ActorCritic(nn.Module):
         # disable args validation for speedup
         Normal.set_default_validate_args = False
 
+        self.policy_mean_abs_clip = policy_mean_abs_clip
+
         # seems that we get better performance without init
         # self.init_memory_weights(self.memory_a, 0.001, 0.)
         # self.init_memory_weights(self.memory_c, 0.001, 0.)
@@ -98,7 +101,7 @@ class ActorCritic(nn.Module):
 
     def update_distribution(self, observations):
         mean = self.actor(observations)
-        mean = torch.clamp(mean, -10.0, 10.0)
+        mean = torch.clamp(mean, -self.policy_mean_abs_clip, self.policy_mean_abs_clip)
         self.distribution = Normal(mean, mean * 0.0 + self.std)
 
     def act(self, observations, **kwargs):
@@ -110,7 +113,7 @@ class ActorCritic(nn.Module):
 
     def act_inference(self, observations):
         actions_mean = self.actor(observations)
-        actions_mean = torch.clamp(actions_mean, -10.0, 10.0)
+        actions_mean = torch.clamp(actions_mean, -self.policy_mean_abs_clip, self.policy_mean_abs_clip)
         return actions_mean
 
     def evaluate(self, critic_observations, **kwargs):
