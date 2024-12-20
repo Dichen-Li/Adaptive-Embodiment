@@ -288,7 +288,7 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     base_height_coeff = 50.0                    * action_dt
     air_time_coeff = 0.1                        * action_dt
     symmetry_air_coeff = 0.5                    * action_dt
-    feet_symmetry_pairs = [(0, 1), (2, 3)]
+    feet_symmetry_pairs = [(0, 5), (1, 4), (2, 3)]
     feet_y_distance_coeff = 2.0                 * action_dt
 
     # Action delay
