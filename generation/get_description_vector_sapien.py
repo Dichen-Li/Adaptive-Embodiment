@@ -101,10 +101,10 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     scene.set_ambient_light([0.5, 0.5, 0.5])
     scene.add_directional_light([0, 1, -1], [0.5, 0.5, 0.5])
 
-    viewer = Viewer(renderer)
-    viewer.set_scene(scene)
-    viewer.set_camera_xyz(x=-2, y=0, z=1)
-    viewer.set_camera_rpy(r=0, p=-0.3, y=0)
+    # viewer = Viewer(renderer)
+    # viewer.set_scene(scene)
+    # viewer.set_camera_xyz(x=-2, y=0, z=1)
+    # viewer.set_camera_rpy(r=0, p=-0.3, y=0)
 
     #############################################
     # Load robot URDF
@@ -195,25 +195,28 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
 
     # Save information to file
     with open(save_path, 'w') as f:
-        json.dump(info, f)
+        json.dump(info, f, indent=4)
 
 
-    #############################################
-    # Clean up
-    #############################################
+    # #############################################
+    # # Clean up
+    # #############################################
 
-    viewer.close()    
+    # viewer.close()    
 
 
 if __name__ == '__main__':
-    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
+    # root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
+    # root_link_name = 'trunk'
+    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids'
+    root_link_name = 'pelvis'
     asset_dirs = sorted([os.path.join(root_dir, name) for name in os.listdir(root_dir) if
                   os.path.isdir(os.path.join(root_dir, name))])
 
     for asset_dir in tqdm(asset_dirs):
         extract_info(
             robot_urdf_path=f'{asset_dir}/robot.urdf',
-            train_cfg_path=f'{asset_dir}/train_cfg_v2.json',
-            save_path=f'{asset_dir}/robot_description_vec_v2.json',  # modify it to whatever you want
-            root_name="trunk"  # trunk for dogs and hexapods, pelvis for humanoids
+            train_cfg_path=f'{asset_dir}/train_cfg.json',
+            save_path=f'{asset_dir}/robot_description_vec.json',  # modify it to whatever you want
+            root_name=root_link_name,
         )

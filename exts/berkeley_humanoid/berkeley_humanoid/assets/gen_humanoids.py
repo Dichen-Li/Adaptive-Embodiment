@@ -38,66 +38,108 @@ init_state_humanoid = ArticulationCfg.InitialStateCfg(
     joint_vel={".*": 0.0},
 )
 actuators = {
+
     "legs": ImplicitActuatorCfg(
-        joint_names_expr=[
-            ".*_hip_yaw_joint",
-            ".*_hip_roll_joint",
-            ".*_hip_pitch_joint",
-            ".*_knee_joint",
-            "torso_joint",
-        ],
-        effort_limit=300,
-        velocity_limit=100.0,
+        joint_names_expr=['.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint'],
+        effort_limit=300.00,
+        velocity_limit=100.00,
         stiffness={
-            ".*_hip_yaw_joint": 150.0,
-            ".*_hip_roll_joint": 150.0,
-            ".*_hip_pitch_joint": 200.0,
-            ".*_knee_joint": 200.0,
-            "torso_joint": 200.0,
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            ".*_knee.*joint": 200.00,
+            "torso_joint": 200.00
         },
         damping={
-            ".*_hip_yaw_joint": 5.0,
-            ".*_hip_roll_joint": 5.0,
-            ".*_hip_pitch_joint": 5.0,
-            ".*_knee_joint": 5.0,
-            "torso_joint": 5.0,
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            ".*_knee.*joint": 5.00,
+            "torso_joint": 5.00
         },
         armature={
             ".*_hip_yaw_joint": 0.01,
             ".*_hip_roll_joint": 0.01,
             ".*_hip_pitch_joint": 0.01,
-            ".*_knee_joint": 0.01,
-            "torso_joint": 0.01,
+            ".*_knee.*joint": 0.01,
+            "torso_joint": 0.01
         },
     ),
+
     "feet": ImplicitActuatorCfg(
-        joint_names_expr=[
-            ".*_ankle_joint"
-        ],
-        effort_limit=20,
-        stiffness=20.0,
-        damping=2.0,
+        joint_names_expr=['.*_ankle_joint'],
+        effort_limit=20.00,
+        velocity_limit=None,
+        stiffness=20.00,
+        damping=2.00,
         armature=0.01,
     ),
+
     "arms": ImplicitActuatorCfg(
-        joint_names_expr=[
-            ".*_shoulder_joint",
-            ".*_elbow_joint",
-        ],
-        effort_limit=300,
-        velocity_limit=100.0,
+        joint_names_expr=['.*_shoulder_joint', '.*_elbow_joint'],
+        effort_limit=300.00,
+        velocity_limit=100.00,
         stiffness={
-            ".*_shoulder_joint": 40.0,
-            ".*_elbow_joint": 40.0,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00
         },
         damping={
-            ".*_shoulder_joint": 10.0,
-            ".*_elbow_joint": 10.0,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00
         },
         armature={
             ".*_shoulder_joint": 0.01,
-            ".*_elbow_joint": 0.01,
+            ".*_elbow_joint": 0.01
         },
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
     ),
 }
 
@@ -373,6 +415,50 @@ GEN_HUMANOID_L0R0_CFG = ArticulationCfg(
                 ".*_elbow_joint": 0.01,
             },
         ),
+        "all": ImplicitActuatorCfg(
+            joint_names_expr=[
+                '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+                '.*_ankle_joint',
+                '.*_shoulder_joint', '.*_elbow_joint',
+            ],
+            effort_limit={
+                '.*_hip_yaw_joint': 300, 
+                '.*_hip_roll_joint': 300, 
+                '.*_hip_pitch_joint': 300, 
+                'torso_joint': 300,
+                '.*_ankle_joint': 20,
+                '.*_shoulder_joint': 300, 
+                '.*_elbow_joint': 300,
+            },
+            velocity_limit={
+                '.*_hip_yaw_joint': 100, 
+                '.*_hip_roll_joint': 100, 
+                '.*_hip_pitch_joint': 100, 
+                'torso_joint': 100,
+                '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+                '.*_shoulder_joint': 100, 
+                '.*_elbow_joint': 100,
+            },
+            stiffness={
+                ".*_hip_yaw_joint": 150.00,
+                ".*_hip_roll_joint": 150.00,
+                ".*_hip_pitch_joint": 200.00,
+                "torso_joint": 200.00,
+                '.*_ankle_joint': 20,
+                ".*_shoulder_joint": 40.00,
+                ".*_elbow_joint": 40.00,
+            },
+            damping={
+                ".*_hip_yaw_joint": 5.00,
+                ".*_hip_roll_joint": 5.00,
+                ".*_hip_pitch_joint": 5.00,
+                "torso_joint": 5.00,
+                '.*_ankle_joint': 2.00,
+                ".*_shoulder_joint": 10.00,
+                ".*_elbow_joint": 10.00,
+            },
+            armature=0.01,
+        ),
     },
     prim_path=prim_path
 )
@@ -427,7 +513,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -468,7 +554,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_10_CFG = ArticulationCfg(
@@ -500,7 +631,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -541,7 +672,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_9_CFG = ArticulationCfg(
@@ -573,7 +749,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -614,7 +790,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_8_CFG = ArticulationCfg(
@@ -646,7 +867,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -687,7 +908,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_7_CFG = ArticulationCfg(
@@ -719,7 +985,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -760,7 +1026,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_6_CFG = ArticulationCfg(
@@ -792,7 +1103,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -833,7 +1144,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_5_CFG = ArticulationCfg(
@@ -865,7 +1221,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -906,7 +1262,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_4_CFG = ArticulationCfg(
@@ -938,7 +1339,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -979,7 +1380,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_3_CFG = ArticulationCfg(
@@ -1011,7 +1457,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1052,7 +1498,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_2_CFG = ArticulationCfg(
@@ -1084,7 +1575,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1125,7 +1616,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_0_CFG = ArticulationCfg(
@@ -1157,7 +1693,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1198,7 +1734,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_1_CFG = ArticulationCfg(
@@ -1230,7 +1811,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1271,7 +1852,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_14_CFG = ArticulationCfg(
@@ -1303,7 +1929,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1344,7 +1970,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_13_CFG = ArticulationCfg(
@@ -1376,7 +2047,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1417,7 +2088,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_12_CFG = ArticulationCfg(
@@ -1449,7 +2165,7 @@ actuators = {
             ".*_hip_yaw_joint": 150.00,
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1490,7 +2206,52 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_11_CFG = ArticulationCfg(
@@ -1523,7 +2284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1566,7 +2327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_25_CFG = ArticulationCfg(
@@ -1599,7 +2409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1642,7 +2452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_24_CFG = ArticulationCfg(
@@ -1675,7 +2534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1718,7 +2577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_23_CFG = ArticulationCfg(
@@ -1751,7 +2659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1794,7 +2702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_22_CFG = ArticulationCfg(
@@ -1827,7 +2784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1870,7 +2827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_21_CFG = ArticulationCfg(
@@ -1903,7 +2909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -1946,7 +2952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_20_CFG = ArticulationCfg(
@@ -1979,7 +3034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2022,7 +3077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_19_CFG = ArticulationCfg(
@@ -2055,7 +3159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2098,7 +3202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_18_CFG = ArticulationCfg(
@@ -2131,7 +3284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2174,7 +3327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_17_CFG = ArticulationCfg(
@@ -2207,7 +3409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2250,7 +3452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_15_CFG = ArticulationCfg(
@@ -2283,7 +3534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2326,7 +3577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_16_CFG = ArticulationCfg(
@@ -2359,7 +3659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2402,7 +3702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_29_CFG = ArticulationCfg(
@@ -2435,7 +3784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2478,7 +3827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_28_CFG = ArticulationCfg(
@@ -2511,7 +3909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2554,7 +3952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_27_CFG = ArticulationCfg(
@@ -2587,7 +4034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2630,7 +4077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_26_CFG = ArticulationCfg(
@@ -2663,7 +4159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2706,7 +4202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_115_CFG = ArticulationCfg(
@@ -2739,7 +4284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2782,7 +4327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_114_CFG = ArticulationCfg(
@@ -2815,7 +4409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2858,7 +4452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_113_CFG = ArticulationCfg(
@@ -2891,7 +4534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -2934,7 +4577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_112_CFG = ArticulationCfg(
@@ -2967,7 +4659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3010,7 +4702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_111_CFG = ArticulationCfg(
@@ -3043,7 +4784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3086,7 +4827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_110_CFG = ArticulationCfg(
@@ -3119,7 +4909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3162,7 +4952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_109_CFG = ArticulationCfg(
@@ -3195,7 +5034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3238,7 +5077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_108_CFG = ArticulationCfg(
@@ -3271,7 +5159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3314,7 +5202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_107_CFG = ArticulationCfg(
@@ -3347,7 +5284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3390,7 +5327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_105_CFG = ArticulationCfg(
@@ -3423,7 +5409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3466,7 +5452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_106_CFG = ArticulationCfg(
@@ -3499,7 +5534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3542,7 +5577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_119_CFG = ArticulationCfg(
@@ -3575,7 +5659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3618,7 +5702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_118_CFG = ArticulationCfg(
@@ -3651,7 +5784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3694,7 +5827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_117_CFG = ArticulationCfg(
@@ -3727,7 +5909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3770,7 +5952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_116_CFG = ArticulationCfg(
@@ -3803,7 +6034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3846,7 +6077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_100_CFG = ArticulationCfg(
@@ -3879,7 +6159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3922,7 +6202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_99_CFG = ArticulationCfg(
@@ -3955,7 +6284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -3998,7 +6327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_98_CFG = ArticulationCfg(
@@ -4031,7 +6409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4074,7 +6452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_97_CFG = ArticulationCfg(
@@ -4107,7 +6534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4150,7 +6577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_96_CFG = ArticulationCfg(
@@ -4183,7 +6659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4226,7 +6702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_95_CFG = ArticulationCfg(
@@ -4259,7 +6784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4302,7 +6827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_94_CFG = ArticulationCfg(
@@ -4335,7 +6909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4378,7 +6952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_93_CFG = ArticulationCfg(
@@ -4411,7 +7034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4454,7 +7077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_92_CFG = ArticulationCfg(
@@ -4487,7 +7159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4530,7 +7202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_90_CFG = ArticulationCfg(
@@ -4563,7 +7284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4606,7 +7327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_91_CFG = ArticulationCfg(
@@ -4639,7 +7409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4682,7 +7452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_104_CFG = ArticulationCfg(
@@ -4715,7 +7534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4758,7 +7577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_103_CFG = ArticulationCfg(
@@ -4791,7 +7659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4834,7 +7702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_102_CFG = ArticulationCfg(
@@ -4867,7 +7784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4910,7 +7827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_101_CFG = ArticulationCfg(
@@ -4943,7 +7909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -4986,7 +7952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_55_CFG = ArticulationCfg(
@@ -5019,7 +8034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5062,7 +8077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_54_CFG = ArticulationCfg(
@@ -5095,7 +8159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5138,7 +8202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_53_CFG = ArticulationCfg(
@@ -5171,7 +8284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5214,7 +8327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_52_CFG = ArticulationCfg(
@@ -5247,7 +8409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5290,7 +8452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_51_CFG = ArticulationCfg(
@@ -5323,7 +8534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5366,7 +8577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_50_CFG = ArticulationCfg(
@@ -5399,7 +8659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5442,7 +8702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_49_CFG = ArticulationCfg(
@@ -5475,7 +8784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5518,7 +8827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_48_CFG = ArticulationCfg(
@@ -5551,7 +8909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5594,7 +8952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_47_CFG = ArticulationCfg(
@@ -5627,7 +9034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5670,7 +9077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_45_CFG = ArticulationCfg(
@@ -5703,7 +9159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5746,7 +9202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_46_CFG = ArticulationCfg(
@@ -5779,7 +9284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5822,7 +9327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_59_CFG = ArticulationCfg(
@@ -5855,7 +9409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5898,7 +9452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_58_CFG = ArticulationCfg(
@@ -5931,7 +9534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -5974,7 +9577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_57_CFG = ArticulationCfg(
@@ -6007,7 +9659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6050,7 +9702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_56_CFG = ArticulationCfg(
@@ -6083,7 +9784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6126,7 +9827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_40_CFG = ArticulationCfg(
@@ -6159,7 +9909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6202,7 +9952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_39_CFG = ArticulationCfg(
@@ -6235,7 +10034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6278,7 +10077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_38_CFG = ArticulationCfg(
@@ -6311,7 +10159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6354,7 +10202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_37_CFG = ArticulationCfg(
@@ -6387,7 +10284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6430,7 +10327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_36_CFG = ArticulationCfg(
@@ -6463,7 +10409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6506,7 +10452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_35_CFG = ArticulationCfg(
@@ -6539,7 +10534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6582,7 +10577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_34_CFG = ArticulationCfg(
@@ -6615,7 +10659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6658,7 +10702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_33_CFG = ArticulationCfg(
@@ -6691,7 +10784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6734,7 +10827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_32_CFG = ArticulationCfg(
@@ -6767,7 +10909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6810,7 +10952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_30_CFG = ArticulationCfg(
@@ -6843,7 +11034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6886,7 +11077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_31_CFG = ArticulationCfg(
@@ -6919,7 +11159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -6962,7 +11202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_44_CFG = ArticulationCfg(
@@ -6995,7 +11284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7038,7 +11327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_43_CFG = ArticulationCfg(
@@ -7071,7 +11409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7114,7 +11452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_42_CFG = ArticulationCfg(
@@ -7147,7 +11534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7190,7 +11577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_41_CFG = ArticulationCfg(
@@ -7223,7 +11659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7266,7 +11702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_85_CFG = ArticulationCfg(
@@ -7299,7 +11784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7342,7 +11827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_84_CFG = ArticulationCfg(
@@ -7375,7 +11909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7418,7 +11952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_83_CFG = ArticulationCfg(
@@ -7451,7 +12034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7494,7 +12077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_82_CFG = ArticulationCfg(
@@ -7527,7 +12159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7570,7 +12202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_81_CFG = ArticulationCfg(
@@ -7603,7 +12284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7646,7 +12327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_80_CFG = ArticulationCfg(
@@ -7679,7 +12409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7722,7 +12452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_79_CFG = ArticulationCfg(
@@ -7755,7 +12534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7798,7 +12577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_78_CFG = ArticulationCfg(
@@ -7831,7 +12659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7874,7 +12702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_77_CFG = ArticulationCfg(
@@ -7907,7 +12784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -7950,7 +12827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_75_CFG = ArticulationCfg(
@@ -7983,7 +12909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8026,7 +12952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_76_CFG = ArticulationCfg(
@@ -8059,7 +13034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8102,7 +13077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_89_CFG = ArticulationCfg(
@@ -8135,7 +13159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8178,7 +13202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_88_CFG = ArticulationCfg(
@@ -8211,7 +13284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8254,7 +13327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_87_CFG = ArticulationCfg(
@@ -8287,7 +13409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8330,7 +13452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_86_CFG = ArticulationCfg(
@@ -8363,7 +13534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8406,7 +13577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_70_CFG = ArticulationCfg(
@@ -8439,7 +13659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8482,7 +13702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_69_CFG = ArticulationCfg(
@@ -8515,7 +13784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8558,7 +13827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_68_CFG = ArticulationCfg(
@@ -8591,7 +13909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8634,7 +13952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_67_CFG = ArticulationCfg(
@@ -8667,7 +14034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8710,7 +14077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_66_CFG = ArticulationCfg(
@@ -8743,7 +14159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8786,7 +14202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_65_CFG = ArticulationCfg(
@@ -8819,7 +14284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8862,7 +14327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_64_CFG = ArticulationCfg(
@@ -8895,7 +14409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -8938,7 +14452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_63_CFG = ArticulationCfg(
@@ -8971,7 +14534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9014,7 +14577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_62_CFG = ArticulationCfg(
@@ -9047,7 +14659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9090,7 +14702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_60_CFG = ArticulationCfg(
@@ -9123,7 +14784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9166,7 +14827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_61_CFG = ArticulationCfg(
@@ -9199,7 +14909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9242,7 +14952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_74_CFG = ArticulationCfg(
@@ -9275,7 +15034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9318,7 +15077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_73_CFG = ArticulationCfg(
@@ -9351,7 +15159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9394,7 +15202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_72_CFG = ArticulationCfg(
@@ -9427,7 +15284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9470,7 +15327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_71_CFG = ArticulationCfg(
@@ -9503,7 +15409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9546,7 +15452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_130_CFG = ArticulationCfg(
@@ -9579,7 +15534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9622,7 +15577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_129_CFG = ArticulationCfg(
@@ -9655,7 +15659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9698,7 +15702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_128_CFG = ArticulationCfg(
@@ -9731,7 +15784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9774,7 +15827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_127_CFG = ArticulationCfg(
@@ -9807,7 +15909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9850,7 +15952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_126_CFG = ArticulationCfg(
@@ -9883,7 +16034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -9926,7 +16077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_125_CFG = ArticulationCfg(
@@ -9959,7 +16159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10002,7 +16202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_124_CFG = ArticulationCfg(
@@ -10035,7 +16284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10078,7 +16327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_123_CFG = ArticulationCfg(
@@ -10111,7 +16409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10154,7 +16452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_122_CFG = ArticulationCfg(
@@ -10187,7 +16534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10230,7 +16577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_120_CFG = ArticulationCfg(
@@ -10263,7 +16659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10306,7 +16702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_121_CFG = ArticulationCfg(
@@ -10339,7 +16784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10382,7 +16827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_134_CFG = ArticulationCfg(
@@ -10415,7 +16909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10458,7 +16952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_133_CFG = ArticulationCfg(
@@ -10491,7 +17034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10534,7 +17077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_132_CFG = ArticulationCfg(
@@ -10567,7 +17159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10610,7 +17202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_131_CFG = ArticulationCfg(
@@ -10643,7 +17284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10686,7 +17327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_220_CFG = ArticulationCfg(
@@ -10719,7 +17409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10762,7 +17452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_219_CFG = ArticulationCfg(
@@ -10795,7 +17534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10838,7 +17577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_218_CFG = ArticulationCfg(
@@ -10871,7 +17659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10914,7 +17702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_217_CFG = ArticulationCfg(
@@ -10947,7 +17784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -10990,7 +17827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_216_CFG = ArticulationCfg(
@@ -11023,7 +17909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11066,7 +17952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_215_CFG = ArticulationCfg(
@@ -11099,7 +18034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11142,7 +18077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_214_CFG = ArticulationCfg(
@@ -11175,7 +18159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11218,7 +18202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_213_CFG = ArticulationCfg(
@@ -11251,7 +18284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11294,7 +18327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_212_CFG = ArticulationCfg(
@@ -11327,7 +18409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11370,7 +18452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_210_CFG = ArticulationCfg(
@@ -11403,7 +18534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11446,7 +18577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_211_CFG = ArticulationCfg(
@@ -11479,7 +18659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11522,7 +18702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_224_CFG = ArticulationCfg(
@@ -11555,7 +18784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11598,7 +18827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_223_CFG = ArticulationCfg(
@@ -11631,7 +18909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11674,7 +18952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_222_CFG = ArticulationCfg(
@@ -11707,7 +19034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11750,7 +19077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_221_CFG = ArticulationCfg(
@@ -11783,7 +19159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11826,7 +19202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_205_CFG = ArticulationCfg(
@@ -11859,7 +19284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11902,7 +19327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_204_CFG = ArticulationCfg(
@@ -11935,7 +19409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -11978,7 +19452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_203_CFG = ArticulationCfg(
@@ -12011,7 +19534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12054,7 +19577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_202_CFG = ArticulationCfg(
@@ -12087,7 +19659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12130,7 +19702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_201_CFG = ArticulationCfg(
@@ -12163,7 +19784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12206,7 +19827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_200_CFG = ArticulationCfg(
@@ -12239,7 +19909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12282,7 +19952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_199_CFG = ArticulationCfg(
@@ -12315,7 +20034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12358,7 +20077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_198_CFG = ArticulationCfg(
@@ -12391,7 +20159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12434,7 +20202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_197_CFG = ArticulationCfg(
@@ -12467,7 +20284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12510,7 +20327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_195_CFG = ArticulationCfg(
@@ -12543,7 +20409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12586,7 +20452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_196_CFG = ArticulationCfg(
@@ -12619,7 +20534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12662,7 +20577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_209_CFG = ArticulationCfg(
@@ -12695,7 +20659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12738,7 +20702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_208_CFG = ArticulationCfg(
@@ -12771,7 +20784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12814,7 +20827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_207_CFG = ArticulationCfg(
@@ -12847,7 +20909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12890,7 +20952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_206_CFG = ArticulationCfg(
@@ -12923,7 +21034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -12966,7 +21077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_160_CFG = ArticulationCfg(
@@ -12999,7 +21159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13042,7 +21202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_159_CFG = ArticulationCfg(
@@ -13075,7 +21284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13118,7 +21327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_158_CFG = ArticulationCfg(
@@ -13151,7 +21409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13194,7 +21452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_157_CFG = ArticulationCfg(
@@ -13227,7 +21534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13270,7 +21577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_156_CFG = ArticulationCfg(
@@ -13303,7 +21659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13346,7 +21702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_155_CFG = ArticulationCfg(
@@ -13379,7 +21784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13422,7 +21827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_154_CFG = ArticulationCfg(
@@ -13455,7 +21909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13498,7 +21952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_153_CFG = ArticulationCfg(
@@ -13531,7 +22034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13574,7 +22077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_152_CFG = ArticulationCfg(
@@ -13607,7 +22159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13650,7 +22202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_150_CFG = ArticulationCfg(
@@ -13683,7 +22284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13726,7 +22327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_151_CFG = ArticulationCfg(
@@ -13759,7 +22409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13802,7 +22452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_164_CFG = ArticulationCfg(
@@ -13835,7 +22534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13878,7 +22577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_163_CFG = ArticulationCfg(
@@ -13911,7 +22659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -13954,7 +22702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_162_CFG = ArticulationCfg(
@@ -13987,7 +22784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14030,7 +22827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_161_CFG = ArticulationCfg(
@@ -14063,7 +22909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14106,7 +22952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_145_CFG = ArticulationCfg(
@@ -14139,7 +23034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14182,7 +23077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_144_CFG = ArticulationCfg(
@@ -14215,7 +23159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14258,7 +23202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_143_CFG = ArticulationCfg(
@@ -14291,7 +23284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14334,7 +23327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_142_CFG = ArticulationCfg(
@@ -14367,7 +23409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14410,7 +23452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_141_CFG = ArticulationCfg(
@@ -14443,7 +23534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14486,7 +23577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_140_CFG = ArticulationCfg(
@@ -14519,7 +23659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14562,7 +23702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_139_CFG = ArticulationCfg(
@@ -14595,7 +23784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14638,7 +23827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_138_CFG = ArticulationCfg(
@@ -14671,7 +23909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14714,7 +23952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_137_CFG = ArticulationCfg(
@@ -14747,7 +24034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14790,7 +24077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_135_CFG = ArticulationCfg(
@@ -14823,7 +24159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14866,7 +24202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_136_CFG = ArticulationCfg(
@@ -14899,7 +24284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -14942,7 +24327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_149_CFG = ArticulationCfg(
@@ -14975,7 +24409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15018,7 +24452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_148_CFG = ArticulationCfg(
@@ -15051,7 +24534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15094,7 +24577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_147_CFG = ArticulationCfg(
@@ -15127,7 +24659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15170,7 +24702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_146_CFG = ArticulationCfg(
@@ -15203,7 +24784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15246,7 +24827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_190_CFG = ArticulationCfg(
@@ -15279,7 +24909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15322,7 +24952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_189_CFG = ArticulationCfg(
@@ -15355,7 +25034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15398,7 +25077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_188_CFG = ArticulationCfg(
@@ -15431,7 +25159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15474,7 +25202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_187_CFG = ArticulationCfg(
@@ -15507,7 +25284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15550,7 +25327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_186_CFG = ArticulationCfg(
@@ -15583,7 +25409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15626,7 +25452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_185_CFG = ArticulationCfg(
@@ -15659,7 +25534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15702,7 +25577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_184_CFG = ArticulationCfg(
@@ -15735,7 +25659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15778,7 +25702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_183_CFG = ArticulationCfg(
@@ -15811,7 +25784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15854,7 +25827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_182_CFG = ArticulationCfg(
@@ -15887,7 +25909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -15930,7 +25952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_180_CFG = ArticulationCfg(
@@ -15963,7 +26034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16006,7 +26077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_181_CFG = ArticulationCfg(
@@ -16039,7 +26159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16082,7 +26202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_194_CFG = ArticulationCfg(
@@ -16115,7 +26284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16158,7 +26327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_193_CFG = ArticulationCfg(
@@ -16191,7 +26409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16234,7 +26452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_192_CFG = ArticulationCfg(
@@ -16267,7 +26534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16310,7 +26577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_191_CFG = ArticulationCfg(
@@ -16343,7 +26659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16386,7 +26702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_175_CFG = ArticulationCfg(
@@ -16419,7 +26784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16462,7 +26827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_174_CFG = ArticulationCfg(
@@ -16495,7 +26909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16538,7 +26952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_173_CFG = ArticulationCfg(
@@ -16571,7 +27034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16614,7 +27077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_172_CFG = ArticulationCfg(
@@ -16647,7 +27159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16690,7 +27202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_171_CFG = ArticulationCfg(
@@ -16723,7 +27284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16766,7 +27327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_170_CFG = ArticulationCfg(
@@ -16799,7 +27409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16842,7 +27452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_169_CFG = ArticulationCfg(
@@ -16875,7 +27534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16918,7 +27577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_168_CFG = ArticulationCfg(
@@ -16951,7 +27659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -16994,7 +27702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_167_CFG = ArticulationCfg(
@@ -17027,7 +27784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17070,7 +27827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_165_CFG = ArticulationCfg(
@@ -17103,7 +27909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17146,7 +27952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_166_CFG = ArticulationCfg(
@@ -17179,7 +28034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17222,7 +28077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_179_CFG = ArticulationCfg(
@@ -17255,7 +28159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17298,7 +28202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_178_CFG = ArticulationCfg(
@@ -17331,7 +28284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17374,7 +28327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_177_CFG = ArticulationCfg(
@@ -17407,7 +28409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17450,7 +28452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_176_CFG = ArticulationCfg(
@@ -17483,7 +28534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17526,7 +28577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_235_CFG = ArticulationCfg(
@@ -17559,7 +28659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17602,7 +28702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_234_CFG = ArticulationCfg(
@@ -17635,7 +28784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17678,7 +28827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_233_CFG = ArticulationCfg(
@@ -17711,7 +28909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17754,7 +28952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_232_CFG = ArticulationCfg(
@@ -17787,7 +29034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17830,7 +29077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_231_CFG = ArticulationCfg(
@@ -17863,7 +29159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17906,7 +29202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_230_CFG = ArticulationCfg(
@@ -17939,7 +29284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -17982,7 +29327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_229_CFG = ArticulationCfg(
@@ -18015,7 +29409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18058,7 +29452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_228_CFG = ArticulationCfg(
@@ -18091,7 +29534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18134,7 +29577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_227_CFG = ArticulationCfg(
@@ -18167,7 +29659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18210,7 +29702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_225_CFG = ArticulationCfg(
@@ -18243,7 +29784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18286,7 +29827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_226_CFG = ArticulationCfg(
@@ -18319,7 +29909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18362,7 +29952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_239_CFG = ArticulationCfg(
@@ -18395,7 +30034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18438,7 +30077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_238_CFG = ArticulationCfg(
@@ -18471,7 +30159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18514,7 +30202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_237_CFG = ArticulationCfg(
@@ -18547,7 +30284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18590,7 +30327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_236_CFG = ArticulationCfg(
@@ -18623,7 +30409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18666,7 +30452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_325_CFG = ArticulationCfg(
@@ -18699,7 +30534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18742,7 +30577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_324_CFG = ArticulationCfg(
@@ -18775,7 +30659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18818,7 +30702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_323_CFG = ArticulationCfg(
@@ -18851,7 +30784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18894,7 +30827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_322_CFG = ArticulationCfg(
@@ -18927,7 +30909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -18970,7 +30952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_321_CFG = ArticulationCfg(
@@ -19003,7 +31034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19046,7 +31077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_320_CFG = ArticulationCfg(
@@ -19079,7 +31159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19122,7 +31202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_319_CFG = ArticulationCfg(
@@ -19155,7 +31284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19198,7 +31327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_318_CFG = ArticulationCfg(
@@ -19231,7 +31409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19274,7 +31452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_317_CFG = ArticulationCfg(
@@ -19307,7 +31534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19350,7 +31577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_315_CFG = ArticulationCfg(
@@ -19383,7 +31659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19426,7 +31702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_316_CFG = ArticulationCfg(
@@ -19459,7 +31784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19502,7 +31827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_329_CFG = ArticulationCfg(
@@ -19535,7 +31909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19578,7 +31952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_328_CFG = ArticulationCfg(
@@ -19611,7 +32034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19654,7 +32077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_327_CFG = ArticulationCfg(
@@ -19687,7 +32159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19730,7 +32202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_326_CFG = ArticulationCfg(
@@ -19763,7 +32284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19806,7 +32327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_310_CFG = ArticulationCfg(
@@ -19839,7 +32409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19882,7 +32452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_309_CFG = ArticulationCfg(
@@ -19915,7 +32534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -19958,7 +32577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_308_CFG = ArticulationCfg(
@@ -19991,7 +32659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20034,7 +32702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_307_CFG = ArticulationCfg(
@@ -20067,7 +32784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20110,7 +32827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_306_CFG = ArticulationCfg(
@@ -20143,7 +32909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20186,7 +32952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_305_CFG = ArticulationCfg(
@@ -20219,7 +33034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20262,7 +33077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_304_CFG = ArticulationCfg(
@@ -20295,7 +33159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20338,7 +33202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_303_CFG = ArticulationCfg(
@@ -20371,7 +33284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20414,7 +33327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_302_CFG = ArticulationCfg(
@@ -20447,7 +33409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20490,7 +33452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_300_CFG = ArticulationCfg(
@@ -20523,7 +33534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20566,7 +33577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_301_CFG = ArticulationCfg(
@@ -20599,7 +33659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20642,7 +33702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_314_CFG = ArticulationCfg(
@@ -20675,7 +33784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20718,7 +33827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_313_CFG = ArticulationCfg(
@@ -20751,7 +33909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20794,7 +33952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_312_CFG = ArticulationCfg(
@@ -20827,7 +34034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20870,7 +34077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_311_CFG = ArticulationCfg(
@@ -20903,7 +34159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -20946,7 +34202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_265_CFG = ArticulationCfg(
@@ -20979,7 +34284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21022,7 +34327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_264_CFG = ArticulationCfg(
@@ -21055,7 +34409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21098,7 +34452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_263_CFG = ArticulationCfg(
@@ -21131,7 +34534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21174,7 +34577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_262_CFG = ArticulationCfg(
@@ -21207,7 +34659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21250,7 +34702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_261_CFG = ArticulationCfg(
@@ -21283,7 +34784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21326,7 +34827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_260_CFG = ArticulationCfg(
@@ -21359,7 +34909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21402,7 +34952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_259_CFG = ArticulationCfg(
@@ -21435,7 +35034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21478,7 +35077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_258_CFG = ArticulationCfg(
@@ -21511,7 +35159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21554,7 +35202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_257_CFG = ArticulationCfg(
@@ -21587,7 +35284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21630,7 +35327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_255_CFG = ArticulationCfg(
@@ -21663,7 +35409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21706,7 +35452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_256_CFG = ArticulationCfg(
@@ -21739,7 +35534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21782,7 +35577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_269_CFG = ArticulationCfg(
@@ -21815,7 +35659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21858,7 +35702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_268_CFG = ArticulationCfg(
@@ -21891,7 +35784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -21934,7 +35827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_267_CFG = ArticulationCfg(
@@ -21967,7 +35909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22010,7 +35952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_266_CFG = ArticulationCfg(
@@ -22043,7 +36034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22086,7 +36077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_250_CFG = ArticulationCfg(
@@ -22119,7 +36159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22162,7 +36202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_249_CFG = ArticulationCfg(
@@ -22195,7 +36284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22238,7 +36327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_248_CFG = ArticulationCfg(
@@ -22271,7 +36409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22314,7 +36452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_247_CFG = ArticulationCfg(
@@ -22347,7 +36534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22390,7 +36577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_246_CFG = ArticulationCfg(
@@ -22423,7 +36659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22466,7 +36702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_245_CFG = ArticulationCfg(
@@ -22499,7 +36784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22542,7 +36827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_244_CFG = ArticulationCfg(
@@ -22575,7 +36909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22618,7 +36952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_243_CFG = ArticulationCfg(
@@ -22651,7 +37034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22694,7 +37077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_242_CFG = ArticulationCfg(
@@ -22727,7 +37159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22770,7 +37202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_240_CFG = ArticulationCfg(
@@ -22803,7 +37284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22846,7 +37327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_241_CFG = ArticulationCfg(
@@ -22879,7 +37409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22922,7 +37452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_254_CFG = ArticulationCfg(
@@ -22955,7 +37534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -22998,7 +37577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_253_CFG = ArticulationCfg(
@@ -23031,7 +37659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23074,7 +37702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_252_CFG = ArticulationCfg(
@@ -23107,7 +37784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23150,7 +37827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_251_CFG = ArticulationCfg(
@@ -23183,7 +37909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23226,7 +37952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_295_CFG = ArticulationCfg(
@@ -23259,7 +38034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23302,7 +38077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_294_CFG = ArticulationCfg(
@@ -23335,7 +38159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23378,7 +38202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_293_CFG = ArticulationCfg(
@@ -23411,7 +38284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23454,7 +38327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_292_CFG = ArticulationCfg(
@@ -23487,7 +38409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23530,7 +38452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_291_CFG = ArticulationCfg(
@@ -23563,7 +38534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23606,7 +38577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_290_CFG = ArticulationCfg(
@@ -23639,7 +38659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23682,7 +38702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_289_CFG = ArticulationCfg(
@@ -23715,7 +38784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23758,7 +38827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_288_CFG = ArticulationCfg(
@@ -23791,7 +38909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23834,7 +38952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_287_CFG = ArticulationCfg(
@@ -23867,7 +39034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23910,7 +39077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_285_CFG = ArticulationCfg(
@@ -23943,7 +39159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -23986,7 +39202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_286_CFG = ArticulationCfg(
@@ -24019,7 +39284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24062,7 +39327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_299_CFG = ArticulationCfg(
@@ -24095,7 +39409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24138,7 +39452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_298_CFG = ArticulationCfg(
@@ -24171,7 +39534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24214,7 +39577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_297_CFG = ArticulationCfg(
@@ -24247,7 +39659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24290,7 +39702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_296_CFG = ArticulationCfg(
@@ -24323,7 +39784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24366,7 +39827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_280_CFG = ArticulationCfg(
@@ -24399,7 +39909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24442,7 +39952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_279_CFG = ArticulationCfg(
@@ -24475,7 +40034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24518,7 +40077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_278_CFG = ArticulationCfg(
@@ -24551,7 +40159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24594,7 +40202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_277_CFG = ArticulationCfg(
@@ -24627,7 +40284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24670,7 +40327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_276_CFG = ArticulationCfg(
@@ -24703,7 +40409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24746,7 +40452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_275_CFG = ArticulationCfg(
@@ -24779,7 +40534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24822,7 +40577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_274_CFG = ArticulationCfg(
@@ -24855,7 +40659,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24898,7 +40702,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_273_CFG = ArticulationCfg(
@@ -24931,7 +40784,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -24974,7 +40827,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_272_CFG = ArticulationCfg(
@@ -25007,7 +40909,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25050,7 +40952,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_270_CFG = ArticulationCfg(
@@ -25083,7 +41034,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25126,7 +41077,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_271_CFG = ArticulationCfg(
@@ -25159,7 +41159,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25202,7 +41202,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_284_CFG = ArticulationCfg(
@@ -25235,7 +41284,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25278,7 +41327,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_283_CFG = ArticulationCfg(
@@ -25311,7 +41409,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25354,7 +41452,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_282_CFG = ArticulationCfg(
@@ -25387,7 +41534,7 @@ actuators = {
             ".*_hip_roll_joint": 150.00,
             ".*_hip_pitch_joint": 200.00,
             ".*_knee.*joint": 200.00,
-            "torso_joint": 200.00
+            "torso_joint": 200.00,
         },
         damping={
             ".*_hip_yaw_joint": 5.00,
@@ -25430,7 +41577,56 @@ actuators = {
             ".*_shoulder_joint": 0.01,
             ".*_elbow_joint": 0.01
         },
-    )
+    ),
+
+    "all": ImplicitActuatorCfg(
+        joint_names_expr=[
+            '.*_hip_yaw_joint', '.*_hip_roll_joint', '.*_hip_pitch_joint', '.*_knee.*joint', 'torso_joint',
+            '.*_ankle_joint',
+            '.*_shoulder_joint', '.*_elbow_joint',
+        ],
+        effort_limit={
+            '.*_hip_yaw_joint': 300, 
+            '.*_hip_roll_joint': 300, 
+            '.*_hip_pitch_joint': 300, 
+            '.*_knee.*joint': 300,
+            'torso_joint': 300,
+            '.*_ankle_joint': 20,
+            '.*_shoulder_joint': 300, 
+            '.*_elbow_joint': 300,
+        },
+        velocity_limit={
+            '.*_hip_yaw_joint': 100, 
+            '.*_hip_roll_joint': 100, 
+            '.*_hip_pitch_joint': 100, 
+            '.*_knee.*joint': 100,
+            'torso_joint': 100,
+            '.*_ankle_joint': 100, # this is edited by tmu, original value is None
+            '.*_shoulder_joint': 100, 
+            '.*_elbow_joint': 100,
+        },
+        stiffness={
+            ".*_hip_yaw_joint": 150.00,
+            ".*_hip_roll_joint": 150.00,
+            ".*_hip_pitch_joint": 200.00,
+            '.*_knee.*joint': 200,
+            "torso_joint": 200.00,
+            '.*_ankle_joint': 20,
+            ".*_shoulder_joint": 40.00,
+            ".*_elbow_joint": 40.00,
+        },
+        damping={
+            ".*_hip_yaw_joint": 5.00,
+            ".*_hip_roll_joint": 5.00,
+            ".*_hip_pitch_joint": 5.00,
+            '.*_knee.*joint': 5.00,
+            "torso_joint": 5.00,
+            '.*_ankle_joint': 2.00,
+            ".*_shoulder_joint": 10.00,
+            ".*_elbow_joint": 10.00,
+        },
+        armature=0.01,
+    ),
 }
 
 GEN_HUMANOID_281_CFG = ArticulationCfg(

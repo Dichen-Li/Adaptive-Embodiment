@@ -78,7 +78,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
 
             # Validate required terms in URDF
             term_patterns = {
-                "trunk": r"trunk",
+                "trunk": r"pelvis" if 'humanoid' in robot_name else r"trunk",
                 "foot": r"foot",
             }
             term_matches = read_urdf_and_verify_terms(urdf_path, term_patterns)
@@ -90,13 +90,14 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
                 raise ValueError(f"Validation failed: 'foot' term not found in URDF for {robot_name}.")
 
             # Generate the class definition
+            trunk_name = term_patterns['trunk']
             class_definition = (
                 f"@configclass\n"
                 f"class {class_name}({cfg_class_parent}):\n"
                 f"    action_space = {action_space}\n"
                 f"    robot: ArticulationCfg = {cfg_name}\n"
-                f"    trunk_cfg = SceneEntityCfg(\"robot\", body_names=\"trunk\")\n"
-                f"    trunk_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])\n"
+                f"    trunk_cfg = SceneEntityCfg(\"robot\", body_names=\"{trunk_name}\")\n"
+                f"    trunk_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names=['.*{trunk_name}.*', '.*hip.*', '.*thigh.*'])\n"
                 f"    feet_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names=\".*foot\")\n\n"
             )
 
@@ -107,7 +108,8 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
         print(f"Generated {len(robot_folders)} class definitions.")
 
 # Example usage
-cfg_class_parent = 'GenHexapodEnvCfg'   # Change as needed
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods"  # Replace with the actual directory containing robot folders
-output_file = "robot_classes.py"  # Output file for the generated class definitions
+cfg_class_parent = 'Go2EnvCfg'   # Change as needed
+base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids"  # Replace with the actual directory containing robot folders
+# output_file = "exts/berkeley_humanoid/berkeley_humanoid/tasks/configs/environment/gen_humanoid_cfg.py"  # Output file for the generated class definitions
+output_file = "tmp.py"
 generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent)
