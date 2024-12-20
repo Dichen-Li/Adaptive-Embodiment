@@ -121,7 +121,7 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
 
         with torch.no_grad():
             with tqdm.tqdm(val_loader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                for batch_inputs, batch_targets in pbar:
+                for batch_inputs, batch_targets, data_source_name in pbar:
                     # Move data to device
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
