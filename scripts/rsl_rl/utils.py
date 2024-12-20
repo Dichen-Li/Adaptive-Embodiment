@@ -241,23 +241,30 @@ def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, metad
     dynamic_joint_description = dynamic_joint_combined_state[:, :, :dynamic_joint_description_size]
     dynamic_joint_state = dynamic_joint_combined_state[:, :, dynamic_joint_description_size:]
 
-    # Dynamic Foot Observations
-    nr_dynamic_foot_observations = metadata.nr_dynamic_foot_observations
-    single_dynamic_foot_observation_length = metadata.single_dynamic_foot_observation_length
-    dynamic_foot_observation_length = metadata.dynamic_foot_observation_length
-    dynamic_foot_description_size = metadata.dynamic_foot_description_size
+    # # Dynamic Foot Observations
+    # nr_dynamic_foot_observations = metadata.nr_dynamic_foot_observations
+    # single_dynamic_foot_observation_length = metadata.single_dynamic_foot_observation_length
+    # dynamic_foot_observation_length = metadata.dynamic_foot_observation_length
+    # dynamic_foot_description_size = metadata.dynamic_foot_description_size
 
-    dynamic_foot_combined_state = one_policy_observation[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
-    dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
-    dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
+    # dynamic_foot_combined_state = one_policy_observation[:, dynamic_joint_observation_length:dynamic_joint_observation_length + dynamic_foot_observation_length].view((-1, nr_dynamic_foot_observations, single_dynamic_foot_observation_length))
+    # dynamic_foot_description = dynamic_foot_combined_state[:, :, :dynamic_foot_description_size]
+    # dynamic_foot_state = dynamic_foot_combined_state[:, :, dynamic_foot_description_size:]
 
-    policy_general_state_start_index = dynamic_joint_observation_length + dynamic_foot_observation_length
-    policy_general_state_end_index = one_policy_observation.shape[1]
-    policy_general_state_mask = torch.arange(policy_general_state_start_index, policy_general_state_end_index, device=device)
-    # exclude truck_linear_vel and height # 20->16
-    policy_exlucion_index = torch.tensor((metadata.trunk_linear_vel_update_obs_idx + metadata.height_update_obs_idx), device=device)
-    policy_general_state_mask = policy_general_state_mask[~torch.isin(policy_general_state_mask, policy_exlucion_index)]
-    general_policy_state = one_policy_observation[:, policy_general_state_mask]
+    # policy_general_state_start_index = dynamic_joint_observation_length + dynamic_foot_observation_length
+    # policy_general_state_end_index = one_policy_observation.shape[1]
+    # policy_general_state_mask = torch.arange(policy_general_state_start_index, policy_general_state_end_index, device=device)
+    # # exclude truck_linear_vel and height # 20->16
+    # policy_exlucion_index = torch.tensor((metadata.trunk_linear_vel_update_obs_idx + metadata.height_update_obs_idx), device=device)
+    # policy_general_state_mask = policy_general_state_mask[~torch.isin(policy_general_state_mask, policy_exlucion_index)]
+    # general_policy_state = one_policy_observation[:, policy_general_state_mask]
+    # General Policy State Transformation
+    trunk_angular_vel_update_obs_idx = metadata.trunk_angular_vel_update_obs_idx
+    goal_velocity_update_obs_idx = metadata.goal_velocity_update_obs_idx
+    projected_gravity_update_obs_idx = metadata.projected_gravity_update_obs_idx
+    general_policy_state = one_policy_observation[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
+    general_policy_state = torch.cat((general_policy_state, one_policy_observation[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
+
 
     # # General Policy State Mask
     # policy_general_state_mask = torch.arange(303, 320, device=self.device)
@@ -267,8 +274,8 @@ def one_policy_observation_to_inputs(one_policy_observation: torch.tensor, metad
     inputs = (
         dynamic_joint_description,
         dynamic_joint_state,
-        dynamic_foot_description,
-        dynamic_foot_state,
+        # dynamic_foot_description,
+        # dynamic_foot_state,
         general_policy_state
     )
     return inputs
