@@ -37,11 +37,15 @@ class LocomotionEnv(DirectRLEnv):
 
         self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
-        self.joint_max_velocity = self.robot.actuators["base_legs"].velocity_limit
-        self.joint_max_torque = self.robot.actuators["base_legs"].effort_limit
         self.action_scaling_factor = self.cfg.action_scaling_factor
-        self.p_gains = self.robot.actuators["base_legs"].stiffness
-        self.d_gains = self.robot.actuators["base_legs"].damping
+        if 'all' in self.robot.actuators:
+            robot_actuators = self.robot.actuators["all"] # this should use the same order as self.robot.data.joint_names
+            self.joint_max_velocity = robot_actuators.velocity_limit
+            self.joint_max_torque = robot_actuators.effort_limit
+            self.p_gains = robot_actuators.stiffness
+            self.d_gains = robot_actuators.damping
+        else:
+            raise NotImplementedError()
 
         self.step_sampling_probability = self.cfg.step_sampling_probability
 

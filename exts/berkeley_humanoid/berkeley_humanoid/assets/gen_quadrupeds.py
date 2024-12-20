@@ -56,6 +56,15 @@ actuators = {
         damping=0.5,
         friction=0.0,
     ),
+    "all": DCMotorCfg(
+        joint_names_expr=[".*joint"],
+        effort_limit=23.5,
+        saturation_effort=23.5,
+        velocity_limit=30.0,
+        stiffness=20.0,
+        damping=0.5,
+        friction=0.0,
+    ),
 }
 
 

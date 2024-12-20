@@ -54,28 +54,35 @@ def parse_arguments():
     return args
 
 
+def get_meter_dict_avg(meter_dicts):
+    return sum([meter.avg for meter in meter_dicts.values()])/len(meter_dicts)
+
+
 def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num_epochs, model_device,
           log_dir, checkpoint_interval, model, gradient_acc_steps):
     """Training loop with validation, TensorBoard logging, and checkpoint saving."""
     writer = SummaryWriter(log_dir=log_dir)
-    train_loss_meter = AverageMeter()
-    val_loss_meter = AverageMeter()
+    train_loss_meters = {}
+    val_loss_meters = {}
     best_val_loss = float("inf")
 
     print("[INFO] Starting supervised training.")
     for epoch in range(num_epochs):
         # Training phase
         policy.train()
-        train_loss_meter.reset()
+        for meter in train_loss_meters.values():
+            meter.reset()
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
         with tqdm.tqdm(train_loader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            for index, (batch_inputs, batch_targets) in enumerate(pbar):
+            for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
                 # Move data to device
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
 
                 if model == 'urma':
+                    # print([x.shape for x in batch_inputs])
+                    # import ipdb; ipdb.set_trace()
                     batch_predictions = policy(*batch_inputs)
                 else:
                     one_input = torch.cat([
@@ -94,18 +101,22 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     optimizer.step()
 
                 # Update training loss tracker
-                train_loss_meter.update(loss.item(), n=batch_targets.size(0))
+                if data_source_name not in train_loss_meters:
+                    train_loss_meters[data_source_name] = AverageMeter()
+                train_loss_meters[data_source_name].update(loss.item(), n=batch_targets.size(0))
 
                 # Update progress bar with current loss
-                pbar.set_postfix({"Loss": f"{train_loss_meter.avg:.3f}"})
+                pbar.set_postfix({"Loss": f"{get_meter_dict_avg(train_loss_meters):.4f}"})
 
         # Log training loss to TensorBoard
-        writer.add_scalar("Train/loss", train_loss_meter.avg, epoch + 1)
+        for robot_name, meter in train_loss_meters.items():
+            writer.add_scalar(f"Train/loss/{robot_name}", meter.avg, epoch + 1)
         writer.add_scalar("Train/lr", optimizer.param_groups[0]['lr'], epoch + 1)
 
         # Validation phase
         policy.eval()
-        val_loss_meter.reset()
+        for meter in val_loss_meters.values():
+            meter.reset()
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
         with torch.no_grad():
@@ -126,13 +137,17 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
                     loss = criterion(batch_predictions, batch_targets)
 
                     # Update validation loss tracker
-                    val_loss_meter.update(loss.item(), n=batch_targets.size(0))
+                    if data_source_name not in val_loss_meters:
+                        val_loss_meters[data_source_name] = AverageMeter()
+                    val_loss_meters[data_source_name].update(loss.item(), n=batch_targets.size(0))
 
                     # Update progress bar with current loss
-                    pbar.set_postfix({"Loss": f"{val_loss_meter.avg:.3f}"})
+                    pbar.set_postfix(
+                        {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
 
-        # Log validation loss to TensorBoard
-        writer.add_scalar("Val/loss", val_loss_meter.avg, epoch + 1)
+        # Log training loss to TensorBoard
+        for robot_name, meter in train_loss_meters.items():
+            writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
 
         # Step the LR scheduler
         if scheduler is not None:
@@ -143,12 +158,12 @@ def train(policy, criterion, optimizer, scheduler, train_loader, val_loader, num
             save_checkpoint(policy, optimizer, epoch + 1, log_dir)
 
         # Save the best model based on validation loss
-        if val_loss_meter.avg < best_val_loss:
-            best_val_loss = val_loss_meter.avg
+        if get_meter_dict_avg(val_loss_meters) < best_val_loss:
+            best_val_loss = get_meter_dict_avg(val_loss_meters)
             save_checkpoint(policy, optimizer, epoch + 1, log_dir, is_best=True)
 
-        print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_loss_meter.avg:.6f}, "
-              f"Val Loss: {val_loss_meter.avg:.6f}, Best Val Loss: {best_val_loss:.6f}")
+        print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {get_meter_dict_avg(train_loss_meters):.6f}, "
+              f"Val Loss: {get_meter_dict_avg(val_loss_meters):.6f}, Best Val Loss: {best_val_loss:.6f}")
 
     writer.close()
     print("[INFO] Training completed. TensorBoard logs saved.")

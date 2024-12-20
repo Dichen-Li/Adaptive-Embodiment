@@ -10,7 +10,7 @@ from omni.isaac.lab.app import AppLauncher
 
 
 # add argparse arguments
-parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
+parser = argparse.ArgumentParser(description="Collect demonstration data for policy distillation.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
 parser.add_argument("--video_length", type=int, default=20, help="Length of the recorded video (in steps).")
 parser.add_argument(
@@ -87,8 +87,9 @@ def main():
     policy = ppo_runner.get_inference_policy(device=env.unwrapped.device)
 
     # Initialize DatasetManager
+    data_record_path = os.path.join(log_dir, "h5py_record")
     dataset_manager = DatasetSaver(
-        record_path=os.path.join(log_dir, "h5py_record"),
+        record_path=data_record_path,
         max_steps_per_file=200,
         env=env
     )
@@ -142,6 +143,9 @@ def main():
     # if args_cli.video:
     #     if h5py_timestep >= args_cli.video_length:
     #         break
+
+    # log reward statistics
+    reward_dict_logger.write_to_yaml(os.path.join(data_record_path, "reward_dict.yaml"))
 
     # close the simulator
     env.close()

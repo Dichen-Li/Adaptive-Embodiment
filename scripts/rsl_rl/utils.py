@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-
+import yaml
 import torch
 
 
@@ -90,7 +90,7 @@ class RewardDictLogger:
                 for key in self.full_trajectory_term_rewards:
                     self.full_trajectory_term_rewards[key][i] = 0.0  # Reset per-term reward
 
-    def print(self, curr_timestep, mode="avg"):
+    def print(self, curr_timestep, mode="sum"):
         """
         Prints reward statistics based on the mode.
 
@@ -131,6 +131,54 @@ class RewardDictLogger:
 
         print("[INFO] =========================================================")
 
+    def write_to_yaml(self, path, mode="sum"):
+        """
+        Writes the reward statistics to a YAML file.
+
+        Args:
+            path (str): Path to the output YAML file.
+            mode (str): "avg" or "sum" for average rewards or summed rewards.
+        """
+        assert mode in ["avg", "sum"], "Mode must be 'sum' or 'avg'"
+
+        # Prepare data for YAML
+        data = {
+            "timestep_mode": mode,
+            "statistics": {},
+        }
+
+        # Collect reward data
+        if mode == "avg":
+            total_avg = 0
+            for key, meter in self.reward_avg_meter_dict.items():
+                data["statistics"][key] = {"average": meter.avg}
+                total_avg += meter.avg
+            data["sum_of_averages"] = total_avg
+
+        elif mode == "sum":
+            total_sum = 0
+            for key, meter in self.reward_avg_meter_dict.items():
+                term_sum = torch.mean(self.full_trajectory_term_rewards[key]).item()
+                data["statistics"][key] = {"sum": term_sum}
+                total_sum += term_sum
+            data["sum_of_rewards"] = total_sum
+
+            # Add average full trajectory reward
+            avg_full_reward = (
+                sum(self.full_trajectory_rewards) / len(self.full_trajectory_rewards)
+                if self.full_trajectory_rewards
+                else 0
+            )
+            data["average_full_trajectory_reward"] = avg_full_reward
+
+            # Add count of full trajectories
+            data["full_trajectory_rewards_logged"] = len(self.full_trajectory_rewards)
+
+        # Write to YAML
+        with open(path, "w") as yaml_file:
+            yaml.dump(data, yaml_file, default_flow_style=False)
+
+        print(f"[INFO] Statistics written to {path}")
 
 
 def get_most_recent_h5py_record_path(base_path, task_name):
