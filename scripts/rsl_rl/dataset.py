@@ -461,8 +461,13 @@ class LocomotionDataset(Dataset):
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
 
         # General Policy State Transformation
-        general_policy_state = state[..., -16:]
+        trunk_angular_vel_update_obs_idx = metadata["trunk_angular_vel_update_obs_idx"]
+        goal_velocity_update_obs_idx = metadata["goal_velocity_update_obs_idx"]
+        projected_gravity_update_obs_idx = metadata["projected_gravity_update_obs_idx"]
+        general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
+        general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
 
+        import ipdb; ipdb.set_trace()
         # Return transformed inputs and target
         return (
             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
