@@ -96,6 +96,7 @@ class LocomotionEnv(DirectRLEnv):
         self.initial_state_yaw_angle_factor = self.cfg.initial_state_yaw_angle_factor
         self.initial_state_joint_nominal_position_factor = self.cfg.initial_state_joint_nominal_position_factor
         self.initial_state_joint_velocity_factor = self.cfg.initial_state_joint_velocity_factor
+        self.initial_state_joint_velocity_clip = self.cfg.initial_state_joint_velocity_clip
         self.initial_state_max_linear_velocity = self.cfg.initial_state_max_linear_velocity
         self.initial_state_max_angular_velocity = self.cfg.initial_state_max_angular_velocity
 
@@ -338,7 +339,16 @@ class LocomotionEnv(DirectRLEnv):
         yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor
         quaternion = axis_angle_to_quaternion(torch.stack([roll_angle, pitch_angle, yaw_angle], dim=1))
         joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor)
-        joint_velocities = self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_velocity_factor
+
+        # note that the randomization strength below line is dependent on the joint velocity range
+        # some robots are very sensitive to the initial velocities, such as very tall humanoids
+        # and the randomization could be overly strong for robots with super large joint_max_velocity
+        # so it's good to clip the range to a constant, which is a hyper parameter
+        joint_velocities = (self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints),
+                                                                           device=self.sim.device) * 2) - 1.0)
+                            * self.initial_state_joint_velocity_factor)
+        joint_velocities = joint_velocities.clip(-self.initial_state_joint_velocity_clip, self.initial_state_joint_velocity_clip)
+
         linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity
         angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity
 
@@ -347,6 +357,7 @@ class LocomotionEnv(DirectRLEnv):
         default_root_state[:, 3:7] = quaternion
         default_root_state[:, 7:10] = linear_velocity
         default_root_state[:, 10:] = angular_velocity
+
         self.robot.write_root_pose_to_sim(default_root_state[:, :7], env_ids)
         self.robot.write_root_velocity_to_sim(default_root_state[:, 7:], env_ids)
         self.robot.write_joint_state_to_sim(joint_positions, joint_velocities, None, env_ids)
@@ -425,6 +436,7 @@ class LocomotionEnv(DirectRLEnv):
         trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
         trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
         terminated = trunk_contact
+        # terminated = torch.tensor([False] * self.num_envs, dtype=torch.bool, device=self.sim.device)  # for debugging
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
 
