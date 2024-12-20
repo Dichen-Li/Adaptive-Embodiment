@@ -3,8 +3,9 @@ python scripts/rsl_rl/run_distillation.py \
             Gendog100_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2 \
             Gendog200_gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_0_8 \
             Gendog50_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_4 \
+            Genhexapod1_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_1_2 \
     --model urma \
-    --exp_name urma_10_100_200_50_randomized_additive_bs512_acc2 \
+    --exp_name urma_10_100_200_50_haxa1_randomized_additive_bs512_acc2 \
     --batch_size 512 \
     --lr 3e-4 \
     --num_workers 16 \
