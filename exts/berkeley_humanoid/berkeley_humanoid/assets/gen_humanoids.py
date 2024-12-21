@@ -722,6 +722,10 @@ robot_dirs = sorted(
 for i, robot_dir in enumerate(robot_dirs):
     with open(f"{robot_dir}/train_cfg_v2.json", "r") as f:
         train_cfg = json.load(f)
+
+    robot_name = train_cfg.get("robot_name")
+    cfg_name = f"{robot_name.upper()}_CFG"
+    robot_idx = int(robot_name.split("_")[-1])
     init_height = train_cfg["drop_height"] + 0.01
 
     cfg = ArticulationCfg(
@@ -739,8 +743,8 @@ for i, robot_dir in enumerate(robot_dirs):
             joint_vel={".*": 0.0},
         ),
         soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-        actuators=actuators_without_knee if i < 15 else actuators_with_knee,
+        actuators=actuators_without_knee if robot_idx < 15 else actuators_with_knee,
         prim_path=prim_path
     )
-    globals()[f"GEN_HUMANOID_{i}_CFG"] = cfg
+    globals()[cfg_name] = cfg
 
