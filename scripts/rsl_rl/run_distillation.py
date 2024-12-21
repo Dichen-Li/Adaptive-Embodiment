@@ -143,6 +143,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, n
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
             writer.add_scalar(f"Train/loss/{robot_name}", meter.avg, epoch + 1)
+        writer.add_scalar("Train/loss/avg", get_meter_dict_avg(train_loss_meters), epoch + 1)
         writer.add_scalar("Train/lr", optimizer.param_groups[0]['lr'], epoch + 1)
 
         # Validation phase
@@ -182,8 +183,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, n
                         {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
 
         # Log validation loss to TensorBoard
-        for robot_name, meter in train_loss_meters.items():
+        for robot_name, meter in val_loss_meters.items():
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
+        writer.add_scalar("Val/loss/avg", get_meter_dict_avg(val_loss_meters), epoch + 1)
 
         # Step the LR scheduler
         if scheduler is not None:
