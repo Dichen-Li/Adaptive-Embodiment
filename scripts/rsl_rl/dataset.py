@@ -7,6 +7,7 @@ import torch
 import yaml
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
+from itertools import chain
 
 from thread_safe_dict import ThreadSafeDict
 from utils import AverageMeter
@@ -545,7 +546,7 @@ class LocomotionDataset(Dataset):
             list: A list of indices, interleaved for workers, where each sublist contains indices for a batch.
         """
         self.batch_size = batch_size
-        file_batches = {}  # Dictionary to hold batches per file
+        file_samples = {}  # Dictionary to hold batches per file
 
         # Collect batches for each file
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
@@ -556,44 +557,53 @@ class LocomotionDataset(Dataset):
                 np.random.shuffle(indices)  # Shuffle indices within the file
 
             # Split indices into batches and store in file_batches
-            file_batches[(folder_idx, file_idx)] = [
+            file_samples[(folder_idx, file_idx)] = [
                 indices[i:i + batch_size] for i in range(0, len(indices), batch_size)
             ]
 
         # Shuffle the order of files
-        file_keys = list(file_batches.keys())
+        file_keys = list(file_samples.keys())
         if shuffle:
             np.random.shuffle(file_keys)
 
         # Distribute batches across workers in an interleaved manner
-        interleaved_batches = [[] for _ in range(num_workers)]
+        # samples_per_worker will be a list of lists, where the inner list contains lists of samples, with
+        # each list from one file
+        # also record the mapping between worker and file keys
+        file_sample_lists_per_worker = [[] for _ in range(num_workers)]
+        self.worker_idx_to_folder_file_idx = {worker_idx: set() for worker_idx in range(num_workers)}
         for i, key in enumerate(file_keys):
-            for batch in file_batches[key]:
-                interleaved_batches[i % num_workers].append(batch)
+            file_sample_lists_per_worker[i % num_workers].append(file_samples[key])
+            self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
 
-        # Interleave batches from all workers to form the final sequence for data loader
-        # Here we need to make sure every worker has the same number of samples to process
+        # Duplicate samples so that every worker has the same number of samples
         # otherwise the workers that finish their job earlier will be assigned to join
         # other worker's job queue, which may create the condition where multiple workers
         # read the same file from the disk, making the system incredibly slow
-        final_samples = []
         duplicates = 0
-        max_batches_per_worker = max(len(worker_batches) for worker_batches in interleaved_batches)
-        for i in range(max_batches_per_worker):
-            for worker_batches in interleaved_batches:
-                if i < len(worker_batches):     # to avoid out of bound,
-                    final_samples.append(worker_batches[i])
-                else:  # when there are no sufficient samples
-                    duplicates += 1
-                    final_samples.append(random.choice(worker_batches))
+        max_files_per_worker = max(len(worker_batches) for worker_batches in file_sample_lists_per_worker)
+        for worker_idx, worker_samples in enumerate(file_sample_lists_per_worker):
+            while len(worker_samples) < max_files_per_worker:
+                sampled_file_samples = random.choice(file_sample_lists_per_worker[worker_idx])  # sample a file sample list
+                worker_samples.append(sampled_file_samples)
+                duplicates += len(sampled_file_samples)     # record number of duplicates for logging
+            file_sample_lists_per_worker[worker_idx] = worker_samples
+
+        # flatten the inner 2-layer nested lists into one 1-layer list
+        samples_per_worker = [list(chain(*worker_sample_lists)) for worker_sample_lists in file_sample_lists_per_worker]
+        assert all(len(samples) == len(samples_per_worker[0]) for samples in samples_per_worker), \
+            (f"the number of samples for workers differ: {[len(samples) for samples in samples_per_worker]}"
+             f"This function assumes all files have the same number of samples. Is this true?")
+
+        # Interleave batches from all workers to form the final sequence
+        final_samples = []
+        max_samples_per_worker = max(len(worker_samples) for worker_samples in samples_per_worker)
+        for i in range(max_samples_per_worker):
+            for worker_idx, samples in enumerate(samples_per_worker):
+                final_samples.append(samples[i])
 
         print(f'[INFO]: duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
               f'({duplicates/len(final_samples)*100:.2f}%)')
-
-        # Create a mapping of worker indices to (folder_idx, file_idx) pairs
-        self.worker_idx_to_folder_file_idx = {worker_idx: set() for worker_idx in range(num_workers)}
-        for i, key in enumerate(file_keys):
-            self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
 
         return final_samples
 
