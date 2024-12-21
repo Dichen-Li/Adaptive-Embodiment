@@ -70,6 +70,7 @@ class LocomotionEnv(DirectRLEnv):
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
+        self.feet_y_distance_target = self.cfg.feet_y_distance_target
 
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
@@ -488,7 +489,8 @@ class LocomotionEnv(DirectRLEnv):
             feet_contacts,
             self.previous_feet_air_times,
             self.feet_symmetry_pairs,
-            local_feet_pos
+            local_feet_pos,
+            self.feet_y_distance_target
         )
 
         self.extras = {"log": extras}  # sum(extras.values()) is reward
@@ -771,7 +773,7 @@ def axis_angle_to_quaternion(axis_angle: torch.Tensor) -> torch.Tensor:
     return quaternions
 
 
-# @torch.jit.script
+@torch.jit.script
 def compute_rewards(
     curriculum_coeff: float,
     tracking_xy_velocity_command_coeff: float,
@@ -806,7 +808,8 @@ def compute_rewards(
     feet_contacts: torch.Tensor,
     feet_air_times: torch.Tensor,
     feet_symmetry_pairs: torch.Tensor,
-    local_feet_pos: torch.Tensor
+    local_feet_pos: torch.Tensor,
+    feet_y_distance_target: float,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     
     # Tracking xy velocity command reward
@@ -869,7 +872,7 @@ def compute_rewards(
 
     # Feet y distance reward
     feet_y_distance = torch.abs(local_feet_pos[:, feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
-    feet_y_distance_from_target_norm = (feet_y_distance - 0.34) ** 2
+    feet_y_distance_from_target_norm = (feet_y_distance - feet_y_distance_target) ** 2
     feet_y_distance_reward = curriculum_coeff * feet_y_distance_coeff * -feet_y_distance_from_target_norm
 
     # Total reward
