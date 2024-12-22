@@ -44,6 +44,12 @@ class LocomotionEnv(DirectRLEnv):
             self.joint_max_torque = robot_actuators.effort_limit
             self.p_gains = robot_actuators.stiffness
             self.d_gains = robot_actuators.damping
+        elif 'base_legs' in self.robot.actuators:
+            robot_actuators = self.robot.actuators["base_legs"]
+            self.joint_max_velocity = robot_actuators.velocity_limit
+            self.joint_max_torque = robot_actuators.effort_limit
+            self.p_gains = robot_actuators.stiffness
+            self.d_gains = robot_actuators.damping
         else:
             raise NotImplementedError()
 
