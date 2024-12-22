@@ -1,4 +1,5 @@
 import os
+import random
 
 import h5py
 import numpy as np
@@ -6,6 +7,7 @@ import torch
 import yaml
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
+from itertools import chain
 
 from thread_safe_dict import ThreadSafeDict
 from utils import AverageMeter
@@ -18,20 +20,12 @@ class DatasetSaver:
         "single_dynamic_joint_observation_length",
         "dynamic_joint_observation_length",
         "dynamic_joint_description_size",
-        "nr_dynamic_foot_observations",
-        "single_dynamic_foot_observation_length",
-        "dynamic_foot_observation_length",
-        "dynamic_foot_description_size",
         "joint_positions_update_obs_idx",
         "joint_velocities_update_obs_idx",
         "joint_previous_actions_update_obs_idx",
-        "foot_ground_contact_update_obs_idx",
-        "foot_time_since_last_ground_contact_update_obs_idx",
-        "trunk_linear_vel_update_obs_idx",
         "trunk_angular_vel_update_obs_idx",
         "goal_velocity_update_obs_idx",
         "projected_gravity_update_obs_idx",
-        "height_update_obs_idx",
     ]
 
     def __init__(self, record_path, env, max_steps_per_file, buffer_size=1):
@@ -146,118 +140,104 @@ class DatasetSaver:
         """
         self.close()
 
-
-class LocomotionDatasetSingle:
-    def __init__(self, folder_path):
-        """
-        Initialize the LocomotionDataset.
-
-        Args:
-            folder_path (str): Path to the folder containing HDF5 files and metadata.
-        """
-        self.folder_path = folder_path
-        self.metadata = self._load_metadata()
-        self.inputs = []
-        self.targets = []
-
-    def _load_metadata(self):
-        """
-        Load metadata from the YAML file in the dataset folder.
-
-        Returns:
-            dict: Metadata containing environment parameters.
-        """
-        metadata_path = os.path.join(self.folder_path, "metadata.yaml")
-        if not os.path.exists(metadata_path):
-            raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
-
-        with open(metadata_path, "r") as metadata_file:
-            metadata = yaml.safe_load(metadata_file)
-        print(f"[INFO]: Loaded metadata from {metadata_path}")
-        return metadata
-
-    def _load_hdf5_files(self):
-        """
-        Load data from all HDF5 files in the folder, sorted numerically by index,
-        and check for None/NaN values in the data.
-        """
-        hdf5_files = sorted(
-            [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
-            key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
-        )
-
-        if not hdf5_files:
-            raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
-
-        for file_name in hdf5_files:
-            file_path = os.path.join(self.folder_path, file_name)
-            # print(f"[INFO]: Loading file {file_path}")
-
-            with h5py.File(file_path, "r") as data_file:
-                inputs = data_file["one_policy_observation"][:]
-                targets = data_file["actions"][:]
-
-                # Check for None or NaN values
-                if np.any(inputs == None) or np.any(targets == None):  # Check for None
-                    raise ValueError(f"None values found in file: {file_path}")
-                if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
-                    raise ValueError(f"NaN values found in file: {file_path}")
-
-                self.inputs.append(inputs)
-                self.targets.append(targets)
-
-        # Concatenate data from all files
-        self.inputs = np.concatenate(self.inputs, axis=0)
-        self.targets = np.concatenate(self.targets, axis=0)
-        print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
-
-    def get_data_loader(self, batch_size=8, shuffle=True):
-        """
-        Create a DataLoader for the dataset.
-
-        Args:
-            batch_size (int): Batch size for the DataLoader.
-            shuffle (bool): Whether to shuffle the dataset.
-
-        Returns:
-            DataLoader: DataLoader object for the dataset.
-        """
-        if not self.inputs or not self.targets:
-            self._load_hdf5_files()
-
-        dataset = TensorDataset(
-            torch.tensor(self.inputs, dtype=torch.float32),
-            torch.tensor(self.targets, dtype=torch.float32),
-        )
-        return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
-
-    def get_dynamic_joint_params(self):
-        """
-        Retrieve dynamic joint parameters from the metadata.
-
-        Returns:
-            dict: Dynamic joint parameters.
-        """
-        return {
-            "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
-            "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
-            "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
-            "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
-        }
-
-    def get_dynamic_foot_params(self):
-        """
-        Retrieve dynamic foot parameters from the metadata.
-
-        Returns:
-            dict: Dynamic foot parameters.
-        """
-        return {
-            "nr_dynamic_foot_observations": self.metadata["nr_dynamic_foot_observations"],
-            "single_dynamic_foot_observation_length": self.metadata["single_dynamic_foot_observation_length"],
-            "dynamic_foot_observation_length": self.metadata["dynamic_foot_observation_length"],
-            "dynamic_foot_description_size": self.metadata["dynamic_foot_description_size"],
-        }
+#
+# class LocomotionDatasetSingle:
+#     def __init__(self, folder_path):
+#         """
+#         Initialize the LocomotionDataset.
+#
+#         Args:
+#             folder_path (str): Path to the folder containing HDF5 files and metadata.
+#         """
+#         self.folder_path = folder_path
+#         self.metadata = self._load_metadata()
+#         self.inputs = []
+#         self.targets = []
+#
+#     def _load_metadata(self):
+#         """
+#         Load metadata from the YAML file in the dataset folder.
+#
+#         Returns:
+#             dict: Metadata containing environment parameters.
+#         """
+#         metadata_path = os.path.join(self.folder_path, "metadata.yaml")
+#         if not os.path.exists(metadata_path):
+#             raise FileNotFoundError(f"Metadata file not found at {metadata_path}")
+#
+#         with open(metadata_path, "r") as metadata_file:
+#             metadata = yaml.safe_load(metadata_file)
+#         print(f"[INFO]: Loaded metadata from {metadata_path}")
+#         return metadata
+#
+#     def _load_hdf5_files(self):
+#         """
+#         Load data from all HDF5 files in the folder, sorted numerically by index,
+#         and check for None/NaN values in the data.
+#         """
+#         hdf5_files = sorted(
+#             [f for f in os.listdir(self.folder_path) if f.endswith(".h5")],
+#             key=lambda x: int(x.split('_')[-1].split('.')[0])  # Extract the integer index
+#         )
+#
+#         if not hdf5_files:
+#             raise FileNotFoundError(f"No HDF5 files found in folder: {self.folder_path}")
+#
+#         for file_name in hdf5_files:
+#             file_path = os.path.join(self.folder_path, file_name)
+#             # print(f"[INFO]: Loading file {file_path}")
+#
+#             with h5py.File(file_path, "r") as data_file:
+#                 inputs = data_file["one_policy_observation"][:]
+#                 targets = data_file["actions"][:]
+#
+#                 # Check for None or NaN values
+#                 if np.any(inputs == None) or np.any(targets == None):  # Check for None
+#                     raise ValueError(f"None values found in file: {file_path}")
+#                 if np.isnan(inputs).any() or np.isnan(targets).any():  # Check for NaN
+#                     raise ValueError(f"NaN values found in file: {file_path}")
+#
+#                 self.inputs.append(inputs)
+#                 self.targets.append(targets)
+#
+#         # Concatenate data from all files
+#         self.inputs = np.concatenate(self.inputs, axis=0)
+#         self.targets = np.concatenate(self.targets, axis=0)
+#         print(f"[INFO]: Loaded data from {len(hdf5_files)} HDF5 files.")
+#
+#     def get_data_loader(self, batch_size=8, shuffle=True):
+#         """
+#         Create a DataLoader for the dataset.
+#
+#         Args:
+#             batch_size (int): Batch size for the DataLoader.
+#             shuffle (bool): Whether to shuffle the dataset.
+#
+#         Returns:
+#             DataLoader: DataLoader object for the dataset.
+#         """
+#         if not self.inputs or not self.targets:
+#             self._load_hdf5_files()
+#
+#         dataset = TensorDataset(
+#             torch.tensor(self.inputs, dtype=torch.float32),
+#             torch.tensor(self.targets, dtype=torch.float32),
+#         )
+#         return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+#
+#     def get_dynamic_joint_params(self):
+#         """
+#         Retrieve dynamic joint parameters from the metadata.
+#
+#         Returns:
+#             dict: Dynamic joint parameters.
+#         """
+#         return {
+#             "nr_dynamic_joint_observations": self.metadata["nr_dynamic_joint_observations"],
+#             "single_dynamic_joint_observation_length": self.metadata["single_dynamic_joint_observation_length"],
+#             "dynamic_joint_observation_length": self.metadata["dynamic_joint_observation_length"],
+#             "dynamic_joint_description_size": self.metadata["dynamic_joint_description_size"],
+#         }
 
 
 class LocomotionDataset(Dataset):
@@ -299,8 +279,12 @@ class LocomotionDataset(Dataset):
         # self.cache_hit_count = AverageMeter()
         self.cache_query_time = AverageMeter()
 
+        # record the number of times the data index is not in the worker's scope
+        self.counter_not_in_scope = 0
+
         # Verbose output
-        print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders.")
+        print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
+              f"\n\tGot {len(self.folder_idx_to_file_name)} robots: {list(self.folder_idx_to_file_name.values())}")
 
     def _load_metadata(self, folder_path):
         """
@@ -325,7 +309,10 @@ class LocomotionDataset(Dataset):
         Create a mapping of file indices to (folder_idx, file_idx).
         Segregates files into train/validation sets based on val_ratio.
         """
+        self.folder_idx_to_file_name = {}
         for folder_idx, folder_path in enumerate(self.folder_paths):
+            # example path: 'logs/rsl_rl/Gendog10_gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/2024-12-15_15-19-08/h5py_record'
+            self.folder_idx_to_file_name[folder_idx] = folder_path.split("/")[-3]
             metadata = self.metadata_list[folder_idx]
             hdf5_files = sorted(
                 [f for f in os.listdir(folder_path) if f.endswith(".h5")],
@@ -420,11 +407,24 @@ class LocomotionDataset(Dataset):
         Returns:
             tuple: Transformed input and target for the sample.
         """
-        # print(index)
-        # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
-
-        # Expecting index as (folder_idx, file_idx, step, env)
+        # # print(index)
+        # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
+        #
+        # # Expecting index as (folder_idx, file_idx, step, env)
         folder_idx, file_idx, step, env = index
+
+        # To make sure the worker does not get sample that should be processed by other workers
+        # This shouldn't happen at all, in theory.
+        worker_id = torch.utils.data.get_worker_info().id
+        if (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
+            # cache_keys = self.cache.keys()
+            # folder_idx, file_idx = random.choice(list(cache_keys))
+            # self.counter_not_in_scope += 1
+            # if self.counter_not_in_scope % 1000 == 0:
+            #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+            #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+            raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+                             f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         # import time
@@ -446,9 +446,14 @@ class LocomotionDataset(Dataset):
 
         # Transform the sample
         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        # print([x.shape for x in transformed_sample])
+        # import ipdb; ipdb.set_trace()
+
+        # folder_idx, file_idx, step, env = index
+        # transformed_sample = [torch.zeros(8, 18), torch.zeros(8, 3), torch.zeros(16), torch.zeros(8)]
 
         # Return the transformed components
-        return transformed_sample[:-1], transformed_sample[-1]
+        return transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx]
 
     def _transform_sample(self, input_sample, target_sample, metadata):
         """
@@ -478,30 +483,17 @@ class LocomotionDataset(Dataset):
         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
 
-        # Dynamic Foot Data Transformation
-        dynamic_foot_observation_length = metadata["dynamic_foot_observation_length"]
-        nr_dynamic_foot_observations = metadata["nr_dynamic_foot_observations"]
-        single_dynamic_foot_observation_length = metadata["single_dynamic_foot_observation_length"]
-        dynamic_foot_description_size = metadata["dynamic_foot_description_size"]
-
-        dynamic_foot_start = dynamic_joint_observation_length
-        dynamic_foot_end = dynamic_foot_start + dynamic_foot_observation_length
-        dynamic_foot_combined_state = state[..., dynamic_foot_start:dynamic_foot_end]  # Focus only on last dim
-        dynamic_foot_combined_state = dynamic_foot_combined_state.view(
-            nr_dynamic_foot_observations, single_dynamic_foot_observation_length
-        )
-        dynamic_foot_description = dynamic_foot_combined_state[..., :dynamic_foot_description_size]
-        dynamic_foot_state = dynamic_foot_combined_state[..., dynamic_foot_description_size:]
-
         # General Policy State Transformation
-        general_policy_state = torch.cat([state[..., -17:-8], state[..., -7:]], dim=-1)
+        trunk_angular_vel_update_obs_idx = metadata["trunk_angular_vel_update_obs_idx"]
+        goal_velocity_update_obs_idx = metadata["goal_velocity_update_obs_idx"]
+        projected_gravity_update_obs_idx = metadata["projected_gravity_update_obs_idx"]
+        general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
+        general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
 
         # Return transformed inputs and target
         return (
             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
             dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
-            dynamic_foot_description,  # Shape: (nr_dynamic_foot_observations, dynamic_foot_description_size)
-            dynamic_foot_state,  # Shape: (nr_dynamic_foot_observations, remaining_length)
             general_policy_state,  # Shape: (<concatenated_dim>)
             target  # Shape: (12,)
         )
@@ -520,7 +512,8 @@ class LocomotionDataset(Dataset):
                 - The second element is the batched target tensor.
         """
         # Split batch into inputs and targets
-        inputs, targets = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        inputs, targets, robot_names = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        assert len(set(robot_names)) == 1, f"got different robot names in a batch: {set(robot_names)}"
 
         # Transpose the inputs to group by component
         inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
@@ -531,13 +524,13 @@ class LocomotionDataset(Dataset):
         # Stack the targets
         batched_targets = torch.stack(targets)
 
-        return batched_inputs, batched_targets
+        return batched_inputs, batched_targets, robot_names[0]
 
     def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
         Generate all indices for the dataset, ensuring (1) batches are interleaved across workers,
         (2) each worker processes batches from a specific file in sequence, and (3) adjacent batches
-        for one worker com from the same file.
+        for one worker come from the same file.
 
         The expectation is:
         Worker 1: [batch from K1.h5] [batch from K1.h5] ... [batch from K3.h5] [batch from K3.h5]
@@ -553,7 +546,7 @@ class LocomotionDataset(Dataset):
             list: A list of indices, interleaved for workers, where each sublist contains indices for a batch.
         """
         self.batch_size = batch_size
-        file_batches = {}  # Dictionary to hold batches per file
+        file_samples = {}  # Dictionary to hold batches per file
 
         # Collect batches for each file
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
@@ -564,32 +557,57 @@ class LocomotionDataset(Dataset):
                 np.random.shuffle(indices)  # Shuffle indices within the file
 
             # Split indices into batches and store in file_batches
-            file_batches[(folder_idx, file_idx)] = [
+            file_samples[(folder_idx, file_idx)] = [
                 indices[i:i + batch_size] for i in range(0, len(indices), batch_size)
             ]
 
         # Shuffle the order of files
-        file_keys = list(file_batches.keys())
+        file_keys = list(file_samples.keys())
         if shuffle:
             np.random.shuffle(file_keys)
 
         # Distribute batches across workers in an interleaved manner
-        interleaved_batches = [[] for _ in range(num_workers)]
+        # samples_per_worker will be a list of lists, where the inner list contains lists of samples, with
+        # each list from one file
+        # also record the mapping between worker and file keys
+        file_sample_lists_per_worker = [[] for _ in range(num_workers)]
+        self.worker_idx_to_folder_file_idx = {worker_idx: set() for worker_idx in range(num_workers)}
         for i, key in enumerate(file_keys):
-            for batch in file_batches[key]:
-                interleaved_batches[i % num_workers].append(batch)
+            file_sample_lists_per_worker[i % num_workers].append(file_samples[key])
+            self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
+
+        # Duplicate samples so that every worker has the same number of samples
+        # otherwise the workers that finish their job earlier will be assigned to join
+        # other worker's job queue, which may create the condition where multiple workers
+        # read the same file from the disk, making the system incredibly slow
+        duplicates = 0
+        max_files_per_worker = max(len(worker_batches) for worker_batches in file_sample_lists_per_worker)
+        for worker_idx, worker_samples in enumerate(file_sample_lists_per_worker):
+            while len(worker_samples) < max_files_per_worker:
+                sampled_file_samples = random.choice(file_sample_lists_per_worker[worker_idx])  # sample a file sample list
+                worker_samples.append(sampled_file_samples)
+                duplicates += len(sampled_file_samples)     # record number of duplicates for logging
+            file_sample_lists_per_worker[worker_idx] = worker_samples
+
+        # flatten the inner 2-layer nested lists into one 1-layer list
+        samples_per_worker = [list(chain(*worker_sample_lists)) for worker_sample_lists in file_sample_lists_per_worker]
+        assert all(len(samples) == len(samples_per_worker[0]) for samples in samples_per_worker), \
+            (f"the number of samples for workers differ: {[len(samples) for samples in samples_per_worker]}"
+             f"This function assumes all files have the same number of samples. Is this true?")
 
         # Interleave batches from all workers to form the final sequence
-        final_batches = []
-        max_batches_per_worker = max(len(worker_batches) for worker_batches in interleaved_batches)
-        for i in range(max_batches_per_worker):
-            for worker_batches in interleaved_batches:
-                if i < len(worker_batches):
-                    final_batches.append(worker_batches[i])
+        final_samples = []
+        max_samples_per_worker = max(len(worker_samples) for worker_samples in samples_per_worker)
+        for i in range(max_samples_per_worker):
+            for worker_idx, samples in enumerate(samples_per_worker):
+                final_samples.append(samples[i])
 
-        return final_batches
+        print(f'[INFO]: duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
+              f'({duplicates/len(final_samples)*100:.2f}%)')
 
-    def get_data_loader(self, batch_size, shuffle=True, num_workers=16):
+        return final_samples
+
+    def get_data_loader(self, batch_size, shuffle=True, num_workers=16, **kwargs):
         """
         Create a DataLoader for the dataset.
 
@@ -613,6 +631,7 @@ class LocomotionDataset(Dataset):
             batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
+            **kwargs
         )
 
 

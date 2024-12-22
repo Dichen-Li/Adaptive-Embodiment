@@ -5,6 +5,7 @@ import numpy as np
 import re
 from tqdm import tqdm
 import os
+from urdfpy import URDF
 
 
 def visualize(viewer, scene, robot):
@@ -145,7 +146,13 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
 
     # Joint axis and position
     joint_info = {}
-    for joint in robot.get_active_joints():
+    robot_urdf = URDF.load(robot_urdf_path) # sapien URDF loader does not read certain information
+    # NOTE(tmu): the above line requires `pip install urdfpy && pip install --upgrade networkx`
+    for i, joint in enumerate(robot.get_active_joints()):
+        for joint_urdf in robot_urdf.joints:
+            if joint_urdf.name == joint.name:
+                break
+        assert joint_urdf.name == joint.name, f"Joint {joint.name} not found in URDF"
         joint_pose = joint.get_global_pose()
         joint_axis = joint_pose.to_transformation_matrix()[:3, 0]
         joint_pos = joint_pose.p
@@ -155,6 +162,16 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
         joint_info[joint.name] = {
             'axis': joint_axis.tolist(),
             'position': joint_pos.tolist(),
+            'init_qpos': init_qpos[i],
+            'torque_limit': joint_urdf.limit.effort,
+            'velocity_limit': joint_urdf.limit.velocity,
+            'damping': 'no_such_info',
+            'armature': 'no_such_info',
+            'stiffness': 'no_such_info',
+            'friction': 'no_such_info',
+            'range': joint.get_limits()[0].tolist(),
+            'gains_and_action_scaling_factor': 'no_such_info',
+            'mass': 'no_such_info',
         }
 
     info['joint_info'] = joint_info
@@ -165,20 +182,41 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     # print(bbox)
     info['bbox'] = list([x.tolist() for x in bbox])
 
+
+    # Foot information
+    foot_info = {}
+    for link in robot.get_links():
+        if 'foot' in link.name:
+            foot_info[link.name] = {
+                'position': link.get_pose().p.tolist(),
+                'gains_and_action_scaling_factor': 'no_such_info',
+                'mass': link.mass,
+            }
+
     # Save information to file
     with open(save_path, 'w') as f:
-        json.dump(info, f)
+        json.dump(info, f, indent=4)
+
+
+    # #############################################
+    # # Clean up
+    # #############################################
+
+    # viewer.close()    
 
 
 if __name__ == '__main__':
-    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
-    asset_dirs = [os.path.join(root_dir, name) for name in os.listdir(root_dir) if
-                  os.path.isdir(os.path.join(root_dir, name))]
+    # root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
+    # root_link_name = 'trunk'
+    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids'
+    root_link_name = 'pelvis'
+    asset_dirs = sorted([os.path.join(root_dir, name) for name in os.listdir(root_dir) if
+                  os.path.isdir(os.path.join(root_dir, name))])
 
     for asset_dir in tqdm(asset_dirs):
         extract_info(
             robot_urdf_path=f'{asset_dir}/robot.urdf',
             train_cfg_path=f'{asset_dir}/train_cfg.json',
             save_path=f'{asset_dir}/robot_description_vec.json',  # modify it to whatever you want
-            root_name="trunk"  # trunk for dogs and hexapods, pelvis for humanoids
+            root_name=root_link_name,
         )

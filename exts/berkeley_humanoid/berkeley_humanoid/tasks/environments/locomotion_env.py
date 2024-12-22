@@ -37,11 +37,21 @@ class LocomotionEnv(DirectRLEnv):
 
         self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
-        self.joint_max_velocity = self.robot.actuators["base_legs"].velocity_limit
-        self.joint_max_torque = self.robot.actuators["base_legs"].effort_limit
         self.action_scaling_factor = self.cfg.action_scaling_factor
-        self.p_gains = self.robot.actuators["base_legs"].stiffness
-        self.d_gains = self.robot.actuators["base_legs"].damping
+        if 'all' in self.robot.actuators:
+            robot_actuators = self.robot.actuators["all"] # this should use the same order as self.robot.data.joint_names
+            self.joint_max_velocity = robot_actuators.velocity_limit
+            self.joint_max_torque = robot_actuators.effort_limit
+            self.p_gains = robot_actuators.stiffness
+            self.d_gains = robot_actuators.damping
+        elif 'base_legs' in self.robot.actuators:
+            robot_actuators = self.robot.actuators["base_legs"]
+            self.joint_max_velocity = robot_actuators.velocity_limit
+            self.joint_max_torque = robot_actuators.effort_limit
+            self.p_gains = robot_actuators.stiffness
+            self.d_gains = robot_actuators.damping
+        else:
+            raise NotImplementedError()
 
         self.step_sampling_probability = self.cfg.step_sampling_probability
 
@@ -66,6 +76,9 @@ class LocomotionEnv(DirectRLEnv):
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
+        self.calculated_feet_y_distance_target = False
+
+        self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
 
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
@@ -78,8 +91,6 @@ class LocomotionEnv(DirectRLEnv):
         self.p_gain_factor_max = self.cfg.p_gain_factor_max
         self.d_gain_factor_min = self.cfg.d_gain_factor_min
         self.d_gain_factor_max = self.cfg.d_gain_factor_max
-        self.asymmetric_control_factor_min = self.cfg.asymmetric_control_factor_min
-        self.asymmetric_control_factor_max = self.cfg.asymmetric_control_factor_max
         self.p_law_position_offset_min = self.cfg.p_law_position_offset_min
         self.p_law_position_offset_max = self.cfg.p_law_position_offset_max
         self.extrinsic_motor_strength = torch.ones((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
@@ -92,6 +103,7 @@ class LocomotionEnv(DirectRLEnv):
         self.initial_state_yaw_angle_factor = self.cfg.initial_state_yaw_angle_factor
         self.initial_state_joint_nominal_position_factor = self.cfg.initial_state_joint_nominal_position_factor
         self.initial_state_joint_velocity_factor = self.cfg.initial_state_joint_velocity_factor
+        self.initial_state_joint_velocity_clip = self.cfg.initial_state_joint_velocity_clip
         self.initial_state_max_linear_velocity = self.cfg.initial_state_max_linear_velocity
         self.initial_state_max_angular_velocity = self.cfg.initial_state_max_angular_velocity
 
@@ -156,28 +168,22 @@ class LocomotionEnv(DirectRLEnv):
         self.joint_names = self.robot.data.joint_names
         self.foot_names = self.robot.data.body_names
 
-        multi_robot_max_observation_size = -1
-        self.joint_nr_direct_child_joints = [int("foot" in name) for name in self.foot_names]
         self.name_to_description_vector = self.get_name_to_description_vector()
-        self.initial_observation = self._initialize_urma_observations(multi_robot_max_observation_size)
-        self.observation_name_to_id = self._get_observation_space(multi_robot_max_observation_size)
+        self.initial_observation = self._initialize_urma_observations()
+        self.observation_name_to_id = self._get_observation_space()
 
         # Idx that need to be updated every step
         self.joint_positions_update_obs_idx = [self.observation_name_to_id[joint_name + "_position"] for joint_name in self.joint_names]
         self.joint_velocities_update_obs_idx = [self.observation_name_to_id[joint_name + "_velocity"] for joint_name in self.joint_names]
         self.joint_previous_actions_update_obs_idx = [self.observation_name_to_id[joint_name + "_previous_action"] for joint_name in self.joint_names]
-        self.foot_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
-        self.foot_time_since_last_ground_contact_update_obs_idx = [self.observation_name_to_id[foot_name + "_cycles_since_last_ground_contact"] for foot_name in self.foot_names if "foot" in foot_name]
-        self.trunk_linear_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "z_velocity"]]
         self.trunk_angular_vel_update_obs_idx = [self.observation_name_to_id["trunk_" + observation_name] for observation_name in ["roll_velocity", "pitch_velocity", "yaw_velocity"]]
         self.goal_velocity_update_obs_idx = [self.observation_name_to_id["goal_" + observation_name] for observation_name in ["x_velocity", "y_velocity", "yaw_velocity"]]
         self.projected_gravity_update_obs_idx = [self.observation_name_to_id["projected_gravity_" + observation_name] for observation_name in ["x", "y", "z"]]
-        self.height_update_obs_idx = [self.observation_name_to_id["height_0"]]
 
         self.urma_initialized = True
         print("LocomotionEnv init done")
 
-    def _get_observation_space(self, multi_robot_max_observation_size):
+    def _get_observation_space(self):
         observation_names = []
 
         # Dynamic observations
@@ -190,35 +196,18 @@ class LocomotionEnv(DirectRLEnv):
                 joint_name + "_position", joint_name + "_velocity", joint_name + "_previous_action",
             ])
 
-        self.nr_dynamic_foot_observations = len([foot_name for foot_name in self.foot_names if "foot" in foot_name])
-        self.single_dynamic_foot_observation_length = self.dynamic_foot_description_size + 2
-        self.dynamic_foot_observation_length = self.single_dynamic_foot_observation_length * self.nr_dynamic_foot_observations
-        for foot_name in self.foot_names:
-            if "foot" in foot_name:
-                observation_names.extend([foot_name + "_description_" + str(i) for i in range(self.dynamic_foot_description_size)])
-                observation_names.extend([
-                    foot_name + "_ground_contact", foot_name + "_cycles_since_last_ground_contact",
-                ])
-
         # General observations
         observation_names.extend([
-            "trunk_x_velocity", "trunk_y_velocity", "trunk_z_velocity",
             "trunk_roll_velocity", "trunk_pitch_velocity", "trunk_yaw_velocity",
         ])
 
         observation_names.extend(["goal_x_velocity", "goal_y_velocity", "goal_yaw_velocity"])
         observation_names.extend(["projected_gravity_x", "projected_gravity_y", "projected_gravity_z"])
-        observation_names.append("height_0")
 
         # General robot context
         observation_names.extend(["p_gain", "d_gain", "action_scaling_factor"])
         observation_names.append("mass")
         observation_names.extend(["robot_length", "robot_width", "robot_height"])
-
-        self.missing_nr_of_observations = 0
-        if multi_robot_max_observation_size != -1:
-            self.missing_nr_of_observations = multi_robot_max_observation_size - len(observation_names)
-            observation_names.extend(["padding_" + str(i) for i in range(self.missing_nr_of_observations)])
 
         name_to_idx = {name: idx for idx, name in enumerate(observation_names)}
 
@@ -330,53 +319,29 @@ class LocomotionEnv(DirectRLEnv):
             name_to_description_vector[joint_name] = torch.cat([
                 (relative_joint_position_normalized / 0.5) - 1.0,
                 relative_joint_axis_local,
-                torch.tensor([self.joint_nr_direct_child_joints[i]], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([0 / 4.6], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(2 / 500.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(1.75 / 17.5) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.1 / 5.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.01 / 0.1) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0 / 15.0) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                torch.tensor([(0.03 / 0.6) - 1.0], device=self.sim.device).repeat((self.num_envs, 1)),
-                (torch.tensor([-2, 2], device=self.sim.device) / 4.6).repeat((self.num_envs, 1)),
-                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4],
-                                                                      device=self.sim.device)) - 1.0).repeat(
-                    (self.num_envs, 1)),
+                self.joint_nominal_positions[:, i].unsqueeze(1) / 4.6,
+                (self.joint_max_torque[:, i].unsqueeze(1) / 500.0) - 1.0,
+                (self.joint_max_velocity[:, i].unsqueeze(1) / 17.5) - 1.0,
+                self.robot.data.soft_joint_pos_limits[:, i, 0].unsqueeze(1) / 4.6,
+                self.robot.data.soft_joint_pos_limits[:, i, 1].unsqueeze(1) / 4.6, 
+                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4], device=self.sim.device)) - 1.0).repeat((self.num_envs, 1)),
                 (self.mass / 85.0) - 1.0,
                 (self.robot_dimensions / 1.0) - 1.0,
             ], dim=1)
-
-        # Compute normalized foot positions
-        for i, foot_name in enumerate(self.foot_names):
-            if "foot" not in foot_name:  # Skip non-foot bodies
-                continue
-
-            foot_position_global = self.robot.data.body_pos_w[:, i]  # Foot global position
-            relative_foot_position_global = foot_position_global - trunk_position_global
-            relative_foot_position_local = torch.matmul(trunk_rotation_matrix,
-                                                        relative_foot_position_global.unsqueeze(-1)).squeeze(-1)
-            # TODO: now we are using a hack of adding epsilon to robot_dimensions, but remember that we are not using link to compute size
-            relative_foot_position_normalized = (relative_foot_position_local - mins) / (self.robot_dimensions + 1e-8)
-
-            # Append foot description vector
-            name_to_description_vector[foot_name] = torch.cat([
-                (relative_foot_position_normalized / 0.5) - 1.0,
-                ((self.gains_and_action_scaling_factor / torch.tensor([50.0, 1.0, 0.4],
-                                                                      device=self.sim.device)) - 1.0).repeat(
-                    (self.num_envs, 1)),
-                ((self.mass / 85.0) - 1.0),
-                (self.robot_dimensions / 1.0) - 1.0,
-            ], dim=1)
-
+        
         self.dynamic_joint_description_size = name_to_description_vector[self.joint_names[0]].shape[1]
-        for foot_name in self.foot_names:
-            if "foot" in foot_name:
-                self.dynamic_foot_description_size = name_to_description_vector[foot_name].shape[1]
-                break
 
         return name_to_description_vector
 
     def _reset_idx(self, env_ids: torch.Tensor):
+        if not self.calculated_feet_y_distance_target:
+            feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
+            global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
+            local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
+            feet_y_distance = torch.abs(local_feet_pos[:, self.feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, self.feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
+            self.feet_y_distance_target = feet_y_distance.mean().item()
+            self.calculated_feet_y_distance_target = True
+        
         if env_ids is None or len(env_ids) == self.num_envs:
             env_ids = self.robot._ALL_INDICES
         self.robot.reset(env_ids)
@@ -384,20 +349,33 @@ class LocomotionEnv(DirectRLEnv):
 
         nr_reset_envs = env_ids.shape[0]
 
-        roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor
-        pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor
-        yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
+        roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor * curriculum_coeff
+        pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor * curriculum_coeff
+        yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor * curriculum_coeff
         quaternion = axis_angle_to_quaternion(torch.stack([roll_angle, pitch_angle, yaw_angle], dim=1))
-        joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor)
-        joint_velocities = self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_velocity_factor
-        linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity
-        angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity
+        joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor * curriculum_coeff)
+
+        # note that the randomization strength below line is dependent on the joint velocity range
+        # some robots are very sensitive to the initial velocities, such as very tall humanoids
+        # and the randomization could be overly strong for robots with super large joint_max_velocity
+        # so it's good to clip the range to a constant, which is a hyper parameter
+        joint_velocities = (self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints),
+                                                                           device=self.sim.device) * 2) - 1.0)
+                            * self.initial_state_joint_velocity_factor * curriculum_coeff)
+        joint_velocities = joint_velocities.clip(-self.initial_state_joint_velocity_clip, self.initial_state_joint_velocity_clip)
+
+        linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity * curriculum_coeff
+        angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity * curriculum_coeff
 
         default_root_state = self.robot.data.default_root_state[env_ids]
         default_root_state[:, :3] += self.scene.env_origins[env_ids]
         default_root_state[:, 3:7] = quaternion
         default_root_state[:, 7:10] = linear_velocity
         default_root_state[:, 10:] = angular_velocity
+
         self.robot.write_root_pose_to_sim(default_root_state[:, :7], env_ids)
         self.robot.write_root_velocity_to_sim(default_root_state[:, 7:], env_ids)
         self.robot.write_joint_state_to_sim(joint_positions, joint_velocities, None, env_ids)
@@ -437,21 +415,57 @@ class LocomotionEnv(DirectRLEnv):
             env_randomization_mask = torch.zeros((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_randomized_envs = env_randomization_mask.sum()
 
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
         # Action delay
-        self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance
+        self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance * curriculum_coeff
         
         # Control
-        self.extrinsic_motor_strength[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.motor_strength_max - self.motor_strength_min) + self.motor_strength_min
-        self.extrinsic_p_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_gain_factor_max - self.p_gain_factor_min) + self.p_gain_factor_min
-        self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.d_gain_factor_max - self.d_gain_factor_min) + self.d_gain_factor_min
-        self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_law_position_offset_max - self.p_law_position_offset_min) + self.p_law_position_offset_min
+        default_motor_stength = 1.0
+        motor_strength_min = curriculum_coeff * self.motor_strength_min + (1.0 - curriculum_coeff) * default_motor_stength
+        motor_strength_max = curriculum_coeff * self.motor_strength_max + (1.0 - curriculum_coeff) * default_motor_stength
+        self.extrinsic_motor_strength[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (motor_strength_max - motor_strength_min) + motor_strength_min
+        
+        default_p_gain_factor = 1.0
+        p_gain_factor_min = curriculum_coeff * self.p_gain_factor_min + (1.0 - curriculum_coeff) * default_p_gain_factor
+        p_gain_factor_max = curriculum_coeff * self.p_gain_factor_max + (1.0 - curriculum_coeff) * default_p_gain_factor
+        self.extrinsic_p_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (p_gain_factor_max - p_gain_factor_min) + p_gain_factor_min
+        
+        default_d_gain_factor = 1.0
+        d_gain_factor_min = curriculum_coeff * self.d_gain_factor_min + (1.0 - curriculum_coeff) * default_d_gain_factor
+        d_gain_factor_max = curriculum_coeff * self.d_gain_factor_max + (1.0 - curriculum_coeff) * default_d_gain_factor
+        self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (d_gain_factor_max - d_gain_factor_min) + d_gain_factor_min
+        
+        p_law_position_offset_min = curriculum_coeff * self.p_law_position_offset_min
+        p_law_position_offset_max = curriculum_coeff * self.p_law_position_offset_max
+        self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (p_law_position_offset_max - p_law_position_offset_min) + p_law_position_offset_min
 
         # Model
         env_randomization_indices = torch.nonzero(env_randomization_mask).flatten()
-        self.randomize_rigid_body_material(self, env_randomization_indices, (self.static_friction_min, self.static_friction_max), (self.dynamic_friction_min, self.dynamic_friction_max), (self.restitution_min, self.restitution_max), 64, self.all_bodies_cfg)
-        mdp.randomize_rigid_body_mass(self, env_randomization_indices, self.trunk_cfg, (self.added_trunk_mass_min, self.added_trunk_mass_max), "add")
-        mdp.randomize_physics_scene_gravity(self, env_randomization_indices, (self.added_gravity_min, self.added_gravity_max), "add")
-        mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (self.joint_friction_min, self.joint_friction_max), (self.joint_armature_min, self.joint_armature_max), None, None, "abs")
+        middle_static_friction = (self.static_friction_min + self.static_friction_max) / 2.0
+        static_friction_min = curriculum_coeff * self.static_friction_min + (1.0 - curriculum_coeff) * middle_static_friction
+        static_friction_max = curriculum_coeff * self.static_friction_max + (1.0 - curriculum_coeff) * middle_static_friction
+        middle_dynamic_friction = (self.dynamic_friction_min + self.dynamic_friction_max) / 2.0
+        dynamic_friction_min = curriculum_coeff * self.dynamic_friction_min + (1.0 - curriculum_coeff) * middle_dynamic_friction
+        dynamic_friction_max = curriculum_coeff * self.dynamic_friction_max + (1.0 - curriculum_coeff) * middle_dynamic_friction
+        middle_restitution = (self.restitution_min + self.restitution_max) / 2.0
+        restitution_min = curriculum_coeff * self.restitution_min + (1.0 - curriculum_coeff) * middle_restitution
+        restitution_max = curriculum_coeff * self.restitution_max + (1.0 - curriculum_coeff) * middle_restitution
+        self.randomize_rigid_body_material(self, env_randomization_indices, (static_friction_min, static_friction_max), (dynamic_friction_min, dynamic_friction_max), (restitution_min, restitution_max), 64, self.all_bodies_cfg)
+        
+        mdp.randomize_rigid_body_mass(self, env_randomization_indices, self.trunk_cfg, (self.added_trunk_mass_min * curriculum_coeff, self.added_trunk_mass_max * curriculum_coeff), "add")
+        
+        mdp.randomize_physics_scene_gravity(self, env_randomization_indices, (self.added_gravity_min * curriculum_coeff, self.added_gravity_max * curriculum_coeff), "add")
+        
+        middle_joint_friction = (self.joint_friction_min + self.joint_friction_max) / 2.0
+        joint_friction_min = curriculum_coeff * self.joint_friction_min + (1.0 - curriculum_coeff) * middle_joint_friction
+        joint_friction_max = curriculum_coeff * self.joint_friction_max + (1.0 - curriculum_coeff) * middle_joint_friction
+        
+        middle_joint_armature = (self.joint_armature_min + self.joint_armature_max) / 2.0
+        joint_armature_min = curriculum_coeff * self.joint_armature_min + (1.0 - curriculum_coeff) * middle_joint_armature
+        joint_armature_max = curriculum_coeff * self.joint_armature_max + (1.0 - curriculum_coeff) * middle_joint_armature
+        mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (joint_friction_min, joint_friction_max), (joint_armature_min, joint_armature_max), None, None, "abs")
 
         # Perturbations
         if not all_envs:
@@ -459,9 +473,12 @@ class LocomotionEnv(DirectRLEnv):
         else:
             env_perturbation_mask = torch.ones((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_perturbed_envs = env_perturbation_mask.sum()
-        perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_x_max - self.perturb_velocity_x_min) + self.perturb_velocity_x_min
-        perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_y_max - self.perturb_velocity_y_min) + self.perturb_velocity_y_min
-        perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_z_max - self.perturb_velocity_z_min) + self.perturb_velocity_z_min
+        perturb_velocity_x_min, perturb_velocity_x_max = self.perturb_velocity_x_min * curriculum_coeff, self.perturb_velocity_x_max * curriculum_coeff
+        perturb_velocity_y_min, perturb_velocity_y_max = self.perturb_velocity_y_min * curriculum_coeff, self.perturb_velocity_y_max * curriculum_coeff
+        perturb_velocity_z_min, perturb_velocity_z_max = self.perturb_velocity_z_min * curriculum_coeff, self.perturb_velocity_z_max * curriculum_coeff
+        perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_x_max - perturb_velocity_x_min) + perturb_velocity_x_min
+        perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_y_max - perturb_velocity_y_min) + perturb_velocity_y_min
+        perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_z_max - perturb_velocity_z_min) + perturb_velocity_z_min
         current_global_velocity = self.robot.data.root_state_w[env_perturbation_mask, 7:]
         current_global_velocity[:, 0] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_x + current_global_velocity[:, 0] * self.perturb_additive_multiplier, perturb_velocity_x)
         current_global_velocity[:, 1] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_y + current_global_velocity[:, 1] * self.perturb_additive_multiplier, perturb_velocity_y)
@@ -476,6 +493,7 @@ class LocomotionEnv(DirectRLEnv):
         trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
         trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
         terminated = trunk_contact
+        # terminated = torch.tensor([False] * self.num_envs, dtype=torch.bool, device=self.sim.device)  # for debugging
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
 
@@ -527,7 +545,8 @@ class LocomotionEnv(DirectRLEnv):
             feet_contacts,
             self.previous_feet_air_times,
             self.feet_symmetry_pairs,
-            local_feet_pos
+            local_feet_pos,
+            self.feet_y_distance_target
         )
 
         self.extras = {"log": extras}  # sum(extras.values()) is reward
@@ -618,16 +637,18 @@ class LocomotionEnv(DirectRLEnv):
         )
         
         # Add noise
-        observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise
-        observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise
-        observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise
-        observation[:, self.projected_gravity_vector_obs_idx] += ((torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * 2) - 1) * self.gravity_vector_noise
-        observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
-        observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * self.action_dt), observation[:, self.feet_air_time_obs_idx])
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise * curriculum_coeff
+        observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise * curriculum_coeff
+        observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise * curriculum_coeff
+        observation[:, self.projected_gravity_vector_obs_idx] += ((torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * 2) - 1) * self.gravity_vector_noise * curriculum_coeff
+        observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance * curriculum_coeff, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
+        observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance * curriculum_coeff, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * curriculum_coeff * self.action_dt), observation[:, self.feet_air_time_obs_idx])
 
         # Dropout
-        joint_dropout_mask = torch.rand((self.num_envs, self.nr_joints), device=self.sim.device) < self.joint_and_feet_dropout_chance
-        feet_dropout_mask = torch.rand((self.num_envs, self.nr_feet), device=self.sim.device) < self.joint_and_feet_dropout_chance
+        joint_dropout_mask = torch.rand((self.num_envs, self.nr_joints), device=self.sim.device) < self.joint_and_feet_dropout_chance * curriculum_coeff
+        feet_dropout_mask = torch.rand((self.num_envs, self.nr_feet), device=self.sim.device) < self.joint_and_feet_dropout_chance * curriculum_coeff
         observation[:, self.joint_positions_obs_idx][joint_dropout_mask] = 0.0
         observation[:, self.joint_velocities_obs_idx][joint_dropout_mask] = 0.0
         observation[:, self.joint_previous_actions_obs_idx][joint_dropout_mask] = 0.0
@@ -654,7 +675,7 @@ class LocomotionEnv(DirectRLEnv):
         ]
 
         if self.urma_initialized:
-            urma_obs = self._get_urma_observations()
+            urma_obs = self._get_urma_observations(observation)
             return {"policy": policy_observation, "critic": observation, "urma_obs": urma_obs}
 
         return {"policy": policy_observation, "critic": observation}
@@ -713,53 +734,21 @@ class LocomotionEnv(DirectRLEnv):
         air_time = torch.clamp(air_time, max=threshold_max-threshold_min)
         return air_time
 
-    def _initialize_urma_observations(self, multi_robot_max_observation_size):
+    def _initialize_urma_observations(self):
         # Dynamic observations
         dynamic_joint_observations = torch.empty((self.num_envs, 0), device=self.sim.device)
         for i, joint_name in enumerate(self.joint_names):
             desc_vector = self.name_to_description_vector[joint_name]
-            joint_pos_rel = (self.robot.data.joint_pos[:, i] - self.robot.data.default_joint_pos[:, i]).unsqueeze(1)
-            joint_vel_rel = (self.robot.data.joint_vel[:, i] - self.robot.data.default_joint_vel[:, i]).unsqueeze(1)
-            action = self.actions[:, i].unsqueeze(1)
-
-            # Concatenate all the current observations into one tensor
+            joint_pos_rel = torch.zeros((self.num_envs, 1), device=self.sim.device)
+            joint_vel_rel = torch.zeros((self.num_envs, 1), device=self.sim.device)
+            action = torch.zeros((self.num_envs, 1), device=self.sim.device)
             current_observation = torch.cat((desc_vector, joint_pos_rel, joint_vel_rel, action), dim=1)
-
-            # Concatenate along dimension 0 for subsequent observations
             dynamic_joint_observations = torch.cat((dynamic_joint_observations, current_observation), dim=1)
 
-        # Get the foot contacts with ground
-        undesired_contacts = self.get_contacts_without_sum(self.feet_contact_cfg,
-                                                           threshold=1.0)
-        # Get the time since last foot contact with ground
-        feet_air_time = self.get_feet_air_time(
-            self.feet_contact_cfg,
-            threshold_min=0.2, threshold_max=0.5
-        )
-
-        # from training.environments.unitree_go1.info import touchdown_feet
-        # Dynamic observations
-        dynamic_foot_observations = torch.empty((self.num_envs, 0),
-                                                device=self.sim.device)  # Start with None for the first iteration
-        foot_index = 0
-        for i, foot_name in enumerate(self.foot_names):
-            if "foot" in foot_name:
-                # Concatenate all the current observations into one tensor
-                current_observation = torch.cat((self.name_to_description_vector[foot_name],
-                                                 undesired_contacts[:, foot_index].unsqueeze(1),
-                                                 feet_air_time[:, foot_index].unsqueeze(1)), dim=1)
-                foot_index += 1
-                # Concatenate along dimension 0 for subsequent observations
-                dynamic_foot_observations = torch.cat((dynamic_foot_observations, current_observation), dim=1)
-
         # General observations
-        trunk_linear_velocity = self.robot.data.root_lin_vel_b
-        trunk_angular_velocity = self.robot.data.root_ang_vel_b
-        # self.target_x_vel, self.target_y_vel, self.target_yaw_vel = self.command_generator.get_next_command()
-        # goal_velocity = torch.cat((self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        goal_velocity = self.goal_velocities.clone()
-        projected_gravity_vector = self.robot.data.projected_gravity_b
-        height = self.robot.data.root_pos_w[:, 2].unsqueeze(1)
+        trunk_angular_velocity = torch.zeros((self.num_envs, 3), device=self.sim.device)
+        goal_velocity = torch.zeros((self.num_envs, 3), device=self.sim.device)
+        projected_gravity_vector = torch.zeros((self.num_envs, 3), device=self.sim.device)
 
         # General robot context
         gains_and_action_scaling_factor = ((self.gains_and_action_scaling_factor / torch.tensor(
@@ -767,76 +756,31 @@ class LocomotionEnv(DirectRLEnv):
         mass = (self.mass / (170.0 / 2)) - 1.0
         robot_dimensions = ((self.robot_dimensions / (2.0 / 2)) - 1.0)
 
-        # Padding
-        padding = torch.empty((self.num_envs, 0), device=self.sim.device)
-        # if multi_robot_max_observation_size != -1:
-        #     padding = torch.zeros(self.missing_nr_of_observations, dtype=torch.float32)
-
-        # Temporary value for expanding scalar to env_num tensor
-
         observation = torch.cat([
             dynamic_joint_observations,
-            dynamic_foot_observations,
-            trunk_linear_velocity,
             trunk_angular_velocity,
             goal_velocity,
             projected_gravity_vector,
-            height,
             gains_and_action_scaling_factor,
             mass,
             robot_dimensions,
-            padding,
         ], dim=1)
 
         return observation
 
-    def _get_urma_observations(self):
+    def _get_urma_observations(self, expert_observation: torch.Tensor) -> torch.Tensor:
         """
         Returns the observations for the URMA.
         """
         urma_obs = self.initial_observation.clone()
 
-        # Get the foot contacts with ground
-        undesired_contacts = self.get_contacts_without_sum(self.feet_contact_cfg,
-                                                           threshold=1.0)
-
-        # Get the time since last foot contact with ground
-        feet_air_time = self.get_feet_air_time(
-            self.feet_contact_cfg,
-            threshold_min=0.2, threshold_max=0.5
-        )
-
         # Update observations every step
-        urma_obs[:, self.joint_positions_update_obs_idx] = self.robot.data.joint_pos - self.robot.data.default_joint_pos
-        urma_obs[:,
-        self.joint_velocities_update_obs_idx] = self.robot.data.joint_vel - self.robot.data.default_joint_vel
-        urma_obs[:, self.joint_previous_actions_update_obs_idx] = self.actions
-        # note for the undesired_contacts dimension
-        urma_obs[:, self.foot_ground_contact_update_obs_idx] = undesired_contacts.type(torch.float32)
-        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = feet_air_time
-        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = self.robot.data.root_lin_vel_b
-        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = self.robot.data.root_ang_vel_b
-        # urma_obs[:, self.goal_velocity_update_obs_idx] = torch.cat(
-        #     (self.target_x_vel, self.target_y_vel, self.target_yaw_vel), dim=1)
-        urma_obs[:, self.goal_velocity_update_obs_idx] = self.goal_velocities.clone()
-        urma_obs[:, self.projected_gravity_update_obs_idx] = self.robot.data.projected_gravity_b
-        urma_obs[:, self.height_update_obs_idx] = self.robot.data.root_pos_w[:, 2].unsqueeze(1)
-
-        urma_obs[:, self.joint_positions_update_obs_idx] /= 3.14  # max is only 1.06? mean 0.0
-        urma_obs[:, self.joint_velocities_update_obs_idx] /= 3  # range from -3 to 3?
-        urma_obs[:, self.joint_previous_actions_update_obs_idx] /= 10.0  # looks reasonable; range from -10 to 10
-        urma_obs[:, self.foot_ground_contact_update_obs_idx] = (urma_obs[:,
-                                                                self.foot_ground_contact_update_obs_idx] / 0.5) - 1.0  # taking either 1 or 0
-        urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] = torch.clip(
-            (urma_obs[:, self.foot_time_since_last_ground_contact_update_obs_idx] / 1) - 1.0, -1.0,
-            1.0)  # range from -0.3 to 0.3?
-        urma_obs[:, self.trunk_linear_vel_update_obs_idx] = torch.clip(
-            urma_obs[:, self.trunk_linear_vel_update_obs_idx] / 1, -2.0, 2.0)  # range from -1.x to 1?
-        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = torch.clip(
-            urma_obs[:, self.trunk_angular_vel_update_obs_idx] / 3.14, -3.0, 3.0)  # range from -3 to 3
-        urma_obs[:, self.height_update_obs_idx] = torch.clip(
-            (urma_obs[:, self.height_update_obs_idx] / (2 * self.robot_dimensions[:, 2].unsqueeze(1) / 2)) - 1.0, -2.0,
-            2.0)  # the quotient ranges from 0 to 1.x?
+        urma_obs[:, self.joint_positions_update_obs_idx] = expert_observation[:, self.joint_positions_obs_idx]
+        urma_obs[:, self.joint_velocities_update_obs_idx] = expert_observation[:, self.joint_velocities_obs_idx]
+        urma_obs[:, self.joint_previous_actions_update_obs_idx] = expert_observation[:, self.joint_previous_actions_obs_idx]
+        urma_obs[:, self.trunk_angular_vel_update_obs_idx] = expert_observation[:, self.trunk_angular_velocity_obs_idx]
+        urma_obs[:, self.goal_velocity_update_obs_idx] = expert_observation[:, self.goal_velocities_obs_idx]
+        urma_obs[:, self.projected_gravity_update_obs_idx] = expert_observation[:, self.projected_gravity_vector_obs_idx]
 
         return urma_obs
 
@@ -922,7 +866,8 @@ def compute_rewards(
     feet_contacts: torch.Tensor,
     feet_air_times: torch.Tensor,
     feet_symmetry_pairs: torch.Tensor,
-    local_feet_pos: torch.Tensor
+    local_feet_pos: torch.Tensor,
+    feet_y_distance_target: float,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     
     # Tracking xy velocity command reward
@@ -985,7 +930,7 @@ def compute_rewards(
 
     # Feet y distance reward
     feet_y_distance = torch.abs(local_feet_pos[:, feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
-    feet_y_distance_from_target_norm = (feet_y_distance - 0.34) ** 2
+    feet_y_distance_from_target_norm = (feet_y_distance - feet_y_distance_target) ** 2
     feet_y_distance_reward = curriculum_coeff * feet_y_distance_coeff * -feet_y_distance_from_target_norm
 
     # Total reward

@@ -25,6 +25,7 @@ parser.add_argument("--num_envs", type=int, default=4096, help="Number of enviro
 parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
+parser.add_argument("--resume_path", type=str, default=None, help="Additionally specify the wanted policy. If set, ignore task set policy path.")
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
@@ -64,11 +65,17 @@ def main():
     )
     agent_cfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
-    # specify directory for logging experiments
-    log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
-    log_root_path = os.path.abspath(log_root_path)
-    print(f"[INFO] Loading experiment from directory: {log_root_path}")
-    resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
+    # specify resume_path for loading customized policy
+    # [INFO]: The args_cli.task still decides which environment to make
+    if args_cli.resume_path != parser.get_default("resume_path"):
+        resume_path = args_cli.resume_path
+        print(f"[INFO] Loading policy file from directory: {resume_path}")
+    else:
+        # specify directory for logging experiments
+        log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
+        log_root_path = os.path.abspath(log_root_path)
+        print(f"[INFO] Loading experiment from directory: {log_root_path}")
+        resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
     log_dir = os.path.dirname(resume_path)
 
     # create isaac environment
