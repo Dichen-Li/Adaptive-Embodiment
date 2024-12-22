@@ -76,7 +76,7 @@ class LocomotionEnv(DirectRLEnv):
         self.symmetry_air_coeff = self.cfg.symmetry_air_coeff
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
-        self.feet_y_distance_target = self.cfg.feet_y_distance_target
+        self.calculated_feet_y_distance_target = False
 
         self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
 
@@ -334,6 +334,14 @@ class LocomotionEnv(DirectRLEnv):
         return name_to_description_vector
 
     def _reset_idx(self, env_ids: torch.Tensor):
+        if not self.calculated_feet_y_distance_target:
+            feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
+            global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
+            local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
+            feet_y_distance = torch.abs(local_feet_pos[:, self.feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, self.feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
+            self.feet_y_distance_target = feet_y_distance.mean().item()
+            self.calculated_feet_y_distance_target = True
+        
         if env_ids is None or len(env_ids) == self.num_envs:
             env_ids = self.robot._ALL_INDICES
         self.robot.reset(env_ids)

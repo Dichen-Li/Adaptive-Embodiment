@@ -290,7 +290,6 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     symmetry_air_coeff = 0.5                    * action_dt
     feet_symmetry_pairs = [(0, 5), (1, 4), (2, 3)]
     feet_y_distance_coeff = 2.0                 * action_dt
-    feet_y_distance_target = 0.34
 
     # Domain randomization
     domain_randomization_curriculum_steps = 300e6
