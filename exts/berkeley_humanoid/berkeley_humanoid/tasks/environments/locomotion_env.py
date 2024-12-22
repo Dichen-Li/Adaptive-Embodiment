@@ -72,6 +72,8 @@ class LocomotionEnv(DirectRLEnv):
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
         self.feet_y_distance_target = self.cfg.feet_y_distance_target
 
+        self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
+
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
         self.action_current_mixed = torch.zeros((self.num_envs,), dtype=torch.bool, device=self.sim.device)
@@ -83,8 +85,6 @@ class LocomotionEnv(DirectRLEnv):
         self.p_gain_factor_max = self.cfg.p_gain_factor_max
         self.d_gain_factor_min = self.cfg.d_gain_factor_min
         self.d_gain_factor_max = self.cfg.d_gain_factor_max
-        self.asymmetric_control_factor_min = self.cfg.asymmetric_control_factor_min
-        self.asymmetric_control_factor_max = self.cfg.asymmetric_control_factor_max
         self.p_law_position_offset_min = self.cfg.p_law_position_offset_min
         self.p_law_position_offset_max = self.cfg.p_law_position_offset_max
         self.extrinsic_motor_strength = torch.ones((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
@@ -335,11 +335,14 @@ class LocomotionEnv(DirectRLEnv):
 
         nr_reset_envs = env_ids.shape[0]
 
-        roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor
-        pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor
-        yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
+        roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor * curriculum_coeff
+        pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor * curriculum_coeff
+        yaw_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_yaw_angle_factor * curriculum_coeff
         quaternion = axis_angle_to_quaternion(torch.stack([roll_angle, pitch_angle, yaw_angle], dim=1))
-        joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor)
+        joint_positions = self.robot.data.default_joint_pos[env_ids] * (1.0 + ((torch.rand((nr_reset_envs, self.nr_joints), device=self.sim.device) * 2) - 1.0) * self.initial_state_joint_nominal_position_factor * curriculum_coeff)
 
         # note that the randomization strength below line is dependent on the joint velocity range
         # some robots are very sensitive to the initial velocities, such as very tall humanoids
@@ -347,11 +350,11 @@ class LocomotionEnv(DirectRLEnv):
         # so it's good to clip the range to a constant, which is a hyper parameter
         joint_velocities = (self.joint_max_velocity[env_ids] * ((torch.rand((nr_reset_envs, self.nr_joints),
                                                                            device=self.sim.device) * 2) - 1.0)
-                            * self.initial_state_joint_velocity_factor)
+                            * self.initial_state_joint_velocity_factor * curriculum_coeff)
         joint_velocities = joint_velocities.clip(-self.initial_state_joint_velocity_clip, self.initial_state_joint_velocity_clip)
 
-        linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity
-        angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity
+        linear_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_linear_velocity * curriculum_coeff
+        angular_velocity = ((torch.rand((nr_reset_envs, 3), device=self.sim.device) * 2) - 1.0) * self.initial_state_max_angular_velocity * curriculum_coeff
 
         default_root_state = self.robot.data.default_root_state[env_ids]
         default_root_state[:, :3] += self.scene.env_origins[env_ids]
@@ -398,21 +401,57 @@ class LocomotionEnv(DirectRLEnv):
             env_randomization_mask = torch.zeros((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_randomized_envs = env_randomization_mask.sum()
 
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
         # Action delay
-        self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance
+        self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance * curriculum_coeff
         
         # Control
-        self.extrinsic_motor_strength[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.motor_strength_max - self.motor_strength_min) + self.motor_strength_min
-        self.extrinsic_p_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_gain_factor_max - self.p_gain_factor_min) + self.p_gain_factor_min
-        self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.d_gain_factor_max - self.d_gain_factor_min) + self.d_gain_factor_min
-        self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (self.p_law_position_offset_max - self.p_law_position_offset_min) + self.p_law_position_offset_min
+        default_motor_stength = 1.0
+        motor_strength_min = curriculum_coeff * self.motor_strength_min + (1.0 - curriculum_coeff) * default_motor_stength
+        motor_strength_max = curriculum_coeff * self.motor_strength_max + (1.0 - curriculum_coeff) * default_motor_stength
+        self.extrinsic_motor_strength[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (motor_strength_max - motor_strength_min) + motor_strength_min
+        
+        default_p_gain_factor = 1.0
+        p_gain_factor_min = curriculum_coeff * self.p_gain_factor_min + (1.0 - curriculum_coeff) * default_p_gain_factor
+        p_gain_factor_max = curriculum_coeff * self.p_gain_factor_max + (1.0 - curriculum_coeff) * default_p_gain_factor
+        self.extrinsic_p_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (p_gain_factor_max - p_gain_factor_min) + p_gain_factor_min
+        
+        default_d_gain_factor = 1.0
+        d_gain_factor_min = curriculum_coeff * self.d_gain_factor_min + (1.0 - curriculum_coeff) * default_d_gain_factor
+        d_gain_factor_max = curriculum_coeff * self.d_gain_factor_max + (1.0 - curriculum_coeff) * default_d_gain_factor
+        self.extrinsic_d_gain_factor[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (d_gain_factor_max - d_gain_factor_min) + d_gain_factor_min
+        
+        p_law_position_offset_min = curriculum_coeff * self.p_law_position_offset_min
+        p_law_position_offset_max = curriculum_coeff * self.p_law_position_offset_max
+        self.extrinsic_position_offset[env_randomization_mask] = torch.rand((nr_randomized_envs, self.nr_joints), device=self.sim.device) * (p_law_position_offset_max - p_law_position_offset_min) + p_law_position_offset_min
 
         # Model
         env_randomization_indices = torch.nonzero(env_randomization_mask).flatten()
-        self.randomize_rigid_body_material(self, env_randomization_indices, (self.static_friction_min, self.static_friction_max), (self.dynamic_friction_min, self.dynamic_friction_max), (self.restitution_min, self.restitution_max), 64, self.all_bodies_cfg)
-        mdp.randomize_rigid_body_mass(self, env_randomization_indices, self.trunk_cfg, (self.added_trunk_mass_min, self.added_trunk_mass_max), "add")
-        mdp.randomize_physics_scene_gravity(self, env_randomization_indices, (self.added_gravity_min, self.added_gravity_max), "add")
-        mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (self.joint_friction_min, self.joint_friction_max), (self.joint_armature_min, self.joint_armature_max), None, None, "abs")
+        middle_static_friction = (self.static_friction_min + self.static_friction_max) / 2.0
+        static_friction_min = curriculum_coeff * self.static_friction_min + (1.0 - curriculum_coeff) * middle_static_friction
+        static_friction_max = curriculum_coeff * self.static_friction_max + (1.0 - curriculum_coeff) * middle_static_friction
+        middle_dynamic_friction = (self.dynamic_friction_min + self.dynamic_friction_max) / 2.0
+        dynamic_friction_min = curriculum_coeff * self.dynamic_friction_min + (1.0 - curriculum_coeff) * middle_dynamic_friction
+        dynamic_friction_max = curriculum_coeff * self.dynamic_friction_max + (1.0 - curriculum_coeff) * middle_dynamic_friction
+        middle_restitution = (self.restitution_min + self.restitution_max) / 2.0
+        restitution_min = curriculum_coeff * self.restitution_min + (1.0 - curriculum_coeff) * middle_restitution
+        restitution_max = curriculum_coeff * self.restitution_max + (1.0 - curriculum_coeff) * middle_restitution
+        self.randomize_rigid_body_material(self, env_randomization_indices, (static_friction_min, static_friction_max), (dynamic_friction_min, dynamic_friction_max), (restitution_min, restitution_max), 64, self.all_bodies_cfg)
+        
+        mdp.randomize_rigid_body_mass(self, env_randomization_indices, self.trunk_cfg, (self.added_trunk_mass_min * curriculum_coeff, self.added_trunk_mass_max * curriculum_coeff), "add")
+        
+        mdp.randomize_physics_scene_gravity(self, env_randomization_indices, (self.added_gravity_min * curriculum_coeff, self.added_gravity_max * curriculum_coeff), "add")
+        
+        middle_joint_friction = (self.joint_friction_min + self.joint_friction_max) / 2.0
+        joint_friction_min = curriculum_coeff * self.joint_friction_min + (1.0 - curriculum_coeff) * middle_joint_friction
+        joint_friction_max = curriculum_coeff * self.joint_friction_max + (1.0 - curriculum_coeff) * middle_joint_friction
+        
+        middle_joint_armature = (self.joint_armature_min + self.joint_armature_max) / 2.0
+        joint_armature_min = curriculum_coeff * self.joint_armature_min + (1.0 - curriculum_coeff) * middle_joint_armature
+        joint_armature_max = curriculum_coeff * self.joint_armature_max + (1.0 - curriculum_coeff) * middle_joint_armature
+        mdp.randomize_joint_parameters(self, env_randomization_indices, self.all_joints_cfg, (joint_friction_min, joint_friction_max), (joint_armature_min, joint_armature_max), None, None, "abs")
 
         # Perturbations
         if not all_envs:
@@ -420,9 +459,12 @@ class LocomotionEnv(DirectRLEnv):
         else:
             env_perturbation_mask = torch.ones((self.num_envs,), device=self.sim.device) < self.step_sampling_probability  # ugly, to avoid linting error
         nr_perturbed_envs = env_perturbation_mask.sum()
-        perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_x_max - self.perturb_velocity_x_min) + self.perturb_velocity_x_min
-        perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_y_max - self.perturb_velocity_y_min) + self.perturb_velocity_y_min
-        perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (self.perturb_velocity_z_max - self.perturb_velocity_z_min) + self.perturb_velocity_z_min
+        perturb_velocity_x_min, perturb_velocity_x_max = self.perturb_velocity_x_min * curriculum_coeff, self.perturb_velocity_x_max * curriculum_coeff
+        perturb_velocity_y_min, perturb_velocity_y_max = self.perturb_velocity_y_min * curriculum_coeff, self.perturb_velocity_y_max * curriculum_coeff
+        perturb_velocity_z_min, perturb_velocity_z_max = self.perturb_velocity_z_min * curriculum_coeff, self.perturb_velocity_z_max * curriculum_coeff
+        perturb_velocity_x = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_x_max - perturb_velocity_x_min) + perturb_velocity_x_min
+        perturb_velocity_y = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_y_max - perturb_velocity_y_min) + perturb_velocity_y_min
+        perturb_velocity_z = torch.rand((nr_perturbed_envs,), device=self.sim.device) * (perturb_velocity_z_max - perturb_velocity_z_min) + perturb_velocity_z_min
         current_global_velocity = self.robot.data.root_state_w[env_perturbation_mask, 7:]
         current_global_velocity[:, 0] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_x + current_global_velocity[:, 0] * self.perturb_additive_multiplier, perturb_velocity_x)
         current_global_velocity[:, 1] = torch.where(torch.rand((nr_perturbed_envs,), device=self.sim.device) < self.perturb_add_chance, perturb_velocity_y + current_global_velocity[:, 1] * self.perturb_additive_multiplier, perturb_velocity_y)
@@ -581,16 +623,18 @@ class LocomotionEnv(DirectRLEnv):
         )
         
         # Add noise
-        observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise
-        observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise
-        observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise
-        observation[:, self.projected_gravity_vector_obs_idx] += ((torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * 2) - 1) * self.gravity_vector_noise
-        observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
-        observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * self.action_dt), observation[:, self.feet_air_time_obs_idx])
+        global_step = self.common_step_counter * self.num_envs
+        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise * curriculum_coeff
+        observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise * curriculum_coeff
+        observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise * curriculum_coeff
+        observation[:, self.projected_gravity_vector_obs_idx] += ((torch.rand_like(observation[:, self.projected_gravity_vector_obs_idx]) * 2) - 1) * self.gravity_vector_noise * curriculum_coeff
+        observation[:, self.feet_contact_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_contact_obs_idx]) < self.ground_contact_noise_chance * curriculum_coeff, 1.0 - observation[:, self.feet_contact_obs_idx], observation[:, self.feet_contact_obs_idx])
+        observation[:, self.feet_air_time_obs_idx] = torch.where(torch.rand_like(observation[:, self.feet_air_time_obs_idx]) < self.contact_time_noise_chance * curriculum_coeff, observation[:, self.feet_air_time_obs_idx] + (((torch.rand_like(observation[:, self.feet_air_time_obs_idx]) * 2) - 1.0) * self.contact_time_noise_factor * curriculum_coeff * self.action_dt), observation[:, self.feet_air_time_obs_idx])
 
         # Dropout
-        joint_dropout_mask = torch.rand((self.num_envs, self.nr_joints), device=self.sim.device) < self.joint_and_feet_dropout_chance
-        feet_dropout_mask = torch.rand((self.num_envs, self.nr_feet), device=self.sim.device) < self.joint_and_feet_dropout_chance
+        joint_dropout_mask = torch.rand((self.num_envs, self.nr_joints), device=self.sim.device) < self.joint_and_feet_dropout_chance * curriculum_coeff
+        feet_dropout_mask = torch.rand((self.num_envs, self.nr_feet), device=self.sim.device) < self.joint_and_feet_dropout_chance * curriculum_coeff
         observation[:, self.joint_positions_obs_idx][joint_dropout_mask] = 0.0
         observation[:, self.joint_velocities_obs_idx][joint_dropout_mask] = 0.0
         observation[:, self.joint_previous_actions_obs_idx][joint_dropout_mask] = 0.0
