@@ -1,5 +1,6 @@
 import os
 import re
+import tqdm
 from argparse import ArgumentParser
 
 def extract_index(file_name, keyword):
@@ -42,7 +43,7 @@ def analyze_logs(root_dir, keyword, max_index, num_lines, traceback_pattern="Tra
     good_files = []
     error_logs = []
 
-    for idx in index_range:
+    for idx in tqdm.tqdm(index_range):
         if idx not in file_indices:
             missing_files.append(idx)
             continue

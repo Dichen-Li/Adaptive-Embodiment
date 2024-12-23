@@ -9,5 +9,5 @@ python scripts/rsl_rl/run_distillation.py \
     --batch_size 512 \
     --lr 3e-4 \
     --num_workers 16 \
-    --num_epochs 50 \
+    --num_epochs 100 \
     --gradient_acc_steps 2
