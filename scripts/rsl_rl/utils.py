@@ -59,7 +59,7 @@ class RewardDictLogger:
             rewards (torch.Tensor): Reward tensor (N,).
             dones (torch.Tensor): Done flags (N,) indicating robot termination.
         """
-        reward_dict = env.env.env.extras["log"]  # Access reward terms
+        reward_dict = env.unwrapped.extras["log"]  # Access reward terms
 
         for key, values in reward_dict.items():
             if key not in self.reward_avg_meter_dict:
