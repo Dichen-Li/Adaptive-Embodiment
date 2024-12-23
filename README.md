@@ -1,33 +1,29 @@
 
-This codebase was built upon the Berkeley Humanoid project, so you might see some trace of the legacy code, but our main program logic
-was implemented from scratch in the direct environment style (see [here](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/task_workflows.html) for an introduction
-to Isaac Lab's Direct Env and Manager-Based Env; basically, direct style is closer to Mujoco and the older Isaac Gym). 
+## Preliminary
+Our codebase uses IsaacLab's `Direct` style, as opposed to the `ManagerBased` style (see [here](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/task_workflows.html) for an introduction). In short, direct style is closer to Mujoco and the older Isaac Gym. 
+
 
 ## Installation
-
 - Install Isaac Lab, see
   the [installation guide](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html).
 
-- Install the library `berkeley_humanoid` and `rsl_rl`
+- Install the library `berkeley_humanoid` and our customized version of `rsl_rl`
 ```
 cd embodiment-scaling-law
 pip install -e exts/berkeley_humanoid/
 pip install -e rsl_rl/
 ```
 
-## How to add robot
-Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
-0. Copy file `/home/albert/github/isaac_berkeley_humanoid/scripts/convert_urdf.py` to `${ISAAC_LAB_PATH}/source/standalone/tools/convert_urdf.py`.
-Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.sh`. Here are the example commands:
-```angular2html
-sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
-sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
-```
-1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
-2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
-3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
-4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
-5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
+## Understanding the codebase
+1. `exts/berkeley_humanoid/berkeley_humanoid/assets`: place where the robot USD files are placed, and the entry for importing
+robots. Every robot is treated as an articulation, and its associated properties, such as initial state, joint limit, joint type, 
+are defined in `ArticulationCfg` in the files there. 
+2. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/locomotion/locomotion_env.py`: the core simulation logic. The observation space
+defined in  `_get_observations` and the reward function is `_get_rewards`. 
+3. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments`: place where parameters of the environments 
+(for different robots), such as scene, ground, velocity command parameters, are defined.
+4. `generation`: scripts for generating nautilus training job scripts, articulation configs, PPO configs, in batch, among many others. 
+
 
 ## Single robot training and testing
 To train just one robot, run 
@@ -39,15 +35,6 @@ If you do not wish to have the visualization open, which could slow down trainin
 ```angular2html
 python scripts/rsl_rl/play.py --task GenDog1
 ```
-
-## Understanding the codebase
-1. `exts/berkeley_humanoid/berkeley_humanoid/assets`: place where the robot USD files are placed, and the entry for importing
-robots. Every robot is treated as an articulation, and its associated properties, such as initial state, joint limit, joint type, 
-are defined in `ArticulationCfg` in the files there. 
-2. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/locomotion/locomotion_env.py`: the core simulation logic. The observation space
-defined in  `_get_observations` and the reward function is `_get_rewards`. 
-3. `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/environments`: place where parameters of the environments 
-(for different robots), such as scene, ground, velocity command parameters, are defined.
 
 
 ## Single robot training and testing
@@ -126,6 +113,24 @@ produced for every robot, below is an example command:
 python scripts/check_tf_checkpoints.py --keyword Gendog --max-index 308 --min-epoch 3000
 ```
 The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete runs.
+3. Analyze reward values. After training is complete for most robots, we have a notebook for analyzing the reward values recorded in the tensorboard logs (e.g, drawing a histogram). However, our IsaacLab docker image does not have jupyter notebook installed. So, to do this, either
+   (1) creat a new pod using the docker `albert01102/torch:2.5.1-cuda12.4-cudnn9-runtime`, then run on server
+```aiignore
+jupyter notebook --allow-root --port 8889
+```
+and forward the port to local, by running the below on local machine
+```aiignore
+kubectl port-forward <pod-name> 8889:8889
+```
+4. Check tensorboard curves. You can launch tensorboard with
+```aiignore
+tensorboard --logdir logs/rsl_rl/ --port 6007
+```
+Then forward the port with
+```aiignore
+kubectl port-forward <pod-name> 6007:6007
+```
+
 
 ## How to add single robot manually
 Taking quadruped as an example, but feel free to create new files and adapt accordingly: 
@@ -136,9 +141,9 @@ sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_
 sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
 ```
 1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`
-2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/rsl_rl_ppo_cfg.py`, following the pattern
-3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/generated.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
-4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/gen_dog_direct_env.py`
+2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/configs/algorithm/gen_quadruped_1k_ppo_cfg.py`, following the pattern
+3. Add robot configs to `exts/berkeley_humanoid/berkeley_humanoid/assets/gen_quadrupeds.py`. Note that the configs here might be highly relevant for sim-to-real transfer, e.g., actuator parameters
+4. Add training env configs to `exts/hberkeley_humanoid/berkeley_humanoid/tasks/configs/environment/gen_quadrupeds_cfg.py`
 5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`
 
 
@@ -172,13 +177,7 @@ but also remember to modify the paths in the file.
 
 5. Register training envs at `exts/berkeley_humanoid/berkeley_humanoid/assets/__init__.py`. For adding a large number of robots, run `generation/gen_init_registry.py` to generate these lines automatically.
 
-## Common errors
-1. Initial state values are integers
-```angular2html
-    self._data.default_joint_pos[:, indices_list] = torch.tensor(values_list, device=self.device)
-RuntimeError: Index put requires the source and destination dtypes match, got Float for the destination and Long for the source
-```
-This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
+NOTE: For newly generated robots, please run `generation/update_init_height_sapien.py` and `generation/get_description_vector_sapien.py` so that the robot folder contains all necessary information for training and distillation. For the latter, please see the section on `Use SAPIEN` for more details.
 
 
 ## Use SAPIEN
@@ -194,6 +193,7 @@ P.S.The following error is okay. Just ignore it:
 ```aiignore
 [2024-12-17 20:39:12.722] [SAPIEN] [error] Cylinder collision is not supported. Replaced with a capsule
 ```
+
 
 ## Policy distillation
 This section introduces how to perform policy distillation. 
@@ -231,23 +231,23 @@ To train a student policy, run the following command, which will load the datase
 [//]: # (To supervisely train the student model from multiple teacher policies, run)
 
 ```angular2html
-python scripts/rsl_rl/run_distillation.py --tasks Gendog10_gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4 Gendog100_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2 --model urma --exp_name urma_10_100_randomized_additive --batch_size 512 --lr 3e-4 --num_workers 16
+python scripts/rsl_rl/run_distillation.py \
+    --tasks Gendog10_gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4 \
+            Gendog100_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2 \
+            Gendog200_gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_0_8 \
+            Gendog50_gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_4 \
+            Genhexapod1_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_1_2 \
+    --model urma \
+    --exp_name urma_10_100_200_50_haxa1_randomized_additive_bs512_acc2 \
+    --batch_size 512 \
+    --lr 3e-4 \
+    --num_workers 16 \
+    --num_epochs 100 \
+    --gradient_acc_steps 2
 ```
-where `model` could also be "rsl_rl_actor", "naive_actor". Please beware that the memory usage increases linearly with `num_workers`. 
+where `model` could also be "rsl_rl_actor", "naive_actor". Please beware that the memory usage increases linearly with `num_workers`. For the above comand that uses 16 workers for data loader, expect a RAM usage of around `40GB`. The example command can also be found at `scripts/rsl_rl/run_distillation.sh`. 
 
-The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, consider increasing the value of `--max_files_in_memory`, or let Bo know to improve the dataset class. 
-
-[//]: # (Suggested parameters for 32G RAM and 4070 GPU 8G VRAM computer is: )
-
-[//]: # (During dataset loading:)
-
-[//]: # (Set total steps of dataset to 1000 -> 32G RAM. &#40;this requires attention on either dataset collection or dataset loading&#41;)
-
-[//]: # (During training: )
-
-[//]: # (set batch size to 4096*10 -> 8G VRAM;)
-
-[//]: # (set learning rate to 1e-4 and number of epoch to 100. &#40;BoAi set default as 1.25e-4&#41;)
+The student policy is stored in `log_dir/{experiments_name_with_timestamp}`. Please note that the script uses a cache to dynamically load `.h5` files from disk. If you think data loading is bottlenecking training, please let Bo know to improve the dataset class.
 
 #### 3. Evaluation
 Finally, load the policy network and test it in the simulation environment.
@@ -261,50 +261,17 @@ If the model is an MLP, run
 python scripts/rsl_rl/eval_student_model_mlp.py --task Gendog10
 ```
 
+The checkpoints will be under `log_dir/{task-name}`. 
+
 If you wish to store videos, which might slow down simulation, add `--video --video_length 200` and the corresponding video will be stored in the directory: `log_dir/{experiment_name}/one_policy_videos/{task}`. 
 
-TODO: compute reward values for evaluation to quantify performance. 
+Reward values will be printed out. You may note down the rewards for full trajectories to compare between teacher and student model. The teacher model can be run with `scripts/rsl_rl/play.py`, and you will see a simlar printout from the program. Note that the rewards here are likely higher than the one logged by tensorboard during training, because now we are in evaluation mode, i.e., using the mean value predicted by the model as the action, while the action was sampled from a gaussian (predicted mean + a std), which encourages exploration but causes worse reward returns. 
 
-[//]: # (#### 4. Developing)
 
-[//]: # (There is a "--model" arg in run_distillation.py and eval_student_model_urma.py. It serves as a function to replace the model to self defined naive MLP, rsl_rl model actor-critic or self defined silver_badger_torch URMA. )
-
-[//]: # (<!-- TODO: @BoAi, check if it can work properly in code. If so, use it to replace the following "One policy observation and MLP actor-critic model". Check the corresponding args input in md explaination. -->)
-
-[//]: # ()
-[//]: # (### One policy observation and MLP actor-critic model)
-
-[//]: # (For debug purpose, we use the MLP actor-critic model, the same structure as used in the single embodiment RL training process. As we are still conducting supervised training, the PPO algorithm is not needed, nor is the critic network. We load the one policy dataset and extract the variables needed for MLP actor-critic network. The extraction process is done right before every inference of MLP actor-critic model in training pipeline.)
-
-[//]: # (To collect data, run )
-
-[//]: # (```angular2html)
-
-[//]: # (python scripts/rsl_rl/play_collect_data.py --task GenDog2)
-
-[//]: # (```)
-
-[//]: # (To train, run)
-
-[//]: # (```angular2html)
-
-[//]: # (python scripts/rsl_rl/run_distillation_mlp_dichen.py --task GenDog2 --num_epochs 1000 --exp_name 'your_experiment_name' --headless)
-
-[//]: # (```)
-
-[//]: # (To evaluate, run)
-
-[//]: # (```angular2html)
-
-[//]: # (python scripts/rsl_rl/eval_student_model_mlp.py --task GenDog2 --new_log_dir logs/rsl_rl/GenDog2/2024-11-11_12-21-42/pt_save_actor_critic/'date_time'+'your_experiment_name')
-
-[//]: # (```)
-
-[//]: # (For MLP actor-critic model, the same single task arg is required for training and evaluation.)
-
-[//]: # (This pipeline works. We see loss going down to 0.02 in 1000 epochs. and the robot could walk. Fewer epochs as 100 is also acceptable.)
-
-[//]: # ()
-[//]: # (Work continued.)
-
-[//]: # (Happy training! )
+## Common errors
+1. Initial state values are integers
+```angular2html
+    self._data.default_joint_pos[:, indices_list] = torch.tensor(values_list, device=self.device)
+RuntimeError: Index put requires the source and destination dtypes match, got Float for the destination and Long for the source
+```
+This is pretty likely due to using integers like `0` as the initial state -- please use `0.0` instead.
