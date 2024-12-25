@@ -11,6 +11,7 @@ output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
 run_name = 'v0' # added by tmu
+wandb_login_key = 'USE_YOUR_WANDB_LOGIN_KEY' # added by tmu
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -84,10 +85,10 @@ for i in range(0, num_tasks, tasks_per_job):
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
-        f"source ~/.bashrc && cd /cephfs_fast/embodiment-scaling-law && "
+        f"source ~/.bashrc && /workspace/isaaclab/_isaac_sim/python.sh -m pip install wandb && /workspace/isaaclab/_isaac_sim/python.sh -m wandb login {wandb_login_key} && cd /cephfs_fast/embodiment-scaling-law && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl/ && "   # only for sim2real_learning branch
-        f"bash scripts/train_batch_nautilus_humanoid.sh --tasks {' '.join(group)} --looger wandb --run_name {run_name}"
+        f"bash scripts/train_batch_nautilus_humanoid.sh --tasks {' '.join(group)} --logger wandb --run_name {run_name}"
         for group in task_groups if group
     )
     parallel_commands += " & wait"  # Ensure all parallel commands complete
