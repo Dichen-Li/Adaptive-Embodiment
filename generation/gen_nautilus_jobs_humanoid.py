@@ -40,8 +40,8 @@ spec:
               {parallel_commands}
           resources:
             requests:
-              cpu: "8"
-              memory: "14Gi"
+              cpu: "12"
+              memory: "20Gi"
               nvidia.com/gpu: "1"
             limits:
               cpu: "12"
@@ -85,11 +85,11 @@ for i in range(0, num_tasks, tasks_per_job):
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
-        f"source ~/.bashrc && /workspace/isaaclab/_isaac_sim/python.sh -m pip install wandb && /workspace/isaaclab/_isaac_sim/python.sh -m wandb login {wandb_login_key} && cd /cephfs_fast/embodiment-scaling-law && "
+        f"sleep {group_idx*120+1} && source ~/.bashrc && /workspace/isaaclab/_isaac_sim/python.sh -m pip install wandb && /workspace/isaaclab/_isaac_sim/python.sh -m wandb login {wandb_login_key} && cd /cephfs_fast/embodiment-scaling-law && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl/ && "   # only for sim2real_learning branch
         f"bash scripts/train_batch_nautilus_humanoid.sh --tasks {' '.join(group)} --logger wandb --run_name {run_name}"
-        for group in task_groups if group
+        for (group_idx, group) in enumerate(task_groups) if group
     )
     parallel_commands += " & wait"  # Ensure all parallel commands complete
 
