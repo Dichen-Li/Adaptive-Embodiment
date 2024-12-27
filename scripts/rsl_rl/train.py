@@ -70,6 +70,7 @@ def main():
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
     agent_cfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
+    agent_cfg.task = args_cli.task
 
     # specify directory for logging experiments
     log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)

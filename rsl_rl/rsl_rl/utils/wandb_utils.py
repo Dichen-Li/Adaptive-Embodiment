@@ -23,18 +23,28 @@ class WandbSummaryWriter(SummaryWriter):
             project = cfg["wandb_project"]
         except KeyError:
             raise KeyError("Please specify wandb_project in the runner config, e.g. legged_gym.")
+        
 
-        try:
-            entity = os.environ["WANDB_USERNAME"]
-        except KeyError:
-            raise KeyError(
-                "Wandb username not found. Please run or add to ~/.bashrc: export WANDB_USERNAME=YOUR_USERNAME"
+        api = wandb.Api()
+        if api.viewer.username == 'tmu':
+            # dirty hack for tmu-style wandb logging
+            wandb.init(
+                project=project,
+                entity=os.environ.get("WANDB_USERNAME", None),
+                name=cfg["run_name"],
             )
+        else:
+            try:
+                entity = os.environ["WANDB_USERNAME"]
+            except KeyError:
+                raise KeyError(
+                    "Wandb username not found. Please run or add to ~/.bashrc: export WANDB_USERNAME=YOUR_USERNAME"
+                )
 
-        wandb.init(project=project, entity=entity)
+            wandb.init(project=project, entity=entity)
 
-        # Change generated name to project-number format
-        wandb.run.name = project + wandb.run.name.split("-")[-1]
+            # Change generated name to project-number format
+            wandb.run.name = project + wandb.run.name.split("-")[-1]
 
         self.name_map = {
             "Train/mean_reward/time": "Train/mean_reward_time",
@@ -50,6 +60,8 @@ class WandbSummaryWriter(SummaryWriter):
         wandb.config.update({"policy_cfg": policy_cfg})
         wandb.config.update({"alg_cfg": alg_cfg})
         wandb.config.update({"env_cfg": asdict(env_cfg)})
+        if 'task' in runner_cfg:
+            wandb.config.update({"task": runner_cfg['task']})
 
     def _map_path(self, path):
         if path in self.name_map:
