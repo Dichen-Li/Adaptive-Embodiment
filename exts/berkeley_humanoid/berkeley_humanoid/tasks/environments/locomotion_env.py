@@ -335,6 +335,7 @@ class LocomotionEnv(DirectRLEnv):
 
     def _reset_idx(self, env_ids: torch.Tensor):
         if not self.calculated_feet_y_distance_target:
+            self.robot.write_joint_state_to_sim(self.robot.data.default_joint_pos[env_ids], 0.0 * self.joint_max_velocity[env_ids], None, env_ids)
             feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
             global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
             local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
