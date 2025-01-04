@@ -18,7 +18,7 @@ def parse_arguments():
     # Define arguments with defaults
     parser.add_argument("--train_set", nargs="+", type=str, default=None, required=True,
                         help="List of robot names as the training set.")
-    parser.add_argument("--test_set", nargs="+", type=str, default=None, required=True,
+    parser.add_argument("--test_set", nargs="+", type=str, default=None, required=False,
                         help="List of robot names as the test set.")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
     parser.add_argument("--batch_size", type=int, default=512, help="Batch size. 4096*16 takes 10G")
@@ -67,6 +67,8 @@ def parse_arguments():
 
 
 def get_meter_dict_avg(meter_dicts):
+    if len(meter_dicts) == 0:
+        return 0
     return sum([meter.avg for meter in meter_dicts.values()])/len(meter_dicts)
 
 
@@ -277,8 +279,10 @@ def main():
     # Dataset paths
     assert args_cli.train_set is not None, f"Please specify value for arg --train_set"
     train_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.train_set]
-    test_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.test_set]
-    if len(test_set_paths) == 0:
+    if args_cli.test_set:
+        test_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.test_set]
+    else:
+        test_set_paths = list()
         print(f'[INFO] No test set provided.')
 
     # Training dataset
