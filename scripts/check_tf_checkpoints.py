@@ -18,7 +18,7 @@ def find_latest_subfolder(folder_path):
         return None
     return max(
         subfolders,
-        key=lambda x: datetime.strptime(x, "%Y-%m-%d_%H-%M-%S"),
+        key=lambda x: datetime.strptime(x[:19], "%Y-%m-%d_%H-%M-%S"),
         default=None
     )
 
