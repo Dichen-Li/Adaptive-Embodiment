@@ -11,9 +11,10 @@ python scripts/rsl_rl/run_distillation.py \
             Genhumanoid100_genhumanoid__KneeNum_l1_r1__ScaleJointLimit_l0_r1_1_2__Geo_lengthen_calf_0_4 \
             Genhumanoid10_genhumanoid__KneeNum_l0_r0__ScaleJointLimit_l0_r0_1_0__Geo_lengthen_calf_0_4 \
     --model urma \
-    --exp_name urma_10_100_200_50_haxa1_randomized_additive_bs512_acc2 \
+    --exp_name test \
     --batch_size 512 \
     --lr 3e-4 \
     --num_workers 32 \
     --num_epochs 75 \
-    --gradient_acc_steps 2
+    --gradient_acc_steps 2 \
+    --config log_dir/test/args.yaml

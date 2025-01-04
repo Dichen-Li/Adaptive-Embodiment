@@ -1,18 +1,22 @@
-import argparse
 import os
-from datetime import datetime
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
+from scripts.rsl_rl.utils import save_args_to_yaml
 from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 import tqdm
 
+import argparse
+import yaml
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
+
+    # Define arguments with defaults
     parser.add_argument("--tasks", nargs="+", type=str, default=None, required=True,
                         help="List of tasks to process.")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
@@ -22,11 +26,12 @@ def parse_arguments():
                              "Default is the current date and time.")
     parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
-    parser.add_argument("--lr", type=float, default=3e-4, help="unit learning rate (for a batch size of 512)")
-    parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loder.")
+    parser.add_argument("--lr", type=float, default=3e-4, help="Unit learning rate (for a batch size of 512)")
+    parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loader.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
-    parser.add_argument("--gradient_acc_steps", type=int, default=1, help="Number of batches before one gradient update.")
+    parser.add_argument("--gradient_acc_steps", type=int, default=1,
+                        help="Number of batches before one gradient update.")
     parser.add_argument(
         "--model",
         type=str,
@@ -34,22 +39,28 @@ def parse_arguments():
         choices=["urma", "rsl_rl_actor", "naive_actor"],
         help="Model type."
     )
+    # Add argument for YAML configuration
+    parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
 
     args = parser.parse_args()
 
-    # Handle experiment name
-    current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    if args.exp_name:
-        args.exp_name = f"{current_datetime}_{args.exp_name}"
-    else:
-        args.exp_name = current_datetime
+    # Load and override arguments from YAML file if specified
+    if args.config:
+        print(f'Loading configuration from {args.config}. Specified params will be overridden.')
 
-    # Process learning rate
-    # args.lr = args.lr * (args.batch_size / 4096)
-    args.lr = args.lr * (args.batch_size / 512)
+        with open(args.config, 'r') as file:
+            config_args = yaml.safe_load(file)
 
-    # For learning rate:
-    # 1.25e-4 seems to work well with batch size 4096; however, it seems good to use 3e-4 with batch size 512
+        for key, value in config_args.items():
+            if hasattr(args, key):
+                setattr(args, key, value)
+
+    # Fill missing arguments with defaults
+    for action in parser._actions:
+        if action.dest == "help":
+            continue
+        if getattr(args, action.dest) is None and action.default is not None:
+            setattr(args, action.dest, action.default)
 
     return args
 
@@ -213,6 +224,11 @@ def main():
     # Prepare log directory
     log_dir = os.path.join(args_cli.log_dir, args_cli.exp_name)
     os.makedirs(log_dir, exist_ok=True)
+
+    # Save args to a YAML file for reproducibility
+    config_save_path = os.path.join(log_dir, "config.yaml")
+    save_args_to_yaml(args_cli, config_save_path)
+    print(f"[INFO] Config saved to {config_save_path}")
 
     # Dataset paths
     assert args_cli.tasks is not None, f"Please specify value for arg --tasks"
