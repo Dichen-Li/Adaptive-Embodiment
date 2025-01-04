@@ -106,6 +106,7 @@ python scripts/check_logs_traceback.py --root /bai-fast-vol/code/jobs-logs --key
 It will check all logs beginning with keyword (`Gendog0`-`Gendog308`) and print out the last `10` lines if there is any error.
 If you are unsure what each arg means or want to check what the optional args not specified here, use `--help`. This also applies
 to the command detailed below. 
+
 2. Check tensorboard logs. The training programs should produce checkpoints (though, please note that even if IsaacLab 
 throws errors, training can still resume sometimes; thus, please check `.out` as well). To check if there are checkpoints
 produced for every robot, below is an example command: 
@@ -113,6 +114,7 @@ produced for every robot, below is an example command:
 python scripts/check_tf_checkpoints.py --keyword Gendog --max-index 308 --min-epoch 3000
 ```
 The script will look for checkpoints saved after the 3000-th epoch for every robot, and report incomplete runs.
+
 3. Analyze reward values. After training is complete for most robots, we have a notebook for analyzing the reward values recorded in the tensorboard logs (e.g, drawing a histogram). However, our IsaacLab docker image does not have jupyter notebook installed. So, to do this, either
    (1) creat a new pod using the docker `albert01102/torch:2.5.1-cuda12.4-cudnn9-runtime`, then run on server
 ```aiignore
@@ -122,6 +124,7 @@ and forward the port to local, by running the below on local machine
 ```aiignore
 kubectl port-forward <pod-name> 8889:8889
 ```
+
 4. Check tensorboard curves. You can launch tensorboard with
 ```aiignore
 tensorboard --logdir logs/rsl_rl/ --port 6007
