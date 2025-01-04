@@ -59,7 +59,7 @@ def process_training_results(base_folder, step_index, keyword='Gendog'):
 
             # Find the latest date-time subfolder
             subfolders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
-            dated_subfolders = [(subfolder, parse_datetime(subfolder)) for subfolder in subfolders]
+            dated_subfolders = [(subfolder, parse_datetime(subfolder[:19])) for subfolder in subfolders]
             dated_subfolders = [(name, dt) for name, dt in dated_subfolders if dt is not None]
 
             if not dated_subfolders:
