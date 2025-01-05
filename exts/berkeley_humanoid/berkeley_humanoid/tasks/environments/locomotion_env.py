@@ -919,24 +919,25 @@ def compute_rewards(
     angular_position_reward = curriculum_coeff * pitch_roll_pos_coeff * -pitch_roll_position_norm
 
     # Joint nominal position difference reward
-    actuator_joint_nominal_diff_norm = torch.sum(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
+    # actuator_joint_nominal_diff_norm = torch.sum(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
+    actuator_joint_nominal_diff_norm = torch.zeros_like(joint_positions[:, 0])
     actuator_joint_nominal_diff_reward = curriculum_coeff * actuator_joint_nominal_diff_coeff * -actuator_joint_nominal_diff_norm
 
     # Joint position limit reward
-    lower_limit_penalty = -torch.minimum(joint_positions - joint_position_soft_lower_limits, torch.tensor(0.0, device=joint_positions.device)).sum(dim=1)
-    upper_limit_penalty = torch.maximum(joint_positions - joint_position_soft_upper_limits, torch.tensor(0.0, device=joint_positions.device)).sum(dim=1)
+    lower_limit_penalty = -torch.minimum(joint_positions - joint_position_soft_lower_limits, torch.tensor(0.0, device=joint_positions.device)).mean(dim=1)
+    upper_limit_penalty = torch.maximum(joint_positions - joint_position_soft_upper_limits, torch.tensor(0.0, device=joint_positions.device)).mean(dim=1)
     joint_position_limit_reward = curriculum_coeff * joint_position_limit_coeff * -(lower_limit_penalty + upper_limit_penalty)
 
     # Joint acceleration reward
-    acceleration_norm = torch.sum(torch.square(joint_accelerations), dim=1)
+    acceleration_norm = torch.mean(torch.square(joint_accelerations), dim=1)
     acceleration_reward = curriculum_coeff * joint_acceleration_coeff * -acceleration_norm
 
     # Joint torque reward
-    torque_norm = torch.sum(torch.square(joint_torques), dim=1)
+    torque_norm = torch.mean(torch.square(joint_torques), dim=1)
     torque_reward = curriculum_coeff * joint_torque_coeff * -torque_norm
 
     # Action rate reward
-    action_rate_norm = torch.sum(torch.square(actions - previous_actions), dim=1)
+    action_rate_norm = torch.mean(torch.square(actions - previous_actions), dim=1)
     action_rate_reward = curriculum_coeff * action_rate_coeff * -action_rate_norm
 
     # Walking height reward

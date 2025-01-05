@@ -74,10 +74,10 @@ class Go2EnvCfg(DirectRLEnvCfg):
     pitch_roll_pos_coeff = 0.2                  * action_dt
     actuator_joint_nominal_diff_coeff = 0.0     * action_dt
     actuator_joint_nominal_diff_joints = []
-    joint_position_limit_coeff = 10.0           * action_dt
-    joint_acceleration_coeff = 2.5e-7           * action_dt
-    joint_torque_coeff = 2e-4                   * action_dt
-    action_rate_coeff = 0.01                    * action_dt
+    joint_position_limit_coeff = 120.0          * action_dt
+    joint_acceleration_coeff = 3e-6             * action_dt
+    joint_torque_coeff = 2.4e-3                 * action_dt
+    action_rate_coeff = 0.12                    * action_dt
     base_height_coeff = 30.0                    * action_dt
     air_time_coeff = 0.1                        * action_dt
     symmetry_air_coeff = 0.5                    * action_dt
