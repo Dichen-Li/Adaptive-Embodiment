@@ -59,13 +59,7 @@ class LocomotionEnv(DirectRLEnv):
         self.previous_actions = torch.zeros((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
         self.previous_feet_air_times = torch.zeros((self.num_envs, self.nr_feet), dtype=torch.float32, device=self.sim.device)
 
-        # Set reward_curriculum_steps to 0 when executing play_collect_data.py
-        # TODO: double check
-        self.is_collect_mode = True
-        if self.is_collect_mode == True:
-            self.reward_curriculum_steps = 0
-        else:
-            self.reward_curriculum_steps = self.cfg.reward_curriculum_steps
+        self.reward_curriculum_steps = self.cfg.reward_curriculum_steps
         self.tracking_xy_velocity_command_coeff = self.cfg.tracking_xy_velocity_command_coeff
         self.tracking_yaw_velocity_command_coeff = self.cfg.tracking_yaw_velocity_command_coeff
         self.z_velocity_coeff = self.cfg.z_velocity_coeff
@@ -83,13 +77,7 @@ class LocomotionEnv(DirectRLEnv):
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
         self.calculated_feet_y_distance_target = False
-        # Set domain_randomization_curriculum_steps to 0 when executing play_collect_data.py
-        # TODO: double check
-        self.is_collect_mode = True
-        if self.is_collect_mode == True:
-            self.domain_randomization_curriculum_steps = 0
-        else:
-            self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
+        self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
 
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
@@ -362,7 +350,6 @@ class LocomotionEnv(DirectRLEnv):
         nr_reset_envs = env_ids.shape[0]
 
         global_step = self.common_step_counter * self.num_envs
-        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
         if self.domain_randomization_curriculum_steps == 0:
             curriculum_coeff = 1.0
         else:
@@ -433,7 +420,6 @@ class LocomotionEnv(DirectRLEnv):
         nr_randomized_envs = env_randomization_mask.sum()
 
         global_step = self.common_step_counter * self.num_envs
-        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
         if self.domain_randomization_curriculum_steps == 0:
             curriculum_coeff = 1.0
         else:
@@ -524,7 +510,6 @@ class LocomotionEnv(DirectRLEnv):
 
     def _get_rewards(self) -> torch.Tensor:
         global_step = self.common_step_counter * self.num_envs
-        print(f"[INFO] The value of reward_curriculum_steps is {self.reward_curriculum_steps}")
         if self.reward_curriculum_steps == 0:
             curriculum_coeff = 1.0
         else:
@@ -665,7 +650,6 @@ class LocomotionEnv(DirectRLEnv):
         
         # Add noise
         global_step = self.common_step_counter * self.num_envs
-        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
         if self.domain_randomization_curriculum_steps == 0:
             curriculum_coeff = 1.0
         else:
