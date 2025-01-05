@@ -623,8 +623,9 @@ class LocomotionDataset(Dataset):
             import warnings
             warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
              f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
-             f"This is likely due to multiple threads reading the same file. I will set num_workers to {max(2, len(self.file_indices))}")
-            num_workers = max(2, len(self.file_indices))        # 2 is a safe number, tested
+             f"This is likely due to multiple threads reading the same file. "
+             f"I will set num_workers to {min(num_workers, len(self.file_indices))}")
+            num_workers = min(num_workers, len(self.file_indices))        # 2 is a safe number, tested
 
         return DataLoader(
             self,
