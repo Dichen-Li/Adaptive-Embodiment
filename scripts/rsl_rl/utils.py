@@ -59,7 +59,7 @@ class RewardDictLogger:
             rewards (torch.Tensor): Reward tensor (N,).
             dones (torch.Tensor): Done flags (N,) indicating robot termination.
         """
-        reward_dict = env.env.env.extras["log"]  # Access reward terms
+        reward_dict = env.unwrapped.extras["log"]  # Access reward terms
 
         for key, values in reward_dict.items():
             if key not in self.reward_avg_meter_dict:
@@ -287,3 +287,21 @@ def ensure_unique_save_path(save_path):
         save_path = f"{base_name}_{counter}{ext}"
         counter += 1
     return save_path
+
+
+def save_args_to_yaml(args, output_file):
+    """
+    Saves argparse arguments to a YAML file.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments.
+        output_file (str): The path to the output YAML file.
+    """
+    # Convert argparse Namespace to a dictionary
+    args_dict = vars(args)
+
+    # Write the dictionary to a YAML file
+    with open(output_file, 'w') as file:
+        yaml.dump(args_dict, file, default_flow_style=False)
+
+    print(f"Arguments saved to {output_file}")

@@ -64,6 +64,8 @@ def main():
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
+    env.unwrapped.reward_curriculum_steps = 0
+    env.unwrapped.domain_randomization_curriculum_steps = 0
 
     # wrap for video recording
     if args_cli.video:

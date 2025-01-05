@@ -44,22 +44,22 @@ def parse_datetime(folder_name):
     except ValueError:
         return None
 
-def process_training_results(base_folder, step_index):
+def process_training_results(base_folder, step_index, keyword='Gendog'):
     """
     Given a base folder, find the latest date-time subfolder for each "Gendogx" folder,
     read the TensorBoard logs, and return a mapping from "Gendogx" to their scalar dictionaries.
     """
     results = {}
-    folders = [f for f in os.listdir(base_folder) if os.path.isdir(os.path.join(base_folder, f)) and f.startswith("Gendog")]
+    folders = [f for f in os.listdir(base_folder) if os.path.isdir(os.path.join(base_folder, f)) and f.startswith(keyword)]
 
     # Progress bar
-    with tqdm(total=len(folders), desc="Processing Gendog folders", unit="folder") as pbar:
+    with tqdm(total=len(folders), desc=f"Processing {keyword} folders", unit="folder") as pbar:
         for folder in folders:
             folder_path = os.path.join(base_folder, folder)
 
             # Find the latest date-time subfolder
             subfolders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
-            dated_subfolders = [(subfolder, parse_datetime(subfolder)) for subfolder in subfolders]
+            dated_subfolders = [(subfolder, parse_datetime(subfolder[:19])) for subfolder in subfolders]
             dated_subfolders = [(name, dt) for name, dt in dated_subfolders if dt is not None]
 
             if not dated_subfolders:
@@ -124,6 +124,7 @@ if __name__ == "__main__":
     parser.add_argument("--log_path", type=str, default="../logs/rsl_rl", help="Path to the RSL RL logs.")
     parser.add_argument("--step_index", type=int, required=True, help="Step index to plot.")
     parser.add_argument("--save_path", type=str, default="reward_his.jpg", help="Path to save the histogram.")
+    parser.add_argument("--keyword", type=str, default="Gendog")
 
     args = parser.parse_args()
 
