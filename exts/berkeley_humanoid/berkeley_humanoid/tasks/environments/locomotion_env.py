@@ -384,6 +384,13 @@ class LocomotionEnv(DirectRLEnv):
         self.robot.write_root_velocity_to_sim(default_root_state[:, 7:], env_ids)
         self.robot.write_joint_state_to_sim(joint_positions, joint_velocities, None, env_ids)
 
+        feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
+        global_feet_pos = self.robot.data.body_pos_w[env_ids][:, feet_indices, :]
+        lowest_feet = global_feet_pos[:, :, 2].min(dim=1).values
+        root_state = self.robot.data.root_state_w[env_ids]
+        root_state[:, 2] -= lowest_feet
+        self.robot.write_root_pose_to_sim(root_state[:, :7], env_ids)
+
         self.previous_actions[env_ids] *= 0.0
         self.previous_feet_air_times[env_ids] *= 0.0
 
