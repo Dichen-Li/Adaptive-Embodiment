@@ -35,7 +35,6 @@ class LocomotionEnv(DirectRLEnv):
         self.nr_joints = self.robot.data.default_joint_pos.shape[1]
         self.nr_feet = self.cfg.nr_feet
 
-        self.nominal_trunk_z = self.robot.data.default_root_state[0, 2]
         self.joint_nominal_positions = self.robot.data.default_joint_pos
         self.action_scaling_factor = self.cfg.action_scaling_factor
         if 'all' in self.robot.actuators:
@@ -341,6 +340,7 @@ class LocomotionEnv(DirectRLEnv):
             feet_y_distance = torch.abs(local_feet_pos[:, self.feet_symmetry_pairs[:, 0], 1] - local_feet_pos[:, self.feet_symmetry_pairs[:, 1], 1]).mean(dim=1)
             self.feet_y_distance_target = feet_y_distance.mean().item()
             self.calculated_feet_y_distance_target = True
+            self.nominal_trunk_z = self.robot.data.default_root_state[0, 2] - global_feet_pos[:, :, 2].min().item()
         
         if env_ids is None or len(env_ids) == self.num_envs:
             env_ids = self.robot._ALL_INDICES
