@@ -12,7 +12,6 @@ class PolicyCfg:
     actor_hidden_dims = [512, 256, 128]
     critic_hidden_dims = [512, 256, 128]
     activation = "elu"
-    policy_mean_abs_clip = 10.0
 
 
 @configclass
@@ -38,7 +37,7 @@ class DefaultPPORunnerCfg:
     device = "cuda:0"
     num_steps_per_env = 24
     # max_iterations = 20000    # 20000 is sufficient for complete convergence and good sim-to-real transfer
-    max_iterations = 7000   # 7000 is minimally sufficient to see if the training is on the right track
+    max_iterations = 8000  # 7000 is minimally sufficient to see if the training is on the right track
     empirical_normalization = False
     policy = PolicyCfg()
     algorithm = AlgorithmCfg()

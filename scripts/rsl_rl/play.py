@@ -8,6 +8,8 @@
 """Launch Isaac Sim Simulator first."""
 
 import argparse
+from utils import RewardDictLogger
+
 
 from omni.isaac.lab.app import AppLauncher
 
@@ -114,7 +116,6 @@ def main():
     video_timestep = 0
     curr_timestep = 0
 
-    from utils import RewardDictLogger
     reward_dict_logger = RewardDictLogger(args_cli.num_envs)
 
     # simulate environment

@@ -27,7 +27,7 @@ echo "Tasks to be executed: ${tasks[@]}"
 echo "Additional arguments: ${kwargs[@]}"
 
 # Define the log directory
-log_dir="/dichen-fast-vol/code/jobs_play_collect_data_logs"
+log_dir="/bai-fast-vol/code/jobs_play_collect_data_logs"
 mkdir -p "$log_dir"  # Create the log directory if it doesn't exist
 
 # Function to handle interrupt and exit
@@ -48,14 +48,14 @@ for task in "${tasks[@]}"; do
   log_file="${log_dir}/${task}_${timestamp}.log"
 
   # Construct the command to be executed
-  cmd="/workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task \"$task\" --steps 2000 --headless ${kwargs[@]}"
+  cmd="/workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task \"$task\" --steps 600 --headless ${kwargs[@]}"
 
   # Print the command being executed
   echo "Starting simulation for task: $task. Logging to $log_file"
   echo "Executing command: $cmd"
 
   # Execute the command with unbuffered output
-  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task "$task" --steps 2000 --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task "$task" --steps 600 --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
   # However, please note that it seems that the normal outputs (training losses, etc) are not stdout and may
   # not be redirected to the log file
   # So you will mostly see a blank log file for normal training processes, or error messages for failed runs

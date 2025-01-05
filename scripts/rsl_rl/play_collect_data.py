@@ -43,6 +43,8 @@ import berkeley_humanoid.tasks  # noqa: F401
 from omni.isaac.lab.utils.dict import print_dict
 from omni.isaac.lab_tasks.utils import get_checkpoint_path, parse_env_cfg
 from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_onnx
+import ipdb; ipdb.set_trace()
+from utils import RewardDictLogger
 
 
 def main():
