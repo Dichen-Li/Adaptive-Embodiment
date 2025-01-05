@@ -59,7 +59,13 @@ class LocomotionEnv(DirectRLEnv):
         self.previous_actions = torch.zeros((self.num_envs, self.nr_joints), dtype=torch.float32, device=self.sim.device)
         self.previous_feet_air_times = torch.zeros((self.num_envs, self.nr_feet), dtype=torch.float32, device=self.sim.device)
 
-        self.reward_curriculum_steps = self.cfg.reward_curriculum_steps
+        # Set reward_curriculum_steps to 0 when executing play_collect_data.py
+        # TODO: double check
+        self.is_collect_mode = True
+        if self.is_collect_mode == True:
+            self.reward_curriculum_steps = 0
+        else:
+            self.reward_curriculum_steps = self.cfg.reward_curriculum_steps
         self.tracking_xy_velocity_command_coeff = self.cfg.tracking_xy_velocity_command_coeff
         self.tracking_yaw_velocity_command_coeff = self.cfg.tracking_yaw_velocity_command_coeff
         self.z_velocity_coeff = self.cfg.z_velocity_coeff
@@ -77,8 +83,13 @@ class LocomotionEnv(DirectRLEnv):
         self.feet_symmetry_pairs = torch.tensor(self.cfg.feet_symmetry_pairs, dtype=torch.int32, device=self.sim.device)
         self.feet_y_distance_coeff = self.cfg.feet_y_distance_coeff
         self.calculated_feet_y_distance_target = False
-
-        self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
+        # Set domain_randomization_curriculum_steps to 0 when executing play_collect_data.py
+        # TODO: double check
+        self.is_collect_mode = True
+        if self.is_collect_mode == True:
+            self.domain_randomization_curriculum_steps = 0
+        else:
+            self.domain_randomization_curriculum_steps = self.cfg.domain_randomization_curriculum_steps
 
         self.max_nr_action_delay_steps = self.cfg.max_nr_action_delay_steps
         self.mixed_action_delay_chance = self.cfg.mixed_action_delay_chance
@@ -335,6 +346,7 @@ class LocomotionEnv(DirectRLEnv):
 
     def _reset_idx(self, env_ids: torch.Tensor):
         if not self.calculated_feet_y_distance_target:
+            self.robot.write_joint_state_to_sim(self.robot.data.default_joint_pos[env_ids], 0.0 * self.joint_max_velocity[env_ids], None, env_ids)
             feet_indices, _ = self.robot.find_bodies(self.feet_contact_cfg.body_names, True)
             global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
             local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
@@ -350,7 +362,12 @@ class LocomotionEnv(DirectRLEnv):
         nr_reset_envs = env_ids.shape[0]
 
         global_step = self.common_step_counter * self.num_envs
-        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
+        if self.domain_randomization_curriculum_steps == 0:
+            curriculum_coeff = 1.0
+        else:
+            curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
 
         roll_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_roll_angle_factor * curriculum_coeff
         pitch_angle = ((torch.rand((nr_reset_envs,), device=self.sim.device) * 2) - 1.0) * math.pi * self.initial_state_pitch_angle_factor * curriculum_coeff
@@ -416,7 +433,12 @@ class LocomotionEnv(DirectRLEnv):
         nr_randomized_envs = env_randomization_mask.sum()
 
         global_step = self.common_step_counter * self.num_envs
-        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
+        if self.domain_randomization_curriculum_steps == 0:
+            curriculum_coeff = 1.0
+        else:
+            curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+
 
         # Action delay
         self.action_current_mixed[env_randomization_mask] = torch.rand((nr_randomized_envs,), device=self.sim.device) < self.mixed_action_delay_chance * curriculum_coeff
@@ -502,7 +524,12 @@ class LocomotionEnv(DirectRLEnv):
 
     def _get_rewards(self) -> torch.Tensor:
         global_step = self.common_step_counter * self.num_envs
-        curriculum_coeff = min(global_step / self.reward_curriculum_steps, 1.0)
+        print(f"[INFO] The value of reward_curriculum_steps is {self.reward_curriculum_steps}")
+        if self.reward_curriculum_steps == 0:
+            curriculum_coeff = 1.0
+        else:
+            curriculum_coeff = min(global_step / self.reward_curriculum_steps, 1.0)
+
 
         feet_contact_sensors = self.scene.sensors[self.feet_contact_cfg.name]
         feet_contacts = torch.norm(feet_contact_sensors.data.net_forces_w[:, self.feet_contact_cfg.body_ids], dim=-1) > 1.0
@@ -638,7 +665,12 @@ class LocomotionEnv(DirectRLEnv):
         
         # Add noise
         global_step = self.common_step_counter * self.num_envs
-        curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        print(f"[INFO] The value of domain_randomization_curriculum_steps is {self.domain_randomization_curriculum_steps}")
+        if self.domain_randomization_curriculum_steps == 0:
+            curriculum_coeff = 1.0
+        else:
+            curriculum_coeff = min(global_step / self.domain_randomization_curriculum_steps, 1.0)
+        
         observation[:, self.joint_positions_obs_idx] += ((torch.rand_like(observation[:, self.joint_positions_obs_idx]) * 2) - 1) * self.joint_position_noise * curriculum_coeff
         observation[:, self.joint_velocities_obs_idx] += ((torch.rand_like(observation[:, self.joint_velocities_obs_idx]) * 2) - 1) * self.joint_velocity_noise * curriculum_coeff
         observation[:, self.trunk_angular_velocity_obs_idx] += ((torch.rand_like(observation[:, self.trunk_angular_velocity_obs_idx]) * 2) - 1) * self.trunk_angular_velocity_noise * curriculum_coeff
