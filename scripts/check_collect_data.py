@@ -6,15 +6,15 @@ def check_record_status(logs_path):
     missing_h5_record = set()
     incomplete_records = set()
 
-    # 遍历 logs/rsl_rl 下的所有子文件夹
+    # traverse all sub-folders in logs/rsl_rl
     for subdir in os.listdir(logs_path):
         subdir_path = os.path.join(logs_path, subdir)
         if os.path.isdir(subdir_path):
-            # 记录最前面的子文件夹名
+            # Traverse  the latest folder
             match = re.match(r"(Genhexapod\d+)_", subdir)
             if match:
                 prefix_name = match.group(1)
-                # 遍历该文件夹下的所有时间戳子目录
+                # Traverse sub-folders of all time stamps
                 time_subdirs = [d for d in os.listdir(subdir_path) if os.path.isdir(os.path.join(subdir_path, d))]
                 record_found = False
 
@@ -34,7 +34,7 @@ def check_record_status(logs_path):
                     else:
                         incomplete_records.add(prefix_name)
 
-    # 对结果进行按编号排序
+    # Sort based on the results
     def sort_by_number(prefix_list):
         return sorted(prefix_list, key=lambda x: int(re.search(r"\d+", x).group()))
 
@@ -44,11 +44,11 @@ def check_record_status(logs_path):
         "Incomplete Records": sort_by_number(list(incomplete_records))
     }
 
-# 示例使用
-logs_path = "../logs/rsl_rl"  # 修改为实际路径
+# Example
+logs_path = "../logs/rsl_rl"  # Modify to the actual directory
 record_status = check_record_status(logs_path)
 
-# 输出结果
+# Output the results
 print("Completed Records:")
 print(record_status["Completed Records"])
 print("len:", len(record_status["Completed Records"]))
