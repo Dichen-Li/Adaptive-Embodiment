@@ -2,17 +2,17 @@ import os
 import time
 
 # Configuration
-task_indices = list(range(308))
-# task_indices = [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 169, 173, 177, 181, 185, 189, 193, 197, 201, 205, 209, 210, 211, 213, 214, 215, 217, 218, 219, 221, 222, 223, 225, 226, 227, 229, 230, 231, 235, 239, 243, 247, 251, 307, 46, 47, 48, 49, 306]  # Specify a list of task indices
+# task_indices = list(range(308))
+task_indices = [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 169, 173, 177, 181, 185, 189, 193, 197, 201, 205, 209, 210, 211, 213, 214, 215, 217, 218, 219, 221, 222, 223, 225, 226, 227, 229, 230, 231, 235, 239, 243, 247, 251, 307, 46, 47, 48, 49, 306]  # Specify a list of task indices
 tasks_prefix = "Gendog"
 tasks_suffix = ""  # Add any suffix if needed
-tasks_per_job = 21  # Number of tasks per job
+tasks_per_job = 4  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
 job_name_template = "bai-job-quadruped-{job_index}-jan4"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
-sleep_interval = 10  # Time interval (in seconds) between parallel commands to prevent errors
+sleep_interval = 20  # Time interval (in seconds) between parallel commands to prevent errors
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -87,14 +87,16 @@ for i in range(0, len(task_indices), tasks_per_job):
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
+        f"(sleep {i * sleep_interval} && "  # Delay the start of each task group by `i * sleep_interval` seconds
         f"source ~/.bashrc && cd /bai-fast-vol/code/embodiment-scaling-law && "
-        f"/workspace/isaaclab/_isaac_sim/kit/python/bin/python3 -m pip install --upgrade pip && "   # required on some nodes
+        f"/workspace/isaaclab/_isaac_sim/kit/python/bin/python3 -m pip install --upgrade pip && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl/ && "  # only for sim2real_learning branch
-        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)} && sleep {sleep_interval}"
-        for group in task_groups if group
+        f"bash scripts/train_batch_nautilus.sh --tasks {' '.join(group)})"
+        for i, group in enumerate(task_groups) if group
     )
-    parallel_commands += " & wait"  # Ensure all parallel commands complete
+
+    parallel_commands += " & wait"  # Ensure all parallel commands finish before the job exits
 
     job_index = i // tasks_per_job
     job_name = job_name_template.format(job_index=job_index)
