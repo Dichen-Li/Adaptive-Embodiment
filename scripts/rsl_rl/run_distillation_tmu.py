@@ -130,7 +130,6 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         timer.end('prepare')
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            timer.end('fetch_data')
             for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
                 grad_step_cnt += 1
                 if grad_step_cnt % 100 == 0:
@@ -143,7 +142,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # Move data to device
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
-                timer.end('data_to_gpu')
+                timer.end('data_loading')
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
