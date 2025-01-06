@@ -11,6 +11,38 @@ import tqdm
 import argparse
 import yaml
 
+import time
+from collections import defaultdict
+
+
+class NonOverlappingTimeProfiler(object):
+    def __init__(self):
+        self.time_cost = defaultdict(float)
+        self.tic = time.time()
+
+    def end(self, key):
+        toc = time.time()
+        self.time_cost[key] += toc - self.tic
+        self.tic = toc
+
+    def reset(self):
+        self.time_cost.clear()
+        self.tic = time.time()
+
+    def read(self):
+        tot_time = sum(self.time_cost.values())
+        ratio = {f'{k}_ratio': v / tot_time for k, v in self.time_cost.items()}
+        return {**self.time_cost, **ratio, **{'total': tot_time}}
+    
+    def dump_to_writer(self, writer: SummaryWriter, global_step):
+        time_stat = self.read()
+        writer.add_scalar("time/SPS", global_step / time_stat.pop('total'), global_step)
+        for k, v in time_stat.items():
+            if k.endswith('ratio'):
+                writer.add_scalar(f"time/{k}", v, global_step)
+            else:
+                writer.add_scalar(f"time/{k}_SPS", global_step / v, global_step)
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
@@ -42,6 +74,7 @@ def parse_arguments():
     )
     # Add argument for YAML configuration
     parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
+    parser.add_argument("--dataset_dir", type=str, default="logs/rsl_rl", help="Directory containing the dataset.")
 
     args = parser.parse_args()
 
@@ -82,6 +115,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
     best_val_loss = float("inf")
 
     print("[INFO] Starting supervised training.")
+    timer = NonOverlappingTimeProfiler()
+    grad_step_cnt = 0
     for epoch in range(num_epochs):
         # Training phase
         policy.train()
@@ -92,9 +127,14 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         train_dataloader = train_dataset.get_data_loader(
             batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True
         )
+        timer.end('prepare')
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
+            timer.end('fetch_data')
             for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+                grad_step_cnt += 1
+                if grad_step_cnt % 100 == 0:
+                    timer.dump_to_writer(writer, grad_step_cnt)
 
                 # times = []
                 # import time
@@ -103,6 +143,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # Move data to device
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
+                timer.end('data_to_gpu')
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -121,6 +162,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # start_time = time.time()
 
                 loss = criterion(batch_predictions, batch_targets)
+                timer.end('forward')
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -137,6 +179,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # backward only when we have accumulated gradients for enough batches
                 if index % gradient_acc_steps == gradient_acc_steps - 1:
                     optimizer.step()
+
+                timer.end('backward')
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -202,6 +246,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
         writer.add_scalar("Val/loss/avg", get_meter_dict_avg(val_loss_meters), epoch + 1)
 
+        timer.end('validation')
+
         if len(test_dataset) > 0:
             # Test phase
             for meter in test_loss_meters.values():
@@ -237,6 +283,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         # Update progress bar with current loss
                         pbar.set_postfix(
                             {"Loss": f"{get_meter_dict_avg(test_loss_meters):.4f}"})
+            timer.end('test')
 
             # Log validation loss to TensorBoard
             for robot_name, meter in test_loss_meters.items():
@@ -250,11 +297,13 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
             save_checkpoint(policy, optimizer, epoch + 1, log_dir)
+            timer.end('checkpoint')
 
         # Save the best model based on validation loss
         if get_meter_dict_avg(val_loss_meters) < best_val_loss:
             best_val_loss = get_meter_dict_avg(val_loss_meters)
             save_checkpoint(policy, optimizer, epoch + 1, log_dir, is_best=True)
+            timer.end('checkpoint')
 
         print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {get_meter_dict_avg(train_loss_meters):.6f}, "
               f"Val Loss: {get_meter_dict_avg(val_loss_meters):.6f}, Best Val Loss: {best_val_loss:.6f}, "
@@ -267,6 +316,17 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 def main():
     args_cli = parse_arguments()
 
+    import wandb
+
+    wandb.init(
+        project='esl_distillation',
+        entity=None,
+        sync_tensorboard=True,
+        config=vars(args_cli),
+        name=str(args_cli.exp_name).replace(os.path.sep, "__"),
+        save_code=True,
+    )
+
     # Prepare log directory
     log_dir = os.path.join(args_cli.log_dir, args_cli.exp_name)
     os.makedirs(log_dir, exist_ok=True)
@@ -278,9 +338,9 @@ def main():
 
     # Dataset paths
     assert args_cli.train_set is not None, f"Please specify value for arg --train_set"
-    train_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.train_set]
+    train_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.train_set]
     if args_cli.test_set:
-        test_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.test_set]
+        test_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.test_set]
     else:
         test_set_paths = list()
         print(f'[INFO] No test set provided.')
