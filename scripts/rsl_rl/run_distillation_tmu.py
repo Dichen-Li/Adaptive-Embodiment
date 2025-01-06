@@ -338,9 +338,9 @@ def main():
 
     # Dataset paths
     assert args_cli.train_set is not None, f"Please specify value for arg --train_set"
-    train_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.train_set]
+    train_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.train_set]
     if args_cli.test_set:
-        test_set_paths = [get_most_recent_h5py_record_path("logs/rsl_rl", task) for task in args_cli.test_set]
+        test_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.test_set]
     else:
         test_set_paths = list()
         print(f'[INFO] No test set provided.')
