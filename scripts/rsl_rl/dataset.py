@@ -241,7 +241,7 @@ class DatasetSaver:
 
 
 class LocomotionDataset(Dataset):
-    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio):
+    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio, h5_repeat_factor):
         """
         Initialize the LocomotionDataset.
 
@@ -259,12 +259,15 @@ class LocomotionDataset(Dataset):
         Args:
             folder_paths (list): List of paths to dataset folders.
             max_files_in_memory (int): Maximum number of files to keep in memory.
+            h5_repeat_factor: Number of times we repeat one h5 file consecutively in one epoch. This gives us
+                more batches without additional IO, but may alter the training dynamics a bit.
         """
         self.folder_paths = folder_paths
         self.max_files_in_memory = max_files_in_memory
         self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
         self.train_mode = train_mode
         self.val_ratio = val_ratio
+        self.h5_repeat_factor = h5_repeat_factor
         self.file_indices = {}
         self.total_samples = 0
 
@@ -284,7 +287,8 @@ class LocomotionDataset(Dataset):
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
-              f"\n\tGot {len(self.folder_idx_to_file_name)} robots: {list(self.folder_idx_to_file_name.values())}")
+              f"\n\tGot {len(self.folder_idx_to_file_name)} robots" # : {list(self.folder_idx_to_file_name.values())}
+              f"\n\th5_repeat_factor={self.h5_repeat_factor}")
 
     def _load_metadata(self, folder_path):
         """
@@ -550,9 +554,12 @@ class LocomotionDataset(Dataset):
 
         # Collect batches for each file
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
+            # Get the index list
+            # Repeat the list by the given times as if this were a longer file
+            # so that we get more data from every .h5 file without additional IO
             indices = [(folder_idx, file_idx, step, env)
                        for step in range(steps_per_file)
-                       for env in range(parallel_envs)]
+                       for env in range(parallel_envs)] * self.h5_repeat_factor
             if shuffle:
                 np.random.shuffle(indices)  # Shuffle indices within the file
 
@@ -561,7 +568,7 @@ class LocomotionDataset(Dataset):
                 indices[i:i + batch_size] for i in range(0, len(indices), batch_size)
             ]
 
-        # Shuffle the order of files
+        # Get a shuffled list of file keys for iteration later
         file_keys = list(file_samples.keys())
         if shuffle:
             np.random.shuffle(file_keys)
@@ -602,7 +609,8 @@ class LocomotionDataset(Dataset):
             for worker_idx, samples in enumerate(samples_per_worker):
                 final_samples.append(samples[i])
 
-        print(f'[INFO]: duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
+        print(f'[INFO]: h5_repeat_factor = {self.h5_repeat_factor}. '
+              f'additional duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
               f'({duplicates/len(final_samples)*100:.2f}%)')
 
         return final_samples
@@ -632,6 +640,7 @@ class LocomotionDataset(Dataset):
             batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
+            pin_memory=True,
             **kwargs
         )
 
