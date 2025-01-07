@@ -1,7 +1,7 @@
 import os
 import torch
 from torch.utils.tensorboard import SummaryWriter
-
+import time
 from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml
 from dataset import LocomotionDataset
 import sys
@@ -96,20 +96,24 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         )
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+            for index, (batch_inputs, batch_targets, data_source_name, io_times, processing_times) in enumerate(pbar):
+                iteration = index + epoch * len(train_dataloader)
 
                 # times = []
                 # import time
                 # start_time = time.time()
 
                 # Move data to device
+                start_time = time.time()
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
+                move_cuda_time = time.time() - start_time
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
                 # start_time = time.time()
 
+                start_time = time.time()
                 if model == 'urma':
                     batch_predictions = policy(*batch_inputs)
                 else:
@@ -117,6 +121,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         component.flatten(1) for component in batch_inputs
                     ], dim=1)
                     batch_predictions = policy(one_input)
+                forward_time = time.time() - start_time
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -129,6 +134,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # start_time = time.time()
 
                 # Backward pass and optimization
+                start_time = time.time()
                 optimizer.zero_grad()
                 loss.backward()
 
@@ -139,6 +145,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # backward only when we have accumulated gradients for enough batches
                 if index % gradient_acc_steps == gradient_acc_steps - 1:
                     optimizer.step()
+                backward_time = time.time() - start_time
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -156,6 +163,13 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # times.append(end_time - start_time)
                 # if index % 1000 == 0:
                 #     print(f'times: {times}')
+
+                # Log times
+                writer.add_scalar("Train/times/io", io_times.mean().item(), iteration)
+                writer.add_scalar("Train/times/data_processing", processing_times.mean().item(), iteration)
+                writer.add_scalar("Train/times/move_cuda", move_cuda_time, iteration)
+                writer.add_scalar("Train/times/forward", forward_time, iteration)
+                writer.add_scalar("Train/times/backward", backward_time, iteration)
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -175,7 +189,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
         with torch.no_grad():
             with tqdm.tqdm(val_dataloader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+                for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
                     # Move data to device
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
@@ -216,7 +230,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
             with torch.no_grad():
                 with tqdm.tqdm(test_dataloader, desc=f"Test Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                    for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+                    for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
                         # Move data to device
                         batch_inputs = [x.to(model_device) for x in batch_inputs]
                         batch_targets = batch_targets.to(model_device)
