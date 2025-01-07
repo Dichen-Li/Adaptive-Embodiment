@@ -92,7 +92,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
         train_dataloader = train_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=10
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25
         )
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
@@ -170,7 +170,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
         val_dataloader = val_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=10
+            batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=25
         )
 
         with torch.no_grad():
@@ -211,7 +211,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Test.")
 
             test_dataloader = test_dataset.get_data_loader(
-                batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=10
+                batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=25
             )
 
             with torch.no_grad():
