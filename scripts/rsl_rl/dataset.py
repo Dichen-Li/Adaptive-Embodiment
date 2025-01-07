@@ -1,6 +1,6 @@
 import os
 import random
-
+import time
 import h5py
 import numpy as np
 import torch
@@ -281,6 +281,7 @@ class LocomotionDataset(Dataset):
         # Compute hit rate for caching, for debugging purpose
         # self.cache_hit_count = AverageMeter()
         self.cache_query_time = AverageMeter()
+        # self.transform_data_time = AverageMeter()
 
         # record the number of times the data index is not in the worker's scope
         self.counter_not_in_scope = 0
@@ -431,9 +432,9 @@ class LocomotionDataset(Dataset):
                              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
-        # import time
-        # start_time = time.time()
+        start_time = time.time()
         inputs, targets = self._cache_file(folder_idx, file_idx)
+        io_time = time.time() - start_time
         # self.cache_query_time.update(time.time() - start_time, 1)
         # if self.cache_query_time.count % self.batch_size == 0:
         #     # print(f'cache query time for a batch on avg = {self.cache_query_time.avg * self.batch_size}')
@@ -449,7 +450,15 @@ class LocomotionDataset(Dataset):
         metadata = self.metadata_list[folder_idx]
 
         # Transform the sample
+        start_time = time.time()
         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
+        data_processing_time = time.time() - start_time
+        # self.transform_data_time.update(time.time() - s_time)
+        # if self.transform_data_time.count % 100:
+        #     print(f"[INFO]: Transform data time: {self.transform_data_time.avg} ")
+        # import ipdb; ipdb.set_trace()
+
         # print([x.shape for x in transformed_sample])
         # import ipdb; ipdb.set_trace()
 
@@ -457,7 +466,8 @@ class LocomotionDataset(Dataset):
         # transformed_sample = [torch.zeros(8, 18), torch.zeros(8, 3), torch.zeros(16), torch.zeros(8)]
 
         # Return the transformed components
-        return transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx]
+        return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
+                torch.tensor(io_time), torch.tensor(data_processing_time))
 
     def _transform_sample(self, input_sample, target_sample, metadata):
         """
@@ -516,7 +526,7 @@ class LocomotionDataset(Dataset):
                 - The second element is the batched target tensor.
         """
         # Split batch into inputs and targets
-        inputs, targets, robot_names = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        inputs, targets, robot_names, io_times, processing_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
         assert len(set(robot_names)) == 1, f"got different robot names in a batch: {set(robot_names)}"
 
         # Transpose the inputs to group by component
@@ -528,7 +538,7 @@ class LocomotionDataset(Dataset):
         # Stack the targets
         batched_targets = torch.stack(targets)
 
-        return batched_inputs, batched_targets, robot_names[0]
+        return batched_inputs, batched_targets, robot_names[0], torch.stack(io_times), torch.stack(processing_times)
 
     def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
