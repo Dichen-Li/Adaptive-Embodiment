@@ -5,24 +5,23 @@ def check_record_status(logs_path):
     completed_records = set()
     missing_h5_record = set()
     incomplete_records = set()
-
     # traverse all sub-folders in logs/rsl_rl
     for subdir in os.listdir(logs_path):
         subdir_path = os.path.join(logs_path, subdir)
         if os.path.isdir(subdir_path):
             # Traverse  the latest folder
-            match = re.match(r"(Genhexapod\d+)_", subdir)
+            match = re.match(r"(Gendog\d+)_", subdir)
+            # import ipdb; ipdb.set_trace()
             if match:
                 prefix_name = match.group(1)
                 # Traverse sub-folders of all time stamps
                 time_subdirs = [d for d in os.listdir(subdir_path) if os.path.isdir(os.path.join(subdir_path, d))]
                 record_found = False
-
                 for time_subdir in time_subdirs:
                     time_subdir_path = os.path.join(subdir_path, time_subdir)
                     h5py_record_path = os.path.join(time_subdir_path, "h5py_record")
                     if os.path.exists(h5py_record_path):
-                        obs_file = os.path.join(h5py_record_path, "obs_actions_00009.h5")
+                        obs_file = os.path.join(h5py_record_path, "obs_actions_00002.h5")
                         if os.path.exists(obs_file):
                             completed_records.add(prefix_name)
                             record_found = True
