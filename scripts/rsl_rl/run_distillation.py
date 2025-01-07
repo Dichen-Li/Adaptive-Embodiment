@@ -33,6 +33,7 @@ def parse_arguments():
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
     parser.add_argument("--gradient_acc_steps", type=int, default=1,
                         help="Number of batches before one gradient update.")
+    parser.add_argument("--h5_repeat_factor", type=int, default=1, help="Number of times we repeat one h5 file consecutively in one epoch.")
     parser.add_argument(
         "--model",
         type=str,
@@ -90,7 +91,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
         train_dataloader = train_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=10
         )
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
@@ -168,7 +169,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
         val_dataloader = val_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True
+            batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=10
         )
 
         with torch.no_grad():
@@ -209,7 +210,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Test.")
 
             test_dataloader = test_dataset.get_data_loader(
-                batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True
+                batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=10
             )
 
             with torch.no_grad():
@@ -290,7 +291,8 @@ def main():
         folder_paths=train_set_paths,
         train_mode=True,
         val_ratio=args_cli.val_ratio,
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=args_cli.h5_repeat_factor
     )
 
     # Validation dataset
@@ -298,7 +300,8 @@ def main():
         folder_paths=train_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=1
     )
 
     # Test dataset
@@ -306,7 +309,8 @@ def main():
         folder_paths=test_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,       # only use a proportion of the data as the test set
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=1
     )
 
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
