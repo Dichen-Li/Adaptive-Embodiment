@@ -16,42 +16,40 @@ class Policy(nn.Module):
         self.policy_std_min_clip = policy_std_min_clip
         self.policy_std_max_clip = policy_std_max_clip
 
-        self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
-        self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
-        self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
-        self.joint_log_softmax_temperature = nn.Parameter(torch.tensor([initial_softmax_temperature - self.softmax_temperature_min]).log())
-        self.latent_dynamic_joint_state = nn.Linear(3, 4)
-        self.action_latent1 = nn.Linear(272, 512)
-        self.action_layer_norm = nn.LayerNorm(512, eps=1e-6)
-        self.action_latent2 = nn.Linear(512, 256)
-        self.action_latent3 = nn.Linear(256, 128)
-        self.action_description_latent1 = nn.Linear(18, 128)
-        self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
-        self.action_description_latent2 = nn.Linear(128, 128)
-        self.policy_mean_layer1 = nn.Linear(260, 128)
-        self.policy_mean_layer_norm = nn.LayerNorm(128, eps=1e-6)
-        self.policy_mean_layer2 = nn.Linear(128, 1)
-        self.policy_logstd_layer = nn.Linear(128, 1)
+        # Constants
+        dynamic_joint_des_dim = 18
+        general_state_dim = 16
+        dynamic_joint_state_dim = 3
 
-        # self.dynamic_joint_state_mask1 = nn.Linear(18, 64)
-        # self.dynamic_joint_layer_norm = nn.LayerNorm(64, eps=1e-6)
-        # self.dynamic_joint_state_mask2 = nn.Linear(64, 64)
-        # self.latent_dynamic_joint_state = nn.Linear(3, 4)
-        # self.dynamic_foot_state_mask1 = nn.Linear(10, 32)
-        # self.dynamic_foot_layer_norm = nn.LayerNorm(32, eps=1e-6)
-        # self.dynamic_foot_state_mask2 = nn.Linear(32, 32)
-        # self.latent_dynamic_foot_state = nn.Linear(2, 4)
-        # self.action_latent1 = nn.Linear(400, 512 * 2)
-        # self.action_layer_norm = nn.LayerNorm(512 * 2, eps=1e-6)
-        # self.action_latent2 = nn.Linear(512 * 2, 256 * 2)
-        # self.action_latent3 = nn.Linear(256 * 2, 128)
-        # self.action_description_latent1 = nn.Linear(18, 128)
-        # self.action_description_layer_norm = nn.LayerNorm(128, eps=1e-6)
-        # self.action_description_latent2 = nn.Linear(128, 128)
-        # self.policy_mean_layer1 = nn.Linear(260, 128 * 2)
-        # self.policy_mean_layer_norm = nn.LayerNorm(128 * 2, eps=1e-6)
-        # self.policy_mean_layer2 = nn.Linear(128 * 2, 1)
-        # self.policy_logstd_layer = nn.Linear(128 * 2, 1)
+        # hyper param
+        scale_factor = 2
+
+        dynamic_joint_state_mask_dim = 64
+        dynamic_joint_state_feat = 4 * scale_factor
+        self.dynamic_joint_state_mask1 = nn.Linear(dynamic_joint_des_dim, dynamic_joint_state_mask_dim)
+        self.dynamic_joint_layer_norm = nn.LayerNorm(dynamic_joint_state_mask_dim, eps=1e-6)
+        self.dynamic_joint_state_mask2 = nn.Linear(dynamic_joint_state_mask_dim, dynamic_joint_state_mask_dim)
+        self.joint_log_softmax_temperature = nn.Parameter(torch.tensor([initial_softmax_temperature - self.softmax_temperature_min]).log())
+        self.latent_dynamic_joint_state = nn.Linear(dynamic_joint_state_dim, dynamic_joint_state_feat)
+
+        combined_action_feat_dim = dynamic_joint_state_mask_dim * dynamic_joint_state_feat + general_state_dim
+        action_latent_dims = [512, 256, 128 * scale_factor]
+        self.action_latent1 = nn.Linear(combined_action_feat_dim, action_latent_dims[0])
+        self.action_layer_norm = nn.LayerNorm(action_latent_dims[0], eps=1e-6)
+        self.action_latent2 = nn.Linear(action_latent_dims[0], action_latent_dims[1])
+        self.action_latent3 = nn.Linear(action_latent_dims[1], action_latent_dims[2])
+
+        action_des_latent_dim = 128 * scale_factor
+        self.action_description_latent1 = nn.Linear(dynamic_joint_des_dim, action_des_latent_dim)
+        self.action_description_layer_norm = nn.LayerNorm(action_des_latent_dim, eps=1e-6)
+        self.action_description_latent2 = nn.Linear(action_des_latent_dim, action_des_latent_dim)
+
+        policy_in_dim = dynamic_joint_state_feat + action_latent_dims[-1] + action_des_latent_dim
+        policy_hidden_dim = 128 * scale_factor
+        self.policy_mean_layer1 = nn.Linear(policy_in_dim, policy_hidden_dim)
+        self.policy_mean_layer_norm = nn.LayerNorm(policy_hidden_dim, eps=1e-6)
+        self.policy_mean_layer2 = nn.Linear(policy_hidden_dim, 1)
+        self.policy_logstd_layer = nn.Linear(policy_hidden_dim, 1)
 
     def forward(self, dynamic_joint_description, dynamic_joint_state, general_state):
         dynamic_joint_state_mask = self.dynamic_joint_state_mask1(dynamic_joint_description)
