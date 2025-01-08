@@ -12,4 +12,5 @@ python scripts/rsl_rl/run_distillation.py \
     --num_workers 16 \
     --num_epochs 10 \
     --gradient_acc_steps 1 \
-    --use_amp 0_factor 1
+    --h5_repeat_factor 1 \
+    --use_amp 0
