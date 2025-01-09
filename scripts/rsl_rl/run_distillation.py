@@ -5,7 +5,7 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml
+from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -27,7 +27,7 @@ def parse_arguments():
     parser.add_argument("--exp_name", type=str, default=None,
                         help="Name of the experiment. If provided, the current date and time will be appended. "
                              "Default is the current date and time.")
-    parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
+    parser.add_argument("--checkpoint_interval", type=int, default=1, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=3e-4, help="Unit learning rate (for a batch size of 512)")
     parser.add_argument("--num_workers", type=int, default=16, help="Number of workers for torch data loader.")
@@ -46,7 +46,7 @@ def parse_arguments():
     )
     # Add argument for YAML configuration
     parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
-    parser.add_argument("--dataset_dir", type=str, default="logs/rsl_rl", help="Directory containing the dataset.")
+    parser.add_argument("--dataset_dir", type=str, default="/media/t7-ssd/Data/logs/rsl_rl", help="Directory containing the dataset.")
 
     args = parser.parse_args()
 
@@ -130,16 +130,26 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                 if use_amp:
                     scaler.scale(loss).backward()
-                    scaler.step(optimizer)
-                    scaler.update()
                 else:
                     loss.backward()
-                    optimizer.step()
-                optimizer.zero_grad()
 
-                # backward only when we have accumulated gradients for enough batches
+                # Only update optimizer after accumulating enough gradients
+                grad_norm = None  # Initialize gradient norm
                 if index % gradient_acc_steps == gradient_acc_steps - 1:
-                    optimizer.step()
+                    if use_amp:
+                        # Compute gradient norm before unscaled gradients are modified
+                        # scaler.unscale_(optimizer)  # Unscale gradients for logging (optional with AMP)
+                        grad_norm = compute_gradient_norm(policy)  # Log this value
+
+                        scaler.step(optimizer)
+                        scaler.update()
+                    else:
+                        # Compute gradient norm before optimizer step
+                        grad_norm = compute_gradient_norm(policy)  # Log this value
+                        optimizer.step()
+
+                    optimizer.zero_grad()  # Zero gradients after optimization step
+
                 backward_time = time.time() - start_time
 
                 # Update training loss tracker
@@ -161,6 +171,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
                 writer.add_scalar("Train/lr-iter", optimizer.param_groups[0]['lr'], iteration)
+                if grad_norm is not None:
+                    writer.add_scalar("Train/grad_norm-iter", grad_norm, iteration)
 
                 # Step the LR scheduler by iteration
                 if scheduler is not None:
@@ -181,7 +193,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
         val_dataloader = val_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=25
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25
         )
 
         with torch.no_grad():
@@ -210,6 +222,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                     pbar.set_postfix(
                         {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
 
+                    if index > 0.3 * len(val_dataloader):
+                        break
+
         # Log validation loss to TensorBoard
         for robot_name, meter in val_loss_meters.items():
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
@@ -222,7 +237,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Test.")
 
             test_dataloader = test_dataset.get_data_loader(
-                batch_size=batch_size, shuffle=False, num_workers=num_workers, prefetch_factor=25
+                batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25
             )
 
             with torch.no_grad():
@@ -250,6 +265,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         # Update progress bar with current loss
                         pbar.set_postfix(
                             {"Loss": f"{get_meter_dict_avg(test_loss_meters):.4f}"})
+
+                        if index > 0.3 * len(test_dataloader):
+                            break
 
             # Log validation loss to TensorBoard
             for robot_name, meter in test_loss_meters.items():
@@ -328,10 +346,11 @@ def main():
         from silver_badger_torch.policy import get_policy
         policy = get_policy(model_device)
 
-        # # load checkpoint if needed
-        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/2024-12-20_01-36-32_debug/best_model.pt"
-        # checkpoint = torch.load(checkpoint_path, map_location=model_device)
-        # policy.load_state_dict(checkpoint["state_dict"], strict=False)
+        # load checkpoint if needed
+        checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.1_v3_modelscale3_attempt2/best_model.pt"
+        checkpoint = torch.load(checkpoint_path, map_location=model_device)
+        policy.load_state_dict(checkpoint["state_dict"], strict=True)
+        print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')
 
         # from supervised_actor.policy import get_policy
         # metadata = train_dataset.metadata_list[0]
@@ -355,7 +374,12 @@ def main():
     print('policy architecture:\n', policy)
 
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.AdamW(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
+    optimizer = torch.optim.AdamW(
+        policy.parameters(),
+        lr=args_cli.lr,
+        weight_decay=5e-4,
+        betas=(0.95, 0.98)  # Adjusted betas for smoother gradients
+    )
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs*len(train_dataset))
     # scheduler = None
 
