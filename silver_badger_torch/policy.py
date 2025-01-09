@@ -22,9 +22,9 @@ class Policy(nn.Module):
         dynamic_joint_state_dim = 3
 
         # hyper param
-        scale_factor = 2
+        scale_factor = 3
 
-        dynamic_joint_state_mask_dim = 64
+        dynamic_joint_state_mask_dim = 64 * scale_factor
         dynamic_joint_state_feat = 4 * scale_factor
         self.dynamic_joint_state_mask1 = nn.Linear(dynamic_joint_des_dim, dynamic_joint_state_mask_dim)
         self.dynamic_joint_layer_norm = nn.LayerNorm(dynamic_joint_state_mask_dim, eps=1e-6)
