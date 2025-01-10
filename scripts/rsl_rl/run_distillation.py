@@ -140,11 +140,11 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         # Compute gradient norm before unscaled gradients are modified
                         # scaler.unscale_(optimizer)  # Unscale gradients for logging (optional with AMP)
                         grad_norm = compute_gradient_norm(policy)  # Log this value
-
                         scaler.step(optimizer)
                         scaler.update()
                     else:
                         # Compute gradient norm before optimizer step
+                        torch.nn.utils.clip_grad_value_(policy.parameters(), clip_value=5.0)
                         grad_norm = compute_gradient_norm(policy)  # Log this value
                         optimizer.step()
 
@@ -222,7 +222,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                     pbar.set_postfix(
                         {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
 
-                    if index > 0.3 * len(val_dataloader):
+                    if index > 0.1 * len(val_dataloader):
                         break
 
         # Log validation loss to TensorBoard
@@ -266,7 +266,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         pbar.set_postfix(
                             {"Loss": f"{get_meter_dict_avg(test_loss_meters):.4f}"})
 
-                        if index > 0.3 * len(test_dataloader):
+                        if index > 0.1 * len(test_dataloader):
                             break
 
             # Log validation loss to TensorBoard
@@ -346,11 +346,12 @@ def main():
         from silver_badger_torch.policy import get_policy
         policy = get_policy(model_device)
 
-        # load checkpoint if needed
-        checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.1_v3_modelscale3_attempt2/best_model.pt"
-        checkpoint = torch.load(checkpoint_path, map_location=model_device)
-        policy.load_state_dict(checkpoint["state_dict"], strict=True)
-        print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')
+        # # load checkpoint if needed
+        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.1_v3_modelscale3_attempt2/best_model.pt"
+        # checkpoint = torch.load(checkpoint_path, map_location=model_device)
+        # policy.load_state_dict(checkpoint["state_dict"], strict=True)
+        # print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')
+        # import ipdb; ipdb.set_trace()
 
         # from supervised_actor.policy import get_policy
         # metadata = train_dataset.metadata_list[0]
@@ -378,9 +379,11 @@ def main():
         policy.parameters(),
         lr=args_cli.lr,
         weight_decay=5e-4,
-        betas=(0.95, 0.98)  # Adjusted betas for smoother gradients
+        betas=(0.95, 0.999)  # Adjusted betas for smoother gradients
     )
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs*len(train_dataset))
+    # optimizer = torch.optim.SGD(policy.parameters(), lr=args_cli.lr, momentum=0.95, weight_decay=5e-4, nesterov=True)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,
+                                                           T_max=args_cli.num_epochs*len(train_dataset)/args_cli.batch_size)
     # scheduler = None
 
     # Train the policy
