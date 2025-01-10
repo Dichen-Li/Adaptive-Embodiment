@@ -180,9 +180,9 @@ def main():
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
-    # specify directory for logging experiments
-    policy_root_directory = args_cli.log_dir
-    (policy_folder_directory, policy_file_path) = find_newest_best_checkpoint(policy_root_directory)
+    # # specify directory for logging experiments
+    # policy_root_directory = args_cli.log_dir
+    # (policy_folder_directory, policy_file_path) = find_newest_best_checkpoint(policy_root_directory)
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
@@ -190,16 +190,16 @@ def main():
     env.unwrapped.domain_randomization_curriculum_steps = 0
 
     # wrap for video recording
-    if args_cli.video:
-        video_kwargs = {
-            "video_folder": os.path.join(policy_folder_directory, "one_policy_videos", args_cli.task),
-            "step_trigger": lambda step: step == 0,
-            "video_length": args_cli.video_length,
-            "disable_logger": True
-        }
-        print("[INFO] Recording videos during training.")
-        print_dict(video_kwargs, nesting=4)
-        env = gym.wrappers.RecordVideo(env, **video_kwargs)
+    # if args_cli.video:
+    #     video_kwargs = {
+    #         "video_folder": os.path.join(policy_folder_directory, "one_policy_videos", args_cli.task),
+    #         "step_trigger": lambda step: step == 0,
+    #         "video_length": args_cli.video_length,
+    #         "disable_logger": True
+    #     }
+    #     print("[INFO] Recording videos during training.")
+    #     print_dict(video_kwargs, nesting=4)
+    #     env = gym.wrappers.RecordVideo(env, **video_kwargs)
 
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
