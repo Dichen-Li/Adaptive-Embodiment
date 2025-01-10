@@ -5,19 +5,16 @@ from utils import AverageMeter
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Evaluate a student model in simulation.")
-parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
-parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
 parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
-parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
 parser.add_argument("--model_is_actor", action="store_true", default=False,
                     help="Indicate if the supervised model is actor=True/one_policy=False.")
 parser.add_argument("--ckpt_path", type=str, default=None, help="Store the specified policy file directory.")
+parser.add_argument("--log_file", type=str, default=None, help="Store average return in this file.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -25,9 +22,6 @@ cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 
 args_cli = parser.parse_args()
-# always enable cameras to record video
-if args_cli.video:
-    args_cli.enable_cameras = True
 
 # launch omniverse app
 app_launcher = AppLauncher(args_cli)
@@ -55,38 +49,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file
 from rsl_rl.env import VecEnv
 from silver_badger_torch.policy import get_policy
 from utils import one_policy_observation_to_inputs
-
-def find_newest_best_checkpoint(log_dir: str) -> tuple:
-    """
-    Find the newest 'best_model.pt' checkpoint in the latest experiment folder.
-
-    Args:
-        log_dir (str): Base directory where experiment folders are located.
-
-    Returns:
-        str: Full path to the 'best_model.pt' checkpoint.
-
-    Raises:
-        FileNotFoundError: If no experiment folder or checkpoint is found.
-    """
-    # Step 1: Find the newest experiment folder
-    experiment_folders = [
-        f for f in os.listdir(log_dir) 
-        if os.path.isdir(os.path.join(log_dir, f))
-    ]
-    experiment_folders.sort(reverse=True)  # Sort by name (newest first based on timestamp naming)
-    if not experiment_folders:
-        raise FileNotFoundError("[ERROR] No experiment folders found in the log directory.")
-    
-    newest_folder = os.path.join(log_dir, experiment_folders[0])
-    print(f"[INFO] Found newest experiment folder: {newest_folder}")
-
-    # Step 2: Locate the best checkpoint
-    best_checkpoint_path = os.path.join(newest_folder, "best_model.pt")
-    if not os.path.isfile(best_checkpoint_path):
-        raise FileNotFoundError(f"[ERROR] No 'best_model.pt' found in {newest_folder}")
-
-    return (newest_folder, best_checkpoint_path)
 
 
 class InferenceOnePolicyRunner:
@@ -173,33 +135,16 @@ class InferenceOnePolicyRunner:
 
 
 def main():
-    """Play with RSL-RL agent."""
     # parse configuration
     env_cfg = parse_env_cfg(
         args_cli.task, num_envs=args_cli.num_envs, use_fabric=not args_cli.disable_fabric
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
-    # # specify directory for logging experiments
-    # policy_root_directory = args_cli.log_dir
-    # (policy_folder_directory, policy_file_path) = find_newest_best_checkpoint(policy_root_directory)
-
     # create isaac environment
-    env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
+    env = gym.make(args_cli.task, cfg=env_cfg, render_mode=None)
     env.unwrapped.reward_curriculum_steps = 0
     env.unwrapped.domain_randomization_curriculum_steps = 0
-
-    # wrap for video recording
-    # if args_cli.video:
-    #     video_kwargs = {
-    #         "video_folder": os.path.join(policy_folder_directory, "one_policy_videos", args_cli.task),
-    #         "step_trigger": lambda step: step == 0,
-    #         "video_length": args_cli.video_length,
-    #         "disable_logger": True
-    #     }
-    #     print("[INFO] Recording videos during training.")
-    #     print_dict(video_kwargs, nesting=4)
-    #     env = gym.wrappers.RecordVideo(env, **video_kwargs)
 
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env)
@@ -220,10 +165,9 @@ def main():
     obs, observations = env.get_observations()
     one_policy_observation = observations["observations"]["urma_obs"]
     curr_timestep = 0
-    video_timestep = 0
 
-    from utils import RewardDictLogger
-    reward_dict_logger = RewardDictLogger(args_cli.num_envs)
+    returns = torch.zeros(args_cli.num_envs, device=model_device)
+    seen_dones = torch.zeros(args_cli.num_envs, dtype=torch.bool, device=model_device)
 
     # Main simulation loop
     while simulation_app.is_running():
@@ -236,24 +180,38 @@ def main():
 
             one_policy_observation = extra["observations"]["urma_obs"]
 
-            # log reward
-            reward_dict_logger.update(env, rewards, dones)
-            reward_dict_logger.print(curr_timestep, 'sum')
+            # Update the returns
+            returns += rewards * (1 - seen_dones.float())
+            seen_dones = seen_dones | dones
 
             curr_timestep += 1
-            if curr_timestep > args_cli.steps:
+            if curr_timestep % 100 == 0:
+                print(f"[INFO] Timestep: {curr_timestep}")
+            
+            if seen_dones.all():
                 break
 
-            if args_cli.video:
-                video_timestep += 1
-                # Exit the play loop after recording one video
-                if video_timestep > args_cli.video_length:
-                    break
     env.close()
+    del env
+
+    avg_return = returns.mean().item()
+    print(f"[INFO] Average return: {avg_return}")
+
+    # log average return to file
+    import json
+    if args_cli.log_file is not None:
+        if not os.path.exists(args_cli.log_file):
+            with open(args_cli.log_file, 'w') as f:
+                json.dump({}, f)
+        
+        # update the log file
+        with open(args_cli.log_file, 'r') as f:
+            log_data = json.load(f)
+        log_data[args_cli.task] = {"average_return": avg_return}
+        with open(args_cli.log_file, 'w') as f:
+            json.dump(log_data, f)
 
 
 if __name__ == "__main__":
-    # run the main execution
     main()
-    # close sim app
     simulation_app.close()
