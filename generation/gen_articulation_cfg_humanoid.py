@@ -104,7 +104,7 @@ def generate_code(base_dir, output_file):
     with open(output_file, 'w') as f_out:
         for robot_folder in robot_folders:
             # Define paths to train_cfg.json and USD file
-            train_cfg_path = os.path.join(robot_folder, 'train_cfg.json')
+            train_cfg_path = os.path.join(robot_folder, 'train_cfg_v2.json')
             usd_file_path = os.path.join(robot_folder, 'usd_file', 'robot.usd')
 
             # Skip if required files do not exist
@@ -169,6 +169,6 @@ actuators = {{
 
 
 # Example usage
-base_dir = "../exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids"  # Replace with the actual directory containing robot folders
+base_dir = "/home/albert/Data/gen_embodiments_0110_no_usd/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)

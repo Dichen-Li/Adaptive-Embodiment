@@ -197,7 +197,6 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
     with open(save_path, 'w') as f:
         json.dump(info, f, indent=4)
 
-
     # #############################################
     # # Clean up
     # #############################################
@@ -206,10 +205,10 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
 
 
 if __name__ == '__main__':
-    # root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_dogs'
-    # root_link_name = 'trunk'
-    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_humanoids'
-    root_link_name = 'pelvis'
+    # root_dir = '/home/albert/Data/gen_embodiments_0110_no_usd/gen_dogs'
+    # root_link_name = 'trunk'        # quadruped and hexapods
+    root_dir = '/home/albert/Data/gen_embodiments_0110_no_usd/gen_humanoids'
+    root_link_name = 'pelvis'     # humanoid
     asset_dirs = sorted([os.path.join(root_dir, name) for name in os.listdir(root_dir) if
                   os.path.isdir(os.path.join(root_dir, name))])
 

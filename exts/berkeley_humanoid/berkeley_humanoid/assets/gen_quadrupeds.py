@@ -328,23 +328,19 @@ Sanity check: import Go2 here to see if the config makes sense
 #     prim_path=prim_path
 # )
 
-"""
-GenDog
-"""
-
-
 GEN_DOG_10_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.32),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -355,16 +351,17 @@ GEN_DOG_10_CFG = ArticulationCfg(
 
 GEN_DOG_9_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -375,16 +372,17 @@ GEN_DOG_9_CFG = ArticulationCfg(
 
 GEN_DOG_8_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.38),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -395,16 +393,17 @@ GEN_DOG_8_CFG = ArticulationCfg(
 
 GEN_DOG_7_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
+        pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -415,16 +414,17 @@ GEN_DOG_7_CFG = ArticulationCfg(
 
 GEN_DOG_6_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.28),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -435,16 +435,17 @@ GEN_DOG_6_CFG = ArticulationCfg(
 
 GEN_DOG_5_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.34),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -455,16 +456,17 @@ GEN_DOG_5_CFG = ArticulationCfg(
 
 GEN_DOG_4_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -475,16 +477,17 @@ GEN_DOG_4_CFG = ArticulationCfg(
 
 GEN_DOG_3_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -495,16 +498,17 @@ GEN_DOG_3_CFG = ArticulationCfg(
 
 GEN_DOG_2_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.30),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -515,16 +519,17 @@ GEN_DOG_2_CFG = ArticulationCfg(
 
 GEN_DOG_0_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.37),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -535,205 +540,17 @@ GEN_DOG_0_CFG = ArticulationCfg(
 
 GEN_DOG_1_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_21_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_20_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_19_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_18_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_17_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_16_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_15_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_14_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_13_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -744,280 +561,7 @@ GEN_DOG_13_CFG = ArticulationCfg(
 
 GEN_DOG_11_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_12_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_87_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_86_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_85_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_84_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_83_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.28),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_82_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_81_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_80_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_79_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_77_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_78_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_76_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl0_fr0_rl0_rr0__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -1026,638 +570,8 @@ GEN_DOG_76_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_75_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_74_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_73_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_72_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_71_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_70_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_69_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_68_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_66_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_67_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_43_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_42_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_41_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_40_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_39_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.28),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_38_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_37_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_36_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_35_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_33_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_34_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_32_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_31_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_30_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_29_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_28_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_27_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_26_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_25_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_24_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00
         },
         joint_vel={".*": 0.0},
     ),
@@ -1668,17 +582,238 @@ GEN_DOG_24_CFG = ArticulationCfg(
 
 GEN_DOG_22_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_21_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_20_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_19_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_18_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_17_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_16_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.42),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_15_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_14_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.32),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_12_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_13_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -1689,70 +824,7 @@ GEN_DOG_22_CFG = ArticulationCfg(
 
 GEN_DOG_23_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_109_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_108_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_107_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -1761,260 +833,9 @@ GEN_DOG_107_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_106_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_105_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.28),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_104_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_103_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_102_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_101_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_99_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_100_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_98_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_97_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_96_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_95_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -2025,17 +846,18 @@ GEN_DOG_95_CFG = ArticulationCfg(
 
 GEN_DOG_94_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2046,17 +868,18 @@ GEN_DOG_94_CFG = ArticulationCfg(
 
 GEN_DOG_93_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2067,17 +890,18 @@ GEN_DOG_93_CFG = ArticulationCfg(
 
 GEN_DOG_92_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2088,17 +912,18 @@ GEN_DOG_92_CFG = ArticulationCfg(
 
 GEN_DOG_91_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2109,38 +934,18 @@ GEN_DOG_91_CFG = ArticulationCfg(
 
 GEN_DOG_90_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.30),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_88_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2151,17 +956,18 @@ GEN_DOG_88_CFG = ArticulationCfg(
 
 GEN_DOG_89_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2170,198 +976,9 @@ GEN_DOG_89_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_65_CFG = ArticulationCfg(
+GEN_DOG_88_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_64_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_63_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_62_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_61_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.28),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_60_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_59_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_58_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_57_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_55_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -2370,8 +987,9 @@ GEN_DOG_55_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2380,19 +998,20 @@ GEN_DOG_55_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_56_CFG = ArticulationCfg(
+GEN_DOG_87_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2401,93 +1020,9 @@ GEN_DOG_56_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_54_CFG = ArticulationCfg(
+GEN_DOG_86_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_53_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_52_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_51_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_50_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -2496,8 +1031,9 @@ GEN_DOG_50_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.31),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2506,19 +1042,20 @@ GEN_DOG_50_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_49_CFG = ArticulationCfg(
+GEN_DOG_84_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.38),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2527,9 +1064,207 @@ GEN_DOG_49_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_48_CFG = ArticulationCfg(
+GEN_DOG_85_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_95_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_82_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.33),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_81_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_80_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_79_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_78_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_77_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_76_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.42),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_75_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -2538,8 +1273,9 @@ GEN_DOG_48_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -2548,19 +1284,86 @@ GEN_DOG_48_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_47_CFG = ArticulationCfg(
+GEN_DOG_74_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.32),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_72_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_73_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_83_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.42),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -2571,38 +1374,18 @@ GEN_DOG_47_CFG = ArticulationCfg(
 
 GEN_DOG_46_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_44_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2613,17 +1396,18 @@ GEN_DOG_44_CFG = ArticulationCfg(
 
 GEN_DOG_45_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2632,9 +1416,361 @@ GEN_DOG_45_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_120_CFG = ArticulationCfg(
+GEN_DOG_44_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_43_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.43),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_42_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.30),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_41_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.35),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_40_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_39_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.47),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_38_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_36_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.38),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_37_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_47_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_34_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.33),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_33_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_32_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_31_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_30_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_29_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_28_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -2643,9 +1779,9 @@ GEN_DOG_120_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -2654,20 +1790,108 @@ GEN_DOG_120_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_119_CFG = ArticulationCfg(
+GEN_DOG_27_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_26_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.32),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_24_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_25_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_35_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.42),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -2678,18 +1902,18 @@ GEN_DOG_119_CFG = ArticulationCfg(
 
 GEN_DOG_118_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2700,18 +1924,18 @@ GEN_DOG_118_CFG = ArticulationCfg(
 
 GEN_DOG_117_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2722,18 +1946,18 @@ GEN_DOG_117_CFG = ArticulationCfg(
 
 GEN_DOG_116_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2744,18 +1968,18 @@ GEN_DOG_116_CFG = ArticulationCfg(
 
 GEN_DOG_115_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2766,18 +1990,18 @@ GEN_DOG_115_CFG = ArticulationCfg(
 
 GEN_DOG_114_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.30),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2788,18 +2012,18 @@ GEN_DOG_114_CFG = ArticulationCfg(
 
 GEN_DOG_113_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2810,40 +2034,18 @@ GEN_DOG_113_CFG = ArticulationCfg(
 
 GEN_DOG_112_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_110_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -2854,227 +2056,7 @@ GEN_DOG_110_CFG = ArticulationCfg(
 
 GEN_DOG_111_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_186_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_185_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_184_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_183_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_182_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_181_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_180_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_179_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_178_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_176_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3083,9 +2065,9 @@ GEN_DOG_176_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3094,20 +2076,20 @@ GEN_DOG_176_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_177_CFG = ArticulationCfg(
+GEN_DOG_110_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.31),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3116,9 +2098,207 @@ GEN_DOG_177_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_175_CFG = ArticulationCfg(
+GEN_DOG_108_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.38),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_109_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_119_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_106_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.33),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_105_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_104_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_103_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_102_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_101_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_100_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3127,9 +2307,9 @@ GEN_DOG_175_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3138,20 +2318,20 @@ GEN_DOG_175_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_174_CFG = ArticulationCfg(
+GEN_DOG_99_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3160,20 +2340,20 @@ GEN_DOG_174_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_173_CFG = ArticulationCfg(
+GEN_DOG_98_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.32),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3182,31 +2362,9 @@ GEN_DOG_173_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_172_CFG = ArticulationCfg(
+GEN_DOG_96_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_171_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3215,9 +2373,9 @@ GEN_DOG_171_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3226,20 +2384,20 @@ GEN_DOG_171_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_170_CFG = ArticulationCfg(
+GEN_DOG_97_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3248,53 +2406,9 @@ GEN_DOG_170_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_169_CFG = ArticulationCfg(
+GEN_DOG_107_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_168_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_167_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3303,9 +2417,9 @@ GEN_DOG_167_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3314,20 +2428,20 @@ GEN_DOG_167_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_165_CFG = ArticulationCfg(
+GEN_DOG_70_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.33),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3336,20 +2450,20 @@ GEN_DOG_165_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_166_CFG = ArticulationCfg(
+GEN_DOG_69_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3358,9 +2472,9 @@ GEN_DOG_166_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_142_CFG = ArticulationCfg(
+GEN_DOG_68_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3369,9 +2483,9 @@ GEN_DOG_142_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3380,97 +2494,9 @@ GEN_DOG_142_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_141_CFG = ArticulationCfg(
+GEN_DOG_67_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_140_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_139_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_138_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_137_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3479,9 +2505,9 @@ GEN_DOG_137_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3490,20 +2516,20 @@ GEN_DOG_137_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_136_CFG = ArticulationCfg(
+GEN_DOG_66_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.30),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3512,20 +2538,20 @@ GEN_DOG_136_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_135_CFG = ArticulationCfg(
+GEN_DOG_65_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
+        pos=(0.0, 0.0, 0.35),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3534,20 +2560,20 @@ GEN_DOG_135_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_134_CFG = ArticulationCfg(
+GEN_DOG_64_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3556,9 +2582,9 @@ GEN_DOG_134_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_132_CFG = ArticulationCfg(
+GEN_DOG_63_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3567,9 +2593,9 @@ GEN_DOG_132_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3578,20 +2604,20 @@ GEN_DOG_132_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_133_CFG = ArticulationCfg(
+GEN_DOG_62_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.31),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
         },
         joint_vel={".*": 0.0},
     ),
@@ -3600,9 +2626,207 @@ GEN_DOG_133_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_131_CFG = ArticulationCfg(
+GEN_DOG_60_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.38),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_61_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_71_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_58_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.33),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_57_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_56_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_55_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_54_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.31),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_53_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_52_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -3611,9 +2835,119 @@ GEN_DOG_131_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.42),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_51_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_50_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.32),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_48_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_49_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_59_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl1_fr1_rl1_rr1__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.42),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50
         },
         joint_vel={".*": 0.0},
     ),
@@ -3624,17 +2958,18 @@ GEN_DOG_131_CFG = ArticulationCfg(
 
 GEN_DOG_130_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.37),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3646,17 +2981,18 @@ GEN_DOG_130_CFG = ArticulationCfg(
 
 GEN_DOG_129_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3668,17 +3004,18 @@ GEN_DOG_129_CFG = ArticulationCfg(
 
 GEN_DOG_128_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.52),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3690,17 +3027,18 @@ GEN_DOG_128_CFG = ArticulationCfg(
 
 GEN_DOG_127_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3712,17 +3050,18 @@ GEN_DOG_127_CFG = ArticulationCfg(
 
 GEN_DOG_126_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3734,17 +3073,18 @@ GEN_DOG_126_CFG = ArticulationCfg(
 
 GEN_DOG_125_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3756,17 +3096,18 @@ GEN_DOG_125_CFG = ArticulationCfg(
 
 GEN_DOG_124_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3778,39 +3119,18 @@ GEN_DOG_124_CFG = ArticulationCfg(
 
 GEN_DOG_123_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_121_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3822,17 +3142,18 @@ GEN_DOG_121_CFG = ArticulationCfg(
 
 GEN_DOG_122_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3842,19 +3163,20 @@ GEN_DOG_122_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_208_CFG = ArticulationCfg(
+GEN_DOG_120_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3864,19 +3186,20 @@ GEN_DOG_208_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_207_CFG = ArticulationCfg(
+GEN_DOG_121_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3886,85 +3209,20 @@ GEN_DOG_207_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_206_CFG = ArticulationCfg(
+GEN_DOG_131_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_205_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_204_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_203_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3976,17 +3234,18 @@ GEN_DOG_203_CFG = ArticulationCfg(
 
 GEN_DOG_202_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -3998,17 +3257,18 @@ GEN_DOG_202_CFG = ArticulationCfg(
 
 GEN_DOG_201_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4020,39 +3280,18 @@ GEN_DOG_201_CFG = ArticulationCfg(
 
 GEN_DOG_200_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_198_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4064,17 +3303,41 @@ GEN_DOG_198_CFG = ArticulationCfg(
 
 GEN_DOG_199_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_198_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4086,17 +3349,18 @@ GEN_DOG_199_CFG = ArticulationCfg(
 
 GEN_DOG_197_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.44),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4108,7 +3372,7 @@ GEN_DOG_197_CFG = ArticulationCfg(
 
 GEN_DOG_196_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4117,8 +3381,9 @@ GEN_DOG_196_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.49),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4130,7 +3395,7 @@ GEN_DOG_196_CFG = ArticulationCfg(
 
 GEN_DOG_195_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4139,8 +3404,9 @@ GEN_DOG_195_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4152,39 +3418,18 @@ GEN_DOG_195_CFG = ArticulationCfg(
 
 GEN_DOG_194_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.38),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_193_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4196,7 +3441,7 @@ GEN_DOG_193_CFG = ArticulationCfg(
 
 GEN_DOG_192_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4205,8 +3450,9 @@ GEN_DOG_192_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.47),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4216,19 +3462,43 @@ GEN_DOG_192_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_191_CFG = ArticulationCfg(
+GEN_DOG_193_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_203_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4240,17 +3510,18 @@ GEN_DOG_191_CFG = ArticulationCfg(
 
 GEN_DOG_190_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.37),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4262,39 +3533,18 @@ GEN_DOG_190_CFG = ArticulationCfg(
 
 GEN_DOG_189_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.45),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_187_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4306,7 +3556,30 @@ GEN_DOG_187_CFG = ArticulationCfg(
 
 GEN_DOG_188_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_187_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4315,8 +3588,9 @@ GEN_DOG_188_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4326,19 +3600,20 @@ GEN_DOG_188_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_164_CFG = ArticulationCfg(
+GEN_DOG_186_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4348,19 +3623,20 @@ GEN_DOG_164_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_163_CFG = ArticulationCfg(
+GEN_DOG_185_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4370,97 +3646,9 @@ GEN_DOG_163_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_162_CFG = ArticulationCfg(
+GEN_DOG_184_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_161_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_160_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.34),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_159_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_158_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4469,8 +3657,9 @@ GEN_DOG_158_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4480,19 +3669,20 @@ GEN_DOG_158_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_157_CFG = ArticulationCfg(
+GEN_DOG_183_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
+        pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4502,19 +3692,89 @@ GEN_DOG_157_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_156_CFG = ArticulationCfg(
+GEN_DOG_182_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_180_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_181_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_191_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4526,39 +3786,18 @@ GEN_DOG_156_CFG = ArticulationCfg(
 
 GEN_DOG_154_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_155_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4570,17 +3809,18 @@ GEN_DOG_155_CFG = ArticulationCfg(
 
 GEN_DOG_153_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4592,17 +3832,18 @@ GEN_DOG_153_CFG = ArticulationCfg(
 
 GEN_DOG_152_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4614,17 +3855,18 @@ GEN_DOG_152_CFG = ArticulationCfg(
 
 GEN_DOG_151_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4636,17 +3878,18 @@ GEN_DOG_151_CFG = ArticulationCfg(
 
 GEN_DOG_150_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4658,17 +3901,18 @@ GEN_DOG_150_CFG = ArticulationCfg(
 
 GEN_DOG_149_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.44),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4680,17 +3924,18 @@ GEN_DOG_149_CFG = ArticulationCfg(
 
 GEN_DOG_148_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.49),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4702,17 +3947,18 @@ GEN_DOG_148_CFG = ArticulationCfg(
 
 GEN_DOG_147_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4724,61 +3970,18 @@ GEN_DOG_147_CFG = ArticulationCfg(
 
 GEN_DOG_146_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.38),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_145_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_143_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4790,7 +3993,145 @@ GEN_DOG_143_CFG = ArticulationCfg(
 
 GEN_DOG_144_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.47),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_145_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.55),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_155_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_142_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_141_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_140_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_139_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -4799,8 +4140,9 @@ GEN_DOG_144_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4810,19 +4152,20 @@ GEN_DOG_144_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_219_CFG = ArticulationCfg(
+GEN_DOG_138_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4832,19 +4175,20 @@ GEN_DOG_219_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_218_CFG = ArticulationCfg(
+GEN_DOG_137_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4854,19 +4198,20 @@ GEN_DOG_218_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_217_CFG = ArticulationCfg(
+GEN_DOG_136_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -4876,229 +4221,9 @@ GEN_DOG_217_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_216_CFG = ArticulationCfg(
+GEN_DOG_135_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.74),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_215_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_214_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_213_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_212_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.73),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_211_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_209_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_210_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_285_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_284_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_283_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -5107,8 +4232,9 @@ GEN_DOG_283_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5118,19 +4244,20 @@ GEN_DOG_283_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_282_CFG = ArticulationCfg(
+GEN_DOG_134_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.39),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5140,19 +4267,20 @@ GEN_DOG_282_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_281_CFG = ArticulationCfg(
+GEN_DOG_132_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5162,427 +4290,9 @@ GEN_DOG_281_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_280_CFG = ArticulationCfg(
+GEN_DOG_133_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_279_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_278_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_277_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_275_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_276_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_274_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_273_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_272_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_271_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.74),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_270_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_269_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_268_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_267_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.73),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_266_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_264_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_265_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_241_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_240_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_239_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -5591,8 +4301,9 @@ GEN_DOG_239_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5602,261 +4313,20 @@ GEN_DOG_239_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_238_CFG = ArticulationCfg(
+GEN_DOG_143_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_237_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_236_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_235_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_234_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_233_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_231_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_232_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_230_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_229_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_228_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_227_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.74),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5868,17 +4338,18 @@ GEN_DOG_227_CFG = ArticulationCfg(
 
 GEN_DOG_226_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.36),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5890,17 +4361,18 @@ GEN_DOG_226_CFG = ArticulationCfg(
 
 GEN_DOG_225_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.43),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5912,17 +4384,18 @@ GEN_DOG_225_CFG = ArticulationCfg(
 
 GEN_DOG_224_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5934,17 +4407,18 @@ GEN_DOG_224_CFG = ArticulationCfg(
 
 GEN_DOG_223_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.73),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -5956,39 +4430,18 @@ GEN_DOG_223_CFG = ArticulationCfg(
 
 GEN_DOG_222_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_220_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6000,17 +4453,1329 @@ GEN_DOG_220_CFG = ArticulationCfg(
 
 GEN_DOG_221_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.44),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_220_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_219_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.55),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_218_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.38),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_216_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.47),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_217_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.55),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_227_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_214_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_213_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_212_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_211_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_210_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_209_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_208_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_207_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_206_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_204_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_205_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_215_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_178_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.36),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_177_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.43),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_176_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_175_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_174_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_173_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.44),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_172_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_171_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.55),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_170_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.38),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_168_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.47),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_169_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.55),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_179_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.49),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_166_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.37),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_165_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.45),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_164_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_163_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_162_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_161_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_160_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_159_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_158_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.39),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_156_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_157_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_167_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl2_fr2_rl2_rr2__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_238_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_237_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_236_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.65),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_235_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.78),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_234_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_233_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.56),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_232_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_231_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.66),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_230_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_228_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_229_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.70),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_239_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl0_rr0_1_0__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_310_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_309_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_308_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.63),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6022,17 +5787,18 @@ GEN_DOG_221_CFG = ArticulationCfg(
 
 GEN_DOG_307_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6044,7 +5810,7 @@ GEN_DOG_307_CFG = ArticulationCfg(
 
 GEN_DOG_306_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
@@ -6053,8 +5819,9 @@ GEN_DOG_306_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6066,17 +5833,18 @@ GEN_DOG_306_CFG = ArticulationCfg(
 
 GEN_DOG_305_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.54),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6088,17 +5856,18 @@ GEN_DOG_305_CFG = ArticulationCfg(
 
 GEN_DOG_304_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6110,17 +5879,18 @@ GEN_DOG_304_CFG = ArticulationCfg(
 
 GEN_DOG_303_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6132,39 +5902,18 @@ GEN_DOG_303_CFG = ArticulationCfg(
 
 GEN_DOG_302_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_301_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6176,17 +5925,18 @@ GEN_DOG_301_CFG = ArticulationCfg(
 
 GEN_DOG_300_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6196,19 +5946,20 @@ GEN_DOG_300_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_299_CFG = ArticulationCfg(
+GEN_DOG_301_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.67),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6218,19 +5969,20 @@ GEN_DOG_299_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_297_CFG = ArticulationCfg(
+GEN_DOG_311_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6242,17 +5994,41 @@ GEN_DOG_297_CFG = ArticulationCfg(
 
 GEN_DOG_298_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_297_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6264,17 +6040,18 @@ GEN_DOG_298_CFG = ArticulationCfg(
 
 GEN_DOG_296_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6286,17 +6063,18 @@ GEN_DOG_296_CFG = ArticulationCfg(
 
 GEN_DOG_295_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6308,17 +6086,18 @@ GEN_DOG_295_CFG = ArticulationCfg(
 
 GEN_DOG_294_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.52),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6330,17 +6109,18 @@ GEN_DOG_294_CFG = ArticulationCfg(
 
 GEN_DOG_293_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.74),
+        pos=(0.0, 0.0, 0.56),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6352,17 +6132,18 @@ GEN_DOG_293_CFG = ArticulationCfg(
 
 GEN_DOG_292_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6374,17 +6155,18 @@ GEN_DOG_292_CFG = ArticulationCfg(
 
 GEN_DOG_291_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.66),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6396,39 +6178,18 @@ GEN_DOG_291_CFG = ArticulationCfg(
 
 GEN_DOG_290_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.48),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_289_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.73),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6440,17 +6201,18 @@ GEN_DOG_289_CFG = ArticulationCfg(
 
 GEN_DOG_288_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6460,19 +6222,20 @@ GEN_DOG_288_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_286_CFG = ArticulationCfg(
+GEN_DOG_289_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
+        pos=(0.0, 0.0, 0.70),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6482,41 +6245,20 @@ GEN_DOG_286_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_287_CFG = ArticulationCfg(
+GEN_DOG_299_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl0_fr0_rl1_rr1_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_263_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_4/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6528,17 +6270,18 @@ GEN_DOG_263_CFG = ArticulationCfg(
 
 GEN_DOG_262_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.40),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6550,17 +6293,18 @@ GEN_DOG_262_CFG = ArticulationCfg(
 
 GEN_DOG_261_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.51),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6572,17 +6316,18 @@ GEN_DOG_261_CFG = ArticulationCfg(
 
 GEN_DOG_260_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.63),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6594,17 +6339,18 @@ GEN_DOG_260_CFG = ArticulationCfg(
 
 GEN_DOG_259_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.75),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6616,17 +6362,18 @@ GEN_DOG_259_CFG = ArticulationCfg(
 
 GEN_DOG_258_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.50),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6638,17 +6385,18 @@ GEN_DOG_258_CFG = ArticulationCfg(
 
 GEN_DOG_257_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
+        pos=(0.0, 0.0, 0.54),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6660,17 +6408,18 @@ GEN_DOG_257_CFG = ArticulationCfg(
 
 GEN_DOG_256_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.59),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6682,39 +6431,18 @@ GEN_DOG_256_CFG = ArticulationCfg(
 
 GEN_DOG_255_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.64),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_253_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6726,17 +6454,18 @@ GEN_DOG_253_CFG = ArticulationCfg(
 
 GEN_DOG_254_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_8__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.46),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -1.03,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6748,17 +6477,18 @@ GEN_DOG_254_CFG = ArticulationCfg(
 
 GEN_DOG_252_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.57),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6768,19 +6498,43 @@ GEN_DOG_252_CFG = ArticulationCfg(
     prim_path=prim_path
 )
 
-GEN_DOG_251_CFG = ArticulationCfg(
+GEN_DOG_253_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.67),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_263_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6792,17 +6546,18 @@ GEN_DOG_251_CFG = ArticulationCfg(
 
 GEN_DOG_250_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.41),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6814,17 +6569,18 @@ GEN_DOG_250_CFG = ArticulationCfg(
 
 GEN_DOG_249_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.74),
+        pos=(0.0, 0.0, 0.52),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6836,17 +6592,18 @@ GEN_DOG_249_CFG = ArticulationCfg(
 
 GEN_DOG_248_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.65),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6858,17 +6615,18 @@ GEN_DOG_248_CFG = ArticulationCfg(
 
 GEN_DOG_247_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.78),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6880,17 +6638,18 @@ GEN_DOG_247_CFG = ArticulationCfg(
 
 GEN_DOG_246_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.52),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6902,17 +6661,18 @@ GEN_DOG_246_CFG = ArticulationCfg(
 
 GEN_DOG_245_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.73),
+        pos=(0.0, 0.0, 0.56),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6924,39 +6684,18 @@ GEN_DOG_245_CFG = ArticulationCfg(
 
 GEN_DOG_244_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.61),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
-            ".*_knee_.*_joint": 0.00
-        },
-        joint_vel={".*": 0.0},
-    ),
-    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
-    prim_path=prim_path
-)
-
-GEN_DOG_242_CFG = ArticulationCfg(
-    spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_0/usd_file/robot.usd",
-        activate_contact_sensors=activate_contact_sensors,
-        rigid_props=rigid_props,
-        articulation_props=articulation_props,
-    ),
-    init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.60),
-        joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},
@@ -6968,17 +6707,1214 @@ GEN_DOG_242_CFG = ArticulationCfg(
 
 GEN_DOG_243_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v0/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_1_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
         activate_contact_sensors=activate_contact_sensors,
         rigid_props=rigid_props,
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.71),
+        pos=(0.0, 0.0, 0.66),
         joint_pos={
             ".*_hip_pitch_joint": 0.00,
-            ".*_thigh_joint": 0.00,
-            ".*_knee_joint": -0.84,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_242_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_240_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_241_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.70),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_251_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_334_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_333_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_332_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.63),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_331_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.75),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_330_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.50),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_329_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.54),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_328_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_327_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.64),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_326_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_324_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_325_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.67),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_335_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_322_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_321_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_320_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.65),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_319_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.78),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_318_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_317_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.56),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_316_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_315_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.66),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_314_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_312_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_313_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.70),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_323_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr0_rl1_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_286_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.40),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_285_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.51),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_284_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.63),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_283_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.75),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_282_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.50),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_281_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.54),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_280_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_279_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.64),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_278_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.46),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_276_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.57),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_277_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.67),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_287_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_2__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.59,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_274_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.41),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_273_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_272_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.65),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_271_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_calf_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.78),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_270_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_4/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.52),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_269_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.56),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_268_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_267_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_lengthen_thigh_1_6/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.66),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_266_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_0_8/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_264_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.59),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_265_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_all_1_2/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.70),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
+            ".*_knee_.*_joint": 0.00
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
+    actuators=actuators,
+    prim_path=prim_path
+)
+
+GEN_DOG_275_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ISAAC_ASSET_DIR}/Robots/GenBot1K-v1/gen_dogs/gendog__KneeNum_fl3_fr3_rl3_rr3__ScaleJointLimit_fl1_fr1_rl0_rr0_0_6__Geo_scale_foot_size_2_0/usd_file/robot.usd",
+        activate_contact_sensors=activate_contact_sensors,
+        rigid_props=rigid_props,
+        articulation_props=articulation_props,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.61),
+        joint_pos={
+            ".*_hip_pitch_joint": 0.00,
+            "front_.*_thigh_joint": 0.80,
+            "rear_.*_thigh_joint": 1.00,
+            ".*_knee_joint": -1.50,
             ".*_knee_.*_joint": 0.00
         },
         joint_vel={".*": 0.0},

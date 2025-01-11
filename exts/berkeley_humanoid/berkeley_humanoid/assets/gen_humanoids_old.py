@@ -713,14 +713,14 @@ actuators_with_knee = {
 
 import os, json
 
-base_dir = os.path.join(ISAAC_ASSET_DIR, "Robots/GenBot1K-v1/gen_humanoids")
+base_dir = os.path.join(ISAAC_ASSET_DIR, "Robots/GenBot1K-v0/gen_humanoids")
 robot_dirs = sorted(
     [os.path.join(base_dir, f) for f in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, f))]
 )
 
 
 for i, robot_dir in enumerate(robot_dirs):
-    with open(f"{robot_dir}/train_cfg_v2.json", "r") as f:
+    with open(f"{robot_dir}/train_cfg.json", "r") as f:
         train_cfg = json.load(f)
 
     robot_name = train_cfg.get("robot_name")
