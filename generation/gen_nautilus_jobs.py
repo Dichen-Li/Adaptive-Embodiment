@@ -12,7 +12,7 @@ job_name_template = "bai-job-quadruped-{job_index}-jan10"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
-sleep_interval = 30  # Time interval (in seconds) between parallel commands to prevent errors
+sleep_interval = 200  # Time interval (in seconds) between parallel commands to prevent errors
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
