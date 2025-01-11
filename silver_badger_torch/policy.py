@@ -24,7 +24,8 @@ class Policy(nn.Module):
         # hyper param
         scale_factor = 3
 
-        dynamic_joint_state_mask_dim = 64 * scale_factor
+        dynamic_joint_state_mask_dim = 64 * scale_factor # For scaling_factor_0.5_v3_modelscale3_attempt2
+        # dynamic_joint_state_mask_dim = 64 # For scaling_factor_0.1_v3
         dynamic_joint_state_feat = 4 * scale_factor
         self.dynamic_joint_state_mask1 = nn.Linear(dynamic_joint_des_dim, dynamic_joint_state_mask_dim)
         self.dynamic_joint_layer_norm = nn.LayerNorm(dynamic_joint_state_mask_dim, eps=1e-6)
