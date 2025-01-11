@@ -38,10 +38,10 @@ python scripts/rsl_rl/play.py --task GenDog1
 
 
 ## Single robot training and testing
-There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1Gcrtiv1_P7LaFhUeIgBM0tffJZptPiaW/view?usp=sharing), unzip it and move it to the asset folder:
+There are many build-in robots in the codebase, but if you would like to run experiments using the `GenBot1K` dataset, you need to download it from [here](https://drive.google.com/file/d/1eXg9_Np_hQWRirBXKhLWd4faUgAvXLYO/view?usp=sharing), unzip it and move it to the asset folder:
 ```angular2html
 unzip file_name.zip
-mv file_name exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+mv file_name exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1
 ```
 Tensorflow logs will go to `logs/rsl_rl/<task_name>/<job_launch_time>`, 
 such as `/home/albert/github/isaac_berkeley_humanoid/logs/rsl_rl/GenDog/2024-11-07_21-35-31`
@@ -158,10 +158,23 @@ Covner URDF to USD using `scripts/urdf_to_usd.sh` or `scripts/urdf_to_usd_batch.
 sh urdf_to_usd.sh ~/Downloads/gen_dog_3_variants/gen_dog_1.urdf ~/Downloads/gen_dog_3_variants/usd/gen_dog_1.usd
 sh urdf_to_usd_batch.sh ~/Downloads/gen_dog_3_variants ~/Downloads/gen_dog_3_variants_us    # specify folder 
 ```
+
+0.1. Update initial height via 
+```aiignore
+python generation/update_init_height_sapien.py 
+```
+You will see `train_cfg_v2.json` in all folders. Please install `sapien===2.2.2` for this. It uses SAPIEN to determine the most suitable initial height for each robot. 
+
+0.2. (Optional) Generate description vector via
+```aiignore
+python generation/get_description_vector_sapien.py 
+```
+You will see an additional file in all folders, useful for URMA training.
+
 1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`. 
 For large robot dataset like `GenBot1K`, we could store the folder somewhere else and create a soft link in the directory pointing to the folder, e.g.
 ```angular2html
-ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1
 ```
 
 2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/gen_quadruped_1k_ppo_cfg.py`, following the pattern in the file. For adding a large number of robots, run `generation/gen_ppo_cfg.py` to generate these lines automatically:

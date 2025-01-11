@@ -15,217 +15,6 @@ from omni.isaac.lab.utils import configclass
 from berkeley_humanoid.assets.gen_hexapods import *
 
 
-# @configclass
-# class GenDogEnvCfg(DirectRLEnvCfg):
-#     """
-#     A parent config class that will be inherited by robot-specific config classes
-#     """
-#     seed = 42
-#
-#     # env
-#     episode_length_s = 20.0
-#     decimation = 4
-#     dt = 0.005
-#     action_space = 12
-#     observation_space = 69
-#
-#     # simulation
-#     sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
-#     terrain = TerrainImporterCfg(
-#         prim_path="/World/ground",
-#         terrain_type="plane",
-#         collision_group=-1,
-#         physics_material=sim_utils.RigidBodyMaterialCfg(
-#             friction_combine_mode="average",
-#             restitution_combine_mode="average",
-#             static_friction=1.0,
-#             dynamic_friction=1.0,
-#             restitution=0.0,
-#         ),
-#         debug_vis=False,
-#     )
-#
-#     # scene
-#     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.5,
-#                                                      replicate_physics=True)
-#
-#     # robot
-#     robot: ArticulationCfg = MISSING
-#
-#     # sensor for reward calculation
-#     contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
-#                                       track_air_time=True, track_pose=True)
-#
-#     asset_name = "robot"
-#
-#     # Velocity command ranges
-#     x_vel_range = (-1.0, 1.0)
-#     y_vel_range = (-1.0, 1.0)
-#     yaw_vel_range = (-1.0, 1.0)
-#     resampling_interval = 10 / (dt * decimation)
-#
-#     # controller
-#     controller_use_offset = True
-#     action_scale = 0.5
-#     controlled_joints = ".*"
-#
-#     # reward configurations
-#     reward_cfgs = {
-#         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
-#         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-#         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*", ".*thigh.*", ".*trunk.*"]),
-#         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-#         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
-#         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
-#                                                                             ".*thigh.*", ".*calf.*"])
-#     }
-#
-#     def __init__(self, robot_cfg, **kwargs):
-#         super().__init__(**kwargs)
-#         self.robot = robot_cfg  # Set the specific robot configuration
-
-
-# @configclass
-# class GenDog0Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG0_CFG
-#
-# @configclass
-# class GenDog1Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG1_CFG
-#
-# @configclass
-# class GenDog2Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG2_CFG
-#
-# @configclass
-# class GenDog3Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG3_CFG
-#
-# @configclass
-# class GenDog4Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG4_CFG
-#
-# @configclass
-# class GenDog5Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG5_CFG
-
-
-# @configclass
-# class GenDogF0R0KneeJoint0Cfg(GenHexapodEnvCfg):
-#     action_space = 8
-#     robot: ArticulationCfg = GEN_DOG_F0R0_CFG
-#     reward_cfgs = {
-#         'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*foot"),
-#         'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*foot"),
-#         'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*calf.*"]),
-#         'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-#         'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[]),
-#         'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*trunk.*", ".*hip.*",
-#                                                                             ".*thigh.*", ".*calf.*"])
-#     }
-
-# @configclass
-# class GenDogF0R1KneeJoint0Cfg(GenDogEnvCfg):
-#     action_space = 10
-#     robot: ArticulationCfg = GEN_DOG_F0R1_CFG
-#
-# @configclass
-# class GenDogF1R0KneeJoint0Cfg(GenDogEnvCfg):
-#     action_space = 10
-#     robot: ArticulationCfg = GEN_DOG_F1R0_CFG
-#
-# @configclass
-# class GenDogF2R2KneeJoint0Cfg(GenDogEnvCfg):
-#     action_space = 16
-#     robot: ArticulationCfg = GEN_DOG_F2R2_CFG
-#
-# @configclass
-# class GenDogF2R3KneeJoint0Cfg(GenDogEnvCfg):
-#     action_space = 18
-#     robot: ArticulationCfg = GEN_DOG_F2R3_CFG
-#
-# @configclass
-# class GenDogF3R2KneeJoint0Cfg(GenDogEnvCfg):
-#     action_space = 18
-#     robot: ArticulationCfg = GEN_DOG_F3R2_CFG
-#
-# @configclass
-# class GenDogOriginalJoint0Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_0_CFG
-#
-# @configclass
-# class GenDogOriginalJoint1Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_1_CFG
-#
-# @configclass
-# class GenDogOriginalJoint2Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_2_CFG
-#
-# @configclass
-# class GenDogOriginalJoint3Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_3_CFG
-#
-# @configclass
-# class GenDogOriginalJoint4Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_4_CFG
-#
-# @configclass
-# class GenDogOriginalJoint5Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_5_CFG
-#
-# @configclass
-# class GenDogOriginalJoint6Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_6_CFG
-#
-# @configclass
-# class GenDogOriginalJoint7Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_7_CFG
-#
-# @configclass
-# class GenDogOriginalJoint8Cfg(GenDogEnvCfg):
-#     robot: ArticulationCfg = GEN_DOG_ORIGINAL_8_CFG
-
-
-# # Add CFG classes dynamically
-#
-# # Mapping robot file names to canonical class names
-# robot_name_map = {
-#     "gen_dog_f0r0_knee_joint_0": "GenDogF0R0KneeJoint0Cfg",
-#     "gen_dog_f0r1_knee_joint_0": "GenDogF0R1KneeJoint0Cfg",
-#     "gen_dog_f1r0_knee_joint_0": "GenDogF1R0KneeJoint0Cfg",
-#     "gen_dog_f2r2_knee_joint_0": "GenDogF2R2KneeJoint0Cfg",
-#     "gen_dog_f2r3_knee_joint_0": "GenDogF2R3KneeJoint0Cfg",
-#     "gen_dog_f3r2_knee_joint_0": "GenDogF3R2KneeJoint0Cfg",
-#     "gen_dog_original_joint_0": "GenDogOriginalJoint0Cfg",
-#     "gen_dog_original_joint_1": "GenDogOriginalJoint1Cfg",
-#     "gen_dog_original_joint_2": "GenDogOriginalJoint2Cfg",
-#     "gen_dog_original_joint_3": "GenDogOriginalJoint3Cfg",
-#     "gen_dog_original_joint_4": "GenDogOriginalJoint4Cfg",
-#     "gen_dog_original_joint_5": "GenDogOriginalJoint5Cfg",
-#     "gen_dog_original_joint_6": "GenDogOriginalJoint6Cfg",
-#     "gen_dog_original_joint_7": "GenDogOriginalJoint7Cfg",
-#     "gen_dog_original_joint_8": "GenDogOriginalJoint8Cfg",
-# }
-#
-# # Dynamically generate and register configuration classes globally
-# for robot_file_name, canonical_name in robot_name_map.items():
-#     # Dynamically define the class at the global level
-#     @configclass
-#     class TempClass(GenDogEnvCfg):
-#         robot: ArticulationCfg = globals()[robot_file_name.upper() + "_CFG"]
-#
-#     # Assign the class a proper name
-#     TempClass.__name__ = canonical_name
-#
-#     # Register the class in the global namespace
-#     globals()[canonical_name] = TempClass
-
-
-"""
-GenBot-1K quadrupeds
-"""
-# TODO: Need to tune the specified parameters for hexapod. 
-# Currently copy from GenHexapodEnvCfg and only change the number of joints from 4 to 6 to enable running.
 class GenHexapodEnvCfg(DirectRLEnvCfg):
     num_envs = 4096
     episode_length_s = 20.0
@@ -349,6 +138,7 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     perturb_add_chance = 0.5
     perturb_additive_multiplier = 1.5
 
+
 @configclass
 class Genhexapod10Cfg(GenHexapodEnvCfg):
     action_space = 12
@@ -438,6 +228,22 @@ class Genhexapod1Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
+class Genhexapod11Cfg(GenHexapodEnvCfg):
+    action_space = 12
+    robot: ArticulationCfg = GEN_HEXAPOD_11_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod22Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_22_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
 class Genhexapod21Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_21_CFG
@@ -502,6 +308,14 @@ class Genhexapod14Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
+class Genhexapod12Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_12_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
 class Genhexapod13Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_13_CFG
@@ -510,17 +324,33 @@ class Genhexapod13Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod11Cfg(GenHexapodEnvCfg):
+class Genhexapod23Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_11_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_23_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod12Cfg(GenHexapodEnvCfg):
+class Genhexapod46Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_12_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_46_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod45Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_45_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod44Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_44_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -574,14 +404,6 @@ class Genhexapod38Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod37Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_37_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod36Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_36_CFG
@@ -590,17 +412,17 @@ class Genhexapod36Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod35Cfg(GenHexapodEnvCfg):
+class Genhexapod37Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_35_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_37_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod33Cfg(GenHexapodEnvCfg):
+class Genhexapod47Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_33_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_47_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -609,6 +431,14 @@ class Genhexapod33Cfg(GenHexapodEnvCfg):
 class Genhexapod34Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_34_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod33Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_33_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -670,14 +500,6 @@ class Genhexapod26Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod25Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_25_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod24Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_24_CFG
@@ -686,17 +508,57 @@ class Genhexapod24Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod22Cfg(GenHexapodEnvCfg):
+class Genhexapod25Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_22_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_25_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod23Cfg(GenHexapodEnvCfg):
+class Genhexapod35Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_23_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_35_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod70Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_70_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod69Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_69_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod68Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_68_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod67Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_67_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod66Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_66_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -734,14 +596,6 @@ class Genhexapod62Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod61Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_61_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod60Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_60_CFG
@@ -750,9 +604,17 @@ class Genhexapod60Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod59Cfg(GenHexapodEnvCfg):
+class Genhexapod61Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_59_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_61_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod71Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_71_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -774,17 +636,17 @@ class Genhexapod57Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod55Cfg(GenHexapodEnvCfg):
+class Genhexapod56Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_55_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_56_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod56Cfg(GenHexapodEnvCfg):
+class Genhexapod55Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_56_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_55_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -830,14 +692,6 @@ class Genhexapod50Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod49Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_49_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod48Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_48_CFG
@@ -846,33 +700,73 @@ class Genhexapod48Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod47Cfg(GenHexapodEnvCfg):
+class Genhexapod49Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_47_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_49_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod46Cfg(GenHexapodEnvCfg):
+class Genhexapod59Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_46_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_59_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod44Cfg(GenHexapodEnvCfg):
+class Genhexapod94Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_44_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_94_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod45Cfg(GenHexapodEnvCfg):
+class Genhexapod93Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_45_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_93_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod92Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_92_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod91Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_91_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod90Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_90_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod89Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_89_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod88Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_88_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -894,14 +788,6 @@ class Genhexapod86Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod85Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_85_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod84Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_84_CFG
@@ -910,9 +796,17 @@ class Genhexapod84Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod83Cfg(GenHexapodEnvCfg):
+class Genhexapod85Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_83_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_85_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod95Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_95_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -950,17 +844,17 @@ class Genhexapod79Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod77Cfg(GenHexapodEnvCfg):
+class Genhexapod78Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_77_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_78_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod78Cfg(GenHexapodEnvCfg):
+class Genhexapod77Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_78_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_77_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -990,14 +884,6 @@ class Genhexapod74Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod73Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_73_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod72Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_72_CFG
@@ -1006,57 +892,89 @@ class Genhexapod72Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod71Cfg(GenHexapodEnvCfg):
+class Genhexapod73Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_71_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_73_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod70Cfg(GenHexapodEnvCfg):
+class Genhexapod83Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_70_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_83_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod69Cfg(GenHexapodEnvCfg):
+class Genhexapod118Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_69_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_118_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod68Cfg(GenHexapodEnvCfg):
+class Genhexapod117Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_68_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_117_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod66Cfg(GenHexapodEnvCfg):
+class Genhexapod116Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_66_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_116_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod67Cfg(GenHexapodEnvCfg):
+class Genhexapod115Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_67_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_115_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod109Cfg(GenHexapodEnvCfg):
+class Genhexapod114Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_109_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_114_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod113Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_113_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod112Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_112_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod111Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_111_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod110Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_110_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1070,9 +988,17 @@ class Genhexapod108Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod107Cfg(GenHexapodEnvCfg):
+class Genhexapod109Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_107_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_109_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod119Cfg(GenHexapodEnvCfg):
+    action_space = 18
+    robot: ArticulationCfg = GEN_HEXAPOD_119_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1126,17 +1052,17 @@ class Genhexapod101Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod99Cfg(GenHexapodEnvCfg):
+class Genhexapod100Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_99_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_100_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod100Cfg(GenHexapodEnvCfg):
+class Genhexapod99Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_100_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_99_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1150,14 +1076,6 @@ class Genhexapod98Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod97Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_97_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod96Cfg(GenHexapodEnvCfg):
     action_space = 18
     robot: ArticulationCfg = GEN_HEXAPOD_96_CFG
@@ -1166,65 +1084,89 @@ class Genhexapod96Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod95Cfg(GenHexapodEnvCfg):
+class Genhexapod97Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_95_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_97_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod94Cfg(GenHexapodEnvCfg):
+class Genhexapod107Cfg(GenHexapodEnvCfg):
     action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_94_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_107_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod93Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_93_CFG
+class Genhexapod130Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_130_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod92Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_92_CFG
+class Genhexapod129Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_129_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod91Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_91_CFG
+class Genhexapod128Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_128_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod90Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_90_CFG
+class Genhexapod127Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_127_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod88Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_88_CFG
+class Genhexapod126Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_126_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod89Cfg(GenHexapodEnvCfg):
-    action_space = 18
-    robot: ArticulationCfg = GEN_HEXAPOD_89_CFG
+class Genhexapod125Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_125_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod124Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_124_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod123Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_123_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod122Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_122_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1238,81 +1180,113 @@ class Genhexapod120Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod119Cfg(GenHexapodEnvCfg):
+class Genhexapod121Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_119_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_121_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod118Cfg(GenHexapodEnvCfg):
+class Genhexapod131Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_118_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_131_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod117Cfg(GenHexapodEnvCfg):
+class Genhexapod154Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_117_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_154_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod116Cfg(GenHexapodEnvCfg):
+class Genhexapod153Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_116_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_153_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod115Cfg(GenHexapodEnvCfg):
+class Genhexapod152Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_115_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_152_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod114Cfg(GenHexapodEnvCfg):
+class Genhexapod151Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_114_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_151_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod113Cfg(GenHexapodEnvCfg):
+class Genhexapod150Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_113_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_150_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod112Cfg(GenHexapodEnvCfg):
+class Genhexapod149Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_112_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_149_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod110Cfg(GenHexapodEnvCfg):
+class Genhexapod148Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_110_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_148_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod111Cfg(GenHexapodEnvCfg):
+class Genhexapod147Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_111_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_147_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod146Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_146_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod144Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_144_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod145Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_145_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod155Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_155_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1406,89 +1380,121 @@ class Genhexapod133Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod131Cfg(GenHexapodEnvCfg):
+class Genhexapod143Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_131_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_143_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod130Cfg(GenHexapodEnvCfg):
+class Genhexapod178Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_130_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_178_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod129Cfg(GenHexapodEnvCfg):
+class Genhexapod177Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_129_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_177_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod128Cfg(GenHexapodEnvCfg):
+class Genhexapod176Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_128_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_176_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod127Cfg(GenHexapodEnvCfg):
+class Genhexapod175Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_127_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_175_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod126Cfg(GenHexapodEnvCfg):
+class Genhexapod174Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_126_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_174_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod125Cfg(GenHexapodEnvCfg):
+class Genhexapod173Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_125_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_173_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod124Cfg(GenHexapodEnvCfg):
+class Genhexapod172Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_124_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_172_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod123Cfg(GenHexapodEnvCfg):
+class Genhexapod171Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_123_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_171_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod121Cfg(GenHexapodEnvCfg):
+class Genhexapod170Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_121_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_170_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod122Cfg(GenHexapodEnvCfg):
+class Genhexapod168Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_122_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_168_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod169Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_169_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod179Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_179_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod166Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_166_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod165Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_165_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1550,14 +1556,6 @@ class Genhexapod158Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod157Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_157_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod156Cfg(GenHexapodEnvCfg):
     action_space = 24
     robot: ArticulationCfg = GEN_HEXAPOD_156_CFG
@@ -1566,105 +1564,145 @@ class Genhexapod156Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod154Cfg(GenHexapodEnvCfg):
+class Genhexapod157Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_154_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_157_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod155Cfg(GenHexapodEnvCfg):
+class Genhexapod167Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_155_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_167_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod153Cfg(GenHexapodEnvCfg):
+class Genhexapod202Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_153_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_202_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod152Cfg(GenHexapodEnvCfg):
+class Genhexapod201Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_152_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_201_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod151Cfg(GenHexapodEnvCfg):
+class Genhexapod200Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_151_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_200_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod150Cfg(GenHexapodEnvCfg):
+class Genhexapod199Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_150_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_199_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod149Cfg(GenHexapodEnvCfg):
+class Genhexapod198Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_149_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_198_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod148Cfg(GenHexapodEnvCfg):
+class Genhexapod197Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_148_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_197_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod147Cfg(GenHexapodEnvCfg):
+class Genhexapod196Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_147_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_196_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod146Cfg(GenHexapodEnvCfg):
+class Genhexapod195Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_146_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_195_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod145Cfg(GenHexapodEnvCfg):
+class Genhexapod194Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_145_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_194_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod143Cfg(GenHexapodEnvCfg):
+class Genhexapod192Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_143_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_192_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod144Cfg(GenHexapodEnvCfg):
+class Genhexapod193Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_144_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_193_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod203Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_203_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod190Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_190_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod189Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_189_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod188Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_188_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod187Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_187_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1710,14 +1748,6 @@ class Genhexapod182Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod181Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_181_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod180Cfg(GenHexapodEnvCfg):
     action_space = 24
     robot: ArticulationCfg = GEN_HEXAPOD_180_CFG
@@ -1726,121 +1756,161 @@ class Genhexapod180Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod179Cfg(GenHexapodEnvCfg):
+class Genhexapod181Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_179_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_181_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod178Cfg(GenHexapodEnvCfg):
+class Genhexapod191Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_178_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_191_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod176Cfg(GenHexapodEnvCfg):
+class Genhexapod226Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_176_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_226_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod177Cfg(GenHexapodEnvCfg):
+class Genhexapod225Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_177_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_225_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod175Cfg(GenHexapodEnvCfg):
+class Genhexapod224Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_175_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_224_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod174Cfg(GenHexapodEnvCfg):
+class Genhexapod223Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_174_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_223_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod173Cfg(GenHexapodEnvCfg):
+class Genhexapod222Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_173_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_222_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod172Cfg(GenHexapodEnvCfg):
+class Genhexapod221Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_172_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_221_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod171Cfg(GenHexapodEnvCfg):
+class Genhexapod220Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_171_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_220_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod170Cfg(GenHexapodEnvCfg):
+class Genhexapod219Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_170_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_219_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod169Cfg(GenHexapodEnvCfg):
+class Genhexapod218Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_169_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_218_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod168Cfg(GenHexapodEnvCfg):
+class Genhexapod216Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_168_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_216_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod167Cfg(GenHexapodEnvCfg):
+class Genhexapod217Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_167_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_217_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod165Cfg(GenHexapodEnvCfg):
+class Genhexapod227Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_165_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_227_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod166Cfg(GenHexapodEnvCfg):
+class Genhexapod214Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_166_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_214_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod213Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_213_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod212Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_212_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod211Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_211_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod210Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_210_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod209Cfg(GenHexapodEnvCfg):
+    action_space = 24
+    robot: ArticulationCfg = GEN_HEXAPOD_209_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -1870,14 +1940,6 @@ class Genhexapod206Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod205Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_205_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod204Cfg(GenHexapodEnvCfg):
     action_space = 24
     robot: ArticulationCfg = GEN_HEXAPOD_204_CFG
@@ -1886,249 +1948,17 @@ class Genhexapod204Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod203Cfg(GenHexapodEnvCfg):
+class Genhexapod205Cfg(GenHexapodEnvCfg):
     action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_203_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod202Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_202_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod201Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_201_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod200Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_200_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod198Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_198_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod199Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_199_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod197Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_197_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod196Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_196_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod195Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_195_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod194Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_194_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod193Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_193_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod192Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_192_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod191Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_191_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod190Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_190_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod189Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_189_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod187Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_187_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod188Cfg(GenHexapodEnvCfg):
-    action_space = 24
-    robot: ArticulationCfg = GEN_HEXAPOD_188_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod219Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_219_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod218Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_218_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod217Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_217_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod216Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_216_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_205_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
 class Genhexapod215Cfg(GenHexapodEnvCfg):
-    action_space = 30
+    action_space = 24
     robot: ArticulationCfg = GEN_HEXAPOD_215_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod214Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_214_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod213Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_213_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod212Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_212_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod211Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_211_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod209Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_209_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod210Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_210_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod241Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_241_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod240Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_240_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod239Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_239_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2182,17 +2012,17 @@ class Genhexapod233Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod231Cfg(GenHexapodEnvCfg):
+class Genhexapod232Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_231_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_232_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod232Cfg(GenHexapodEnvCfg):
+class Genhexapod231Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_232_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_231_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2206,14 +2036,6 @@ class Genhexapod230Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod229Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_229_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod228Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_228_CFG
@@ -2222,73 +2044,17 @@ class Genhexapod228Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod227Cfg(GenHexapodEnvCfg):
+class Genhexapod229Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_227_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_229_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod226Cfg(GenHexapodEnvCfg):
+class Genhexapod239Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_226_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod225Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_225_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod224Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_224_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod223Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_223_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod222Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_222_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod220Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_220_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod221Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_221_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod263Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_263_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_239_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2358,14 +2124,6 @@ class Genhexapod255Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod253Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_253_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod254Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_254_CFG
@@ -2382,9 +2140,17 @@ class Genhexapod252Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod251Cfg(GenHexapodEnvCfg):
+class Genhexapod253Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_251_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_253_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod263Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_263_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2446,6 +2212,14 @@ class Genhexapod244Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
+class Genhexapod243Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_243_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
 class Genhexapod242Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_242_CFG
@@ -2454,9 +2228,33 @@ class Genhexapod242Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod243Cfg(GenHexapodEnvCfg):
+class Genhexapod240Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_243_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_240_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod241Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_241_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod251Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_251_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod286Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_286_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2526,6 +2324,14 @@ class Genhexapod278Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
+class Genhexapod276Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_276_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
 class Genhexapod277Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_277_CFG
@@ -2534,17 +2340,9 @@ class Genhexapod277Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod275Cfg(GenHexapodEnvCfg):
+class Genhexapod287Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_275_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
-class Genhexapod276Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_276_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_287_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2638,6 +2436,38 @@ class Genhexapod265Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
+class Genhexapod275Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_275_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod310Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_310_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod309Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_309_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod308Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_308_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
 class Genhexapod307Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_307_CFG
@@ -2686,14 +2516,6 @@ class Genhexapod302Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod301Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_301_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod300Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_300_CFG
@@ -2702,17 +2524,17 @@ class Genhexapod300Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod299Cfg(GenHexapodEnvCfg):
+class Genhexapod301Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_299_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_301_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod297Cfg(GenHexapodEnvCfg):
+class Genhexapod311Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_297_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_311_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2721,6 +2543,14 @@ class Genhexapod297Cfg(GenHexapodEnvCfg):
 class Genhexapod298Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_298_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod297Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_297_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
@@ -2782,14 +2612,6 @@ class Genhexapod290Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod289Cfg(GenHexapodEnvCfg):
-    action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_289_CFG
-    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
-    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
-
-@configclass
 class Genhexapod288Cfg(GenHexapodEnvCfg):
     action_space = 30
     robot: ArticulationCfg = GEN_HEXAPOD_288_CFG
@@ -2798,17 +2620,209 @@ class Genhexapod288Cfg(GenHexapodEnvCfg):
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod286Cfg(GenHexapodEnvCfg):
+class Genhexapod289Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_286_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_289_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
 @configclass
-class Genhexapod287Cfg(GenHexapodEnvCfg):
+class Genhexapod299Cfg(GenHexapodEnvCfg):
     action_space = 30
-    robot: ArticulationCfg = GEN_HEXAPOD_287_CFG
+    robot: ArticulationCfg = GEN_HEXAPOD_299_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod334Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_334_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod333Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_333_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod332Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_332_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod331Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_331_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod330Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_330_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod329Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_329_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod328Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_328_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod327Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_327_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod326Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_326_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod324Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_324_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod325Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_325_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod335Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_335_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod322Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_322_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod321Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_321_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod320Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_320_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod319Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_319_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod318Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_318_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod317Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_317_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod316Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_316_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod315Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_315_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod314Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_314_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod312Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_312_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod313Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_313_CFG
+    trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+
+@configclass
+class Genhexapod323Cfg(GenHexapodEnvCfg):
+    action_space = 30
+    robot: ArticulationCfg = GEN_HEXAPOD_323_CFG
     trunk_cfg = SceneEntityCfg("robot", body_names="trunk")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*trunk.*', '.*hip.*', '.*thigh.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
