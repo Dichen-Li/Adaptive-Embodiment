@@ -39,12 +39,12 @@ def generate_code(base_dir, output_file):
             drop_height = train_cfg.get("drop_height", 0.5) + 0.05   # add a 5cm buffer
             joint_positions = train_cfg.get("nominal_joint_positions", {})
             joint_positions_str = ",\n            ".join(
-                f'"{k}": {v:.2f}' for k, v in joint_positions.items()
+                f'"{k}": {v:.5f}' for k, v in joint_positions.items()
             )
 
             # Use the folder name to construct USD path
             folder_name = os.path.basename(robot_folder)  # Get the actual folder name
-            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v0/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
+            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v1/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
 
             # Generate code block
             code_block = f"""
@@ -56,7 +56,7 @@ def generate_code(base_dir, output_file):
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, {drop_height:.2f}),
+        pos=(0.0, 0.0, {drop_height:.5f}),
         joint_pos={{
             {joint_positions_str}
         }},
@@ -75,6 +75,6 @@ def generate_code(base_dir, output_file):
 
 
 # Example usage
-base_dir = "/home/albert/Data/gen_embodiments_0110_no_usd/gen_hexapods"  # Replace with the actual directory containing robot folders
+base_dir = "/home/albert/Data/gen_embodiments_0110_usd_v2/gen_dogs"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)
