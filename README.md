@@ -174,7 +174,7 @@ You will see an additional file in all folders, useful for URMA training.
 1. Place USD files under `exts/berkeley_humanoid/berkeley_humanoid/assets/Robots`. 
 For large robot dataset like `GenBot1K`, we could store the folder somewhere else and create a soft link in the directory pointing to the folder, e.g.
 ```angular2html
-ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
+ln -s /folder_absolute_path /absolute_path/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1
 ```
 
 2. Add PPO configs to `exts/berkeley_humanoid/berkeley_humanoid/tasks/direct/humanoid/agents/gen_quadruped_1k_ppo_cfg.py`, following the pattern in the file. For adding a large number of robots, run `generation/gen_ppo_cfg.py` to generate these lines automatically:
