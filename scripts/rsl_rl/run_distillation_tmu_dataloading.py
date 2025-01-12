@@ -6,12 +6,44 @@ torch.backends.cudnn.benchmark = True
 from torch.utils.tensorboard import SummaryWriter
 import time
 from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm
-from dataset import LocomotionDataset
+from dataset import LocomotionDataset_tmu
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 import tqdm
 import argparse
 import yaml
+
+import time
+from collections import defaultdict
+
+
+class NonOverlappingTimeProfiler(object):
+    def __init__(self):
+        self.time_cost = defaultdict(float)
+        self.tic = time.time()
+
+    def end(self, key):
+        toc = time.time()
+        self.time_cost[key] += toc - self.tic
+        self.tic = toc
+
+    def reset(self):
+        self.time_cost.clear()
+        self.tic = time.time()
+
+    def read(self):
+        tot_time = sum(self.time_cost.values())
+        ratio = {f'{k}_ratio': v / tot_time for k, v in self.time_cost.items()}
+        return {**self.time_cost, **ratio, **{'total': tot_time}}
+    
+    def dump_to_writer(self, writer: SummaryWriter, global_step):
+        time_stat = self.read()
+        writer.add_scalar("time/SPS", global_step / time_stat.pop('total'), global_step)
+        for k, v in time_stat.items():
+            if k.endswith('ratio'):
+                writer.add_scalar(f"time/{k}", v, global_step)
+            else:
+                writer.add_scalar(f"time/{k}_SPS", global_step / v, global_step)
 
 
 def parse_arguments():
@@ -20,8 +52,10 @@ def parse_arguments():
     # Define arguments with defaults
     parser.add_argument("--train_set", nargs="+", type=str, default=None, required=True,
                         help="List of robot names as the training set.")
+    parser.add_argument("--train_merged_h5", type=str, required=True)
     parser.add_argument("--test_set", nargs="+", type=str, default=None, required=False,
                         help="List of robot names as the test set.")
+    parser.add_argument("--test_merged_h5", type=str, default=None)
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to run.")
     parser.add_argument("--batch_size", type=int, default=256, help="Batch size. 4096*16 takes 10G")
     parser.add_argument("--exp_name", type=str, default=None,
@@ -89,6 +123,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
     best_val_loss = float("inf")
 
     print("[INFO] Starting supervised training.")
+    timer = NonOverlappingTimeProfiler()
+    grad_step_cnt = 0
     for epoch in range(num_epochs):
         # Training phase
         policy.train()
@@ -99,34 +135,48 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         train_dataloader = train_dataset.get_data_loader(
             batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25 if num_workers > 0 else None
         )
+        timer.end('prepare')
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
             iteration_start_time = time.time()
-            for index, (batch_inputs, batch_targets, data_source_name, io_times, processing_times) in enumerate(pbar):
+            for index, data_batch in enumerate(pbar):
+                grad_step_cnt += 1
+                if grad_step_cnt % 100 == 0:
+                    timer.dump_to_writer(writer, grad_step_cnt)
+                
+                batch_inputs = [
+                    data_batch['dynamic_joint_description'],
+                    data_batch['dynamic_joint_state'],
+                    data_batch['general_state'],
+                ]
+                batch_targets = data_batch['target']
+                data_source_name = 'mix'
+                io_times = data_batch['io_time']
+                processing_times = data_batch['data_processing_time']
+
                 iteration = index + epoch * len(train_dataloader)
-                dataloader_time = time.time() - iteration_start_time
+                # dataloader_time = time.time() - iteration_start_time
 
                 # Move data to device
-                start_time = time.time()
+                # start_time = time.time()
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
-                move_cuda_time = time.time() - start_time
+                # move_cuda_time = time.time() - start_time
+                timer.end('data_loading')
 
-                start_time = time.time()
+                # start_time = time.time()
                 with torch.autocast(device_type='cuda', dtype=torch.float16, enabled=use_amp):
                     if model == 'urma':
                         batch_predictions = policy(*batch_inputs)
                     else:
-                        one_input = torch.cat([
-                            component.flatten(1) for component in batch_inputs
-                        ], dim=1)
-                        batch_predictions = policy(one_input)
+                        raise NotImplementedError
 
                     loss = criterion(batch_predictions, batch_targets)
-                forward_time = time.time() - start_time
+                # forward_time = time.time() - start_time
+                timer.end('forward')
 
                 # Backward pass and optimization
-                start_time = time.time()
+                # start_time = time.time()
 
                 if use_amp:
                     scaler.scale(loss).backward()
@@ -150,7 +200,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                     optimizer.zero_grad()  # Zero gradients after optimization step
 
-                backward_time = time.time() - start_time
+                timer.end('backward')
+                # backward_time = time.time() - start_time
 
                 # Update training loss tracker
                 if data_source_name not in train_loss_meters:
@@ -163,10 +214,6 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # Log times
                 writer.add_scalar("Train/times/io_per_thread", io_times.mean().item(), iteration)
                 writer.add_scalar("Train/times/data_processing_per_thread", processing_times.mean().item(), iteration)
-                writer.add_scalar("Train/times/dataloader_time", dataloader_time, iteration)
-                writer.add_scalar("Train/times/move_cuda", move_cuda_time, iteration)
-                writer.add_scalar("Train/times/forward", forward_time, iteration)
-                writer.add_scalar("Train/times/backward", backward_time, iteration)
 
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
@@ -198,7 +245,17 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
         with torch.no_grad():
             with tqdm.tqdm(val_dataloader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
+                for index, data_batch in enumerate(pbar):
+                    batch_inputs = [
+                        data_batch['dynamic_joint_description'],
+                        data_batch['dynamic_joint_state'],
+                        data_batch['general_state'],
+                    ]
+                    batch_targets = data_batch['target']
+                    data_source_name = 'mix'
+                    # io_times = data_batch['io_time']
+                    # processing_times = data_batch['processing_time']
+
                     # Move data to device
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
@@ -229,6 +286,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         for robot_name, meter in val_loss_meters.items():
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
         writer.add_scalar("Val/loss/avg", get_meter_dict_avg(val_loss_meters), epoch + 1)
+        timer.end('validation')
 
         if len(test_dataset) > 0:
             # Test phase
@@ -269,6 +327,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         if index > 0.1 * len(test_dataloader):
                             break
 
+            timer.end('test')
             # Log validation loss to TensorBoard
             for robot_name, meter in test_loss_meters.items():
                 writer.add_scalar(f"Test/loss/{robot_name}", meter.avg, epoch + 1)
@@ -277,11 +336,13 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
             save_checkpoint(policy, optimizer, epoch + 1, log_dir)
+            timer.end('checkpoint')
 
         # Save the best model based on validation loss
         if get_meter_dict_avg(val_loss_meters) < best_val_loss:
             best_val_loss = get_meter_dict_avg(val_loss_meters)
             save_checkpoint(policy, optimizer, epoch + 1, log_dir, is_best=True)
+            timer.end('checkpoint')
 
         print(f"Epoch [{epoch + 1}/{num_epochs}], Train Loss: {get_meter_dict_avg(train_loss_meters):.6f}, "
               f"Val Loss: {get_meter_dict_avg(val_loss_meters):.6f}, Best Val Loss: {best_val_loss:.6f}, "
@@ -293,6 +354,18 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
 def main():
     args_cli = parse_arguments()
+
+    import wandb
+    os.environ["WANDB_API_KEY"] = "44713a60b687b7a3dbe558ae6ef945cbeacb756e"
+
+    wandb.init(
+        project='esl_distillation',
+        entity=None,
+        sync_tensorboard=True,
+        config=vars(args_cli),
+        name=str(args_cli.exp_name).replace(os.path.sep, "__"),
+        save_code=True,
+    )
 
     # Prepare log directory
     log_dir = os.path.join(args_cli.log_dir, args_cli.exp_name)
@@ -308,12 +381,14 @@ def main():
     train_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.train_set]
     if args_cli.test_set:
         test_set_paths = [get_most_recent_h5py_record_path(args_cli.dataset_dir, task) for task in args_cli.test_set]
+        assert args_cli.test_merged_h5 is not None
     else:
         test_set_paths = list()
         print(f'[INFO] No test set provided.')
 
     # Training dataset
-    train_dataset = LocomotionDataset(
+    train_dataset = LocomotionDataset_tmu(
+        merged_h5_path=args_cli.train_merged_h5,
         folder_paths=train_set_paths,
         train_mode=True,
         val_ratio=args_cli.val_ratio,
@@ -322,7 +397,8 @@ def main():
     )
 
     # Validation dataset
-    val_dataset = LocomotionDataset(
+    val_dataset = LocomotionDataset_tmu(
+        merged_h5_path=args_cli.train_merged_h5,
         folder_paths=train_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,
@@ -331,7 +407,8 @@ def main():
     )
 
     # Test dataset
-    test_dataset = LocomotionDataset(
+    test_dataset = LocomotionDataset_tmu(
+        merged_h5_path=args_cli.test_merged_h5,
         folder_paths=test_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,       # only use a proportion of the data as the test set

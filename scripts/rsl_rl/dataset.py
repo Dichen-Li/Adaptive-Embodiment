@@ -655,6 +655,172 @@ class LocomotionDataset(Dataset):
         )
 
 
+################################
+# Tongzhou's debug version
+################################
+
+from torch.utils.data.sampler import RandomSampler, BatchSampler
+
+class LocomotionDataset_tmu(LocomotionDataset):
+    def __init__(self, merged_h5_path, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.merged_h5_path = merged_h5_path
+        self.file = None
+        self.num_transitions_each_folder = [0] * len(self.folder_paths)
+        for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
+            self.num_transitions_each_folder[folder_idx] += steps_per_file * parallel_envs
+        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), 'To simply the code, we assume all folders have the same number of transitions'
+        self.num_transitions_per_folder = self.num_transitions_each_folder[0]
+
+    # def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
+    #     self.batch_size = batch_size
+    #     indices = [
+    #         (folder_idx, transition_idx) 
+    #         for folder_idx in range(len(self.folder_paths))
+    #         for transition_idx in range(self.num_transitions_per_folder)
+    #     ]
+    #     if shuffle:
+    #         np.random.shuffle(indices) # this takes around 20s for 150M samples
+
+    #     final_samples = [indices[i:i+batch_size] for i in range(0, len(indices), batch_size)]
+    #     # this takes around 40s for 150M samples
+
+    #     # final_sampels is N lists, each list is sample indices of a batch
+    #     return final_samples
+
+    def get_data_loader(self, batch_size, shuffle=True, num_workers=16, **kwargs):
+        """
+        Create a DataLoader for the dataset.
+
+        Args:
+            batch_size (int): Batch size for the DataLoader.
+            shuffle (bool): Whether to shuffle the dataset.
+
+        Returns:
+            DataLoader: The configured DataLoader instance.
+        """
+
+        if num_workers > len(self.file_indices):
+            import warnings
+            warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
+             f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
+             f"This is likely due to multiple threads reading the same file. "
+             f"I will set num_workers to {min(num_workers, len(self.file_indices))}")
+            num_workers = min(num_workers, len(self.file_indices))        # 2 is a safe number, tested
+
+        sampler = RandomSampler(self, replacement=False)
+        batch_sampler = BatchSampler(sampler, batch_size=batch_size, drop_last=True)
+        return DataLoader(
+            self,
+            batch_sampler=batch_sampler,
+            # collate_fn=self.collate_fn,
+            num_workers=num_workers,
+            pin_memory=True,
+            **kwargs
+        )
+
+
+    def _pad_2d(self, x, max_num_joints=20):
+        # assume x is a 2d tensor
+
+        # Create a fixed-size tensor filled with zeros
+        k = x.shape[1]
+        padded = torch.zeros(max_num_joints, k, dtype=x.dtype, device=x.device)  # Preallocate on same device and dtype
+
+        # Copy the original tensor into the top rows
+        padded[:x.size(0), :] = x
+
+        return padded
+
+    def _pad_1d(self, x, max_num_joints=20):
+        padded = torch.zeros(max_num_joints, dtype=x.dtype, device=x.device)  # Preallocate on same device and dtype
+        padded[:x.size(0)] = x
+        return padded
+
+
+    def __getitem__(self, index):
+        """
+        Get a sample from the dataset.
+
+        Args:
+            index: int.
+
+        Returns:
+            tuple: Transformed input and target for the sample.
+        """
+
+        # Lazy loading of the file
+        if self.file is None:
+            self.file = h5py.File(self.merged_h5_path, 'r')
+
+        # Fetch the data and label
+        st = time.time()
+        folder_idx = index // self.num_transitions_per_folder
+        trans_idx = index - self.num_transitions_per_folder * folder_idx
+        data_for_this_robot = self.file[f'robot_{folder_idx+1}']
+        input_sample = np.array(data_for_this_robot["one_policy_observation"][trans_idx])
+        target_sample = np.array(data_for_this_robot["actions"][trans_idx])
+        io_time = time.time() - st
+
+        # Get metadata for transformation
+        metadata = self.metadata_list[folder_idx]
+
+        # Transform the sample
+        st = time.time()
+        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        inputs = transformed_sample[:-1]
+        target = transformed_sample[-1]
+
+        # padding
+        dynamic_joint_description, dynamic_joint_state, general_state = inputs
+        max_num_joints = 20 # hard coded for now
+        dynamic_joint_description = self._pad_2d(dynamic_joint_description, max_num_joints)
+        dynamic_joint_state = self._pad_2d(dynamic_joint_state, max_num_joints)
+        target = self._pad_1d(target, max_num_joints)
+
+        out = {
+            'dynamic_joint_description': dynamic_joint_description,
+            'dynamic_joint_state': dynamic_joint_state, 
+            'general_state': general_state,
+            'target': target,
+            'io_time': torch.tensor(io_time),
+            'data_processing_time': torch.tensor(time.time() - st)
+        }
+
+        return out
+
+    # def collate_fn(self, batch):
+    #     """
+    #     Collate function to combine samples into a batch.
+
+    #     Args:
+    #         batch (list): List of samples, where each sample is a 2-tuple:
+    #                       (inputs, target).
+
+    #     Returns:
+    #         tuple: A 2-tuple where:
+    #             - The first element is a tuple of batched inputs (stacked by component).
+    #             - The second element is the batched target tensor.
+    #     """
+    #     # Split batch into inputs and targets
+    #     inputs, targets, _, io_times, processing_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+
+    #     # Transpose the inputs to group by component
+    #     inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+
+    #     # Stack each component of the inputs
+    #     batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
+
+    #     # Stack the targets
+    #     batched_targets = torch.stack(targets)
+
+    #     return batched_inputs, batched_targets, 'mix', torch.stack(io_times), torch.stack(processing_times)
+
+
+
+
+
 """
 The below dataset load all files into the memory, which is used as a reference for the fastest data loader. 
 """
