@@ -131,7 +131,7 @@ def test_memory_leak():
     print("Starting memory leak test with large NumPy arrays...")
     max_size = 10  # Maximum number of items in cache
     cache = ThreadSafeDict(max_size=max_size)
-    array_size = (1000, 10000)  # Large NumPy array size (1 million elements)
+    array_size = (200, 4096, 300)  # Large NumPy array size (1 million elements)
 
     initial_memory = memory_usage()
     print(f"Initial Memory Usage: {initial_memory:.2f} MB")
@@ -141,7 +141,7 @@ def test_memory_leak():
         large_array = np.random.rand(*array_size)  # Create a large NumPy array
         cache.put(i, large_array)  # Insert into cache
 
-        if i % 100 == 0:  # Check memory usage periodically
+        if i % 10 == 0:  # Check memory usage periodically
             current_memory = memory_usage()
             print(f"Iteration {i}, Memory Usage: {current_memory:.2f} MB")
 
