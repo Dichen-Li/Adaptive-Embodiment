@@ -5,7 +5,7 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm
+from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm, get_ram_usage
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -167,6 +167,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 writer.add_scalar("Train/times/move_cuda", move_cuda_time, iteration)
                 writer.add_scalar("Train/times/forward", forward_time, iteration)
                 writer.add_scalar("Train/times/backward", backward_time, iteration)
+
+                # Log memory
+                writer.add_scalar("Train/memory", get_ram_usage(), iteration)
 
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
@@ -347,7 +350,7 @@ def main():
         policy = get_policy(model_device)
 
         # # load checkpoint if needed
-        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.1_v3_modelscale3_attempt2/best_model.pt"
+        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.3_v3_modelscale3_attempt2_bs256_acc1_clipv5.0_configv2_scratch_e10/checkpoint_epoch_10.pt"
         # checkpoint = torch.load(checkpoint_path, map_location=model_device)
         # policy.load_state_dict(checkpoint["state_dict"], strict=True)
         # print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')
