@@ -429,7 +429,7 @@ class LocomotionDataset(Dataset):
         # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
         #
         # # Expecting index as (folder_idx, file_idx, step, env)
-        self.get_count += 1
+        # self.get_count += 1
 
         # import psutil
         # process = psutil.Process(os.getpid())
