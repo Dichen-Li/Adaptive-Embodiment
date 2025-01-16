@@ -55,7 +55,7 @@ for task in "${tasks[@]}"; do
   echo "Executing command: $cmd"
 
   # Execute the command with unbuffered output
-  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task "$task" --steps 600 --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
+  stdbuf -oL -eL /workspace/isaaclab/isaaclab.sh -p scripts/rsl_rl/play_collect_data.py --task "$task" --steps 600 --reward_log_file reward_log_file.json --headless "${kwargs[@]}" > "$log_file" 2>&1 || stop_execution
   # However, please note that it seems that the normal outputs (training losses, etc) are not stdout and may
   # not be redirected to the log file
   # So you will mostly see a blank log file for normal training processes, or error messages for failed runs
