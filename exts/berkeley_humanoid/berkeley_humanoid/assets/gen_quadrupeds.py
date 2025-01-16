@@ -337,11 +337,11 @@ GEN_DOG_10_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.43141),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -358,11 +358,11 @@ GEN_DOG_9_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47941),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -379,11 +379,11 @@ GEN_DOG_8_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.52741),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -400,11 +400,11 @@ GEN_DOG_7_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.58),
+        pos=(0.0, 0.0, 0.57541),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -421,11 +421,11 @@ GEN_DOG_6_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.37561),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -442,11 +442,11 @@ GEN_DOG_5_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.46081),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -463,11 +463,11 @@ GEN_DOG_4_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.54601),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -484,11 +484,11 @@ GEN_DOG_3_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.63121),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -505,11 +505,11 @@ GEN_DOG_2_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41263),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -526,11 +526,11 @@ GEN_DOG_0_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.50341),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -547,11 +547,11 @@ GEN_DOG_1_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.59419),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -568,11 +568,11 @@ GEN_DOG_11_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.53),
+        pos=(0.0, 0.0, 0.53351),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.00,
-            "rear_.*_thigh_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.00000,
+            "rear_.*_thigh_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -589,12 +589,12 @@ GEN_DOG_22_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.33500),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -611,12 +611,12 @@ GEN_DOG_21_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -633,12 +633,12 @@ GEN_DOG_20_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -655,12 +655,12 @@ GEN_DOG_19_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -677,12 +677,12 @@ GEN_DOG_18_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.30727),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -699,12 +699,12 @@ GEN_DOG_17_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36039),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -721,12 +721,12 @@ GEN_DOG_16_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41974),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -743,12 +743,12 @@ GEN_DOG_15_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47910),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -765,12 +765,12 @@ GEN_DOG_14_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.32),
+        pos=(0.0, 0.0, 0.32069),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -787,12 +787,12 @@ GEN_DOG_12_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39007),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -809,12 +809,12 @@ GEN_DOG_13_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45944),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -831,12 +831,12 @@ GEN_DOG_23_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41547),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -853,12 +853,12 @@ GEN_DOG_94_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.32847),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -875,12 +875,12 @@ GEN_DOG_93_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -897,12 +897,12 @@ GEN_DOG_92_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -919,12 +919,12 @@ GEN_DOG_91_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -941,12 +941,12 @@ GEN_DOG_90_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.30),
+        pos=(0.0, 0.0, 0.29856),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -963,12 +963,12 @@ GEN_DOG_89_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.35),
+        pos=(0.0, 0.0, 0.34937),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -985,12 +985,12 @@ GEN_DOG_88_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40873),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1007,12 +1007,12 @@ GEN_DOG_87_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46809),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1029,12 +1029,12 @@ GEN_DOG_86_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.31174),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1051,12 +1051,12 @@ GEN_DOG_84_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.37905),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1073,12 +1073,12 @@ GEN_DOG_85_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44635),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1095,12 +1095,12 @@ GEN_DOG_95_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40600),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1117,12 +1117,12 @@ GEN_DOG_82_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.33500),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1139,12 +1139,12 @@ GEN_DOG_81_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1161,12 +1161,12 @@ GEN_DOG_80_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1183,12 +1183,12 @@ GEN_DOG_79_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1205,12 +1205,12 @@ GEN_DOG_78_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.30727),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1227,12 +1227,12 @@ GEN_DOG_77_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36039),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1249,12 +1249,12 @@ GEN_DOG_76_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41974),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1271,12 +1271,12 @@ GEN_DOG_75_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47910),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1293,12 +1293,12 @@ GEN_DOG_74_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.32),
+        pos=(0.0, 0.0, 0.32069),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1315,12 +1315,12 @@ GEN_DOG_72_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39007),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1337,12 +1337,12 @@ GEN_DOG_73_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45944),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1359,12 +1359,12 @@ GEN_DOG_83_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41547),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1381,12 +1381,12 @@ GEN_DOG_46_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.32847),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1403,12 +1403,12 @@ GEN_DOG_45_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1425,12 +1425,12 @@ GEN_DOG_44_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1447,12 +1447,12 @@ GEN_DOG_43_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1469,12 +1469,12 @@ GEN_DOG_42_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.30),
+        pos=(0.0, 0.0, 0.29856),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1491,12 +1491,12 @@ GEN_DOG_41_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.35),
+        pos=(0.0, 0.0, 0.34937),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1513,12 +1513,12 @@ GEN_DOG_40_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40873),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1535,12 +1535,12 @@ GEN_DOG_39_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46809),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1557,12 +1557,12 @@ GEN_DOG_38_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.31174),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1579,12 +1579,12 @@ GEN_DOG_36_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.37905),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1601,12 +1601,12 @@ GEN_DOG_37_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44635),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1623,12 +1623,12 @@ GEN_DOG_47_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40600),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1645,12 +1645,12 @@ GEN_DOG_34_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.33500),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1667,12 +1667,12 @@ GEN_DOG_33_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1689,12 +1689,12 @@ GEN_DOG_32_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1711,12 +1711,12 @@ GEN_DOG_31_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1733,12 +1733,12 @@ GEN_DOG_30_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.30727),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1755,12 +1755,12 @@ GEN_DOG_29_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36039),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1777,12 +1777,12 @@ GEN_DOG_28_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41974),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1799,12 +1799,12 @@ GEN_DOG_27_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47910),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1821,12 +1821,12 @@ GEN_DOG_26_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.32),
+        pos=(0.0, 0.0, 0.32069),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1843,12 +1843,12 @@ GEN_DOG_24_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39007),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1865,12 +1865,12 @@ GEN_DOG_25_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45944),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1887,12 +1887,12 @@ GEN_DOG_35_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41547),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -1909,12 +1909,12 @@ GEN_DOG_118_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.32847),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1931,12 +1931,12 @@ GEN_DOG_117_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1953,12 +1953,12 @@ GEN_DOG_116_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1975,12 +1975,12 @@ GEN_DOG_115_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -1997,12 +1997,12 @@ GEN_DOG_114_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.30),
+        pos=(0.0, 0.0, 0.29856),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2019,12 +2019,12 @@ GEN_DOG_113_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.35),
+        pos=(0.0, 0.0, 0.34937),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2041,12 +2041,12 @@ GEN_DOG_112_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40873),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2063,12 +2063,12 @@ GEN_DOG_111_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46809),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2085,12 +2085,12 @@ GEN_DOG_110_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.31174),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2107,12 +2107,12 @@ GEN_DOG_108_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.37905),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2129,12 +2129,12 @@ GEN_DOG_109_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44635),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2151,12 +2151,12 @@ GEN_DOG_119_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40600),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2173,12 +2173,12 @@ GEN_DOG_106_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.33500),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2195,12 +2195,12 @@ GEN_DOG_105_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2217,12 +2217,12 @@ GEN_DOG_104_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2239,12 +2239,12 @@ GEN_DOG_103_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2261,12 +2261,12 @@ GEN_DOG_102_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.30727),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2283,12 +2283,12 @@ GEN_DOG_101_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36039),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2305,12 +2305,12 @@ GEN_DOG_100_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41974),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2327,12 +2327,12 @@ GEN_DOG_99_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47910),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2349,12 +2349,12 @@ GEN_DOG_98_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.32),
+        pos=(0.0, 0.0, 0.32069),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2371,12 +2371,12 @@ GEN_DOG_96_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39007),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2393,12 +2393,12 @@ GEN_DOG_97_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45944),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2415,12 +2415,12 @@ GEN_DOG_107_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41547),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2437,12 +2437,12 @@ GEN_DOG_70_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.32847),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2459,12 +2459,12 @@ GEN_DOG_69_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2481,12 +2481,12 @@ GEN_DOG_68_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2503,12 +2503,12 @@ GEN_DOG_67_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2525,12 +2525,12 @@ GEN_DOG_66_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.30),
+        pos=(0.0, 0.0, 0.29856),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2547,12 +2547,12 @@ GEN_DOG_65_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.35),
+        pos=(0.0, 0.0, 0.34937),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2569,12 +2569,12 @@ GEN_DOG_64_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40873),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2591,12 +2591,12 @@ GEN_DOG_63_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46809),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2613,12 +2613,12 @@ GEN_DOG_62_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.31174),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2635,12 +2635,12 @@ GEN_DOG_60_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.37905),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2657,12 +2657,12 @@ GEN_DOG_61_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44635),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2679,12 +2679,12 @@ GEN_DOG_71_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40600),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200
         },
         joint_vel={".*": 0.0},
     ),
@@ -2701,12 +2701,12 @@ GEN_DOG_58_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.33),
+        pos=(0.0, 0.0, 0.33500),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2723,12 +2723,12 @@ GEN_DOG_57_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2745,12 +2745,12 @@ GEN_DOG_56_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2767,12 +2767,12 @@ GEN_DOG_55_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2789,12 +2789,12 @@ GEN_DOG_54_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.31),
+        pos=(0.0, 0.0, 0.30727),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2811,12 +2811,12 @@ GEN_DOG_53_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36039),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2833,12 +2833,12 @@ GEN_DOG_52_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41974),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2855,12 +2855,12 @@ GEN_DOG_51_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47910),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2877,12 +2877,12 @@ GEN_DOG_50_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.32),
+        pos=(0.0, 0.0, 0.32069),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2899,12 +2899,12 @@ GEN_DOG_48_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39007),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2921,12 +2921,12 @@ GEN_DOG_49_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45944),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2943,12 +2943,12 @@ GEN_DOG_59_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.42),
+        pos=(0.0, 0.0, 0.41547),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2965,13 +2965,13 @@ GEN_DOG_130_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -2988,13 +2988,13 @@ GEN_DOG_129_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3011,13 +3011,13 @@ GEN_DOG_128_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3034,13 +3034,13 @@ GEN_DOG_127_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60800),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3057,13 +3057,13 @@ GEN_DOG_126_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41258),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3080,13 +3080,13 @@ GEN_DOG_125_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45861),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3103,13 +3103,13 @@ GEN_DOG_124_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.51153),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3126,13 +3126,13 @@ GEN_DOG_123_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.57089),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3149,13 +3149,13 @@ GEN_DOG_122_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39426),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3172,13 +3172,13 @@ GEN_DOG_120_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.48185),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3195,13 +3195,13 @@ GEN_DOG_121_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56958),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3218,13 +3218,13 @@ GEN_DOG_131_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50725),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3241,13 +3241,13 @@ GEN_DOG_202_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3264,13 +3264,13 @@ GEN_DOG_201_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3287,13 +3287,13 @@ GEN_DOG_200_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3310,13 +3310,13 @@ GEN_DOG_199_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58668),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3333,13 +3333,13 @@ GEN_DOG_198_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39814),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3356,13 +3356,13 @@ GEN_DOG_197_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
+        pos=(0.0, 0.0, 0.44417),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3379,13 +3379,13 @@ GEN_DOG_196_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49302),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3402,13 +3402,13 @@ GEN_DOG_195_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55238),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3425,13 +3425,13 @@ GEN_DOG_194_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.38255),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3448,13 +3448,13 @@ GEN_DOG_192_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46719),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3471,13 +3471,13 @@ GEN_DOG_193_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55183),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3494,13 +3494,13 @@ GEN_DOG_203_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49051),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3517,13 +3517,13 @@ GEN_DOG_190_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3540,13 +3540,13 @@ GEN_DOG_189_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3563,13 +3563,13 @@ GEN_DOG_188_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3586,13 +3586,13 @@ GEN_DOG_187_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60800),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3609,13 +3609,13 @@ GEN_DOG_186_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41258),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3632,13 +3632,13 @@ GEN_DOG_185_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45861),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3655,13 +3655,13 @@ GEN_DOG_184_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.51153),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3678,13 +3678,13 @@ GEN_DOG_183_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.57089),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3701,13 +3701,13 @@ GEN_DOG_182_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39426),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3724,13 +3724,13 @@ GEN_DOG_180_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.48185),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3747,13 +3747,13 @@ GEN_DOG_181_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56958),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3770,13 +3770,13 @@ GEN_DOG_191_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50725),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3793,13 +3793,13 @@ GEN_DOG_154_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3816,13 +3816,13 @@ GEN_DOG_153_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3839,13 +3839,13 @@ GEN_DOG_152_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3862,13 +3862,13 @@ GEN_DOG_151_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58668),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3885,13 +3885,13 @@ GEN_DOG_150_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39814),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3908,13 +3908,13 @@ GEN_DOG_149_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
+        pos=(0.0, 0.0, 0.44417),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3931,13 +3931,13 @@ GEN_DOG_148_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49302),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3954,13 +3954,13 @@ GEN_DOG_147_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55238),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -3977,13 +3977,13 @@ GEN_DOG_146_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.38255),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4000,13 +4000,13 @@ GEN_DOG_144_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46719),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4023,13 +4023,13 @@ GEN_DOG_145_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55183),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4046,13 +4046,13 @@ GEN_DOG_155_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49051),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4069,13 +4069,13 @@ GEN_DOG_142_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4092,13 +4092,13 @@ GEN_DOG_141_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4115,13 +4115,13 @@ GEN_DOG_140_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4138,13 +4138,13 @@ GEN_DOG_139_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60800),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4161,13 +4161,13 @@ GEN_DOG_138_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41258),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4184,13 +4184,13 @@ GEN_DOG_137_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45861),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4207,13 +4207,13 @@ GEN_DOG_136_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.51153),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4230,13 +4230,13 @@ GEN_DOG_135_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.57089),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4253,13 +4253,13 @@ GEN_DOG_134_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39426),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4276,13 +4276,13 @@ GEN_DOG_132_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.48185),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4299,13 +4299,13 @@ GEN_DOG_133_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56958),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4322,13 +4322,13 @@ GEN_DOG_143_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50725),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4345,13 +4345,13 @@ GEN_DOG_226_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4368,13 +4368,13 @@ GEN_DOG_225_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4391,13 +4391,13 @@ GEN_DOG_224_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4414,13 +4414,13 @@ GEN_DOG_223_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58668),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4437,13 +4437,13 @@ GEN_DOG_222_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39814),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4460,13 +4460,13 @@ GEN_DOG_221_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
+        pos=(0.0, 0.0, 0.44417),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4483,13 +4483,13 @@ GEN_DOG_220_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49302),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4506,13 +4506,13 @@ GEN_DOG_219_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55238),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4529,13 +4529,13 @@ GEN_DOG_218_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.38255),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4552,13 +4552,13 @@ GEN_DOG_216_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46719),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4575,13 +4575,13 @@ GEN_DOG_217_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55183),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4598,13 +4598,13 @@ GEN_DOG_227_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49051),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4621,13 +4621,13 @@ GEN_DOG_214_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4644,13 +4644,13 @@ GEN_DOG_213_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4667,13 +4667,13 @@ GEN_DOG_212_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4690,13 +4690,13 @@ GEN_DOG_211_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60800),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4713,13 +4713,13 @@ GEN_DOG_210_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41258),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4736,13 +4736,13 @@ GEN_DOG_209_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45861),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4759,13 +4759,13 @@ GEN_DOG_208_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.51153),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4782,13 +4782,13 @@ GEN_DOG_207_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.57089),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4805,13 +4805,13 @@ GEN_DOG_206_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39426),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4828,13 +4828,13 @@ GEN_DOG_204_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.48185),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4851,13 +4851,13 @@ GEN_DOG_205_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56958),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4874,13 +4874,13 @@ GEN_DOG_215_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50725),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4897,13 +4897,13 @@ GEN_DOG_178_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.36),
+        pos=(0.0, 0.0, 0.36219),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4920,13 +4920,13 @@ GEN_DOG_177_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.43),
+        pos=(0.0, 0.0, 0.42962),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4943,13 +4943,13 @@ GEN_DOG_176_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4966,13 +4966,13 @@ GEN_DOG_175_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58668),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -4989,13 +4989,13 @@ GEN_DOG_174_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39814),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5012,13 +5012,13 @@ GEN_DOG_173_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.44),
+        pos=(0.0, 0.0, 0.44417),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5035,13 +5035,13 @@ GEN_DOG_172_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49302),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5058,13 +5058,13 @@ GEN_DOG_171_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55238),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5081,13 +5081,13 @@ GEN_DOG_170_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.38),
+        pos=(0.0, 0.0, 0.38255),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5104,13 +5104,13 @@ GEN_DOG_168_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.47),
+        pos=(0.0, 0.0, 0.46719),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5127,13 +5127,13 @@ GEN_DOG_169_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.55),
+        pos=(0.0, 0.0, 0.55183),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5150,13 +5150,13 @@ GEN_DOG_179_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.49),
+        pos=(0.0, 0.0, 0.49051),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5173,13 +5173,13 @@ GEN_DOG_166_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.37),
+        pos=(0.0, 0.0, 0.37171),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5196,13 +5196,13 @@ GEN_DOG_165_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),
+        pos=(0.0, 0.0, 0.44513),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5219,13 +5219,13 @@ GEN_DOG_164_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5242,13 +5242,13 @@ GEN_DOG_163_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60800),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5265,13 +5265,13 @@ GEN_DOG_162_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.41258),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5288,13 +5288,13 @@ GEN_DOG_161_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.45861),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5311,13 +5311,13 @@ GEN_DOG_160_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.51153),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5334,13 +5334,13 @@ GEN_DOG_159_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.57089),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5357,13 +5357,13 @@ GEN_DOG_158_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.39),
+        pos=(0.0, 0.0, 0.39426),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5380,13 +5380,13 @@ GEN_DOG_156_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.48185),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5403,13 +5403,13 @@ GEN_DOG_157_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56958),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5426,13 +5426,13 @@ GEN_DOG_167_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50725),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5449,13 +5449,13 @@ GEN_DOG_238_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5472,13 +5472,13 @@ GEN_DOG_237_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5495,13 +5495,13 @@ GEN_DOG_236_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.65013),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5518,13 +5518,13 @@ GEN_DOG_235_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.78),
+        pos=(0.0, 0.0, 0.77650),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5541,13 +5541,13 @@ GEN_DOG_234_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.51789),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5564,13 +5564,13 @@ GEN_DOG_233_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.56392),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5587,13 +5587,13 @@ GEN_DOG_232_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60996),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5610,13 +5610,13 @@ GEN_DOG_231_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.66267),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5633,13 +5633,13 @@ GEN_DOG_230_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47850),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5656,13 +5656,13 @@ GEN_DOG_228_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58694),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5679,13 +5679,13 @@ GEN_DOG_229_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.70),
+        pos=(0.0, 0.0, 0.69538),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5702,13 +5702,13 @@ GEN_DOG_239_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60959),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5725,13 +5725,13 @@ GEN_DOG_310_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5748,13 +5748,13 @@ GEN_DOG_309_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5771,13 +5771,13 @@ GEN_DOG_308_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.62651),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5794,13 +5794,13 @@ GEN_DOG_307_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.75),
+        pos=(0.0, 0.0, 0.74601),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5817,13 +5817,13 @@ GEN_DOG_306_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.49772),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5840,13 +5840,13 @@ GEN_DOG_305_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
+        pos=(0.0, 0.0, 0.54375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5863,13 +5863,13 @@ GEN_DOG_304_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58978),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5886,13 +5886,13 @@ GEN_DOG_303_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.63667),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5909,13 +5909,13 @@ GEN_DOG_302_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.46221),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5932,13 +5932,13 @@ GEN_DOG_300_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56677),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5955,13 +5955,13 @@ GEN_DOG_301_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.67),
+        pos=(0.0, 0.0, 0.67132),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -5978,13 +5978,13 @@ GEN_DOG_311_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.59009),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6001,13 +6001,13 @@ GEN_DOG_298_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6024,13 +6024,13 @@ GEN_DOG_297_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6047,13 +6047,13 @@ GEN_DOG_296_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.65013),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6070,13 +6070,13 @@ GEN_DOG_295_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.78),
+        pos=(0.0, 0.0, 0.77650),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6093,13 +6093,13 @@ GEN_DOG_294_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.51789),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6116,13 +6116,13 @@ GEN_DOG_293_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.56392),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6139,13 +6139,13 @@ GEN_DOG_292_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60996),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6162,13 +6162,13 @@ GEN_DOG_291_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.66267),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6185,13 +6185,13 @@ GEN_DOG_290_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47850),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6208,13 +6208,13 @@ GEN_DOG_288_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58694),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6231,13 +6231,13 @@ GEN_DOG_289_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.70),
+        pos=(0.0, 0.0, 0.69538),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6254,13 +6254,13 @@ GEN_DOG_299_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60959),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6277,13 +6277,13 @@ GEN_DOG_262_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6300,13 +6300,13 @@ GEN_DOG_261_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6323,13 +6323,13 @@ GEN_DOG_260_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.62651),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6346,13 +6346,13 @@ GEN_DOG_259_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.75),
+        pos=(0.0, 0.0, 0.74601),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6369,13 +6369,13 @@ GEN_DOG_258_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.49772),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6392,13 +6392,13 @@ GEN_DOG_257_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
+        pos=(0.0, 0.0, 0.54375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6415,13 +6415,13 @@ GEN_DOG_256_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58978),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6438,13 +6438,13 @@ GEN_DOG_255_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.63667),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6461,13 +6461,13 @@ GEN_DOG_254_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.46221),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6484,13 +6484,13 @@ GEN_DOG_252_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56677),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6507,13 +6507,13 @@ GEN_DOG_253_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.67),
+        pos=(0.0, 0.0, 0.67132),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6530,13 +6530,13 @@ GEN_DOG_263_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.59009),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6553,13 +6553,13 @@ GEN_DOG_250_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6576,13 +6576,13 @@ GEN_DOG_249_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6599,13 +6599,13 @@ GEN_DOG_248_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.65013),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6622,13 +6622,13 @@ GEN_DOG_247_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.78),
+        pos=(0.0, 0.0, 0.77650),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6645,13 +6645,13 @@ GEN_DOG_246_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.51789),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6668,13 +6668,13 @@ GEN_DOG_245_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.56392),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6691,13 +6691,13 @@ GEN_DOG_244_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60996),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6714,13 +6714,13 @@ GEN_DOG_243_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.66267),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6737,13 +6737,13 @@ GEN_DOG_242_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47850),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6760,13 +6760,13 @@ GEN_DOG_240_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58694),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6783,13 +6783,13 @@ GEN_DOG_241_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.70),
+        pos=(0.0, 0.0, 0.69538),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6806,13 +6806,13 @@ GEN_DOG_251_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60959),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6829,13 +6829,13 @@ GEN_DOG_334_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6852,13 +6852,13 @@ GEN_DOG_333_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6875,13 +6875,13 @@ GEN_DOG_332_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.62651),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6898,13 +6898,13 @@ GEN_DOG_331_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.75),
+        pos=(0.0, 0.0, 0.74601),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6921,13 +6921,13 @@ GEN_DOG_330_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.49772),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6944,13 +6944,13 @@ GEN_DOG_329_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
+        pos=(0.0, 0.0, 0.54375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6967,13 +6967,13 @@ GEN_DOG_328_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58978),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -6990,13 +6990,13 @@ GEN_DOG_327_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.63667),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7013,13 +7013,13 @@ GEN_DOG_326_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.46221),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7036,13 +7036,13 @@ GEN_DOG_324_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56677),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7059,13 +7059,13 @@ GEN_DOG_325_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.67),
+        pos=(0.0, 0.0, 0.67132),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7082,13 +7082,13 @@ GEN_DOG_335_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.59009),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7105,13 +7105,13 @@ GEN_DOG_322_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7128,13 +7128,13 @@ GEN_DOG_321_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7151,13 +7151,13 @@ GEN_DOG_320_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.65013),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7174,13 +7174,13 @@ GEN_DOG_319_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.78),
+        pos=(0.0, 0.0, 0.77650),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7197,13 +7197,13 @@ GEN_DOG_318_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.51789),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7220,13 +7220,13 @@ GEN_DOG_317_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.56392),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7243,13 +7243,13 @@ GEN_DOG_316_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60996),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7266,13 +7266,13 @@ GEN_DOG_315_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.66267),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7289,13 +7289,13 @@ GEN_DOG_314_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47850),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7312,13 +7312,13 @@ GEN_DOG_312_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58694),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7335,13 +7335,13 @@ GEN_DOG_313_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.70),
+        pos=(0.0, 0.0, 0.69538),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7358,13 +7358,13 @@ GEN_DOG_323_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60959),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7381,13 +7381,13 @@ GEN_DOG_286_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.40),
+        pos=(0.0, 0.0, 0.39591),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7404,13 +7404,13 @@ GEN_DOG_285_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.51),
+        pos=(0.0, 0.0, 0.50702),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7427,13 +7427,13 @@ GEN_DOG_284_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.63),
+        pos=(0.0, 0.0, 0.62651),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7450,13 +7450,13 @@ GEN_DOG_283_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.75),
+        pos=(0.0, 0.0, 0.74601),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7473,13 +7473,13 @@ GEN_DOG_282_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.50),
+        pos=(0.0, 0.0, 0.49772),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7496,13 +7496,13 @@ GEN_DOG_281_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.54),
+        pos=(0.0, 0.0, 0.54375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7519,13 +7519,13 @@ GEN_DOG_280_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58978),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7542,13 +7542,13 @@ GEN_DOG_279_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.64),
+        pos=(0.0, 0.0, 0.63667),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7565,13 +7565,13 @@ GEN_DOG_278_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.46),
+        pos=(0.0, 0.0, 0.46221),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7588,13 +7588,13 @@ GEN_DOG_276_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.57),
+        pos=(0.0, 0.0, 0.56677),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7611,13 +7611,13 @@ GEN_DOG_277_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.67),
+        pos=(0.0, 0.0, 0.67132),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7634,13 +7634,13 @@ GEN_DOG_287_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.59009),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.59,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.59200,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7657,13 +7657,13 @@ GEN_DOG_274_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.41),
+        pos=(0.0, 0.0, 0.40842),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7680,13 +7680,13 @@ GEN_DOG_273_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.52375),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7703,13 +7703,13 @@ GEN_DOG_272_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.65),
+        pos=(0.0, 0.0, 0.65013),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7726,13 +7726,13 @@ GEN_DOG_271_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.78),
+        pos=(0.0, 0.0, 0.77650),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7749,13 +7749,13 @@ GEN_DOG_270_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.52),
+        pos=(0.0, 0.0, 0.51789),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7772,13 +7772,13 @@ GEN_DOG_269_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.56),
+        pos=(0.0, 0.0, 0.56392),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7795,13 +7795,13 @@ GEN_DOG_268_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60996),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7818,13 +7818,13 @@ GEN_DOG_267_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.66),
+        pos=(0.0, 0.0, 0.66267),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7841,13 +7841,13 @@ GEN_DOG_266_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.48),
+        pos=(0.0, 0.0, 0.47850),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7864,13 +7864,13 @@ GEN_DOG_264_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.59),
+        pos=(0.0, 0.0, 0.58694),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7887,13 +7887,13 @@ GEN_DOG_265_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.70),
+        pos=(0.0, 0.0, 0.69538),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),
@@ -7910,13 +7910,13 @@ GEN_DOG_275_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.61),
+        pos=(0.0, 0.0, 0.60959),
         joint_pos={
-            ".*_hip_pitch_joint": 0.00,
-            "front_.*_thigh_joint": 0.80,
-            "rear_.*_thigh_joint": 1.00,
-            ".*_knee_joint": -1.50,
-            ".*_knee_.*_joint": 0.00
+            ".*_hip_pitch_joint": 0.00000,
+            "front_.*_thigh_joint": 0.80000,
+            "rear_.*_thigh_joint": 1.00000,
+            ".*_knee_joint": -1.50000,
+            ".*_knee_.*_joint": 0.00000
         },
         joint_vel={".*": 0.0},
     ),

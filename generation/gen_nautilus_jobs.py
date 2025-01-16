@@ -14,7 +14,7 @@ job_name_template = "dichen-job-quadruped-{job_index}-jan15"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "jobs/submit_jobs.sh"  # Batch submission script
 deletion_script = "jobs/delete_jobs.sh"  # Batch deletion script
-sleep_interval = 50  # Time interval (in seconds) between parallel commands to prevent errors
+sleep_interval = 200  # Time interval (in seconds) between parallel commands to prevent errors
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)

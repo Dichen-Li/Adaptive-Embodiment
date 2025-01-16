@@ -20,6 +20,7 @@ parser.add_argument("--num_envs", type=int, default=4096, help="Number of enviro
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
 parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
+parser.add_argument("--reward_log_file", type=str, default=None, help="Indicator and directory for storing expert reward")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -81,6 +82,7 @@ def main():
     env = RslRlVecEnvWrapper(env)
 
     print(f"[INFO]: Loading model checkpoint from: {resume_path}")
+    model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # load previously trained model
     ppo_runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=None, device=agent_cfg.device)
@@ -100,58 +102,107 @@ def main():
     # Reset environment and start simulation
     obs, observations = env.get_observations()
     one_policy_observation = observations["observations"]["urma_obs"]
-    # curr_timestep = 0
+    curr_timestep = 0
     actions_std = None
+
+    # Initialize a manual tqdm progress bar
+    pbar = tqdm.tqdm(total=args_cli.steps)
 
     from utils import RewardDictLogger
     reward_dict_logger = RewardDictLogger(args_cli.num_envs)
-
+    returns = torch.zeros(args_cli.num_envs, device=model_device)
+    seen_dones = torch.zeros(args_cli.num_envs, dtype=torch.bool, device=model_device)
+    
     # Main simulation loop
     while simulation_app.is_running():
         with torch.inference_mode():
-            for curr_timestep in tqdm.tqdm(range(args_cli.steps)):
-                # Agent stepping
-                actions = policy(obs)
 
+            # Break when current step exceed the number of data collect steps
+            if (curr_timestep > args_cli.steps):
+                if args_cli.reward_log_file is None:
+                    break
+                else:
+                    # If reward_log_file is needed, then break when data collect finishes and all robots done.
+                    # If needed, reward_log_file should be set to "reward_log_file.yaml"
+                    if seen_dones.all().item() is True:
+                        break
+            
+            # Agent stepping
+            actions = policy(obs)
+
+            if curr_timestep < args_cli.steps:
                 # Reshape and save data
+                # import ipdb;
+                # ipdb.set_trace()
                 dataset_manager.save_data(
                     one_policy_observation=one_policy_observation.cpu().numpy(),
                     actions=actions.cpu().numpy(),
                 )
+                print(f"[INFO] Save one_policy_observation to {data_record_path}")
+                pbar.update(1)  # Manually update the progress bar
+            
+            curr_timestep += 1 # Manually update the curr_timestep due to while instead of for loop
 
-                # To expand the training data distribution, we should inject noise when rolling out teacher policy
-                # Please don't use randomized actions as ground truth!
+            # To expand the training data distribution, we should inject noise when rolling out teacher policy
+            # Please don't use randomized actions as ground truth!
 
-                # First, record action std
-                if actions_std is None:
-                    actions_std = actions.std(0)       # compute std for every joint
-                    print(f'[INFO] Action std recorded: {actions_std}')
+            # First, record action std
+            if actions_std is None:
+                actions_std = actions.std(0)       # compute std for every joint
+                print(f'[INFO] Action std recorded: {actions_std}')
 
-                # Apply strong randomization 1/20 of the time so there is still quite some clean data
-                if np.random.randn() < 0.05:
-                    # actions = actions * (torch.randn_like(actions) * actions_std + 1)
-                    actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
+            # Apply strong randomization 1/20 of the time so there is still quite some clean data
+            if np.random.randn() < 0.05:
+                # actions = actions * (torch.randn_like(actions) * actions_std + 1)
+                actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
 
-                # Stepping the environment
-                obs, rewards, dones, extra = env.step(actions)
-                one_policy_observation = extra["observations"]["urma_obs"]
+            # Stepping the environment
+            obs, rewards, dones, extra = env.step(actions)
 
+            one_policy_observation = extra["observations"]["urma_obs"]
+            if args_cli.reward_log_file is not None:
                 # log reward
                 reward_dict_logger.update(env, rewards, dones)
-                reward_dict_logger.print(curr_timestep, 'sum')
+                if not seen_dones.all().item():
+                    returns += rewards * (1 - seen_dones.float())
+                    seen_dones = seen_dones | dones
 
-            # break the simulation loop
-            break
+                    if curr_timestep % 100 == 0:
+                        print(f"[INFO] Timestep: {curr_timestep}")
+                        print(f"[INFO] Number of done robots: {seen_dones.sum()}")
+                        
+    if args_cli.reward_log_file is not None:
+        # Sanity check that all robots are done
+        print(f"[INFO] Timestep: {curr_timestep}")
+        print(f"[INFO] Number of done robots: {seen_dones.sum()}")
 
-    # if args_cli.video:
-    #     if h5py_timestep >= args_cli.video_length:
-    #         break
 
     # log reward statistics
     reward_dict_logger.write_to_yaml(os.path.join(data_record_path, "reward_dict.yaml"))
 
     # close the simulator
     env.close()
+    del env
+
+    avg_return = returns.mean().item()
+    print(f"[INFO] Average return: {avg_return}")
+
+    if args_cli.reward_log_file is not None:
+        # log average return to file
+        import json
+
+        reward_log_file = os.path.join(data_record_path, args_cli.reward_log_file)
+        if not os.path.exists(reward_log_file):
+            with open(reward_log_file, 'w') as f:
+                json.dump({}, f)
+        
+        # update the log file
+        with open(reward_log_file, 'r') as f:
+            log_data = json.load(f)
+        log_data[args_cli.task] = {"average_return": avg_return}
+        with open(reward_log_file, 'w') as f:
+            print(f"[INFO] Log reward value: average_return into {reward_log_file}")
+            json.dump(log_data, f)
 
 
 if __name__ == "__main__":

@@ -264,7 +264,9 @@ class LocomotionDataset(Dataset):
         """
         self.folder_paths = folder_paths
         self.max_files_in_memory = max_files_in_memory
-        self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+        self.metadata_list = np.array([self._load_metadata(folder_path) for folder_path in folder_paths])   # use numpy to avoid copy-on-write behavior of python list
+        # self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+
         self.train_mode = train_mode
         self.val_ratio = val_ratio
         self.h5_repeat_factor = h5_repeat_factor
@@ -285,6 +287,9 @@ class LocomotionDataset(Dataset):
 
         # record the number of times the data index is not in the worker's scope
         self.counter_not_in_scope = 0
+
+        # # for debugging
+        # self.get_count = 0
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
@@ -342,6 +347,10 @@ class LocomotionDataset(Dataset):
                 parallel_envs = metadata["parallel_envs"]
                 self.file_indices[key] = (folder_path, file_name, steps_per_file, parallel_envs)
                 self.total_samples += steps_per_file * parallel_envs
+
+        for k, v in self.file_indices.items():
+            h5_path = os.path.join(v[0], v[1])
+            assert os.path.exists(h5_path)
 
     def __len__(self):
         """
@@ -412,10 +421,21 @@ class LocomotionDataset(Dataset):
         Returns:
             tuple: Transformed input and target for the sample.
         """
+        # try:
+
+        # assert False
+        # assert 0 > 1
         # # print(index)
         # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
         #
         # # Expecting index as (folder_idx, file_idx, step, env)
+        # self.get_count += 1
+
+        # import psutil
+        # process = psutil.Process(os.getpid())
+        # if self.get_count % 512 == 0:
+        #     print(f"[DEBUG] Memory usage before loading data: {process.memory_info().rss / (1024 ** 2):.5f} MB")
+
         folder_idx, file_idx, step, env = index
 
         # To make sure the worker does not get sample that should be processed by other workers
@@ -445,13 +465,16 @@ class LocomotionDataset(Dataset):
         # Retrieve specific sample within the file
         input_sample = inputs[step, env]
         target_sample = targets[step, env]
+        del inputs, targets
 
         # Get metadata for transformation
-        metadata = self.metadata_list[folder_idx]
+        metadata = self.metadata_list[folder_idx]  # potential copy-on-write behavior if using native python list
 
         # Transform the sample
         start_time = time.time()
         transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        del input_sample, target_sample, metadata
+
         # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
         data_processing_time = time.time() - start_time
         # self.transform_data_time.update(time.time() - s_time)
@@ -465,11 +488,20 @@ class LocomotionDataset(Dataset):
         # folder_idx, file_idx, step, env = index
         # transformed_sample = [torch.zeros(8, 18), torch.zeros(8, 3), torch.zeros(16), torch.zeros(8)]
 
+        # process = psutil.Process(os.getpid())
+        # if self.get_count % 512 == 0:
+        #     print(f"[DEBUG] Memory usage after loading data: {process.memory_info().rss / (1024 ** 2):.5f} MB")
+
         # Return the transformed components
         return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
                 torch.tensor(io_time), torch.tensor(data_processing_time))
 
-    def _transform_sample(self, input_sample, target_sample, metadata):
+        # except Exception as e:
+        #     print(f"[ERROR]: Exception while loading data: {e}")
+        #     import ipdb; ipdb.set_trace()
+
+    @staticmethod
+    def _transform_sample(input_sample, target_sample, metadata):
         """
         Transform a single input and target sample into its components.
 
@@ -550,6 +582,7 @@ class LocomotionDataset(Dataset):
         Worker 1: [batch from K1.h5] [batch from K1.h5] ... [batch from K3.h5] [batch from K3.h5]
         Worker 2: [batch from K2.h5] [batch from K2.h5] ... [batch from K4.h5] [batch from K4.h5]
         This way, workers won't process the same .h5 and every .h5 won't be read from disk more than once.
+        This way, workers won't process the same .h5 and every .h5 won't be read from disk more than once.
 
         Args:
             batch_size (int): The size of each batch.
@@ -559,6 +592,8 @@ class LocomotionDataset(Dataset):
         Returns:
             list: A list of indices, interleaved for workers, where each sublist contains indices for a batch.
         """
+        num_workers = max(num_workers, 1)
+
         self.batch_size = batch_size
         file_samples = {}  # Dictionary to hold batches per file
 
@@ -653,6 +688,175 @@ class LocomotionDataset(Dataset):
             pin_memory=True,
             **kwargs
         )
+
+
+################################
+# Tongzhou's debug version
+################################
+
+from torch.utils.data.sampler import RandomSampler, BatchSampler
+
+class LocomotionDataset_tmu(LocomotionDataset):
+    def __init__(self, merged_h5_path, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.merged_h5_path = merged_h5_path
+        self.file = None
+        self.num_transitions_each_folder = [0] * len(self.folder_paths)
+        for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
+            self.num_transitions_each_folder[folder_idx] += steps_per_file * parallel_envs
+        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), 'To simply the code, we assume all folders have the same number of transitions'
+        self.num_transitions_per_folder = self.num_transitions_each_folder[0]
+
+    # def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
+    #     self.batch_size = batch_size
+    #     indices = [
+    #         (folder_idx, transition_idx) 
+    #         for folder_idx in range(len(self.folder_paths))
+    #         for transition_idx in range(self.num_transitions_per_folder)
+    #     ]
+    #     if shuffle:
+    #         np.random.shuffle(indices) # this takes around 20s for 150M samples
+
+    #     final_samples = [indices[i:i+batch_size] for i in range(0, len(indices), batch_size)]
+    #     # this takes around 40s for 150M samples
+
+    #     # final_sampels is N lists, each list is sample indices of a batch
+    #     return final_samples
+
+    def get_data_loader(self, batch_size, shuffle=True, num_workers=16, **kwargs):
+        """
+        Create a DataLoader for the dataset.
+
+        Args:
+            batch_size (int): Batch size for the DataLoader.
+            shuffle (bool): Whether to shuffle the dataset.
+
+        Returns:
+            DataLoader: The configured DataLoader instance.
+        """
+
+        if num_workers > len(self.file_indices):
+            import warnings
+            warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
+             f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
+             f"This is likely due to multiple threads reading the same file. "
+             f"I will set num_workers to {min(num_workers, len(self.file_indices))}")
+            num_workers = min(num_workers, len(self.file_indices))        # 2 is a safe number, tested
+
+        sampler = RandomSampler(self, replacement=False)
+        batch_sampler = BatchSampler(sampler, batch_size=batch_size, drop_last=True)
+        return DataLoader(
+            self,
+            batch_sampler=batch_sampler,
+            # collate_fn=self.collate_fn,
+            num_workers=num_workers,
+            pin_memory=True,
+            **kwargs
+        )
+
+
+    def _pad_2d(self, x, max_num_joints=20):
+        # assume x is a 2d tensor
+
+        # Create a fixed-size tensor filled with zeros
+        k = x.shape[1]
+        padded = torch.zeros(max_num_joints, k, dtype=x.dtype, device=x.device)  # Preallocate on same device and dtype
+
+        # Copy the original tensor into the top rows
+        padded[:x.size(0), :] = x
+
+        return padded
+
+    def _pad_1d(self, x, max_num_joints=20):
+        padded = torch.zeros(max_num_joints, dtype=x.dtype, device=x.device)  # Preallocate on same device and dtype
+        padded[:x.size(0)] = x
+        return padded
+
+
+    def __getitem__(self, index):
+        """
+        Get a sample from the dataset.
+
+        Args:
+            index: int.
+
+        Returns:
+            tuple: Transformed input and target for the sample.
+        """
+
+        # Lazy loading of the file
+        if self.file is None:
+            self.file = h5py.File(self.merged_h5_path, 'r')
+
+        # Fetch the data and label
+        st = time.time()
+        folder_idx = index // self.num_transitions_per_folder
+        trans_idx = index - self.num_transitions_per_folder * folder_idx
+        data_for_this_robot = self.file[f'robot_{folder_idx+1}']
+        input_sample = np.array(data_for_this_robot["one_policy_observation"][trans_idx])
+        target_sample = np.array(data_for_this_robot["actions"][trans_idx])
+        io_time = time.time() - st
+
+        # Get metadata for transformation
+        metadata = self.metadata_list[folder_idx]
+
+        # Transform the sample
+        st = time.time()
+        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        inputs = transformed_sample[:-1]
+        target = transformed_sample[-1]
+
+        # padding
+        dynamic_joint_description, dynamic_joint_state, general_state = inputs
+        max_num_joints = 20 # hard coded for now
+        dynamic_joint_description = self._pad_2d(dynamic_joint_description, max_num_joints)
+        dynamic_joint_state = self._pad_2d(dynamic_joint_state, max_num_joints)
+        loss_mask = torch.zeros(max_num_joints, dtype=torch.float32, device=target.device)
+        loss_mask[:target.shape[-1]] = 1 # only compute loss for the joints that are present
+        target = self._pad_1d(target, max_num_joints)
+
+        out = {
+            'dynamic_joint_description': dynamic_joint_description,
+            'dynamic_joint_state': dynamic_joint_state, 
+            'general_state': general_state,
+            'target': target,
+            'io_time': torch.tensor(io_time),
+            'data_processing_time': torch.tensor(time.time() - st),
+            'loss_mask': loss_mask,
+        }
+
+        return out
+
+    # def collate_fn(self, batch):
+    #     """
+    #     Collate function to combine samples into a batch.
+
+    #     Args:
+    #         batch (list): List of samples, where each sample is a 2-tuple:
+    #                       (inputs, target).
+
+    #     Returns:
+    #         tuple: A 2-tuple where:
+    #             - The first element is a tuple of batched inputs (stacked by component).
+    #             - The second element is the batched target tensor.
+    #     """
+    #     # Split batch into inputs and targets
+    #     inputs, targets, _, io_times, processing_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+
+    #     # Transpose the inputs to group by component
+    #     inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+
+    #     # Stack each component of the inputs
+    #     batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
+
+    #     # Stack the targets
+    #     batched_targets = torch.stack(targets)
+
+    #     return batched_inputs, batched_targets, 'mix', torch.stack(io_times), torch.stack(processing_times)
+
+
+
 
 
 """

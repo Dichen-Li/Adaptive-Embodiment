@@ -1,16 +1,17 @@
 import os
 
 # Configuration
-num_tasks = 330  # Total number of tasks
+# we have 352 humanoids in GenBot1K-v1
+task_indices = list(range(0, 352))
 tasks_prefix = "Genhumanoid"
 tasks_suffix = ""  # Add any suffix if needed
-tasks_per_job = 24  # Number of tasks per job
+tasks_per_job = 12  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "tmu-esl-human-v0-{job_index}"
+job_name_template = "tmu-esl-human-v1-{job_index}"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
-run_name = 'v0' # added by tmu
+run_name = 'v1' # added by tmu
 wandb_login_key = 'USE_YOUR_WANDB_LOGIN_KEY' # added by tmu
 
 # Ensure the output folder exists
@@ -78,20 +79,26 @@ spec:
 # Create YAML files and collect job names
 job_files = []
 job_names = []
-for i in range(0, num_tasks, tasks_per_job):
+
+for i in range(0, len(task_indices), tasks_per_job):
     # Collect tasks for the current job
-    tasks = [f"{tasks_prefix}{j}{tasks_suffix}" for j in range(i, min(i + tasks_per_job, num_tasks))]
+    tasks = [f"{tasks_prefix}{task_indices[j]}{tasks_suffix}" for j in range(i, min(i + tasks_per_job, len(task_indices)))]
 
     # Split tasks into parallel groups
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
         f"sleep {group_idx*120+1} && source ~/.bashrc && /workspace/isaaclab/_isaac_sim/python.sh -m pip install wandb && /workspace/isaaclab/_isaac_sim/python.sh -m wandb login {wandb_login_key} && cd /cephfs_fast/embodiment-scaling-law && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install --upgrade pip && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install setuptools wheel && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install build && "
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install toml && "   # I know its too much but we need these to avoid werid errors.. 
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e exts/berkeley_humanoid && "
-        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl/ && "   # only for sim2real_learning branch
+        f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install -e rsl_rl && "  # only for sim2real_learning branch
         f"bash scripts/train_batch_nautilus_humanoid.sh --tasks {' '.join(group)} --logger wandb --run_name {run_name}"
         for (group_idx, group) in enumerate(task_groups) if group
     )
-    parallel_commands += " & wait"  # Ensure all parallel commands complete
+
+    parallel_commands += " & wait"  # Ensure all parallel commands finish before the job exits
 
     job_index = i // tasks_per_job
     job_name = job_name_template.format(job_index=job_index)

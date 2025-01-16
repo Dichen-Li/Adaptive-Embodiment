@@ -315,3 +315,11 @@ def compute_gradient_norm(model):
             total_norm += param_norm.item() ** 2
     total_norm = total_norm ** 0.5
     return total_norm
+
+
+def get_ram_usage():
+    import psutil
+    process = psutil.Process()
+    ram_usage = process.memory_info().rss / (1024 ** 2)  # Convert bytes to MB
+    return ram_usage
+
