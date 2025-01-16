@@ -39,6 +39,6 @@ trap stop_execution SIGINT
 for task in "${tasks[@]}"; do
   echo "Starting simulation for task: $task"
   # "${ISAAC_LAB_PATH}/isaaclab.sh" -p scripts/rsl_rl/play_collect_data.py --task "$task" --steps 2000 --headless "${kwargs[@]}" || stop_execution
-  python scripts/rsl_rl/play_collect_data.py --task "$task" --steps 2000 --reward_log_file reward_log_file.json --headless "${kwargs[@]}" || stop_execution
+  python scripts/rsl_rl/play_collect_data.py --task "$task" --steps 2000 --reward_log_file reward_log_file.json --min_pt_epoch 14999 --headless "${kwargs[@]}" || stop_execution
   echo "Completed training for task: $task"
 done
