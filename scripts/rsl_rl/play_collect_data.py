@@ -95,7 +95,7 @@ def main():
     data_record_path = os.path.join(log_dir, "h5py_record")
     dataset_manager = DatasetSaver(
         record_path=data_record_path,
-        max_steps_per_file=200,
+        max_steps_per_file=100,
         env=env
     )
 
