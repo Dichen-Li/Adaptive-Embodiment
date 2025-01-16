@@ -19,7 +19,7 @@ parser.add_argument(
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=0, help="Seed used for the environment")
-parser.add_argument("--min_pt_epoch", type=int, default=None, help="The minimum expert pt checkpoints for collecting data")
+parser.add_argument("--min_ckpt_iter", type=int, default=None, help="The minimum checkpoint pt iteration for collecting data")
 parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--reward_log_file", type=str, default=None, help="Indicator and directory for storing expert reward")
 
@@ -61,11 +61,11 @@ def main():
     log_root_path = os.path.abspath(log_root_path)
     print(f"[INFO] Loading experiment from directory: {log_root_path}")
     resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
-    if args_cli.min_pt_epoch != None:
+    if args_cli.min_ckpt_iter != None:
         from utils import extract_epoch
         epoch_number = extract_epoch(resume_path)
-        if epoch_number < args_cli.min_pt_epoch:
-            print(f"[WARNING] {agent_cfg.experiment_name} maximum checkpoint epoch is {epoch_number}. Does not satisfy the minimum required min_pt_epoch of {args_cli.min_pt_epoch}.")
+        if epoch_number < args_cli.min_ckpt_iter:
+            print(f"[WARNING] {agent_cfg.experiment_name} maximum checkpoint epoch is {epoch_number}. Does not satisfy the required min_ckpt_iter of {args_cli.min_ckpt_iter}.")
             return
     log_dir = os.path.dirname(resume_path)
 
