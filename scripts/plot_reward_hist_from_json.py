@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # enumerate all folders in the log_path
     finished_returns = []
     for folder in os.listdir(args.log_path):
-        subfolders = os.path.join(args.log_path, folder)
+        subfolders = os.listdir(os.path.join(args.log_path, folder))
         # Find the latest date-time subfolder
         dated_subfolders = [(subfolder, parse_datetime(subfolder[:19])) for subfolder in subfolders]
         if len(dated_subfolders) == 0:
