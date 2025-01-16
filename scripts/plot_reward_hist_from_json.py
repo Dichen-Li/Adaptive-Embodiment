@@ -38,6 +38,8 @@ if __name__ == "__main__":
         latest_subfolder = max(dated_subfolders, key=lambda x: x[1])[0]
         
         json_path = os.path.join(args.log_path, folder, latest_subfolder, "h5py_record/reward_log_file.json")
+        if not os.path.exists(json_path):
+            continue
         with open(json_path, 'r') as f:
             data = json.load(f)
         for k, v in data.items():
