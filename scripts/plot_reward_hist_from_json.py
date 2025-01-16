@@ -31,7 +31,7 @@ if __name__ == "__main__":
         subfolders = os.path.join(args.log_path, folder)
         # Find the latest date-time subfolder
         dated_subfolders = [(subfolder, parse_datetime(subfolder[:19])) for subfolder in subfolders]
-        if not dated_subfolders:
+        if len(dated_subfolders) == 0:
             continue
         dated_subfolders = [(name, dt) for name, dt in dated_subfolders if dt is not None]
         # Sort subfolders by datetime and take the latest
