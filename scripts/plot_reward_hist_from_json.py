@@ -2,7 +2,7 @@ import os
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import json
-import datetime
+from datetime import datetime
 
 
 def parse_datetime(folder_name):
