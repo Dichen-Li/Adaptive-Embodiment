@@ -233,12 +233,12 @@ that folder.
 
 [//]: # (To generate the dataset, run)
 ```angular2html
-python scripts/rsl_rl/play_collect_data.py --task Gendog100 --steps 2000 --headless
+python scripts/rsl_rl/play_collect_data.py --task Gendog100 --steps 2000 --reward_log_file reward_log_file.json --min_pt_epoch 6999 --headless
 ```
 You may interrupt data collection at any time and the files won't corrupt. 
 
 Dataset directory structure: 
-Assume that we have the teacher model checkpoint in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42`. The collected dataset is stored as multiple `h5py` files in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record`. We also store the metadata in a yaml file in the same directory. The metadata includes many simulation and robot parameters, such as the number of joints and various indices needed to construct/decompose the URMA observation vector. 
+Assume that we have the teacher model checkpoint in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42`. The collected dataset is stored as multiple `h5py` files in `logs/rsl_rl/GenDog2/2024-11-11_12-21-42/h5py_record`. We also store the metadata in a yaml file in the same directory. The metadata includes many simulation and robot parameters, such as the number of joints and various indices needed to construct/decompose the URMA observation vector. We also store the stable expert reward (when all envs are done) into same directory if specify --reward_log_file. We can specify --min_pt_epoch to determine the minimum checkpoints needed to start collecting. 
 
 #### 2. Behavior Cloning
 To train a student policy, run the following command, which will load the datasets from all robots and perform supervised learning
