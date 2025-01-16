@@ -3,16 +3,18 @@ import time
 
 # Configuration
 # task_indices = [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 169, 173, 177, 181, 185, 189, 193, 197, 201, 205, 209, 210, 211, 213, 214, 215, 217, 218, 219, 221, 222, 223, 225, 226, 227, 229, 230, 231, 235, 239, 243, 247, 251, 307, 46, 47, 48, 49, 306]  # Specify a list of task indices
-task_indices = list(range(0, 168))
+# task_indices = list(range(168, 336))
+# task_indices = [169, 173, 177, 183, 184, 185, 186, 187, 188, 189, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299]
+task_indices = [291, 292, 293, 294, 295] # 182 is already done
 tasks_prefix = "Gendog"
 tasks_suffix = ""  # Add any suffix if needed
 tasks_per_job = 11  # Number of tasks per job
-num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "bai-job-quadruped-{job_index}-jan10"
+num_parallel_commands = 5  # Number of parallel commands per job
+job_name_template = "dichen-job-quadruped-{job_index}-jan15"
 output_folder = "jobs"  # Folder to store YAML files
-submission_script = "submit_jobs.sh"  # Batch submission script
-deletion_script = "delete_jobs.sh"  # Batch deletion script
-sleep_interval = 30  # Time interval (in seconds) between parallel commands to prevent errors
+submission_script = "jobs/submit_jobs.sh"  # Batch submission script
+deletion_script = "jobs/delete_jobs.sh"  # Batch deletion script
+sleep_interval = 50  # Time interval (in seconds) between parallel commands to prevent errors
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -51,15 +53,15 @@ spec:
           volumeMounts:
             - name: dshm
               mountPath: /dev/shm
-            - name: bai-fast-vol
-              mountPath: /bai-fast-vol
+            - name: dichen-fast-vol
+              mountPath: /dichen-fast-vol
       volumes:
         - name: dshm
           emptyDir:
             medium: Memory
-        - name: bai-fast-vol
+        - name: dichen-fast-vol
           persistentVolumeClaim:
-            claimName: bai-fast-vol
+            claimName: dichen-fast-vol
       restartPolicy: Never
       affinity:
         nodeAffinity:
@@ -71,7 +73,12 @@ spec:
                     values:
                       - NVIDIA-GeForce-RTX-4090
                       - NVIDIA-GeForce-RTX-3090
+                      - NVIDIA-A100-80GB-PCIe-MIG-1g.10gb
+                      - NVIDIA-A100-PCIe-40GB
+                      - NVIDIA-A100-PCIe-80GB
+                      - NVIDIA-A100-SXM4-80GB
                       - NVIDIA-RTX-A6000
+                      - NVIDIA-A40
                       - NVIDIA-A10
   backoffLimit: 0
 """
@@ -88,7 +95,7 @@ for i in range(0, len(task_indices), tasks_per_job):
     task_groups = [tasks[j::num_parallel_commands] for j in range(num_parallel_commands)]
     parallel_commands = " &\n              ".join(
         f"(sleep {i * sleep_interval} && "  # Delay the start of each task group by `i * sleep_interval` seconds
-        f"source ~/.bashrc && cd /bai-fast-vol/code/embodiment-scaling-law && "
+        f"source ~/.bashrc && cd /dichen-fast-vol/code/embodiment-scaling-law && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install --upgrade pip && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install setuptools wheel && "
         f"/workspace/isaaclab/_isaac_sim/python.sh -m pip install build && "
