@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    results = process_training_results(args.log_path, args.step_index)
+    results = process_training_results(args.log_path, args.step_index, args.keyword)
     
     # sort rewards and write them to rewards.txt
     sorted_rewards = []
