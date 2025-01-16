@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 import yaml
 import torch
+import re
 
 
 class AverageMeter:
@@ -323,3 +324,12 @@ def get_ram_usage():
     ram_usage = process.memory_info().rss / (1024 ** 2)  # Convert bytes to MB
     return ram_usage
 
+# Get the epoch number from the logs/rsl_rl/Gendog... checkpoint directory
+def extract_epoch(file_path):
+    # Get the file name from the path
+    file_name = os.path.basename(file_path)
+    # Use regex to extract a number after 'model_' and before the file extension
+    match = re.search(r'model_(\d+)\.pt', file_name)
+    if match:
+        return int(match.group(1))
+    return None  # Return None if no match is found
