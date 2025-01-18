@@ -5,7 +5,8 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm, get_ram_usage
+from utils import (get_most_recent_h5py_record_path, save_checkpoint, AverageMeter,
+                   save_args_to_yaml, compute_gradient_norm, get_process_ram_usage, get_system_ram_usage)
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -169,7 +170,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 writer.add_scalar("Train/times/backward", backward_time, iteration)
 
                 # Log memory
-                writer.add_scalar("Train/memory", get_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-system-used", get_system_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-process-used", get_process_ram_usage(), iteration)
 
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
@@ -179,7 +181,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                 # Step the LR scheduler by iteration
                 if scheduler is not None:
-                    scheduler.step()
+                    scheduler.step(iteration)
 
                 iteration_start_time = time.time()  # start time of next iteration
 
