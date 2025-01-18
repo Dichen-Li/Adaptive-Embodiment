@@ -46,6 +46,12 @@ def generate_code(base_dir, output_file):
             folder_name = os.path.basename(robot_folder)  # Get the actual folder name
             usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v1/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
 
+            # Handle actuators
+            if 'humanoid' in robot_folder_name:
+                actuators_var_name = "actuators_without_knee" if 'KneeNum_l0_r0' in folder_name else 'actuators_with_knee'
+            else:
+                actuators_var_name = 'actuators'
+
             # Generate code block
             code_block = f"""
 {cfg_name} = ArticulationCfg(
@@ -63,7 +69,7 @@ def generate_code(base_dir, output_file):
         joint_vel={{".*": 0.0}},
     ),
     soft_joint_pos_limit_factor=soft_joint_pos_limit_factor,
-    actuators=actuators,
+    actuators={actuators_var_name},
     prim_path=prim_path
 )
 """
@@ -75,6 +81,6 @@ def generate_code(base_dir, output_file):
 
 
 # Example usage
-base_dir = "/home/albert/Data/gen_embodiments_0110_usd_v2/gen_dogs"  # Replace with the actual directory containing robot folders
+base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)
