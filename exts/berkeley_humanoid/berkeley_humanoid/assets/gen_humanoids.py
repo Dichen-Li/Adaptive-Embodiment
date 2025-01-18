@@ -240,7 +240,7 @@ GEN_HUMANOID_10_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.17000),
+        pos=(0.0, 0.0, 1.13000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -265,7 +265,7 @@ GEN_HUMANOID_9_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25000),
+        pos=(0.0, 0.0, 1.21000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -290,7 +290,7 @@ GEN_HUMANOID_8_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33000),
+        pos=(0.0, 0.0, 1.29000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -315,7 +315,7 @@ GEN_HUMANOID_7_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.41000),
+        pos=(0.0, 0.0, 1.37000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -340,7 +340,7 @@ GEN_HUMANOID_6_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.17000),
+        pos=(0.0, 0.0, 1.13000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -365,7 +365,7 @@ GEN_HUMANOID_5_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25000),
+        pos=(0.0, 0.0, 1.21000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -390,7 +390,7 @@ GEN_HUMANOID_4_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33000),
+        pos=(0.0, 0.0, 1.29000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -415,7 +415,7 @@ GEN_HUMANOID_3_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.41000),
+        pos=(0.0, 0.0, 1.37000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -440,7 +440,7 @@ GEN_HUMANOID_2_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.04200),
+        pos=(0.0, 0.0, 1.00200),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -465,7 +465,7 @@ GEN_HUMANOID_0_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29000),
+        pos=(0.0, 0.0, 1.25000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -490,7 +490,7 @@ GEN_HUMANOID_1_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53800),
+        pos=(0.0, 0.0, 1.49800),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -515,7 +515,7 @@ GEN_HUMANOID_15_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43000),
+        pos=(0.0, 0.0, 1.39000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -540,7 +540,7 @@ GEN_HUMANOID_14_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29000),
+        pos=(0.0, 0.0, 1.25000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -565,7 +565,7 @@ GEN_HUMANOID_13_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29000),
+        pos=(0.0, 0.0, 1.25000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -590,7 +590,7 @@ GEN_HUMANOID_12_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29000),
+        pos=(0.0, 0.0, 1.25000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -615,7 +615,7 @@ GEN_HUMANOID_11_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29000),
+        pos=(0.0, 0.0, 1.25000),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -640,7 +640,7 @@ GEN_HUMANOID_26_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -666,7 +666,7 @@ GEN_HUMANOID_25_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -692,7 +692,7 @@ GEN_HUMANOID_24_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -718,7 +718,7 @@ GEN_HUMANOID_23_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -744,7 +744,7 @@ GEN_HUMANOID_22_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -770,7 +770,7 @@ GEN_HUMANOID_21_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -796,7 +796,7 @@ GEN_HUMANOID_20_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -822,7 +822,7 @@ GEN_HUMANOID_19_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -848,7 +848,7 @@ GEN_HUMANOID_18_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -874,7 +874,7 @@ GEN_HUMANOID_16_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -900,7 +900,7 @@ GEN_HUMANOID_17_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -926,7 +926,7 @@ GEN_HUMANOID_31_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -952,7 +952,7 @@ GEN_HUMANOID_30_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -978,7 +978,7 @@ GEN_HUMANOID_29_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1004,7 +1004,7 @@ GEN_HUMANOID_28_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1030,7 +1030,7 @@ GEN_HUMANOID_27_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1056,7 +1056,7 @@ GEN_HUMANOID_122_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1082,7 +1082,7 @@ GEN_HUMANOID_121_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1108,7 +1108,7 @@ GEN_HUMANOID_120_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1134,7 +1134,7 @@ GEN_HUMANOID_119_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1160,7 +1160,7 @@ GEN_HUMANOID_118_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1186,7 +1186,7 @@ GEN_HUMANOID_117_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1212,7 +1212,7 @@ GEN_HUMANOID_116_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1238,7 +1238,7 @@ GEN_HUMANOID_115_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1264,7 +1264,7 @@ GEN_HUMANOID_114_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1290,7 +1290,7 @@ GEN_HUMANOID_112_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1316,7 +1316,7 @@ GEN_HUMANOID_113_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1342,7 +1342,7 @@ GEN_HUMANOID_127_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1368,7 +1368,7 @@ GEN_HUMANOID_126_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1394,7 +1394,7 @@ GEN_HUMANOID_125_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1420,7 +1420,7 @@ GEN_HUMANOID_124_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1446,7 +1446,7 @@ GEN_HUMANOID_123_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1472,7 +1472,7 @@ GEN_HUMANOID_106_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1498,7 +1498,7 @@ GEN_HUMANOID_105_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1524,7 +1524,7 @@ GEN_HUMANOID_104_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1550,7 +1550,7 @@ GEN_HUMANOID_103_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1576,7 +1576,7 @@ GEN_HUMANOID_102_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1602,7 +1602,7 @@ GEN_HUMANOID_101_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1628,7 +1628,7 @@ GEN_HUMANOID_100_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1654,7 +1654,7 @@ GEN_HUMANOID_99_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1680,7 +1680,7 @@ GEN_HUMANOID_98_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1706,7 +1706,7 @@ GEN_HUMANOID_96_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1732,7 +1732,7 @@ GEN_HUMANOID_97_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1758,7 +1758,7 @@ GEN_HUMANOID_111_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1784,7 +1784,7 @@ GEN_HUMANOID_110_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1810,7 +1810,7 @@ GEN_HUMANOID_109_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1836,7 +1836,7 @@ GEN_HUMANOID_108_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1862,7 +1862,7 @@ GEN_HUMANOID_107_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1888,7 +1888,7 @@ GEN_HUMANOID_58_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1914,7 +1914,7 @@ GEN_HUMANOID_57_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1940,7 +1940,7 @@ GEN_HUMANOID_56_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1966,7 +1966,7 @@ GEN_HUMANOID_55_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -1992,7 +1992,7 @@ GEN_HUMANOID_54_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2018,7 +2018,7 @@ GEN_HUMANOID_53_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2044,7 +2044,7 @@ GEN_HUMANOID_52_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2070,7 +2070,7 @@ GEN_HUMANOID_51_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2096,7 +2096,7 @@ GEN_HUMANOID_50_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2122,7 +2122,7 @@ GEN_HUMANOID_48_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2148,7 +2148,7 @@ GEN_HUMANOID_49_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2174,7 +2174,7 @@ GEN_HUMANOID_63_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2200,7 +2200,7 @@ GEN_HUMANOID_62_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2226,7 +2226,7 @@ GEN_HUMANOID_61_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2252,7 +2252,7 @@ GEN_HUMANOID_60_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2278,7 +2278,7 @@ GEN_HUMANOID_59_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2304,7 +2304,7 @@ GEN_HUMANOID_42_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2330,7 +2330,7 @@ GEN_HUMANOID_41_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2356,7 +2356,7 @@ GEN_HUMANOID_40_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2382,7 +2382,7 @@ GEN_HUMANOID_39_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2408,7 +2408,7 @@ GEN_HUMANOID_38_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2434,7 +2434,7 @@ GEN_HUMANOID_37_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2460,7 +2460,7 @@ GEN_HUMANOID_36_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2486,7 +2486,7 @@ GEN_HUMANOID_35_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2512,7 +2512,7 @@ GEN_HUMANOID_34_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2538,7 +2538,7 @@ GEN_HUMANOID_32_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2564,7 +2564,7 @@ GEN_HUMANOID_33_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2590,7 +2590,7 @@ GEN_HUMANOID_47_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2616,7 +2616,7 @@ GEN_HUMANOID_46_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2642,7 +2642,7 @@ GEN_HUMANOID_45_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2668,7 +2668,7 @@ GEN_HUMANOID_44_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2694,7 +2694,7 @@ GEN_HUMANOID_43_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2720,7 +2720,7 @@ GEN_HUMANOID_90_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2746,7 +2746,7 @@ GEN_HUMANOID_89_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2772,7 +2772,7 @@ GEN_HUMANOID_88_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2798,7 +2798,7 @@ GEN_HUMANOID_87_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2824,7 +2824,7 @@ GEN_HUMANOID_86_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2850,7 +2850,7 @@ GEN_HUMANOID_85_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2876,7 +2876,7 @@ GEN_HUMANOID_84_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2902,7 +2902,7 @@ GEN_HUMANOID_83_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2928,7 +2928,7 @@ GEN_HUMANOID_82_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2954,7 +2954,7 @@ GEN_HUMANOID_80_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -2980,7 +2980,7 @@ GEN_HUMANOID_81_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3006,7 +3006,7 @@ GEN_HUMANOID_95_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3032,7 +3032,7 @@ GEN_HUMANOID_94_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3058,7 +3058,7 @@ GEN_HUMANOID_93_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3084,7 +3084,7 @@ GEN_HUMANOID_92_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3110,7 +3110,7 @@ GEN_HUMANOID_91_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3136,7 +3136,7 @@ GEN_HUMANOID_74_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.11948),
+        pos=(0.0, 0.0, 1.07948),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3162,7 +3162,7 @@ GEN_HUMANOID_73_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18930),
+        pos=(0.0, 0.0, 1.14930),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3188,7 +3188,7 @@ GEN_HUMANOID_72_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.25912),
+        pos=(0.0, 0.0, 1.21912),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3214,7 +3214,7 @@ GEN_HUMANOID_71_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.32894),
+        pos=(0.0, 0.0, 1.28894),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3240,7 +3240,7 @@ GEN_HUMANOID_70_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.10889),
+        pos=(0.0, 0.0, 1.06889),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3266,7 +3266,7 @@ GEN_HUMANOID_69_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.18577),
+        pos=(0.0, 0.0, 1.14577),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3292,7 +3292,7 @@ GEN_HUMANOID_68_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26266),
+        pos=(0.0, 0.0, 1.22266),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3318,7 +3318,7 @@ GEN_HUMANOID_67_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.33954),
+        pos=(0.0, 0.0, 1.29954),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3344,7 +3344,7 @@ GEN_HUMANOID_66_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.98937),
+        pos=(0.0, 0.0, 0.94937),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3370,7 +3370,7 @@ GEN_HUMANOID_64_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3396,7 +3396,7 @@ GEN_HUMANOID_65_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45906),
+        pos=(0.0, 0.0, 1.41906),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3422,7 +3422,7 @@ GEN_HUMANOID_79_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36491),
+        pos=(0.0, 0.0, 1.32491),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3448,7 +3448,7 @@ GEN_HUMANOID_78_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3474,7 +3474,7 @@ GEN_HUMANOID_77_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3500,7 +3500,7 @@ GEN_HUMANOID_76_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3526,7 +3526,7 @@ GEN_HUMANOID_75_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.22421),
+        pos=(0.0, 0.0, 1.18421),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3552,7 +3552,7 @@ GEN_HUMANOID_138_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3579,7 +3579,7 @@ GEN_HUMANOID_137_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3606,7 +3606,7 @@ GEN_HUMANOID_136_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3633,7 +3633,7 @@ GEN_HUMANOID_135_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3660,7 +3660,7 @@ GEN_HUMANOID_134_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3687,7 +3687,7 @@ GEN_HUMANOID_133_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3714,7 +3714,7 @@ GEN_HUMANOID_132_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3741,7 +3741,7 @@ GEN_HUMANOID_131_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3768,7 +3768,7 @@ GEN_HUMANOID_130_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3795,7 +3795,7 @@ GEN_HUMANOID_128_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3822,7 +3822,7 @@ GEN_HUMANOID_129_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3849,7 +3849,7 @@ GEN_HUMANOID_143_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3876,7 +3876,7 @@ GEN_HUMANOID_142_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3903,7 +3903,7 @@ GEN_HUMANOID_141_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3930,7 +3930,7 @@ GEN_HUMANOID_140_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3957,7 +3957,7 @@ GEN_HUMANOID_139_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -3984,7 +3984,7 @@ GEN_HUMANOID_234_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4011,7 +4011,7 @@ GEN_HUMANOID_233_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4038,7 +4038,7 @@ GEN_HUMANOID_232_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4065,7 +4065,7 @@ GEN_HUMANOID_231_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4092,7 +4092,7 @@ GEN_HUMANOID_230_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4119,7 +4119,7 @@ GEN_HUMANOID_229_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4146,7 +4146,7 @@ GEN_HUMANOID_228_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4173,7 +4173,7 @@ GEN_HUMANOID_227_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4200,7 +4200,7 @@ GEN_HUMANOID_226_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4227,7 +4227,7 @@ GEN_HUMANOID_224_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4254,7 +4254,7 @@ GEN_HUMANOID_225_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4281,7 +4281,7 @@ GEN_HUMANOID_239_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4308,7 +4308,7 @@ GEN_HUMANOID_238_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4335,7 +4335,7 @@ GEN_HUMANOID_237_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4362,7 +4362,7 @@ GEN_HUMANOID_236_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4389,7 +4389,7 @@ GEN_HUMANOID_235_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4416,7 +4416,7 @@ GEN_HUMANOID_218_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4443,7 +4443,7 @@ GEN_HUMANOID_217_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4470,7 +4470,7 @@ GEN_HUMANOID_216_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4497,7 +4497,7 @@ GEN_HUMANOID_215_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4524,7 +4524,7 @@ GEN_HUMANOID_214_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4551,7 +4551,7 @@ GEN_HUMANOID_213_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4578,7 +4578,7 @@ GEN_HUMANOID_212_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4605,7 +4605,7 @@ GEN_HUMANOID_211_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4632,7 +4632,7 @@ GEN_HUMANOID_210_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4659,7 +4659,7 @@ GEN_HUMANOID_208_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4686,7 +4686,7 @@ GEN_HUMANOID_209_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4713,7 +4713,7 @@ GEN_HUMANOID_223_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4740,7 +4740,7 @@ GEN_HUMANOID_222_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4767,7 +4767,7 @@ GEN_HUMANOID_221_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4794,7 +4794,7 @@ GEN_HUMANOID_220_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4821,7 +4821,7 @@ GEN_HUMANOID_219_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4848,7 +4848,7 @@ GEN_HUMANOID_170_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4875,7 +4875,7 @@ GEN_HUMANOID_169_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4902,7 +4902,7 @@ GEN_HUMANOID_168_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4929,7 +4929,7 @@ GEN_HUMANOID_167_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4956,7 +4956,7 @@ GEN_HUMANOID_166_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -4983,7 +4983,7 @@ GEN_HUMANOID_165_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5010,7 +5010,7 @@ GEN_HUMANOID_164_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5037,7 +5037,7 @@ GEN_HUMANOID_163_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5064,7 +5064,7 @@ GEN_HUMANOID_162_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5091,7 +5091,7 @@ GEN_HUMANOID_160_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5118,7 +5118,7 @@ GEN_HUMANOID_161_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5145,7 +5145,7 @@ GEN_HUMANOID_175_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5172,7 +5172,7 @@ GEN_HUMANOID_174_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5199,7 +5199,7 @@ GEN_HUMANOID_173_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5226,7 +5226,7 @@ GEN_HUMANOID_172_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5253,7 +5253,7 @@ GEN_HUMANOID_171_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5280,7 +5280,7 @@ GEN_HUMANOID_154_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5307,7 +5307,7 @@ GEN_HUMANOID_153_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5334,7 +5334,7 @@ GEN_HUMANOID_152_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5361,7 +5361,7 @@ GEN_HUMANOID_151_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5388,7 +5388,7 @@ GEN_HUMANOID_150_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5415,7 +5415,7 @@ GEN_HUMANOID_149_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5442,7 +5442,7 @@ GEN_HUMANOID_148_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5469,7 +5469,7 @@ GEN_HUMANOID_147_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5496,7 +5496,7 @@ GEN_HUMANOID_146_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5523,7 +5523,7 @@ GEN_HUMANOID_144_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5550,7 +5550,7 @@ GEN_HUMANOID_145_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5577,7 +5577,7 @@ GEN_HUMANOID_159_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5604,7 +5604,7 @@ GEN_HUMANOID_158_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5631,7 +5631,7 @@ GEN_HUMANOID_157_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5658,7 +5658,7 @@ GEN_HUMANOID_156_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5685,7 +5685,7 @@ GEN_HUMANOID_155_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5712,7 +5712,7 @@ GEN_HUMANOID_202_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5739,7 +5739,7 @@ GEN_HUMANOID_201_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5766,7 +5766,7 @@ GEN_HUMANOID_200_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5793,7 +5793,7 @@ GEN_HUMANOID_199_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5820,7 +5820,7 @@ GEN_HUMANOID_198_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5847,7 +5847,7 @@ GEN_HUMANOID_197_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5874,7 +5874,7 @@ GEN_HUMANOID_196_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5901,7 +5901,7 @@ GEN_HUMANOID_195_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5928,7 +5928,7 @@ GEN_HUMANOID_194_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5955,7 +5955,7 @@ GEN_HUMANOID_192_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -5982,7 +5982,7 @@ GEN_HUMANOID_193_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6009,7 +6009,7 @@ GEN_HUMANOID_207_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6036,7 +6036,7 @@ GEN_HUMANOID_206_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6063,7 +6063,7 @@ GEN_HUMANOID_205_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6090,7 +6090,7 @@ GEN_HUMANOID_204_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6117,7 +6117,7 @@ GEN_HUMANOID_203_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6144,7 +6144,7 @@ GEN_HUMANOID_186_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.29403),
+        pos=(0.0, 0.0, 1.25403),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6171,7 +6171,7 @@ GEN_HUMANOID_185_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36385),
+        pos=(0.0, 0.0, 1.32385),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6198,7 +6198,7 @@ GEN_HUMANOID_184_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43367),
+        pos=(0.0, 0.0, 1.39367),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6225,7 +6225,7 @@ GEN_HUMANOID_183_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.50349),
+        pos=(0.0, 0.0, 1.46349),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6252,7 +6252,7 @@ GEN_HUMANOID_182_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.28344),
+        pos=(0.0, 0.0, 1.24344),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6279,7 +6279,7 @@ GEN_HUMANOID_181_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.36032),
+        pos=(0.0, 0.0, 1.32032),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6306,7 +6306,7 @@ GEN_HUMANOID_180_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.43720),
+        pos=(0.0, 0.0, 1.39720),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6333,7 +6333,7 @@ GEN_HUMANOID_179_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.51409),
+        pos=(0.0, 0.0, 1.47409),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6360,7 +6360,7 @@ GEN_HUMANOID_178_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.12901),
+        pos=(0.0, 0.0, 1.08901),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6387,7 +6387,7 @@ GEN_HUMANOID_176_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6414,7 +6414,7 @@ GEN_HUMANOID_177_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.66851),
+        pos=(0.0, 0.0, 1.62851),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6441,7 +6441,7 @@ GEN_HUMANOID_191_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53946),
+        pos=(0.0, 0.0, 1.49946),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6468,7 +6468,7 @@ GEN_HUMANOID_190_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6495,7 +6495,7 @@ GEN_HUMANOID_189_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6522,7 +6522,7 @@ GEN_HUMANOID_188_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6549,7 +6549,7 @@ GEN_HUMANOID_187_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.39876),
+        pos=(0.0, 0.0, 1.35876),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6576,7 +6576,7 @@ GEN_HUMANOID_250_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6603,7 +6603,7 @@ GEN_HUMANOID_249_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6630,7 +6630,7 @@ GEN_HUMANOID_248_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6657,7 +6657,7 @@ GEN_HUMANOID_247_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6684,7 +6684,7 @@ GEN_HUMANOID_246_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6711,7 +6711,7 @@ GEN_HUMANOID_245_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6738,7 +6738,7 @@ GEN_HUMANOID_244_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6765,7 +6765,7 @@ GEN_HUMANOID_243_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6792,7 +6792,7 @@ GEN_HUMANOID_242_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6819,7 +6819,7 @@ GEN_HUMANOID_240_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6846,7 +6846,7 @@ GEN_HUMANOID_241_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6873,7 +6873,7 @@ GEN_HUMANOID_255_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6900,7 +6900,7 @@ GEN_HUMANOID_254_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6927,7 +6927,7 @@ GEN_HUMANOID_253_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6954,7 +6954,7 @@ GEN_HUMANOID_252_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -6981,7 +6981,7 @@ GEN_HUMANOID_251_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7008,7 +7008,7 @@ GEN_HUMANOID_346_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7035,7 +7035,7 @@ GEN_HUMANOID_345_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7062,7 +7062,7 @@ GEN_HUMANOID_344_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7089,7 +7089,7 @@ GEN_HUMANOID_343_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7116,7 +7116,7 @@ GEN_HUMANOID_342_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7143,7 +7143,7 @@ GEN_HUMANOID_341_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7170,7 +7170,7 @@ GEN_HUMANOID_340_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7197,7 +7197,7 @@ GEN_HUMANOID_339_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7224,7 +7224,7 @@ GEN_HUMANOID_338_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7251,7 +7251,7 @@ GEN_HUMANOID_336_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7278,7 +7278,7 @@ GEN_HUMANOID_337_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7305,7 +7305,7 @@ GEN_HUMANOID_351_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7332,7 +7332,7 @@ GEN_HUMANOID_350_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7359,7 +7359,7 @@ GEN_HUMANOID_349_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7386,7 +7386,7 @@ GEN_HUMANOID_348_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7413,7 +7413,7 @@ GEN_HUMANOID_347_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7440,7 +7440,7 @@ GEN_HUMANOID_330_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7467,7 +7467,7 @@ GEN_HUMANOID_329_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7494,7 +7494,7 @@ GEN_HUMANOID_328_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7521,7 +7521,7 @@ GEN_HUMANOID_327_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7548,7 +7548,7 @@ GEN_HUMANOID_326_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7575,7 +7575,7 @@ GEN_HUMANOID_325_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7602,7 +7602,7 @@ GEN_HUMANOID_324_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7629,7 +7629,7 @@ GEN_HUMANOID_323_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7656,7 +7656,7 @@ GEN_HUMANOID_322_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7683,7 +7683,7 @@ GEN_HUMANOID_320_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7710,7 +7710,7 @@ GEN_HUMANOID_321_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7737,7 +7737,7 @@ GEN_HUMANOID_335_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7764,7 +7764,7 @@ GEN_HUMANOID_334_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7791,7 +7791,7 @@ GEN_HUMANOID_333_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7818,7 +7818,7 @@ GEN_HUMANOID_332_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7845,7 +7845,7 @@ GEN_HUMANOID_331_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7872,7 +7872,7 @@ GEN_HUMANOID_282_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7899,7 +7899,7 @@ GEN_HUMANOID_281_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7926,7 +7926,7 @@ GEN_HUMANOID_280_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7953,7 +7953,7 @@ GEN_HUMANOID_279_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -7980,7 +7980,7 @@ GEN_HUMANOID_278_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8007,7 +8007,7 @@ GEN_HUMANOID_277_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8034,7 +8034,7 @@ GEN_HUMANOID_276_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8061,7 +8061,7 @@ GEN_HUMANOID_275_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8088,7 +8088,7 @@ GEN_HUMANOID_274_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8115,7 +8115,7 @@ GEN_HUMANOID_272_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8142,7 +8142,7 @@ GEN_HUMANOID_273_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8169,7 +8169,7 @@ GEN_HUMANOID_287_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8196,7 +8196,7 @@ GEN_HUMANOID_286_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8223,7 +8223,7 @@ GEN_HUMANOID_285_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8250,7 +8250,7 @@ GEN_HUMANOID_284_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8277,7 +8277,7 @@ GEN_HUMANOID_283_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8304,7 +8304,7 @@ GEN_HUMANOID_266_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8331,7 +8331,7 @@ GEN_HUMANOID_265_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8358,7 +8358,7 @@ GEN_HUMANOID_264_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8385,7 +8385,7 @@ GEN_HUMANOID_263_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8412,7 +8412,7 @@ GEN_HUMANOID_262_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8439,7 +8439,7 @@ GEN_HUMANOID_261_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8466,7 +8466,7 @@ GEN_HUMANOID_260_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8493,7 +8493,7 @@ GEN_HUMANOID_259_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8520,7 +8520,7 @@ GEN_HUMANOID_258_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8547,7 +8547,7 @@ GEN_HUMANOID_256_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8574,7 +8574,7 @@ GEN_HUMANOID_257_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8601,7 +8601,7 @@ GEN_HUMANOID_271_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8628,7 +8628,7 @@ GEN_HUMANOID_270_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8655,7 +8655,7 @@ GEN_HUMANOID_269_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8682,7 +8682,7 @@ GEN_HUMANOID_268_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8709,7 +8709,7 @@ GEN_HUMANOID_267_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8736,7 +8736,7 @@ GEN_HUMANOID_314_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8763,7 +8763,7 @@ GEN_HUMANOID_313_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8790,7 +8790,7 @@ GEN_HUMANOID_312_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8817,7 +8817,7 @@ GEN_HUMANOID_311_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8844,7 +8844,7 @@ GEN_HUMANOID_310_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8871,7 +8871,7 @@ GEN_HUMANOID_309_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8898,7 +8898,7 @@ GEN_HUMANOID_308_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8925,7 +8925,7 @@ GEN_HUMANOID_307_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8952,7 +8952,7 @@ GEN_HUMANOID_306_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -8979,7 +8979,7 @@ GEN_HUMANOID_304_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9006,7 +9006,7 @@ GEN_HUMANOID_305_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9033,7 +9033,7 @@ GEN_HUMANOID_319_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9060,7 +9060,7 @@ GEN_HUMANOID_318_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9087,7 +9087,7 @@ GEN_HUMANOID_317_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9114,7 +9114,7 @@ GEN_HUMANOID_316_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9141,7 +9141,7 @@ GEN_HUMANOID_315_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9168,7 +9168,7 @@ GEN_HUMANOID_298_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.46858),
+        pos=(0.0, 0.0, 1.42858),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9195,7 +9195,7 @@ GEN_HUMANOID_297_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53840),
+        pos=(0.0, 0.0, 1.49840),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9222,7 +9222,7 @@ GEN_HUMANOID_296_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.60822),
+        pos=(0.0, 0.0, 1.56822),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9249,7 +9249,7 @@ GEN_HUMANOID_295_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.67804),
+        pos=(0.0, 0.0, 1.63804),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9276,7 +9276,7 @@ GEN_HUMANOID_294_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.45798),
+        pos=(0.0, 0.0, 1.41798),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9303,7 +9303,7 @@ GEN_HUMANOID_293_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.53487),
+        pos=(0.0, 0.0, 1.49487),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9330,7 +9330,7 @@ GEN_HUMANOID_292_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.61175),
+        pos=(0.0, 0.0, 1.57175),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9357,7 +9357,7 @@ GEN_HUMANOID_291_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.68864),
+        pos=(0.0, 0.0, 1.64864),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9384,7 +9384,7 @@ GEN_HUMANOID_290_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.26865),
+        pos=(0.0, 0.0, 1.22865),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9411,7 +9411,7 @@ GEN_HUMANOID_288_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9438,7 +9438,7 @@ GEN_HUMANOID_289_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.87797),
+        pos=(0.0, 0.0, 1.83797),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9465,7 +9465,7 @@ GEN_HUMANOID_303_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.71400),
+        pos=(0.0, 0.0, 1.67400),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9492,7 +9492,7 @@ GEN_HUMANOID_302_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9519,7 +9519,7 @@ GEN_HUMANOID_301_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9546,7 +9546,7 @@ GEN_HUMANOID_300_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,
@@ -9573,7 +9573,7 @@ GEN_HUMANOID_299_CFG = ArticulationCfg(
         articulation_props=articulation_props,
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 1.57331),
+        pos=(0.0, 0.0, 1.53331),
         joint_pos={
             ".*torso.*": 0.00000,
             ".*shoulder.*": 0.00000,

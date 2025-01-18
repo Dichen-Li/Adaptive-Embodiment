@@ -36,7 +36,10 @@ def generate_code(base_dir, output_file):
             cfg_name = f"{robot_name.upper()}_CFG"  # Consistent CFG naming
 
             # Extract relevant values
-            drop_height = train_cfg.get("drop_height", 0.5) + 0.05   # add a 5cm buffer
+            if 'humanoid' in robot_folder_name:
+                drop_height = train_cfg.get("drop_height", 0.5) + 0.01   # add a 1cm buffer
+            else:
+                drop_height = train_cfg.get("drop_height", 0.5) + 0.05   # add a 5cm buffer
             joint_positions = train_cfg.get("nominal_joint_positions", {})
             joint_positions_str = ",\n            ".join(
                 f'"{k}": {v:.5f}' for k, v in joint_positions.items()

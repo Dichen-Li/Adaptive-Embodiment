@@ -48,7 +48,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
     with open(output_file, 'w') as f_out:
         for idx, robot_folder in enumerate(robot_folders, start=1):
             # Paths for the train_cfg.json and robot configuration
-            train_cfg_path = os.path.join(base_dir, robot_folder, "train_cfg.json")
+            train_cfg_path = os.path.join(base_dir, robot_folder, "train_cfg_v2.json")
             urdf_path = os.path.join(base_dir, robot_folder, "robot.urdf")
 
             if not os.path.exists(train_cfg_path):
@@ -66,7 +66,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
             # Extract robot name from the configuration
             robot_name = train_cfg.get("robot_name", None)
             if not robot_name:
-                print(f"Skipping {robot_folder}: 'robot_name' not found in train_cfg.json.")
+                print(f"Skipping {robot_folder}: 'robot_name' not found in train_cfg_v2.json.")
                 continue
 
             # Capitalize and format the robot name for the class name
@@ -89,6 +89,13 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
             if not term_matches["foot"]:
                 raise ValueError(f"Validation failed: 'foot' term not found in URDF for {robot_name}.")
 
+            illegal_cotact_cfg = train_cfg["reward_cfgs"]["illegal_contact_cfg"]
+            if "humanoid" in robot_name:
+                illegal_cotact_cfg = [
+                    '.*pelvis.*', '.*hip.*', '.*thigh.*', '.*torso.*', '.*arm.*', '.*head.*',
+                ]
+            # TODO: For quadruped and hexapod, trunk_contact_cfg is read from train_cfg, which typically includes calf link (which is the link directly connected to feet). It is unclear if having it in the termination condition is desirable, as avoiding calf-ground contact is very challenging for robots with multiple knees -- there is no way for robots to learn to walk if they are terminated immediately after being spawned
+
             # Generate the class definition
             trunk_name = term_patterns['trunk']
             class_definition = (
@@ -97,7 +104,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
                 f"    action_space = {action_space}\n"
                 f"    robot: ArticulationCfg = {cfg_name}\n"
                 f"    trunk_cfg = SceneEntityCfg(\"robot\", body_names=\"{trunk_name}\")\n"
-                f"    trunk_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names=['.*{trunk_name}.*', '.*hip.*', '.*thigh.*'])\n"
+                f"    trunk_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names={str(illegal_cotact_cfg)})\n"
                 f"    feet_contact_cfg = SceneEntityCfg(\"contact_sensor\", body_names=\".*foot\")\n\n"
             )
 
@@ -108,8 +115,10 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
         print(f"Generated {len(robot_folders)} class definitions.")
 
 # Example usage
-cfg_class_parent = 'Go2EnvCfg'   # Change as needed
-base_dir = "/home/albert/Data/gen_embodiments_0110_no_usd/gen_dogs"  # Replace with the actual directory containing robot folders
+# cfg_class_parent = 'Go2EnvCfg'   # Change as needed
+cfg_class_parent = 'GenHumanoidEnvCfg'
+# base_dir = "/home/albert/Data/gen_embodiments_0110_no_usd/gen_dogs"  # Replace with the actual directory containing robot folders
+base_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1/gen_humanoids'
 # output_file = "exts/berkeley_humanoid/berkeley_humanoid/tasks/configs/environment/gen_humanoid_cfg.py"  # Output file for the generated class definitions
 output_file = "tmp.py"
 generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent)
