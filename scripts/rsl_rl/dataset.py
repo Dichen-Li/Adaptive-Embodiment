@@ -409,7 +409,7 @@ class LocomotionDataset(Dataset):
             # print(f"[INFO]: Cached file found {cache_key}")
             # if self.cache_hit_count.count % 1000000:
             #     print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
-        return self.cache.get(cache_key)
+        return cached_file
 
     def __getitem__(self, index):
         """
@@ -440,16 +440,18 @@ class LocomotionDataset(Dataset):
 
         # To make sure the worker does not get sample that should be processed by other workers
         # This shouldn't happen at all, in theory.
-        worker_id = torch.utils.data.get_worker_info().id
-        if (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
-            # cache_keys = self.cache.keys()
-            # folder_idx, file_idx = random.choice(list(cache_keys))
-            # self.counter_not_in_scope += 1
-            # if self.counter_not_in_scope % 1000 == 0:
-            #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
-            #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
-            raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
-                             f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+        worker_id = torch.utils.data.get_worker_info()       # None if this is main process
+        if worker_id is not None:
+            worker_id = worker_id.id
+            if worker_id is not None and (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
+                # cache_keys = self.cache.keys()
+                # folder_idx, file_idx = random.choice(list(cache_keys))
+                # self.counter_not_in_scope += 1
+                # if self.counter_not_in_scope % 1000 == 0:
+                #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+                #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+                raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+                                 f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         start_time = time.time()
@@ -470,17 +472,18 @@ class LocomotionDataset(Dataset):
         # Get metadata for transformation
         metadata = self.metadata_list[folder_idx]  # potential copy-on-write behavior if using native python list
 
-        # Transform the sample
-        start_time = time.time()
-        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
-        del input_sample, target_sample, metadata
-
-        # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
-        data_processing_time = time.time() - start_time
+        # # Transform the sample
+        # start_time = time.time()
+        # transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        # del input_sample, target_sample, metadata
+        #
+        # # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
+        # data_processing_time = time.time() - start_time
         # self.transform_data_time.update(time.time() - s_time)
         # if self.transform_data_time.count % 100:
         #     print(f"[INFO]: Transform data time: {self.transform_data_time.avg} ")
-        # import ipdb; ipdb.set_trace()
+
+        return input_sample, target_sample, metadata, self.folder_idx_to_file_name[folder_idx], torch.tensor(io_time)
 
         # print([x.shape for x in transformed_sample])
         # import ipdb; ipdb.set_trace()
@@ -492,29 +495,38 @@ class LocomotionDataset(Dataset):
         # if self.get_count % 512 == 0:
         #     print(f"[DEBUG] Memory usage after loading data: {process.memory_info().rss / (1024 ** 2):.5f} MB")
 
-        # Return the transformed components
-        return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
-                torch.tensor(io_time), torch.tensor(data_processing_time))
+        # # Return the transformed components
+        # return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
+        #         torch.tensor(io_time), torch.tensor(data_processing_time))
 
         # except Exception as e:
         #     print(f"[ERROR]: Exception while loading data: {e}")
         #     import ipdb; ipdb.set_trace()
 
     @staticmethod
-    def _transform_sample(input_sample, target_sample, metadata):
+    def _transform_samples(input_samples, target_samples, metadata_list):
         """
         Transform a single input and target sample into its components.
 
         Args:
-            input_sample (np.ndarray): The input sample (shape: [D]).
-            target_sample (np.ndarray): The target sample (shape: [T]).
-            metadata (dict): Metadata for this sample.
+            input_samples (np.ndarray): The input sample (shape: [B, D]).
+            target_samples (np.ndarray): The target sample (shape: [B, T]).
+            metadata (dict): Metadata list for samples.
 
         Returns:
             tuple: Transformed components.
         """
-        state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
-        target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+        assert all(metadata == metadata_list[0] for metadata in metadata_list), \
+            "the metadata for all samples in batch should be identical"
+        metadata = metadata_list[0]
+
+        batch_size = len(target_samples)
+
+        # state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
+        # target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+
+        state = torch.from_numpy(np.array(input_samples)).float()
+        target = torch.from_numpy(np.array(target_samples)).float()
 
         # Dynamic Joint Data Transformation
         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
@@ -524,7 +536,7 @@ class LocomotionDataset(Dataset):
 
         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
         dynamic_joint_combined_state = dynamic_joint_combined_state.view(
-            nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+            batch_size, nr_dynamic_joint_observations, single_dynamic_joint_observation_length
         )
         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
@@ -558,19 +570,28 @@ class LocomotionDataset(Dataset):
                 - The second element is the batched target tensor.
         """
         # Split batch into inputs and targets
-        inputs, targets, robot_names, io_times, processing_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        inputs, targets, metadata_list, robot_names, io_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
         assert len(set(robot_names)) == 1, f"got different robot names in a batch: {set(robot_names)}"
 
-        # Transpose the inputs to group by component
-        inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+        # batch transform these samples
+        st = time.time()
+        transformed_sample = self._transform_samples(inputs, targets, metadata_list)
+        inputs, targets = transformed_sample[:-1], transformed_sample[-1]
+        processing_times = time.time() - st
+        # import ipdb; ipdb.set_trace()
 
-        # Stack each component of the inputs
-        batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
+        # # Transpose the inputs to group by component
+        # inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+        batched_inputs = inputs
 
-        # Stack the targets
-        batched_targets = torch.stack(targets)
+        # # Stack each component of the inputs
+        # batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
 
-        return batched_inputs, batched_targets, robot_names[0], torch.stack(io_times), torch.stack(processing_times)
+        # # Stack the targets
+        # batched_targets = torch.stack(targets)
+        batched_targets = targets
+
+        return batched_inputs, batched_targets, robot_names[0], torch.stack(io_times), torch.tensor(processing_times)
 
     def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
@@ -803,7 +824,7 @@ class LocomotionDataset_tmu(LocomotionDataset):
 
         # Transform the sample
         st = time.time()
-        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        transformed_sample = self._transform_samples(input_sample, target_sample, metadata)
         inputs = transformed_sample[:-1]
         target = transformed_sample[-1]
 
