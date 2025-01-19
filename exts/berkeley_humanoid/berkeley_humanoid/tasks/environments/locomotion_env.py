@@ -65,7 +65,14 @@ class LocomotionEnv(DirectRLEnv):
         self.pitch_roll_vel_coeff = self.cfg.pitch_roll_vel_coeff
         self.pitch_roll_pos_coeff = self.cfg.pitch_roll_pos_coeff
         self.actuator_joint_nominal_diff_coeff = self.cfg.actuator_joint_nominal_diff_coeff
-        self.actuator_joint_nominal_diff_joints = self.cfg.actuator_joint_nominal_diff_joints
+        actuator_joint_nominal_diff_joints_cfg = self.cfg.actuator_joint_nominal_diff_joints_cfg
+        if actuator_joint_nominal_diff_joints_cfg is not None:
+            actuator_joint_nominal_diff_joints_cfg.resolve(self.scene)
+            self.actuator_joint_nominal_diff_joints = actuator_joint_nominal_diff_joints_cfg.joint_ids
+        else:
+            # dummy to first joint to avoid tensor indexing error -> in that case make sure the coeff is 0.0
+            self.actuator_joint_nominal_diff_joints = [0,]  
+            self.actuator_joint_nominal_diff_coeff = 0.0
         self.joint_position_limit_coeff = self.cfg.joint_position_limit_coeff
         self.joint_acceleration_coeff = self.cfg.joint_acceleration_coeff
         self.joint_torque_coeff = self.cfg.joint_torque_coeff
@@ -919,8 +926,7 @@ def compute_rewards(
     angular_position_reward = curriculum_coeff * pitch_roll_pos_coeff * -pitch_roll_position_norm
 
     # Joint nominal position difference reward
-    # actuator_joint_nominal_diff_norm = torch.sum(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
-    actuator_joint_nominal_diff_norm = torch.zeros_like(joint_positions[:, 0])
+    actuator_joint_nominal_diff_norm = torch.mean(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
     actuator_joint_nominal_diff_reward = curriculum_coeff * actuator_joint_nominal_diff_coeff * -actuator_joint_nominal_diff_norm
 
     # Joint position limit reward
