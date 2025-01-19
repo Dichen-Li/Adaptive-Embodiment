@@ -4,37 +4,30 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 
-class EfficientH5Dataset(Dataset):
+class InMemoryDataset(Dataset):
     def __init__(self, h5_files, dataset_key):
         """
         Args:
             h5_files (list of str): List of paths to .h5 files.
             dataset_key (str): Key to access the dataset within the .h5 files.
         """
-        self.h5_files = h5_files
-        self.dataset_key = dataset_key
-        self.index_map = []  # Map from global index to (file_idx, local_idx)
-        self.file_lens = []  # Cache lengths of datasets in each file
+        self.data = []  # Store all data in memory
 
-        # Precompute index mapping
-        for file_idx, file_path in enumerate(self.h5_files):
+        # Load data into memory
+        load_start = time.time()
+        for file_path in h5_files:
             with h5py.File(file_path, 'r') as f:
-                length = f[self.dataset_key].shape[0] * f[self.dataset_key].shape[1]  # Treat first two dims as batch
-                self.file_lens.append(length)
-                self.index_map.extend([(file_idx, local_idx) for local_idx in range(length)])
+                self.data.append(f[dataset_key][:])
+        self.data = np.concatenate(self.data, axis=0)  # Combine all files into one array
+        self.num_samples, self.sample_length = self.data.shape[0], self.data.shape[1]
+        print(f"Total data loaded: {self.data.shape}, Load time: {time.time() - load_start:.4f}s")
 
     def __len__(self):
-        return len(self.index_map)
+        return self.num_samples * self.sample_length
 
     def __getitem__(self, idx):
-        file_idx, local_idx = self.index_map[idx]
-        file_path = self.h5_files[file_idx]
-
-        # Lazy load data from file
-        with h5py.File(file_path, 'r', swmr=True) as f:  # Use SWMR for thread safety
-            data = f[self.dataset_key]
-            batch_idx, sample_idx = divmod(local_idx, data.shape[1])
-            data = data[batch_idx, sample_idx]
+        batch_idx, sample_idx = divmod(idx, self.sample_length)
+        data = self.data[batch_idx, sample_idx]  # Retrieve the slice
 
         # Convert to tensor
         return torch.tensor(data, dtype=torch.float32)
@@ -48,16 +41,18 @@ def create_dummy_h5_files(file_paths, dataset_key):
 
 # Main script
 if __name__ == "__main__":
+    import time
+
     # Parameters
     dataset_key = "my_dataset"
     h5_files = [f"dummy_data_{i}.h5" for i in range(5)]
     batch_size = 256
 
-    # Create dummy data
-    create_dummy_h5_files(h5_files, dataset_key)
+    # Uncomment to create dummy data
+    # create_dummy_h5_files(h5_files, dataset_key)
 
     # Initialize dataset and dataloader
-    dataset = EfficientH5Dataset(h5_files, dataset_key)
+    dataset = InMemoryDataset(h5_files, dataset_key)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=8, shuffle=False, drop_last=True)
 
     # Iterate through dataloader with tqdm
