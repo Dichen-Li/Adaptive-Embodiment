@@ -362,6 +362,7 @@ def main():
     args_cli = parse_arguments()
 
     import wandb
+    os.environ["WANDB_API_KEY"] = "44713a60b687b7a3dbe558ae6ef945cbeacb756e"
 
     wandb.init(
         project='esl_distillation',
