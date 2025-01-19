@@ -1,13 +1,16 @@
 import os
 import torch
-from torch.utils.tensorboard import SummaryWriter
+from torch.cuda.amp import GradScaler, autocast
+torch.backends.cudnn.benchmark = True
 
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml
+from torch.utils.tensorboard import SummaryWriter
+import time
+from utils import (get_most_recent_h5py_record_path, save_checkpoint, AverageMeter,
+                   save_args_to_yaml, compute_gradient_norm, get_process_ram_usage, get_system_ram_usage)
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
 import tqdm
-
 import argparse
 import yaml
 
@@ -52,19 +55,21 @@ def parse_arguments():
                         help="List of robot names as the training set.")
     parser.add_argument("--test_set", nargs="+", type=str, default=None, required=False,
                         help="List of robot names as the test set.")
-    parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs to run.")
-    parser.add_argument("--batch_size", type=int, default=512, help="Batch size. 4096*16 takes 10G")
+    parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to run.")
+    parser.add_argument("--batch_size", type=int, default=256, help="Batch size. 4096*16 takes 10G")
     parser.add_argument("--exp_name", type=str, default=None,
                         help="Name of the experiment. If provided, the current date and time will be appended. "
                              "Default is the current date and time.")
-    parser.add_argument("--checkpoint_interval", type=int, default=10, help="Save checkpoint every N epochs.")
+    parser.add_argument("--checkpoint_interval", type=int, default=1, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=3e-4, help="Unit learning rate (for a batch size of 512)")
-    parser.add_argument("--num_workers", type=int, default=8, help="Number of workers for torch data loader.")
+    parser.add_argument("--num_workers", type=int, default=16, help="Number of workers for torch data loader.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
     parser.add_argument("--gradient_acc_steps", type=int, default=1,
                         help="Number of batches before one gradient update.")
+    parser.add_argument("--h5_repeat_factor", type=int, default=1, help="Number of times we repeat one h5 file consecutively in one epoch.")
+    parser.add_argument("--use_amp", type=int, default=0, help="Whether to use automatic mixed precision.")
     parser.add_argument(
         "--model",
         type=str,
@@ -106,8 +111,10 @@ def get_meter_dict_avg(meter_dicts):
 
 
 def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, test_dataset, num_epochs, model_device,
-          log_dir, checkpoint_interval, model, gradient_acc_steps, batch_size, num_workers):
+          log_dir, checkpoint_interval, model, gradient_acc_steps, batch_size, num_workers, use_amp):
     """Training loop with validation, TensorBoard logging, and checkpoint saving."""
+    scaler = torch.cuda.amp.GradScaler()
+
     writer = SummaryWriter(log_dir=log_dir)
     train_loss_meters = {}
     val_loss_meters = {}
@@ -125,15 +132,17 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Training.")
 
         train_dataloader = train_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25 if num_workers > 0 else None
         )
         timer.end('prepare')
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+            for index, (batch_inputs, batch_targets, data_source_name, io_times, processing_times) in enumerate(pbar):
                 grad_step_cnt += 1
                 if grad_step_cnt % 100 == 0:
                     timer.dump_to_writer(writer, grad_step_cnt)
+
+                iteration = index + epoch * len(train_dataloader)
 
                 # times = []
                 # import time
@@ -147,20 +156,20 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # end_time = time.time()
                 # times.append(end_time - start_time)
                 # start_time = time.time()
-
-                if model == 'urma':
-                    batch_predictions = policy(*batch_inputs)
-                else:
-                    one_input = torch.cat([
-                        component.flatten(1) for component in batch_inputs
-                    ], dim=1)
-                    batch_predictions = policy(one_input)
+                with torch.autocast(device_type='cuda', dtype=torch.float16, enabled=use_amp):
+                    if model == 'urma':
+                        batch_predictions = policy(*batch_inputs)
+                    else:
+                        one_input = torch.cat([
+                            component.flatten(1) for component in batch_inputs
+                        ], dim=1)
+                        batch_predictions = policy(one_input)
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
                 # start_time = time.time()
 
-                loss = criterion(batch_predictions, batch_targets)
+                    loss = criterion(batch_predictions, batch_targets)
                 timer.end('forward')
 
                 # end_time = time.time()
@@ -168,8 +177,10 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # start_time = time.time()
 
                 # Backward pass and optimization
-                optimizer.zero_grad()
-                loss.backward()
+                if use_amp:
+                    scaler.scale(loss).backward()
+                else:
+                    loss.backward()
 
                 # end_time = time.time()
                 # times.append(end_time - start_time)
@@ -177,8 +188,19 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                 # backward only when we have accumulated gradients for enough batches
                 if index % gradient_acc_steps == gradient_acc_steps - 1:
-                    optimizer.step()
+                    if use_amp:
+                        # Compute gradient norm before unscaled gradients are modified
+                        # scaler.unscale_(optimizer)  # Unscale gradients for logging (optional with AMP)
+                        grad_norm = compute_gradient_norm(policy)  # Log this value
+                        scaler.step(optimizer)
+                        scaler.update()
+                    else:
+                        # Compute gradient norm before optimizer step
+                        torch.nn.utils.clip_grad_value_(policy.parameters(), clip_value=5.0)
+                        grad_norm = compute_gradient_norm(policy)  # Log this value
+                        optimizer.step()
 
+                    optimizer.zero_grad()  # Zero gradients after optimization step
                 timer.end('backward')
 
                 # end_time = time.time()
@@ -197,6 +219,29 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # times.append(end_time - start_time)
                 # if index % 1000 == 0:
                 #     print(f'times: {times}')
+                # Log times
+                writer.add_scalar("Train/times/io_per_thread", io_times.mean().item(), iteration)
+                writer.add_scalar("Train/times/data_processing_per_thread", processing_times.mean().item(), iteration)
+                # writer.add_scalar("Train/times/dataloader_time", dataloader_time, iteration)
+                # writer.add_scalar("Train/times/move_cuda", move_cuda_time, iteration)
+                # writer.add_scalar("Train/times/forward", forward_time, iteration)
+                # writer.add_scalar("Train/times/backward", backward_time, iteration)
+
+                # Log memory
+                writer.add_scalar("Train/ram-system-used", get_system_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-process-used", get_process_ram_usage(), iteration)
+
+                # Log loss and lr by iteration
+                writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
+                writer.add_scalar("Train/lr-iter", optimizer.param_groups[0]['lr'], iteration)
+                if grad_norm is not None:
+                    writer.add_scalar("Train/grad_norm-iter", grad_norm, iteration)
+
+                # Step the LR scheduler by iteration
+                if scheduler is not None:
+                    scheduler.step(iteration)
+
+                iteration_start_time = time.time()  # start time of next iteration
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -211,12 +256,12 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Validation.")
 
         val_dataloader = val_dataset.get_data_loader(
-            batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True
+            batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25
         )
 
         with torch.no_grad():
             with tqdm.tqdm(val_dataloader, desc=f"Validation Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+                for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
                     # Move data to device
                     batch_inputs = [x.to(model_device) for x in batch_inputs]
                     batch_targets = batch_targets.to(model_device)
@@ -239,6 +284,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                     # Update progress bar with current loss
                     pbar.set_postfix(
                         {"Loss": f"{get_meter_dict_avg(val_loss_meters):.4f}"})
+                    if index > 0.1 * len(val_dataloader):
+                        break
 
         # Log validation loss to TensorBoard
         for robot_name, meter in val_loss_meters.items():
@@ -254,12 +301,12 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             print(f"[INFO] Starting epoch {epoch + 1}/{num_epochs} - Test.")
 
             test_dataloader = test_dataset.get_data_loader(
-                batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True
+                batch_size=batch_size, shuffle=True, num_workers=num_workers, prefetch_factor=25
             )
 
             with torch.no_grad():
                 with tqdm.tqdm(test_dataloader, desc=f"Test Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                    for index, (batch_inputs, batch_targets, data_source_name) in enumerate(pbar):
+                    for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
                         # Move data to device
                         batch_inputs = [x.to(model_device) for x in batch_inputs]
                         batch_targets = batch_targets.to(model_device)
@@ -282,16 +329,15 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         # Update progress bar with current loss
                         pbar.set_postfix(
                             {"Loss": f"{get_meter_dict_avg(test_loss_meters):.4f}"})
+
+                        if index > 0.1 * len(test_dataloader):
+                            break
             timer.end('test')
 
             # Log validation loss to TensorBoard
             for robot_name, meter in test_loss_meters.items():
                 writer.add_scalar(f"Test/loss/{robot_name}", meter.avg, epoch + 1)
             writer.add_scalar("Test/loss/avg", get_meter_dict_avg(test_loss_meters), epoch + 1)
-
-        # Step the LR scheduler
-        if scheduler is not None:
-            scheduler.step()
 
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
@@ -349,7 +395,8 @@ def main():
         folder_paths=train_set_paths,
         train_mode=True,
         val_ratio=args_cli.val_ratio,
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=args_cli.h5_repeat_factor
     )
 
     # Validation dataset
@@ -357,7 +404,8 @@ def main():
         folder_paths=train_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=1
     )
 
     # Test dataset
@@ -365,7 +413,8 @@ def main():
         folder_paths=test_set_paths,
         train_mode=False,
         val_ratio=args_cli.val_ratio,       # only use a proportion of the data as the test set
-        max_files_in_memory=args_cli.max_files_in_memory
+        max_files_in_memory=args_cli.max_files_in_memory,
+        h5_repeat_factor=1
     )
 
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -402,8 +451,15 @@ def main():
     print('policy architecture:\n', policy)
 
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.Adam(policy.parameters(), lr=args_cli.lr, weight_decay=1e-4)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args_cli.num_epochs)
+    optimizer = torch.optim.AdamW(
+        policy.parameters(),
+        lr=args_cli.lr,
+        weight_decay=5e-4,
+        betas=(0.95, 0.999)  # Adjusted betas for smoother gradients
+    )
+    # optimizer = torch.optim.SGD(policy.parameters(), lr=args_cli.lr, momentum=0.95, weight_decay=5e-4, nesterov=True)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,
+                                                           T_max=args_cli.num_epochs*len(train_dataset)/args_cli.batch_size)
     # scheduler = None
 
     # Train the policy
@@ -422,7 +478,8 @@ def main():
         model=args_cli.model,
         gradient_acc_steps=args_cli.gradient_acc_steps,
         batch_size=args_cli.batch_size,
-        num_workers=args_cli.num_workers
+        num_workers=args_cli.num_workers,
+        use_amp=bool(args_cli.use_amp)
     )
 
 
