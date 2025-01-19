@@ -1,8 +1,15 @@
 #!/bin/bash
 
-tasks=("Gendog266" "Gendog252" "Gendog72" "Gendog71" "Gendog207" "Gendog104" "Gendog128" "Gendog272" "Gendog215" "Gendog248" "Gendog229" "Gendog280" "Gendog278" "Gendog32" "Gendog55" "Gendog75" "Gendog0" "Gendog282" "Gendog63" "Gendog47" "Gendog241" "Gendog222" "Gendog286" "Gendog181" "Gendog183" "Gendog97" "Gendog250" "Gendog20" "Gendog7" "Gendog258" "Gendog111" "Gendog41" "Gendog132" "Gendog113" "Gendog31" "Gendog290" "Gendog124" "Gendog46" "Gendog170" "Gendog48" "Gendog204" "Gendog260" "Gendog298" "Gendog226" "Gendog261" "Gendog37" "Gendog144" "Gendog244")
-checkpoint_path="log_dir/scaling_factor_0.1_v3/best_model.pt"
-log_file="log_dir/scaling_factor_0.1_v3/eval_student_model_urma.json"
+# test set for Gendog
+tasks=("Gendog0" "Gendog7" "Gendog20" "Gendog31" "Gendog32" "Gendog37" "Gendog41" "Gendog46" "Gendog47" "Gendog50" "Gendog51" "Gendog55" "Gendog63" "Gendog71" "Gendog72" "Gendog75" "Gendog97" "Gendog104" "Gendog111" "Gendog113" "Gendog122" "Gendog124" "Gendog128" "Gendog132" "Gendog133" "Gendog144" "Gendog149" "Gendog154" "Gendog155" "Gendog158" "Gendog161" "Gendog163" "Gendog166" "Gendog169" "Gendog170" "Gendog197" "Gendog204" "Gendog207" "Gendog215" "Gendog222" "Gendog226" "Gendog229" "Gendog241" "Gendog244" "Gendog248" "Gendog250" "Gendog252" "Gendog258" "Gendog260" "Gendog261" "Gendog266" "Gendog272" "Gendog278" "Gendog280" "Gendog282" "Gendog286" "Gendog290" "Gendog298" "Gendog308" "Gendog312" "Gendog313" "Gendog316" "Gendog320" "Gendog327")
+# tasks=("Gendog16")
+
+checkpoint_path="log_dir/scaling_factor_0.1_scale3_v3/best_model.pt"
+log_file="log_dir/scaling_factor_0.1_scale3_v3/eval_student_model_urma.json"
+#checkpoint_path="log_dir/scaling_factor_0.5_v3_modelscale3_attempt2_bs256_acc1_clipv5.0_configv2_scratch_e5/best_model.pt"
+#log_file="log_dir/scaling_factor_0.5_v3_modelscale3_attempt2_bs256_acc1_clipv5.0_configv2_scratch_e5/eval_student_model_urma.json"
+
+trap "echo 'Process interrupted. Exiting...'; exit 1" SIGINT
 
 total_time=0
 
@@ -19,8 +26,9 @@ for i in "${!tasks[@]}"; do
         --task "$task" \
         --ckpt_path "$checkpoint_path" \
         --log_file "$log_file" \
-        --headless \
-        >/dev/null 2>&1
+        --headless
+#        \
+#        >/dev/null 2>&1
 
     end_time=$(date +%s)
     runtime=$((end_time - start_time))
