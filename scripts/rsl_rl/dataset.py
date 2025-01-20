@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
 from itertools import chain
 
-from thread_safe_dict import ThreadSafeDict
+from thread_safe_dict import ThreadSafeDict, ThreadSafeSingleEntryDict
 from utils import AverageMeter
 
 
@@ -263,7 +263,7 @@ class LocomotionDataset(Dataset):
             h5_repeat_factor: Number of times we repeat one h5 file consecutively in one epoch. This gives us
                 more batches without additional IO, but may alter the training dynamics a bit.
         """
-        self.folder_paths = folder_paths
+        self.folder_paths = np.array(folder_paths)
         self.max_files_in_memory = max_files_in_memory
         self.metadata_list = np.array([self._load_metadata(folder_path) for folder_path in folder_paths])   # use numpy to avoid copy-on-write behavior of python list
         # self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
@@ -276,18 +276,19 @@ class LocomotionDataset(Dataset):
 
         # Thread-safe cache for loaded files
         # global global_cache    # we must use global reference, otherwise every thread will spawn its own cache
-        self.cache = ThreadSafeDict(max_size=max_files_in_memory)
+        # self.cache = ThreadSafeDict(max_size=max_files_in_memory)
+        self.cache = ThreadSafeSingleEntryDict(max_size=max_files_in_memory)
 
         # Map file indices and prepare dataset structure
         self._prepare_file_indices()
 
         # Compute hit rate for caching, for debugging purpose
         # self.cache_hit_count = AverageMeter()
-        self.cache_query_time = AverageMeter()
+        # self.cache_query_time = AverageMeter()
         # self.transform_data_time = AverageMeter()
 
         # record the number of times the data index is not in the worker's scope
-        self.counter_not_in_scope = 0
+        # self.counter_not_in_scope = 0
 
         # # for debugging
         # self.get_count = 0
@@ -326,7 +327,11 @@ class LocomotionDataset(Dataset):
             self.folder_idx_to_file_name[folder_idx] = folder_path.split("/")[-3]
             metadata = self.metadata_list[folder_idx]
             hdf5_files = sorted(
-                [f for f in os.listdir(folder_path) if f.endswith(".h5")],
+                [
+                    f.decode("utf-8") if isinstance(f, bytes) else f
+                    for f in os.listdir(folder_path)
+                    if (isinstance(f, bytes) and f.endswith(b".h5")) or (isinstance(f, str) and f.endswith(".h5"))
+                ],
                 key=lambda x: int(x.split('_')[-1].split('.')[0])
             )
             total_files = len(hdf5_files)
@@ -383,6 +388,8 @@ class LocomotionDataset(Dataset):
             raise ValueError(f"[ERROR]: Input shape mismatch in file {file_path}.")
         if targets.shape != (steps_per_file, parallel_envs, targets.shape[-1]):
             raise ValueError(f"[ERROR]: Target shape mismatch in file {file_path}.")
+
+        del folder_path, file_name, steps_per_file, parallel_envs
 
         return inputs, targets
 
@@ -549,6 +556,10 @@ class LocomotionDataset(Dataset):
         general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
         general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
 
+        del dynamic_joint_observation_length, nr_dynamic_joint_observations, single_dynamic_joint_observation_length, \
+            dynamic_joint_description_size, trunk_angular_vel_update_obs_idx, goal_velocity_update_obs_idx, \
+            projected_gravity_update_obs_idx
+
         # Return transformed inputs and target
         return (
             dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
@@ -712,7 +723,7 @@ class LocomotionDataset(Dataset):
             batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
-            pin_memory=True,
+            pin_memory=False,
             **kwargs
         )
 
@@ -729,10 +740,12 @@ class LocomotionDataset_tmu(LocomotionDataset):
 
         self.merged_h5_path = merged_h5_path
         self.file = None
+        if merged_h5_path is None:
+            return
         self.num_transitions_each_folder = [0] * len(self.folder_paths)
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
             self.num_transitions_each_folder[folder_idx] += steps_per_file * parallel_envs
-        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), 'To simply the code, we assume all folders have the same number of transitions'
+        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), f'To simply the code, we assume all folders have the same number of transitions, max = {max(self.num_transitions_each_folder)}, min = {min(self.num_transitions_each_folder)}'
         self.num_transitions_per_folder = self.num_transitions_each_folder[0]
 
     # def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
@@ -830,7 +843,7 @@ class LocomotionDataset_tmu(LocomotionDataset):
 
         # Transform the sample
         st = time.time()
-        transformed_sample = self._transform_samples(input_sample, target_sample, metadata)
+        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
         inputs = transformed_sample[:-1]
         target = transformed_sample[-1]
 
@@ -854,6 +867,49 @@ class LocomotionDataset_tmu(LocomotionDataset):
         }
 
         return out
+    
+    def _transform_sample(self, input_sample, target_sample, metadata):
+        """
+        Transform a single input and target sample into its components.
+
+        Args:
+            input_sample (np.ndarray): The input sample (shape: [D]).
+            target_sample (np.ndarray): The target sample (shape: [T]).
+            metadata (dict): Metadata for this sample.
+
+        Returns:
+            tuple: Transformed components.
+        """
+        state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
+        target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+
+        # Dynamic Joint Data Transformation
+        dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
+        nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
+        single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
+        dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
+
+        dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
+        dynamic_joint_combined_state = dynamic_joint_combined_state.view(
+            nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+        )
+        dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
+        dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
+
+        # General Policy State Transformation
+        trunk_angular_vel_update_obs_idx = metadata["trunk_angular_vel_update_obs_idx"]
+        goal_velocity_update_obs_idx = metadata["goal_velocity_update_obs_idx"]
+        projected_gravity_update_obs_idx = metadata["projected_gravity_update_obs_idx"]
+        general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
+        general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
+
+        # Return transformed inputs and target
+        return (
+            dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
+            dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
+            general_policy_state,  # Shape: (<concatenated_dim>)
+            target  # Shape: (12,)
+        )
 
     # def collate_fn(self, batch):
     #     """
