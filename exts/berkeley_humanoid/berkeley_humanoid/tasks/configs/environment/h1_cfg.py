@@ -72,7 +72,7 @@ class H1EnvCfg(DirectRLEnvCfg):
     z_velocity_coeff = 2.0                      * action_dt
     pitch_roll_vel_coeff = 0.05                 * action_dt
     pitch_roll_pos_coeff = 0.2                  * action_dt
-    actuator_joint_nominal_diff_coeff = 1.8     * action_dt
+    actuator_joint_nominal_diff_coeff = 14.4    * action_dt
     actuator_joint_nominal_diff_joints_cfg = SceneEntityCfg("robot", joint_names=['.*torso.*', '.*shoulder.*', '.*elbow.*'])
     joint_position_limit_coeff = 120.0          * action_dt
     joint_acceleration_coeff = 3e-6             * action_dt
