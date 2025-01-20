@@ -5,6 +5,7 @@ import h5py
 import numpy as np
 import torch
 import yaml
+import warnings
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
 from itertools import chain
@@ -438,20 +439,20 @@ class LocomotionDataset(Dataset):
 
         folder_idx, file_idx, step, env = index
 
-        # To make sure the worker does not get sample that should be processed by other workers
-        # This shouldn't happen at all, in theory.
-        worker_id = torch.utils.data.get_worker_info()       # None if this is main process
-        if worker_id is not None:
-            worker_id = worker_id.id
-            if worker_id is not None and (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
-                # cache_keys = self.cache.keys()
-                # folder_idx, file_idx = random.choice(list(cache_keys))
-                # self.counter_not_in_scope += 1
-                # if self.counter_not_in_scope % 1000 == 0:
-                #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
-                #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
-                raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
-                                 f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+        # # To make sure the worker does not get sample that should be processed by other workers
+        # # This shouldn't happen at all, in theory.
+        # worker_id = torch.utils.data.get_worker_info()       # None if this is main process
+        # if worker_id is not None:
+        #     worker_id = worker_id.id
+        #     if worker_id is not None and (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
+        #         # cache_keys = self.cache.keys()
+        #         # folder_idx, file_idx = random.choice(list(cache_keys))
+        #         # self.counter_not_in_scope += 1
+        #         # if self.counter_not_in_scope % 1000 == 0:
+        #         #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+        #         #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+        #         raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+        #                          f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         start_time = time.time()
@@ -694,12 +695,17 @@ class LocomotionDataset(Dataset):
         """
 
         if num_workers > len(self.file_indices):
-            import warnings
             warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
              f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
              f"This is likely due to multiple threads reading the same file. "
              f"I will set num_workers to {min(num_workers, len(self.file_indices))}")
             num_workers = min(num_workers, len(self.file_indices))        # 2 is a safe number, tested
+
+        if num_workers > 0:
+            warnings.warn(f"You are using num_workers > 0, which might cause memory increasing throughput "
+                          f"the training process due to caching and multi-processing."
+                          f"It is recommended to set num_workers to 0. ")
+            time.sleep(3)
 
         return DataLoader(
             self,
