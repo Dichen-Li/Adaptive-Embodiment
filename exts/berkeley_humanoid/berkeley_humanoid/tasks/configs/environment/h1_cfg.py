@@ -63,7 +63,7 @@ class H1EnvCfg(DirectRLEnvCfg):
 
     step_sampling_probability = 0.002
 
-    action_scaling_factor = 0.3
+    action_scaling_factor = 0.75
 
     # Reward
     reward_curriculum_steps = 300e6
