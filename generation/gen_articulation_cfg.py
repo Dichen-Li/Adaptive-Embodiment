@@ -1,6 +1,8 @@
 import os
 import json
 
+robot_version = 'v2'
+
 def generate_code(base_dir, output_file):
     """
     Reads robot folders in base_dir, parses train_cfg.json, and generates configuration code.
@@ -47,7 +49,7 @@ def generate_code(base_dir, output_file):
 
             # Use the folder name to construct USD path
             folder_name = os.path.basename(robot_folder)  # Get the actual folder name
-            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-v1/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
+            usd_path = f'{{ISAAC_ASSET_DIR}}/Robots/GenBot1K-{robot_version}/{robot_folder_name}/{folder_name}/usd_file/robot.usd'
 
             # Handle actuators
             if 'humanoid' in robot_folder_name:
@@ -84,6 +86,6 @@ def generate_code(base_dir, output_file):
 
 
 # Example usage
-base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/gen_humanoids"  # Replace with the actual directory containing robot folders
+base_dir = f"exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-{robot_version}/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)
