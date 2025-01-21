@@ -261,26 +261,8 @@ H1_CFG = ArticulationCfg(
                 '.*_shoulder_yaw_joint': 20,
                 '.*_elbow_joint': 20,
             },
-            stiffness={
-                ".*_hip_yaw_joint": 150.00,
-                ".*_hip_roll_joint": 150.00,
-                ".*_hip_pitch_joint": 200.00,
-                '.*_knee.*joint': 200,
-                "torso_joint": 200.00,
-                '.*_ankle_joint': 20,
-                ".*_shoulder.*joint": 40.00,
-                ".*_elbow_joint": 40.00,
-            },
-            damping={
-                ".*_hip_yaw_joint": 5.00,
-                ".*_hip_roll_joint": 5.00,
-                ".*_hip_pitch_joint": 5.00,
-                '.*_knee.*joint': 5.00,
-                "torso_joint": 5.00,
-                '.*_ankle_joint': 2.00,
-                ".*_shoulder.*joint": 10.00,
-                ".*_elbow_joint": 10.00,
-            },
+            stiffness=60.0,
+            damping=2.0
         ),
     },
 )
