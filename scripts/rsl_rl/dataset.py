@@ -290,8 +290,8 @@ class LocomotionDataset(Dataset):
         # record the number of times the data index is not in the worker's scope
         # self.counter_not_in_scope = 0
 
-        # # for debugging
-        # self.get_count = 0
+        # for debugging
+        self.get_count = 0
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
@@ -437,7 +437,13 @@ class LocomotionDataset(Dataset):
         # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
         #
         # # Expecting index as (folder_idx, file_idx, step, env)
-        # self.get_count += 1
+        self.get_count += 1
+        if self.get_count % (10000 * 256) == 0:
+            import gc
+            import psutil
+            collected = gc.collect()
+            print(f"worker id {torch.utils.data.get_worker_info().id}: "
+                  f"Garbage collector: collected {collected} objects.")
 
         # import psutil
         # process = psutil.Process(os.getpid())
