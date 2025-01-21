@@ -84,6 +84,6 @@ def generate_code(base_dir, output_file):
 
 
 # Example usage
-base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1/gen_humanoids"  # Replace with the actual directory containing robot folders
+base_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/gen_humanoids"  # Replace with the actual directory containing robot folders
 output_file = "articulation_cfgs.py"  # Output file for the generated code
 generate_code(base_dir, output_file)

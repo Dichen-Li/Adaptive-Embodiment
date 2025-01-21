@@ -118,7 +118,7 @@ def generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent):
 # cfg_class_parent = 'Go2EnvCfg'   # Change as needed
 cfg_class_parent = 'GenHumanoidEnvCfg'
 # base_dir = "/home/albert/Data/gen_embodiments_0110_no_usd/gen_dogs"  # Replace with the actual directory containing robot folders
-base_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1/gen_humanoids'
+base_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/gen_humanoids'
 # output_file = "exts/berkeley_humanoid/berkeley_humanoid/tasks/configs/environment/gen_humanoid_cfg.py"  # Output file for the generated class definitions
 output_file = "tmp.py"
 generate_robot_classes_from_config(base_dir, output_file, cfg_class_parent)
