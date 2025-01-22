@@ -346,6 +346,7 @@ class LocomotionDataset(Dataset):
                 selected_files = hdf5_files[num_val_files:]  # Remaining files for training
             else:
                 selected_files = hdf5_files[:num_val_files]  # First files for validation
+
             # Process selected files
             for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)
@@ -668,6 +669,10 @@ class LocomotionDataset(Dataset):
             file_sample_lists_per_worker[i % num_workers].append(file_samples[key])
             self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
 
+        assert 0 not in [len(x) for x in file_sample_lists_per_worker], \
+            (f"Zero exists in file_sample_lists_per_worker: {file_sample_lists_per_worker}, "
+             f"meaning that we don't have enough .h5 files for workers")
+
         # Duplicate samples so that every worker has the same number of samples
         # otherwise the workers that finish their job earlier will be assigned to join
         # other worker's job queue, which may create the condition where multiple workers
@@ -724,6 +729,9 @@ class LocomotionDataset(Dataset):
                           f"the training process due to caching and multi-processing."
                           f"It is recommended to set num_workers to 0. ")
             time.sleep(3)
+
+        assert num_workers == 0 and self.max_files_in_memory > 0,\
+            f"it is recommended that num_workers = 0, but max_files_in_memory > 0"
 
         return DataLoader(
             self,
