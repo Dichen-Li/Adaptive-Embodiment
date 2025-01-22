@@ -276,8 +276,8 @@ class LocomotionDataset(Dataset):
 
         # Thread-safe cache for loaded files
         # global global_cache    # we must use global reference, otherwise every thread will spawn its own cache
-        # self.cache = ThreadSafeDict(max_size=max_files_in_memory)
-        self.cache = ThreadSafeSingleEntryDict(max_size=max_files_in_memory)
+        self.cache = ThreadSafeDict(max_size=max_files_in_memory)
+        # self.cache = ThreadSafeSingleEntryDict(max_size=max_files_in_memory)
 
         # Map file indices and prepare dataset structure
         self._prepare_file_indices()
@@ -405,9 +405,10 @@ class LocomotionDataset(Dataset):
             tuple: (inputs, targets) from the file.
         """
         cache_key = (folder_idx, file_idx)
+        # print(f"[INFO]: Caching file {cache_key}... keys = {self.cache.keys()}")
         cached_file = self.cache.get(cache_key)
         if cached_file is None:
-            # print(f"can't find cached file for {cache_key}")
+            # print(f"can't find cached file for {cache_key}, only got {self.cache.keys()}")
             inputs, targets = self._load_file(folder_idx, file_idx)
             self.cache.put(cache_key, (inputs, targets))
             return inputs, targets
@@ -437,13 +438,13 @@ class LocomotionDataset(Dataset):
         # # print(f"[DEBUG] Cache memory location: {id(self.cache)}, {index}")
         #
         # # Expecting index as (folder_idx, file_idx, step, env)
-        self.get_count += 1
-        if self.get_count % (10000 * 256) == 0:
-            import gc
-            import psutil
-            collected = gc.collect()
-            print(f"worker id {torch.utils.data.get_worker_info().id}: "
-                  f"Garbage collector: collected {collected} objects.")
+        # self.get_count += 1
+        # if self.get_count % (10000 * 256) == 0:
+        #     import gc
+        #     import psutil
+        #     collected = gc.collect()
+        #     print(f"worker id {torch.utils.data.get_worker_info().id}: "
+        #           f"Garbage collector: collected {collected} objects.")
 
         # import psutil
         # process = psutil.Process(os.getpid())
@@ -726,11 +727,11 @@ class LocomotionDataset(Dataset):
 
         return DataLoader(
             self,
-            batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
+            batch_sampler=self.get_batch_indices(batch_size, shuffle, self.max_files_in_memory),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
             pin_memory=False,
-            **kwargs
+            # **kwargs
         )
 
 
