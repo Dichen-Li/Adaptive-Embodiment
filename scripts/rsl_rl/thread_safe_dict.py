@@ -6,6 +6,53 @@ from collections import OrderedDict
 import threading
 
 
+import threading
+
+class ThreadSafeSingleEntryDict:
+    def __init__(self, max_size):
+        assert max_size == 1, f"max_size must be 1, but got {max_size}"
+        self.key = None
+        self.value = None
+        self.lock = threading.RLock()
+
+    def get(self, key):
+        """Retrieve the value if the key exists."""
+        with self.lock:
+            if key == self.key:
+                return self.value
+            else:
+                return None
+
+    def put(self, key, value):
+        """
+        Insert or update the key-value pair.
+        Since this dictionary supports only one entry, any existing key-value pair will be replaced.
+        """
+        with self.lock:
+            self.key = key
+            self.value = value
+
+    def delete(self):
+        """Delete the stored key-value pair."""
+        with self.lock:
+            self.key = None
+            self.value = None
+
+    def has_key(self, key):
+        """Check if the stored key matches the given key."""
+        with self.lock:
+            return self.key == key
+
+    def clear(self):
+        """Clear the dictionary."""
+        self.delete()
+
+    def current_key(self):
+        """Retrieve the current key."""
+        with self.lock:
+            return self.key
+
+
 # ThreadSafeDict implementation
 class ThreadSafeDict:
     def __init__(self, max_size):
@@ -147,7 +194,7 @@ def get_system_ram_usage():
 def test_memory_leak():
     print("Starting memory leak test with large NumPy arrays...")
     max_size = 1  # Maximum number of items in cache
-    cache = ThreadSafeDict(max_size=max_size)
+    cache = ThreadSafeSingleEntryDict(max_size=max_size)
     array_size = (10, 4096, 300)  # Large NumPy array size (1 million elements)
 
     initial_memory = memory_usage()
