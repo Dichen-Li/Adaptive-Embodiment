@@ -45,7 +45,7 @@ def check_record_status(logs_path):
 
 
 # Example
-logs_path = "/home/liudai/hdd_0/projects/cross_em/data/logs_all_0116/gendog/logs/rsl_rl"  # Modify to the actual directory
+logs_path = "/tmu-fast-vol/embodiment-scaling-law/logs/rsl_rl"  # Modify to the actual directory
 record_status = check_record_status(logs_path)
 
 # Output the results
