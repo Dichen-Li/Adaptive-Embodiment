@@ -17,5 +17,6 @@ log_dir/
 .*
 logs*
 jobs/
-jobs-logs/
-jobs_play_collect_data_logs/
+job_logs/
+log_dir*/
+generation/jobs_scaling_factors*
