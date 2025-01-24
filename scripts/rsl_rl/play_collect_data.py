@@ -159,9 +159,9 @@ def main():
                 print(f'[INFO] Action std recorded: {actions_std}')
 
             # Apply strong randomization 1/20 of the time so there is still quite some clean data
-            if np.random.randn() < 0.05:
-                # actions = actions * (torch.randn_like(actions) * actions_std + 1)
-                actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
+            # if np.random.randn() < 0.05:
+            #     # actions = actions * (torch.randn_like(actions) * actions_std + 1)
+            #     actions += torch.randn_like(actions) * actions_std.unsqueeze(0).repeat(args_cli.num_envs, 1) * 0.9
 
             # Stepping the environment
             obs, rewards, dones, extra = env.step(actions)

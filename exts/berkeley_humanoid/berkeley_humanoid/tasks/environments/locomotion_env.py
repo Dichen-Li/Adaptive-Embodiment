@@ -27,10 +27,11 @@ class LocomotionEnv(DirectRLEnv):
         self.all_joints_cfg.resolve(self.scene)
         self.trunk_cfg = self.cfg.trunk_cfg
         self.trunk_cfg.resolve(self.scene)
-        self.trunk_contact_cfg = self.cfg.trunk_contact_cfg
-        self.trunk_contact_cfg.resolve(self.scene)
+        self.all_contact_cfg = self.cfg.all_contact_cfg
+        self.all_contact_cfg.resolve(self.scene)
         self.feet_contact_cfg = self.cfg.feet_contact_cfg
         self.feet_contact_cfg.resolve(self.scene)
+        self.all_body_ids_besides_feet = [body_id for body_id in self.all_contact_cfg.body_ids if body_id not in self.feet_contact_cfg.body_ids]
 
         self.nr_joints = self.robot.data.default_joint_pos.shape[1]
         self.nr_feet = self.cfg.nr_feet
@@ -512,10 +513,10 @@ class LocomotionEnv(DirectRLEnv):
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         self.handle_domain_randomization()
 
-        trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
-        trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
-        terminated = trunk_contact
-        # terminated = torch.tensor([False] * self.num_envs, dtype=torch.bool, device=self.sim.device)  # for debugging
+        all_contact_sensor = self.scene.sensors[self.all_contact_cfg.name]
+        contacts_besides_feet = torch.any(torch.norm(all_contact_sensor.data.net_forces_w[:, self.all_body_ids_besides_feet], dim=-1) > 1.0, dim=1)
+        trunk_too_low = self.robot.data.root_state_w[:, 2] < self.nominal_trunk_z * 0.8
+        terminated = contacts_besides_feet | trunk_too_low
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
 
