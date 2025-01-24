@@ -63,8 +63,8 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
 
     # Reward
     reward_curriculum_steps = 400e6
-    tracking_xy_velocity_command_coeff = 5.0    * action_dt
-    tracking_yaw_velocity_command_coeff = 2.5   * action_dt
+    tracking_xy_velocity_command_coeff = 6.0    * action_dt
+    tracking_yaw_velocity_command_coeff = 3.0   * action_dt
     z_velocity_coeff = 2.0                      * action_dt
     pitch_roll_vel_coeff = 0.05                 * action_dt
     pitch_roll_pos_coeff = 0.2                  * action_dt
