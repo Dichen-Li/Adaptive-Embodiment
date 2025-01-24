@@ -1,18 +1,19 @@
 import os
 
 # Configuration
-# we have 352 humanoids in GenBot1K-v1
+# we have 352 humanoids in GenBot1K-v2
 task_indices = list(range(0, 352))
 tasks_prefix = "Genhumanoid"
 tasks_suffix = ""  # Add any suffix if needed
-tasks_per_job = 12  # Number of tasks per job
+tasks_per_job = 4  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "tmu-esl-human-v1-{job_index}"
+job_name_template = "tmu-esl-human-v1-4-{job_index}"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
-run_name = 'v1' # added by tmu
+run_name = 'v1-4' # added by tmu
 wandb_login_key = 'USE_YOUR_WANDB_LOGIN_KEY' # added by tmu
+wandb_login_key = '44713a60b687b7a3dbe558ae6ef945cbeacb756e'
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)

@@ -1,3 +1,4 @@
+import gc
 import os
 import torch
 from torch.cuda.amp import GradScaler, autocast
@@ -5,7 +6,8 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm, get_ram_usage
+from utils import (get_most_recent_h5py_record_path, save_checkpoint, AverageMeter,
+                   save_args_to_yaml, compute_gradient_norm, get_process_ram_usage, get_system_ram_usage)
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -30,7 +32,7 @@ def parse_arguments():
     parser.add_argument("--checkpoint_interval", type=int, default=1, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=3e-4, help="Unit learning rate (for a batch size of 512)")
-    parser.add_argument("--num_workers", type=int, default=16, help="Number of workers for torch data loader.")
+    parser.add_argument("--num_workers", type=int, default=0, help="Number of workers for torch data loader.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
     parser.add_argument("--gradient_acc_steps", type=int, default=1,
@@ -169,7 +171,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 writer.add_scalar("Train/times/backward", backward_time, iteration)
 
                 # Log memory
-                writer.add_scalar("Train/memory", get_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-system-used", get_system_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-process-used", get_process_ram_usage(), iteration)
 
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
@@ -179,9 +182,13 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                 # Step the LR scheduler by iteration
                 if scheduler is not None:
-                    scheduler.step()
+                    scheduler.step(iteration)
 
                 iteration_start_time = time.time()  # start time of next iteration
+
+                if index % 100000 == 99999:
+                    collected = gc.collect()
+                    print(f"Garbage collector: collected {collected} objects.")
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -350,7 +357,7 @@ def main():
         policy = get_policy(model_device)
 
         # # load checkpoint if needed
-        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.3_v3_modelscale3_attempt2_bs256_acc1_clipv5.0_configv2_scratch_e10/checkpoint_epoch_10.pt"
+        # checkpoint_path = "log_dir/scaling_factor_0.8_v3_2/checkpoint_epoch_7.pt"
         # checkpoint = torch.load(checkpoint_path, map_location=model_device)
         # policy.load_state_dict(checkpoint["state_dict"], strict=True)
         # print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')

@@ -12,9 +12,15 @@ exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/Generated-Ablation/*/.*
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0
 exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v1
+<<<<<<< HEAD
 old_logs_jan15/
+=======
+exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2
+>>>>>>> 9cc9d6739c800cbc96e1cc041d2500ad53084c70
 log_dir/
 .*
 logs*
 jobs/
 job_logs/
+log_dir*/
+generation/jobs_scaling_factors*

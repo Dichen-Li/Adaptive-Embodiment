@@ -6,6 +6,53 @@ from collections import OrderedDict
 import threading
 
 
+import threading
+
+class ThreadSafeSingleEntryDict:
+    def __init__(self, max_size):
+        assert max_size == 1, f"max_size must be 1, but got {max_size}"
+        self.key = None
+        self.value = None
+        self.lock = threading.RLock()
+
+    def get(self, key):
+        """Retrieve the value if the key exists."""
+        with self.lock:
+            if key == self.key:
+                return self.value
+            else:
+                return None
+
+    def put(self, key, value):
+        """
+        Insert or update the key-value pair.
+        Since this dictionary supports only one entry, any existing key-value pair will be replaced.
+        """
+        with self.lock:
+            self.key = key
+            self.value = value
+
+    def delete(self):
+        """Delete the stored key-value pair."""
+        with self.lock:
+            self.key = None
+            self.value = None
+
+    def has_key(self, key):
+        """Check if the stored key matches the given key."""
+        with self.lock:
+            return self.key == key
+
+    def clear(self):
+        """Clear the dictionary."""
+        self.delete()
+
+    def current_key(self):
+        """Retrieve the current key."""
+        with self.lock:
+            return self.key
+
+
 # ThreadSafeDict implementation
 class ThreadSafeDict:
     def __init__(self, max_size):
@@ -26,7 +73,8 @@ class ThreadSafeDict:
                 self.dict.move_to_end(key)  # Update usage order
             self.dict[key] = value
             if len(self.dict) > self.max_size:
-                self.dict.popitem(last=False)  # Remove oldest item
+                item = self.dict.popitem(last=False)  # Remove oldest item
+                del item
 
     def delete(self, key):
         with self.lock:
@@ -126,12 +174,28 @@ def memory_usage():
     return process.memory_info().rss / (1024 * 1024)  # Convert to MB
 
 
+# Function to get system-wide memory information
+def get_system_ram_usage():
+    """
+    Returns system-wide memory usage statistics.
+    Returns:
+        total (float): Total system memory in MB.
+        used (float): Used system memory in MB.
+        available (float): Available system memory in MB.
+    """
+    memory = psutil.virtual_memory()
+    total = memory.total / (1024 ** 2)  # Convert bytes to MB
+    used = memory.used / (1024 ** 2)    # Convert bytes to GB
+    available = memory.available / (1024 ** 3)  # Convert bytes to GB
+    return used
+
+
 # Test the ThreadSafeDict with large NumPy arrays
 def test_memory_leak():
     print("Starting memory leak test with large NumPy arrays...")
-    max_size = 10  # Maximum number of items in cache
-    cache = ThreadSafeDict(max_size=max_size)
-    array_size = (200, 4096, 300)  # Large NumPy array size (1 million elements)
+    max_size = 1  # Maximum number of items in cache
+    cache = ThreadSafeSingleEntryDict(max_size=max_size)
+    array_size = (10, 4096, 300)  # Large NumPy array size (1 million elements)
 
     initial_memory = memory_usage()
     print(f"Initial Memory Usage: {initial_memory:.2f} MB")
@@ -143,7 +207,7 @@ def test_memory_leak():
 
         if i % 10 == 0:  # Check memory usage periodically
             current_memory = memory_usage()
-            print(f"Iteration {i}, Memory Usage: {current_memory:.2f} MB")
+            print(f"Iteration {i}, Process Memory Usage: {current_memory:.2f} MB, Sys Memory Usage: {get_system_ram_usage():.2f} MB")
 
             # # Stop test if memory usage grows excessively (indicates a leak)
             # if current_memory - initial_memory > 500:  # Allowable growth of 500 MB
