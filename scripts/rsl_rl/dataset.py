@@ -347,6 +347,8 @@ class LocomotionDataset(Dataset):
             else:
                 selected_files = hdf5_files[:num_val_files]  # First files for validation
 
+            # selected_files = selected_files[:3]  # cap the number of files to 3 
+
             # Process selected files
             for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)
@@ -696,8 +698,14 @@ class LocomotionDataset(Dataset):
         final_samples = []
         max_samples_per_worker = max(len(worker_samples) for worker_samples in samples_per_worker)
         for i in range(max_samples_per_worker):
+            cycle_samples = []
             for worker_idx, samples in enumerate(samples_per_worker):
-                final_samples.append(samples[i])
+                cycle_samples.append(samples[i])
+            
+            # shuffle the samples in one cycle, if desirable
+            random.shuffle(cycle_samples)
+
+            final_samples.extend(cycle_samples)
 
         print(f'[INFO]: h5_repeat_factor = {self.h5_repeat_factor}. '
               f'additional duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
