@@ -27,7 +27,7 @@ echo "Tasks to be executed: ${tasks[@]}"
 echo "Additional arguments: ${kwargs[@]}"
 
 # Define the log directory
-log_dir="/bai-fast-vol/code/jobs_play_collect_data_logs"
+log_dir="/tmu-fast-vol/code/jobs_play_collect_data_logs"
 mkdir -p "$log_dir"  # Create the log directory if it doesn't exist
 
 # Function to handle interrupt and exit

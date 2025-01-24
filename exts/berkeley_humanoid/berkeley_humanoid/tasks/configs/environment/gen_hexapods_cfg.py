@@ -62,14 +62,14 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     action_scaling_factor = 0.3
 
     # Reward
-    reward_curriculum_steps = 300e6
+    reward_curriculum_steps = 400e6
     tracking_xy_velocity_command_coeff = 3.0    * action_dt
     tracking_yaw_velocity_command_coeff = 1.5   * action_dt
     z_velocity_coeff = 2.0                      * action_dt
     pitch_roll_vel_coeff = 0.05                 * action_dt
     pitch_roll_pos_coeff = 0.2                  * action_dt
     actuator_joint_nominal_diff_coeff = 0.0     * action_dt
-    actuator_joint_nominal_diff_joints = []
+    actuator_joint_nominal_diff_joints_cfg = None
     joint_position_limit_coeff = 120.0          * action_dt
     joint_acceleration_coeff = 3e-6             * action_dt
     joint_torque_coeff = 2.4e-3                 * action_dt

@@ -90,21 +90,11 @@ def plot_finished_trainings(results, step_index, save_path=None):
         save_path (str, optional): Path to save the figure. If None, the figure is not saved.
     """
     finished_returns = []
-    max_mean_return = -float("inf")
-    min_mean_return = float("inf")
-    
     for folder, scalars in results.items():
         if "Train/mean_return" in scalars and len(scalars["Train/mean_return"]) > step_index:
             finished_returns.append(scalars["Train/mean_return"][step_index])
-            
-            if scalars["Train/mean_return"][step_index] > max_mean_return:
-                max_mean_return = scalars["Train/mean_return"][step_index]
-            if scalars["Train/mean_return"][step_index] < min_mean_return:
-                min_mean_return = scalars["Train/mean_return"][step_index]
 
     print(f"Total trainings completed: {len(finished_returns)}")
-    print(f"Max mean return: {max_mean_return}")
-    print(f"Min mean return: {min_mean_return}")
     if finished_returns:
         plt.hist(finished_returns, bins=10, edgecolor='black')
         plt.title(f"Histogram of 'Train/mean_return' (Step {step_index})")
@@ -129,20 +119,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     results = process_training_results(args.log_path, args.step_index, args.keyword)
-    
-    # sort rewards and write them to rewards.txt
-    sorted_rewards = []
-    for folder, scalars in results.items():
-        if "Train/mean_return" in scalars and len(scalars["Train/mean_return"]) > args.step_index:
-            reward_val = scalars["Train/mean_return"][args.step_index]
-            sorted_rewards.append((folder, reward_val))
-
-    sorted_rewards.sort(key=lambda x: x[1])
-
-    with open(args.save_path+".txt", "w", encoding="utf-8") as f:
-        for folder, reward_val in sorted_rewards:
-            f.write(f"{folder}\t{reward_val}\n")
-    print("rewards.txt done")
-    
     plot_finished_trainings(results, args.step_index, args.save_path)
-

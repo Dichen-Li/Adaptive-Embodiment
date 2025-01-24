@@ -5,33 +5,33 @@ def check_record_status(logs_path):
     completed_records = set()
     missing_h5_record = set()
     incomplete_records = set()
-    # traverse all sub-folders in logs/rsl_rl
+
+    # Traverse all sub-folders in logs/rsl_rl
     for subdir in os.listdir(logs_path):
         subdir_path = os.path.join(logs_path, subdir)
         if os.path.isdir(subdir_path):
-            # Traverse  the latest folder
+            # Match prefix name
             match = re.match(r"(Gendog\d+)_", subdir)
-            # import ipdb; ipdb.set_trace()
             if match:
                 prefix_name = match.group(1)
-                # Traverse sub-folders of all time stamps
-                time_subdirs = [d for d in os.listdir(subdir_path) if os.path.isdir(os.path.join(subdir_path, d))]
-                record_found = False
-                for time_subdir in time_subdirs:
-                    time_subdir_path = os.path.join(subdir_path, time_subdir)
-                    h5py_record_path = os.path.join(time_subdir_path, "h5py_record")
+                # Get all timestamp sub-folders
+                time_subdirs = [
+                    d for d in os.listdir(subdir_path)
+                    if os.path.isdir(os.path.join(subdir_path, d))
+                ]
+                if time_subdirs:
+                    # Sort to find the latest folder
+                    latest_subdir = sorted(time_subdirs)[-1]
+                    latest_subdir_path = os.path.join(subdir_path, latest_subdir)
+                    h5py_record_path = os.path.join(latest_subdir_path, "h5py_record")
                     if os.path.exists(h5py_record_path):
-                        obs_file = os.path.join(h5py_record_path, "obs_actions_00002.h5")
+                        obs_file = os.path.join(h5py_record_path, "obs_actions_00005.h5")
                         if os.path.exists(obs_file):
                             completed_records.add(prefix_name)
-                            record_found = True
-                            break
-
-                if not record_found:
-                    if not any(os.path.exists(os.path.join(os.path.join(subdir_path, ts), "h5py_record")) for ts in time_subdirs):
-                        missing_h5_record.add(prefix_name)
+                        else:
+                            incomplete_records.add(prefix_name)
                     else:
-                        incomplete_records.add(prefix_name)
+                        missing_h5_record.add(prefix_name)
 
     # Sort based on the results
     def sort_by_number(prefix_list):
@@ -43,8 +43,9 @@ def check_record_status(logs_path):
         "Incomplete Records": sort_by_number(list(incomplete_records))
     }
 
+
 # Example
-logs_path = "../logs/rsl_rl"  # Modify to the actual directory
+logs_path = "/tmu-fast-vol/embodiment-scaling-law/logs/rsl_rl"  # Modify to the actual directory
 record_status = check_record_status(logs_path)
 
 # Output the results
