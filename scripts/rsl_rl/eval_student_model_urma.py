@@ -166,6 +166,7 @@ def main():
     one_policy_observation = observations["observations"]["urma_obs"]
     curr_timestep = 0
 
+    termination_steps = torch.zeros(args_cli.num_envs, device=model_device)
     returns = torch.zeros(args_cli.num_envs, device=model_device)
     seen_dones = torch.zeros(args_cli.num_envs, dtype=torch.bool, device=model_device)
 
@@ -177,11 +178,14 @@ def main():
 
             # Environment stepping
             obs, rewards, dones, extra = env.step(actions)
+            dones = dones.bool()
 
             one_policy_observation = extra["observations"]["urma_obs"]
 
             # Update the returns
             returns += rewards * (1 - seen_dones.float())
+            termination_steps[(~seen_dones) & dones] = curr_timestep + 1
+
             seen_dones = seen_dones | dones
 
             curr_timestep += 1
@@ -195,7 +199,8 @@ def main():
     del env
 
     avg_return = returns.mean().item()
-    print(f"[INFO] Average return: {avg_return}")
+    avg_steps = termination_steps.mean().item()
+    print(f"[INFO] Average return: {avg_return}, average steps: {avg_steps}")
 
     # log average return to file
     import json
@@ -207,7 +212,8 @@ def main():
         # update the log file
         with open(args_cli.log_file, 'r') as f:
             log_data = json.load(f)
-        log_data[args_cli.task] = {"average_return": avg_return}
+        log_data[args_cli.task] = {"average_return": avg_return, "average_steps": avg_steps,
+                                   "returns": returns.tolist(), "steps": termination_steps.tolist()}
         with open(args_cli.log_file, 'w') as f:
             json.dump(log_data, f)
 
