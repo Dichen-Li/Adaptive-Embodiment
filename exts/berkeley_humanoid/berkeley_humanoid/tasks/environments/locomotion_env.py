@@ -576,7 +576,7 @@ class LocomotionEnv(DirectRLEnv):
             self.feet_y_distance_target
         )
 
-        self.extras = {"log": extras}  # sum(extras.values()) is reward
+        self.extras = {"log": extras}
 
         self.previous_actions = self.actions.clone()
         self.previous_feet_air_times = feet_contact_sensors.data.current_air_time[:, self.feet_contact_cfg.body_ids].clone()
@@ -987,6 +987,18 @@ def compute_rewards(
         "reward/air_time": air_time_reward.mean(),
         "reward/symmetry_air": symmetry_air_reward.mean(),
         "reward/feet_y_distance": feet_y_distance_reward.mean(),
+        "reward_info/xy_velocity_difference_norm": xy_velocity_difference_norm.mean(),
+        "reward_info/yaw_velocity_difference_norm": yaw_velocity_difference_norm.mean(),
+        "reward_info/z_velocity_squared": z_velocity_squared.mean(),
+        "reward_info/angular_velocity_norm": angular_velocity_norm.mean(),
+        "reward_info/pitch_roll_position_norm": pitch_roll_position_norm.mean(),
+        "reward_info/actuator_joint_nominal_diff_norm": actuator_joint_nominal_diff_norm.mean(),
+        "reward_info/limit_penalty": lower_limit_penalty.mean() + upper_limit_penalty.mean(),
+        "reward_info/acceleration_norm": acceleration_norm.mean(),
+        "reward_info/torque_norm": torque_norm.mean(),
+        "reward_info/action_rate_norm": action_rate_norm.mean(),
+        "reward_info/height_difference_squared": height_difference_squared.mean(),
+        "reward_info/feet_y_distance_from_target_norm": feet_y_distance_from_target_norm.mean(),
     }
 
     return reward, extras

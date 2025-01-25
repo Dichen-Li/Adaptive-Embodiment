@@ -180,6 +180,11 @@ def main():
             obs, rewards, dones, extra = env.step(actions)
             dones = dones.bool()
 
+            if curr_timestep == 0:
+                reward_extras = {key: torch.zeros(args_cli.num_envs, device=model_device) for key in extra["log"].keys()}
+            for key, value in extra["log"].items():
+                reward_extras[key] += value
+
             one_policy_observation = extra["observations"]["urma_obs"]
 
             # Update the returns
@@ -200,6 +205,7 @@ def main():
 
     avg_return = returns.mean().item()
     avg_steps = termination_steps.mean().item()
+    avg_reward_extras = {key: value.mean().item() for key, value in reward_extras.items()}
     print(f"[INFO] Average return: {avg_return}, average steps: {avg_steps}")
 
     # log average return to file
@@ -214,6 +220,7 @@ def main():
             log_data = json.load(f)
         log_data[args_cli.task] = {"average_return": avg_return, "average_steps": avg_steps,
                                    "returns": returns.tolist(), "steps": termination_steps.tolist()}
+        log_data[args_cli.task].update(avg_reward_extras)
         with open(args_cli.log_file, 'w') as f:
             json.dump(log_data, f)
 

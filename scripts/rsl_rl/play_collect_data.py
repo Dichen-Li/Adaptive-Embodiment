@@ -117,6 +117,7 @@ def main():
 
     from utils import RewardDictLogger
     reward_dict_logger = RewardDictLogger(args_cli.num_envs)
+    termination_steps = torch.zeros(args_cli.num_envs, device=model_device)
     returns = torch.zeros(args_cli.num_envs, device=model_device)
     seen_dones = torch.zeros(args_cli.num_envs, dtype=torch.bool, device=model_device)
     
@@ -165,6 +166,12 @@ def main():
 
             # Stepping the environment
             obs, rewards, dones, extra = env.step(actions)
+            dones = dones.bool()
+
+            if curr_timestep == 1:
+                reward_extras = {key: torch.zeros(args_cli.num_envs, device=model_device) for key in extra["log"].keys()}
+            for key, value in extra["log"].items():
+                reward_extras[key] += value
 
             one_policy_observation = extra["observations"]["urma_obs"]
             if args_cli.reward_log_file is not None:
@@ -172,6 +179,7 @@ def main():
                 reward_dict_logger.update(env, rewards, dones)
                 if not seen_dones.all().item():
                     returns += rewards * (1 - seen_dones.float())
+                    termination_steps[(~seen_dones) & dones] = curr_timestep
                     seen_dones = seen_dones | dones
 
                     if curr_timestep % 100 == 0:
@@ -192,7 +200,9 @@ def main():
     del env
 
     avg_return = returns.mean().item()
-    print(f"[INFO] Average return: {avg_return}")
+    avg_steps = termination_steps.mean().item()
+    avg_reward_extras = {key: value.mean().item() for key, value in reward_extras.items()}
+    print(f"[INFO] Average return: {avg_return}, average steps: {avg_steps}")
 
     if args_cli.reward_log_file is not None:
         # log average return to file
@@ -206,7 +216,9 @@ def main():
         # update the log file
         with open(reward_log_file, 'r') as f:
             log_data = json.load(f)
-        log_data[args_cli.task] = {"average_return": avg_return}
+        log_data[args_cli.task] = {"average_return": avg_return, "average_steps": avg_steps,
+                                   "returns": returns.tolist(), "steps": termination_steps.tolist()}
+        log_data[args_cli.task].update(avg_reward_extras)
         with open(reward_log_file, 'w') as f:
             print(f"[INFO] Log reward value: average_return into {reward_log_file}")
             json.dump(log_data, f)
