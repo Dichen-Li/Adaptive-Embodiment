@@ -2,16 +2,16 @@ import os
 
 # Configuration
 # we have 352 humanoids in GenBot1K-v2
-task_indices = [8, 9, 84, 88, 143, 183, 205, 209, 223, 228, 346]
+task_indices = sorted([19, 124, 180, 336, 348] + [28, 38, 43, 44, 52, 53, 54, 55, 56, 64, 88, 104, 105, 106, 107, 133, 136, 144, 146, 151, 161, 162, 168, 175, 181, 189, 197, 202, 218, 258, 306, 310, 318, 331, 350])
 tasks_prefix = "Genhumanoid"
 tasks_suffix = ""  # Add any suffix if needed
 tasks_per_job = 4  # Number of tasks per job
 num_parallel_commands = 4  # Number of parallel commands per job
-job_name_template = "tmu-esl-human-v2-3-{job_index}"
+job_name_template = "tmu-esl-human-v2-4-round3-{job_index}"
 output_folder = "jobs"  # Folder to store YAML files
 submission_script = "submit_jobs.sh"  # Batch submission script
 deletion_script = "delete_jobs.sh"  # Batch deletion script
-run_name = 'v2-3' # added by tmu
+run_name = 'v2-4-round3' # added by tmu
 wandb_login_key = 'USE_YOUR_WANDB_LOGIN_KEY' # added by tmu
 wandb_login_key = '44713a60b687b7a3dbe558ae6ef945cbeacb756e'# tmu API key
 
