@@ -50,7 +50,7 @@ def create_dummy_h5_files(file_paths, dataset_key):
 if __name__ == "__main__":
     # Parameters
     dataset_key = "my_dataset"
-    h5_files = [f"dummy_data_{i}.h5" for i in range(5)]
+    h5_files = [f"dummy_data_{i}.h5" for i in range(1)]
     batch_size = 256
 
     # Create dummy data
