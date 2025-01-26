@@ -192,9 +192,9 @@ def get_most_recent_h5py_record_path(base_path, task_name):
     if "genhumanoid" in task_name:
         subdirectories = [
             d for d in os.listdir(task_path)
-            if os.path.isdir(os.path.join(task_path, d)) and d[:-3].replace("_", "-").replace("-", "").isdigit()
+            if os.path.isdir(os.path.join(task_path, d)) and d[:-5].replace("_", "-").replace("-", "").isdigit()
         ]
-        subdirectories.sort(key=lambda d: datetime.strptime(d[:-3], "%Y-%m-%d_%H-%M-%S"), reverse=True)
+        subdirectories.sort(key=lambda d: datetime.strptime(d[:-5], "%Y-%m-%d_%H-%M-%S"), reverse=True)
     else:
         subdirectories = [
             d for d in os.listdir(task_path)
