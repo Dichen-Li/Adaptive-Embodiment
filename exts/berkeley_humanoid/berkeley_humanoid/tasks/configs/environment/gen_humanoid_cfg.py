@@ -63,15 +63,15 @@ class GenHumanoidEnvCfg(DirectRLEnvCfg):
 
     # Reward
     reward_curriculum_steps = 400e6
-    tracking_xy_velocity_command_coeff = 3.0    * action_dt
-    tracking_yaw_velocity_command_coeff = 1.5   * action_dt
+    tracking_xy_velocity_command_coeff = 6.0    * action_dt
+    tracking_yaw_velocity_command_coeff = 3.0   * action_dt
     z_velocity_coeff = 2.0                      * action_dt
     pitch_roll_vel_coeff = 0.05                 * action_dt
     pitch_roll_pos_coeff = 0.2                  * action_dt
-    actuator_joint_nominal_diff_coeff = 14.4    * action_dt
+    actuator_joint_nominal_diff_coeff = 9.0    * action_dt
     actuator_joint_nominal_diff_joints_cfg = SceneEntityCfg("robot", joint_names=['.*torso.*', '.*shoulder.*', '.*elbow.*'])
-    joint_position_limit_coeff = 120.0          * action_dt
-    joint_acceleration_coeff = 3e-6             * action_dt
+    joint_position_limit_coeff = 30.0          * action_dt
+    joint_acceleration_coeff = 3e-7             * action_dt
     joint_torque_coeff = 2.4e-4                 * action_dt
     action_rate_coeff = 0.12                    * action_dt
     base_height_coeff = 30.0                    * action_dt

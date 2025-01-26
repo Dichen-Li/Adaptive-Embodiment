@@ -5,7 +5,8 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm
+from utils import (get_most_recent_h5py_record_path, save_checkpoint, AverageMeter,
+                   save_args_to_yaml, compute_gradient_norm, get_process_ram_usage, get_system_ram_usage)
 from dataset import LocomotionDataset_tmu
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -138,7 +139,6 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
         timer.end('prepare')
 
         with tqdm.tqdm(train_dataloader, desc=f"Training Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-            iteration_start_time = time.time()
             for index, data_batch in enumerate(pbar):
                 grad_step_cnt += 1
                 if grad_step_cnt % 100 == 0:
@@ -153,6 +153,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 data_source_name = 'mix'
                 io_times = data_batch['io_time']
                 processing_times = data_batch['data_processing_time']
+                loss_mask = data_batch['loss_mask']
 
                 iteration = index + epoch * len(train_dataloader)
                 # dataloader_time = time.time() - iteration_start_time
@@ -161,6 +162,7 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 # start_time = time.time()
                 batch_inputs = [x.to(model_device) for x in batch_inputs]
                 batch_targets = batch_targets.to(model_device)
+                loss_mask = loss_mask.to(model_device)
                 # move_cuda_time = time.time() - start_time
                 timer.end('data_loading')
 
@@ -171,7 +173,10 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                     else:
                         raise NotImplementedError
 
+                    batch_predictions = batch_predictions * loss_mask
+                    batch_targets = batch_targets * loss_mask
                     loss = criterion(batch_predictions, batch_targets)
+
                 # forward_time = time.time() - start_time
                 timer.end('forward')
 
@@ -221,11 +226,13 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 if grad_norm is not None:
                     writer.add_scalar("Train/grad_norm-iter", grad_norm, iteration)
 
+                # Log memory
+                writer.add_scalar("Train/ram-system-used", get_system_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-process-used", get_process_ram_usage(), iteration)
+
                 # Step the LR scheduler by iteration
                 if scheduler is not None:
                     scheduler.step()
-
-                iteration_start_time = time.time()  # start time of next iteration
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -268,6 +275,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                         ], dim=1)
                         batch_predictions = policy(one_input)
 
+                    batch_predictions = batch_predictions * loss_mask
+                    batch_targets = batch_targets * loss_mask
                     loss = criterion(batch_predictions, batch_targets)
 
                     # Update validation loss tracker
@@ -300,7 +309,15 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
             with torch.no_grad():
                 with tqdm.tqdm(test_dataloader, desc=f"Test Epoch {epoch + 1}/{num_epochs}", unit="batch") as pbar:
-                    for index, (batch_inputs, batch_targets, data_source_name, _, _) in enumerate(pbar):
+                    for index, data_batch in enumerate(pbar):
+                        batch_inputs = [
+                            data_batch['dynamic_joint_description'],
+                            data_batch['dynamic_joint_state'],
+                            data_batch['general_state'],
+                        ]
+                        batch_targets = data_batch['target']
+                        data_source_name = 'mix'
+
                         # Move data to device
                         batch_inputs = [x.to(model_device) for x in batch_inputs]
                         batch_targets = batch_targets.to(model_device)
@@ -313,6 +330,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                             ], dim=1)
                             batch_predictions = policy(one_input)
 
+                        batch_predictions = batch_predictions * loss_mask
+                        batch_targets = batch_targets * loss_mask
                         loss = criterion(batch_predictions, batch_targets)
 
                         # Update validation loss tracker

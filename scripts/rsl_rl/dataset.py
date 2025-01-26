@@ -242,7 +242,8 @@ class DatasetSaver:
 
 
 class LocomotionDataset(Dataset):
-    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio, h5_repeat_factor):
+    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio, h5_repeat_factor,
+                 max_parallel_envs_per_file):
         """
         Initialize the LocomotionDataset.
 
@@ -267,6 +268,7 @@ class LocomotionDataset(Dataset):
         self.max_files_in_memory = max_files_in_memory
         self.metadata_list = np.array([self._load_metadata(folder_path) for folder_path in folder_paths])   # use numpy to avoid copy-on-write behavior of python list
         # self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+        self.max_parallel_envs_per_file = max_parallel_envs_per_file
 
         self.train_mode = train_mode
         self.val_ratio = val_ratio
@@ -291,7 +293,7 @@ class LocomotionDataset(Dataset):
         # self.counter_not_in_scope = 0
 
         # for debugging
-        self.get_count = 0
+        # self.get_count = 0
 
         # Verbose output
         print(f"[INFO]: Initialized dataset with {len(self)} samples from {len(self.folder_paths)} folders. "
@@ -347,11 +349,17 @@ class LocomotionDataset(Dataset):
             else:
                 selected_files = hdf5_files[:num_val_files]  # First files for validation
 
+            # selected_files = selected_files[:3]  # cap the number of files to 3 
+
             # Process selected files
             for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)
                 steps_per_file = metadata["steps_per_file"]
                 parallel_envs = metadata["parallel_envs"]
+                if self.max_parallel_envs_per_file is not None:
+                    assert parallel_envs >= self.max_parallel_envs_per_file, \
+                        f"actual parallel envs {parallel_envs} smaller than {self.max_parallel_envs_per_file}"
+                    parallel_envs = self.max_parallel_envs_per_file
                 self.file_indices[key] = (folder_path, file_name, steps_per_file, parallel_envs)
                 self.total_samples += steps_per_file * parallel_envs
 
@@ -381,8 +389,8 @@ class LocomotionDataset(Dataset):
         # print(f"[INFO]: Loading file {file_path}")
 
         with h5py.File(file_path, "r") as data_file:
-            inputs = np.array(data_file["one_policy_observation"][:])
-            targets = np.array(data_file["actions"][:])
+            inputs = np.array(data_file["one_policy_observation"][:, :self.max_parallel_envs_per_file])
+            targets = np.array(data_file["actions"][:, :self.max_parallel_envs_per_file])
 
         # Validate shapes
         if inputs.shape != (steps_per_file, parallel_envs, inputs.shape[-1]):
@@ -696,8 +704,14 @@ class LocomotionDataset(Dataset):
         final_samples = []
         max_samples_per_worker = max(len(worker_samples) for worker_samples in samples_per_worker)
         for i in range(max_samples_per_worker):
+            cycle_samples = []
             for worker_idx, samples in enumerate(samples_per_worker):
-                final_samples.append(samples[i])
+                cycle_samples.append(samples[i])
+            
+            # shuffle the samples in one cycle, if desirable
+            random.shuffle(cycle_samples)
+
+            final_samples.extend(cycle_samples)
 
         print(f'[INFO]: h5_repeat_factor = {self.h5_repeat_factor}. '
               f'additional duplicates due to resample: {duplicates} out of {len(final_samples)} samples '

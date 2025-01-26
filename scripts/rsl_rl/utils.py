@@ -189,15 +189,23 @@ def get_most_recent_h5py_record_path(base_path, task_name):
     if not os.path.exists(task_path):
         raise FileNotFoundError(f"Task folder '{task_name}' not found at {base_path}")
 
-    subdirectories = [
-        d for d in os.listdir(task_path)
-        if os.path.isdir(os.path.join(task_path, d)) and d.replace("_", "-").replace("-", "").isdigit()
-    ]
+    if "genhumanoid" in task_name:
+        subdirectories = [
+            d for d in os.listdir(task_path)
+            if os.path.isdir(os.path.join(task_path, d)) and d[:-5].replace("_", "-").replace("-", "").isdigit()
+        ]
+        subdirectories.sort(key=lambda d: datetime.strptime(d[:-5], "%Y-%m-%d_%H-%M-%S"), reverse=True)
+    else:
+        subdirectories = [
+            d for d in os.listdir(task_path)
+            if os.path.isdir(os.path.join(task_path, d)) and d.replace("_", "-").replace("-", "").isdigit()
+        ]
+        subdirectories.sort(key=lambda d: datetime.strptime(d, "%Y-%m-%d_%H-%M-%S"), reverse=True)
+
 
     if not subdirectories:
         raise FileNotFoundError(f"No subfolders found for task '{task_name}' in {task_path}")
 
-    subdirectories.sort(key=lambda d: datetime.strptime(d, "%Y-%m-%d_%H-%M-%S"), reverse=True)
     most_recent_folder = subdirectories[0]
 
     h5py_record_path = os.path.join(task_path, most_recent_folder, "h5py_record")

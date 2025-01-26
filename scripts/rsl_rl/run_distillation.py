@@ -1,8 +1,12 @@
+import torch
+import numpy as np
+from torch.cuda.amp import GradScaler, autocast
+import random
 import gc
 import os
-import torch
-from torch.cuda.amp import GradScaler, autocast
-torch.backends.cudnn.benchmark = True
+# pid = os.getpid()
+# with open(f"/proc/{pid}/oom_score_adj", "w") as f:
+#     f.write("-1000")        # set high priority for OOM killer
 
 from torch.utils.tensorboard import SummaryWriter
 import time
@@ -15,6 +19,16 @@ import tqdm
 import argparse
 import yaml
 
+def set_seed(seed):
+    random.seed(seed)  # Set Python's random seed
+    np.random.seed(seed)  # Set NumPy's random seed
+    torch.manual_seed(seed)  # Set PyTorch's CPU seed
+    torch.cuda.manual_seed(seed)  # Set PyTorch's GPU seed (if using CUDA)
+    torch.cuda.manual_seed_all(seed)  # Set the seed for all GPUs (if using multiple GPUs)
+    torch.backends.cudnn.deterministic = True  # Ensure deterministic behavior
+    torch.backends.cudnn.benchmark = False  # Disable optimizations for reproducibility
+
+set_seed(0)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
@@ -39,6 +53,8 @@ def parse_arguments():
                         help="Number of batches before one gradient update.")
     parser.add_argument("--h5_repeat_factor", type=int, default=1, help="Number of times we repeat one h5 file consecutively in one epoch.")
     parser.add_argument("--use_amp", type=int, default=0, help="Whether to use automatic mixed precision.")
+    parser.add_argument("--max_parallel_envs_per_file", type=int, default=4096,
+                        help="Number of parallel envs per file.")
     parser.add_argument(
         "--model",
         type=str,
@@ -48,7 +64,9 @@ def parse_arguments():
     )
     # Add argument for YAML configuration
     parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
-    parser.add_argument("--dataset_dir", type=str, default="/media/t7-ssd/Data/logs/rsl_rl", help="Directory containing the dataset.")
+    parser.add_argument("--dataset_dir", type=str,
+                        default="/mnt/hdd_0/expert_data/decompressed/gendog/logs/rsl_rl",
+                        help="Directory containing the dataset.")
 
     args = parser.parse_args()
 
@@ -92,6 +110,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
     print("[INFO] Starting supervised training.")
     for epoch in range(num_epochs):
+        # clean up memory
+        gc.collect()
+
         # Training phase
         policy.train()
         for meter in train_loss_meters.values():
@@ -190,6 +211,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                     collected = gc.collect()
                     print(f"Garbage collector: collected {collected} objects.")
 
+        del train_dataloader
+
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
             writer.add_scalar(f"Train/loss/{robot_name}", meter.avg, epoch + 1)
@@ -240,6 +263,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
         writer.add_scalar("Val/loss/avg", get_meter_dict_avg(val_loss_meters), epoch + 1)
 
+        del val_dataloader
+
         if len(test_dataset) > 0:
             # Test phase
             for meter in test_loss_meters.values():
@@ -283,6 +308,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             for robot_name, meter in test_loss_meters.items():
                 writer.add_scalar(f"Test/loss/{robot_name}", meter.avg, epoch + 1)
             writer.add_scalar("Test/loss/avg", get_meter_dict_avg(test_loss_meters), epoch + 1)
+
+            del test_dataloader
 
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
@@ -328,7 +355,8 @@ def main():
         train_mode=True,
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=args_cli.h5_repeat_factor
+        h5_repeat_factor=args_cli.h5_repeat_factor,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     # Validation dataset
@@ -337,7 +365,8 @@ def main():
         train_mode=False,
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=1
+        h5_repeat_factor=1,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     # Test dataset
@@ -346,7 +375,8 @@ def main():
         train_mode=False,
         val_ratio=args_cli.val_ratio,       # only use a proportion of the data as the test set
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=1
+        h5_repeat_factor=1,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

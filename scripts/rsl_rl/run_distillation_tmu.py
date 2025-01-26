@@ -79,7 +79,7 @@ def parse_arguments():
     )
     # Add argument for YAML configuration
     parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
-    parser.add_argument("--dataset_dir", type=str, default="logs/rsl_rl", help="Directory containing the dataset.")
+    parser.add_argument("--dataset_dir", type=str, default="/mnt/hdd_0/expert_data/decompressed/gendog/logs/rsl_rl", help="Directory containing the dataset.")
 
     args = parser.parse_args()
 
@@ -362,7 +362,6 @@ def main():
     args_cli = parse_arguments()
 
     import wandb
-    os.environ["WANDB_API_KEY"] = "44713a60b687b7a3dbe558ae6ef945cbeacb756e"
 
     wandb.init(
         project='esl_distillation',
