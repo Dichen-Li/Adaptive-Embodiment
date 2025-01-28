@@ -16,20 +16,25 @@ from omni.isaac.lab.terrains import TerrainImporterCfg
 from omni.isaac.lab.utils import configclass
 
 from berkeley_humanoid.assets.unitree import H1_CFG
-from berkeley_humanoid.tasks.environments.locomotion_env import LocomotionEnv
 
 
 @configclass
 class H1EnvCfg(DirectRLEnvCfg):
-    # env
+    num_envs = 4096
     episode_length_s = 20.0
-    decimation = 4
     dt = 0.005
+    decimation = 4
+    nr_feet = 2
     action_space = 19
-    observation_space = 69
+    observation_space = 87
 
-    # simulation
-    sim: SimulationCfg = SimulationCfg(dt=dt, render_interval=decimation)
+    action_dt = dt * decimation
+
+    sim: SimulationCfg = SimulationCfg(
+        dt=dt,
+        render_interval=decimation,
+        disable_contact_processing=True,
+    )
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
         terrain_type="plane",
@@ -44,47 +49,95 @@ class H1EnvCfg(DirectRLEnvCfg):
         debug_vis=False,
     )
 
-    # scene
-    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.5,
-                                                     replicate_physics=True)
-    # scene = MySceneCfg(num_envs=4096, env_spacing=4.0)
-
-    # robot
-    robot: ArticulationCfg = H1_CFG.replace(prim_path="/World/envs/env_.*/Robot")
-
-    # sensor for reward calculation
-    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", history_length=3,
-                                      track_air_time=True, track_pose=True)
-
-    # # lights
-    # sky_light = AssetBaseCfg(
-    #     prim_path="/World/skyLight",
-    #     spawn=sim_utils.DomeLightCfg(
-    #         intensity=750.0,
-    #         texture_file=f"{ISAAC_NUCLEUS_DIR}/Materials/Textures/Skies/PolyHaven/kloofendal_43d_clear_puresky_4k.hdr",
-    #     ),
-    # )
-
     asset_name = "robot"
+    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=num_envs, env_spacing=4.0, replicate_physics=True)
+    robot: ArticulationCfg = H1_CFG.replace(prim_path="/World/envs/env_.*/Robot")
+    contact_sensor = ContactSensorCfg(prim_path="/World/envs/env_.*/Robot/.*", track_air_time=True)
+    all_bodies_cfg = SceneEntityCfg("robot", body_names=".*")
+    all_joints_cfg = SceneEntityCfg("robot", joint_names=".*")
 
-    # Velocity command ranges
-    x_vel_range = (-1.0, 1.0)
-    y_vel_range = (-1.0, 1.0)
-    yaw_vel_range = (-1.0, 1.0)
-    resampling_interval = 10 / (dt * decimation)  # time before the command is changed in sec
-    # dt * decimation is actually the time duration that corresponds to one env step
+    # robot-specific config
+    trunk_cfg = SceneEntityCfg("robot", body_names="pelvis")
+    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*pelvis.*', '.*hip.*', '.*torso.*', '.*shoulder.*']) # TODO: maybe we need to tune
+    feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*ankle.*")
 
-    # controller
-    controller_use_offset = True
-    action_scale = 0.5
-    controlled_joints = ".*"
+    step_sampling_probability = 0.002
 
-    # reward configs
-    reward_cfgs = {
-        'feet_ground_contact_cfg': SceneEntityCfg("contact_sensor", body_names=".*ankle_roll_link"),
-        'feet_ground_asset_cfg': SceneEntityCfg("robot", body_names=".*ankle_roll_link"),
-        'undesired_contact_cfg': SceneEntityCfg("contact_sensor", body_names=[".*knee_link", ".*hip_yaw_link"]),
-        'joint_hip_cfg': SceneEntityCfg("robot", joint_names=[".*hip.*joint"]),
-        'joint_knee_cfg': SceneEntityCfg("robot", joint_names=[".*knee.*joint"]),
-        'illegal_contact_cfg': SceneEntityCfg("contact_sensor", body_names='torso.*')
-    }
+    action_scaling_factor = 0.75
+
+    # Reward
+    reward_curriculum_steps = 400e6
+    tracking_xy_velocity_command_coeff = 3.0    * action_dt
+    tracking_yaw_velocity_command_coeff = 1.5   * action_dt
+    z_velocity_coeff = 2.0                      * action_dt
+    pitch_roll_vel_coeff = 0.05                 * action_dt
+    pitch_roll_pos_coeff = 0.2                  * action_dt
+    actuator_joint_nominal_diff_coeff = 14.4    * action_dt
+    actuator_joint_nominal_diff_joints_cfg = SceneEntityCfg("robot", joint_names=['.*torso.*', '.*shoulder.*', '.*elbow.*'])
+    joint_position_limit_coeff = 120.0          * action_dt
+    joint_acceleration_coeff = 3e-6             * action_dt
+    joint_torque_coeff = 2.4e-4                 * action_dt
+    action_rate_coeff = 0.12                    * action_dt
+    base_height_coeff = 30.0                    * action_dt
+    air_time_coeff = 0.1                        * action_dt
+    symmetry_air_coeff = 0.5                    * action_dt
+    feet_symmetry_pairs = [(0, 1)]
+    feet_y_distance_coeff = 2.0                 * action_dt
+
+    # Domain randomization
+    domain_randomization_curriculum_steps = 300e6
+    ## Action delay
+    max_nr_action_delay_steps = 1
+    mixed_action_delay_chance = 0.05
+    ## Control
+    motor_strength_min = 0.5
+    motor_strength_max = 1.5
+    p_gain_factor_min = 0.5
+    p_gain_factor_max = 1.5
+    d_gain_factor_min = 0.5
+    d_gain_factor_max = 1.5
+    p_law_position_offset_min = -0.05
+    p_law_position_offset_max = 0.05
+    ## Initial state
+    initial_state_roll_angle_factor = 0.0625
+    initial_state_pitch_angle_factor = 0.0625
+    initial_state_yaw_angle_factor = 1.0
+    initial_state_joint_nominal_position_factor = 0.5
+    initial_state_joint_velocity_factor = 0.5
+    initial_state_joint_velocity_clip = 1
+    initial_state_max_linear_velocity = 0.5
+    initial_state_max_angular_velocity = 0.5
+    ## Observation noise
+    joint_position_noise = 0.01
+    joint_velocity_noise = 1.5
+    trunk_angular_velocity_noise = 0.2
+    ground_contact_noise_chance = 0.05
+    contact_time_noise_chance = 0.05
+    contact_time_noise_factor = 1.0
+    gravity_vector_noise = 0.05
+    ## Observation dropout
+    joint_and_feet_dropout_chance = 0.05
+    ## Model
+    static_friction_min = 0.05
+    static_friction_max = 2.0
+    dynamic_friction_min = 0.05
+    dynamic_friction_max = 1.5
+    restitution_min = 0.0
+    restitution_max = 1.0
+    added_trunk_mass_min = -2.0
+    added_trunk_mass_max = 2.0
+    added_gravity_min = -1.0
+    added_gravity_max = 1.0
+    joint_friction_min = 0.0
+    joint_friction_max = 0.01
+    joint_armature_min = 0.0
+    joint_armature_max = 0.01
+    ## Perturbations
+    perturb_velocity_x_min = -1.0
+    perturb_velocity_x_max = 1.0
+    perturb_velocity_y_min = -1.0
+    perturb_velocity_y_max = 1.0
+    perturb_velocity_z_min = -1.0
+    perturb_velocity_z_max = 1.0
+    perturb_add_chance = 0.5
+    perturb_additive_multiplier = 1.5

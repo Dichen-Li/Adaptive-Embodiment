@@ -1,0 +1,23 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H   [INFO] Using python from: /workspace/isaaclab/_isaac_sim/python.sh
+Loading user config located at: '/isaac-sim/kit/data/Kit/Isaac-Sim/4.2/user.config.json'
+[Info] [carb] Logging to file: /isaac-sim/kit/logs/Kit/Isaac-Sim/4.2/kit_20241203_023445.log
+2024-12-03 02:34:45 [0ms] [Warning] [omni.kit.app.plugin] No crash reporter present, dumps uploading isn't available.
+2024-12-03 02:34:46 [855ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 550.127.05    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 3090          | Yes: 0 |     | 24822   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2204      | 4026dda8.. |
+|     |                                  |        |     |            | 2         |            |
+|=============================================================================================|
+| OS: 22.04.3 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.3, Kernel: 5.15.0-124-generic
+| Processor: Intel(R) Xeon(R) CPU E5-1660 v4 @ 3.20GHz | Cores: 8 | Logical: 16
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 96463 | Free Memory: 87499
+| Total Page/Swap (MB): 0 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|

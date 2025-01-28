@@ -20,6 +20,5 @@ logs*
 jobs/
 job_logs/
 zips/
-generation/jobs_scaling_factors
 log_dir*/
 generation/jobs_scaling_factors*

@@ -5,11 +5,12 @@ import h5py
 import numpy as np
 import torch
 import yaml
+import warnings
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import TensorDataset
 from itertools import chain
 
-from thread_safe_dict import ThreadSafeDict
+from thread_safe_dict import ThreadSafeDict, ThreadSafeSingleEntryDict
 from utils import AverageMeter
 
 
@@ -241,7 +242,8 @@ class DatasetSaver:
 
 
 class LocomotionDataset(Dataset):
-    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio, h5_repeat_factor):
+    def __init__(self, folder_paths, max_files_in_memory, train_mode, val_ratio, h5_repeat_factor,
+                 max_parallel_envs_per_file):
         """
         Initialize the LocomotionDataset.
 
@@ -262,10 +264,11 @@ class LocomotionDataset(Dataset):
             h5_repeat_factor: Number of times we repeat one h5 file consecutively in one epoch. This gives us
                 more batches without additional IO, but may alter the training dynamics a bit.
         """
-        self.folder_paths = folder_paths
+        self.folder_paths = np.array(folder_paths)
         self.max_files_in_memory = max_files_in_memory
         self.metadata_list = np.array([self._load_metadata(folder_path) for folder_path in folder_paths])   # use numpy to avoid copy-on-write behavior of python list
         # self.metadata_list = [self._load_metadata(folder_path) for folder_path in folder_paths]
+        self.max_parallel_envs_per_file = max_parallel_envs_per_file
 
         self.train_mode = train_mode
         self.val_ratio = val_ratio
@@ -276,19 +279,20 @@ class LocomotionDataset(Dataset):
         # Thread-safe cache for loaded files
         # global global_cache    # we must use global reference, otherwise every thread will spawn its own cache
         self.cache = ThreadSafeDict(max_size=max_files_in_memory)
+        # self.cache = ThreadSafeSingleEntryDict(max_size=max_files_in_memory)
 
         # Map file indices and prepare dataset structure
         self._prepare_file_indices()
 
         # Compute hit rate for caching, for debugging purpose
         # self.cache_hit_count = AverageMeter()
-        self.cache_query_time = AverageMeter()
+        # self.cache_query_time = AverageMeter()
         # self.transform_data_time = AverageMeter()
 
         # record the number of times the data index is not in the worker's scope
-        self.counter_not_in_scope = 0
+        # self.counter_not_in_scope = 0
 
-        # # for debugging
+        # for debugging
         # self.get_count = 0
 
         # Verbose output
@@ -325,7 +329,11 @@ class LocomotionDataset(Dataset):
             self.folder_idx_to_file_name[folder_idx] = folder_path.split("/")[-3]
             metadata = self.metadata_list[folder_idx]
             hdf5_files = sorted(
-                [f for f in os.listdir(folder_path) if f.endswith(".h5")],
+                [
+                    f.decode("utf-8") if isinstance(f, bytes) else f
+                    for f in os.listdir(folder_path)
+                    if (isinstance(f, bytes) and f.endswith(b".h5")) or (isinstance(f, str) and f.endswith(".h5"))
+                ],
                 key=lambda x: int(x.split('_')[-1].split('.')[0])
             )
             total_files = len(hdf5_files)
@@ -340,11 +348,18 @@ class LocomotionDataset(Dataset):
                 selected_files = hdf5_files[num_val_files:]  # Remaining files for training
             else:
                 selected_files = hdf5_files[:num_val_files]  # First files for validation
+
+            # selected_files = selected_files[:3]  # cap the number of files to 3 
+
             # Process selected files
             for file_idx, file_name in enumerate(selected_files):
                 key = (folder_idx, file_idx)
                 steps_per_file = metadata["steps_per_file"]
                 parallel_envs = metadata["parallel_envs"]
+                if self.max_parallel_envs_per_file is not None:
+                    assert parallel_envs >= self.max_parallel_envs_per_file, \
+                        f"actual parallel envs {parallel_envs} smaller than {self.max_parallel_envs_per_file}"
+                    parallel_envs = self.max_parallel_envs_per_file
                 self.file_indices[key] = (folder_path, file_name, steps_per_file, parallel_envs)
                 self.total_samples += steps_per_file * parallel_envs
 
@@ -374,14 +389,16 @@ class LocomotionDataset(Dataset):
         # print(f"[INFO]: Loading file {file_path}")
 
         with h5py.File(file_path, "r") as data_file:
-            inputs = np.array(data_file["one_policy_observation"][:])
-            targets = np.array(data_file["actions"][:])
+            inputs = np.array(data_file["one_policy_observation"][:, :self.max_parallel_envs_per_file])
+            targets = np.array(data_file["actions"][:, :self.max_parallel_envs_per_file])
 
         # Validate shapes
         if inputs.shape != (steps_per_file, parallel_envs, inputs.shape[-1]):
             raise ValueError(f"[ERROR]: Input shape mismatch in file {file_path}.")
         if targets.shape != (steps_per_file, parallel_envs, targets.shape[-1]):
             raise ValueError(f"[ERROR]: Target shape mismatch in file {file_path}.")
+
+        del folder_path, file_name, steps_per_file, parallel_envs
 
         return inputs, targets
 
@@ -397,9 +414,10 @@ class LocomotionDataset(Dataset):
             tuple: (inputs, targets) from the file.
         """
         cache_key = (folder_idx, file_idx)
+        # print(f"[INFO]: Caching file {cache_key}... keys = {self.cache.keys()}")
         cached_file = self.cache.get(cache_key)
         if cached_file is None:
-            # print(f"can't find cached file for {cache_key}")
+            # print(f"can't find cached file for {cache_key}, only got {self.cache.keys()}")
             inputs, targets = self._load_file(folder_idx, file_idx)
             self.cache.put(cache_key, (inputs, targets))
             return inputs, targets
@@ -409,7 +427,7 @@ class LocomotionDataset(Dataset):
             # print(f"[INFO]: Cached file found {cache_key}")
             # if self.cache_hit_count.count % 1000000:
             #     print(f"[INFO]: Cache hit rate: {self.cache_hit_count.avg}")
-        return self.cache.get(cache_key)
+        return cached_file
 
     def __getitem__(self, index):
         """
@@ -430,6 +448,12 @@ class LocomotionDataset(Dataset):
         #
         # # Expecting index as (folder_idx, file_idx, step, env)
         # self.get_count += 1
+        # if self.get_count % (10000 * 256) == 0:
+        #     import gc
+        #     import psutil
+        #     collected = gc.collect()
+        #     print(f"worker id {torch.utils.data.get_worker_info().id}: "
+        #           f"Garbage collector: collected {collected} objects.")
 
         # import psutil
         # process = psutil.Process(os.getpid())
@@ -438,18 +462,20 @@ class LocomotionDataset(Dataset):
 
         folder_idx, file_idx, step, env = index
 
-        # To make sure the worker does not get sample that should be processed by other workers
-        # This shouldn't happen at all, in theory.
-        worker_id = torch.utils.data.get_worker_info().id
-        if (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
-            # cache_keys = self.cache.keys()
-            # folder_idx, file_idx = random.choice(list(cache_keys))
-            # self.counter_not_in_scope += 1
-            # if self.counter_not_in_scope % 1000 == 0:
-            #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
-            #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
-            raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
-                             f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+        # # To make sure the worker does not get sample that should be processed by other workers
+        # # This shouldn't happen at all, in theory.
+        # worker_id = torch.utils.data.get_worker_info()       # None if this is main process
+        # if worker_id is not None:
+        #     worker_id = worker_id.id
+        #     if worker_id is not None and (folder_idx, file_idx) not in self.worker_idx_to_folder_file_idx[worker_id]:
+        #         # cache_keys = self.cache.keys()
+        #         # folder_idx, file_idx = random.choice(list(cache_keys))
+        #         # self.counter_not_in_scope += 1
+        #         # if self.counter_not_in_scope % 1000 == 0:
+        #         #     print(f"[ERROR]: Got index {index} but it's not from the expected files for the {self.counter_not_in_scope}th time. "
+        #         #              f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
+        #         raise ValueError(f"[ERROR]: Got index {index} but it's not from the expected files. "
+        #                          f"Worker id: {worker_id}, files: {self.worker_idx_to_folder_file_idx[worker_id]}")
 
         # Load data from cache or file
         start_time = time.time()
@@ -470,17 +496,18 @@ class LocomotionDataset(Dataset):
         # Get metadata for transformation
         metadata = self.metadata_list[folder_idx]  # potential copy-on-write behavior if using native python list
 
-        # Transform the sample
-        start_time = time.time()
-        transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
-        del input_sample, target_sample, metadata
-
-        # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
-        data_processing_time = time.time() - start_time
+        # # Transform the sample
+        # start_time = time.time()
+        # transformed_sample = self._transform_sample(input_sample, target_sample, metadata)
+        # del input_sample, target_sample, metadata
+        #
+        # # transformed_sample = torch.zeros(15, 18).float(),  torch.zeros(15, 3).float(),  torch.zeros(16).float(),  torch.zeros(15).float()
+        # data_processing_time = time.time() - start_time
         # self.transform_data_time.update(time.time() - s_time)
         # if self.transform_data_time.count % 100:
         #     print(f"[INFO]: Transform data time: {self.transform_data_time.avg} ")
-        # import ipdb; ipdb.set_trace()
+
+        return input_sample, target_sample, metadata, self.folder_idx_to_file_name[folder_idx], torch.tensor(io_time)
 
         # print([x.shape for x in transformed_sample])
         # import ipdb; ipdb.set_trace()
@@ -492,29 +519,38 @@ class LocomotionDataset(Dataset):
         # if self.get_count % 512 == 0:
         #     print(f"[DEBUG] Memory usage after loading data: {process.memory_info().rss / (1024 ** 2):.5f} MB")
 
-        # Return the transformed components
-        return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
-                torch.tensor(io_time), torch.tensor(data_processing_time))
+        # # Return the transformed components
+        # return (transformed_sample[:-1], transformed_sample[-1], self.folder_idx_to_file_name[folder_idx],
+        #         torch.tensor(io_time), torch.tensor(data_processing_time))
 
         # except Exception as e:
         #     print(f"[ERROR]: Exception while loading data: {e}")
         #     import ipdb; ipdb.set_trace()
 
     @staticmethod
-    def _transform_sample(input_sample, target_sample, metadata):
+    def _transform_samples(input_samples, target_samples, metadata_list):
         """
         Transform a single input and target sample into its components.
 
         Args:
-            input_sample (np.ndarray): The input sample (shape: [D]).
-            target_sample (np.ndarray): The target sample (shape: [T]).
-            metadata (dict): Metadata for this sample.
+            input_samples (np.ndarray): The input sample (shape: [B, D]).
+            target_samples (np.ndarray): The target sample (shape: [B, T]).
+            metadata (dict): Metadata list for samples.
 
         Returns:
             tuple: Transformed components.
         """
-        state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
-        target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+        assert all(metadata == metadata_list[0] for metadata in metadata_list), \
+            "the metadata for all samples in batch should be identical"
+        metadata = metadata_list[0]
+
+        batch_size = len(target_samples)
+
+        # state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
+        # target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+
+        state = torch.from_numpy(np.array(input_samples)).float()
+        target = torch.from_numpy(np.array(target_samples)).float()
 
         # Dynamic Joint Data Transformation
         dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
@@ -524,7 +560,7 @@ class LocomotionDataset(Dataset):
 
         dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
         dynamic_joint_combined_state = dynamic_joint_combined_state.view(
-            nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+            batch_size, nr_dynamic_joint_observations, single_dynamic_joint_observation_length
         )
         dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
         dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
@@ -535,6 +571,10 @@ class LocomotionDataset(Dataset):
         projected_gravity_update_obs_idx = metadata["projected_gravity_update_obs_idx"]
         general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
         general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
+
+        del dynamic_joint_observation_length, nr_dynamic_joint_observations, single_dynamic_joint_observation_length, \
+            dynamic_joint_description_size, trunk_angular_vel_update_obs_idx, goal_velocity_update_obs_idx, \
+            projected_gravity_update_obs_idx
 
         # Return transformed inputs and target
         return (
@@ -558,19 +598,28 @@ class LocomotionDataset(Dataset):
                 - The second element is the batched target tensor.
         """
         # Split batch into inputs and targets
-        inputs, targets, robot_names, io_times, processing_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
+        inputs, targets, metadata_list, robot_names, io_times = zip(*batch)  # inputs: list of tuples, targets: list of tensors
         assert len(set(robot_names)) == 1, f"got different robot names in a batch: {set(robot_names)}"
 
-        # Transpose the inputs to group by component
-        inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+        # batch transform these samples
+        st = time.time()
+        transformed_sample = self._transform_samples(inputs, targets, metadata_list)
+        inputs, targets = transformed_sample[:-1], transformed_sample[-1]
+        processing_times = time.time() - st
+        # import ipdb; ipdb.set_trace()
 
-        # Stack each component of the inputs
-        batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
+        # # Transpose the inputs to group by component
+        # inputs_by_component = zip(*inputs)  # Converts list of tuples into tuples of components
+        batched_inputs = inputs
 
-        # Stack the targets
-        batched_targets = torch.stack(targets)
+        # # Stack each component of the inputs
+        # batched_inputs = tuple(torch.stack(components) for components in inputs_by_component)
 
-        return batched_inputs, batched_targets, robot_names[0], torch.stack(io_times), torch.stack(processing_times)
+        # # Stack the targets
+        # batched_targets = torch.stack(targets)
+        batched_targets = targets
+
+        return batched_inputs, batched_targets, robot_names[0], torch.stack(io_times), torch.tensor(processing_times)
 
     def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
         """
@@ -628,6 +677,10 @@ class LocomotionDataset(Dataset):
             file_sample_lists_per_worker[i % num_workers].append(file_samples[key])
             self.worker_idx_to_folder_file_idx[i % num_workers].add(key)
 
+        assert 0 not in [len(x) for x in file_sample_lists_per_worker], \
+            (f"Zero exists in file_sample_lists_per_worker: {file_sample_lists_per_worker}, "
+             f"meaning that we don't have enough .h5 files for workers")
+
         # Duplicate samples so that every worker has the same number of samples
         # otherwise the workers that finish their job earlier will be assigned to join
         # other worker's job queue, which may create the condition where multiple workers
@@ -651,8 +704,14 @@ class LocomotionDataset(Dataset):
         final_samples = []
         max_samples_per_worker = max(len(worker_samples) for worker_samples in samples_per_worker)
         for i in range(max_samples_per_worker):
+            cycle_samples = []
             for worker_idx, samples in enumerate(samples_per_worker):
-                final_samples.append(samples[i])
+                cycle_samples.append(samples[i])
+            
+            # shuffle the samples in one cycle, if desirable
+            random.shuffle(cycle_samples)
+
+            final_samples.extend(cycle_samples)
 
         print(f'[INFO]: h5_repeat_factor = {self.h5_repeat_factor}. '
               f'additional duplicates due to resample: {duplicates} out of {len(final_samples)} samples '
@@ -673,20 +732,28 @@ class LocomotionDataset(Dataset):
         """
 
         if num_workers > len(self.file_indices):
-            import warnings
             warnings.warn(f"num_workers={num_workers} should not exceed the number of files to read={len(self.file_indices)}, "
              f"as this would cause torch DataLoader to be extremely slow with our dataset implementation. "
              f"This is likely due to multiple threads reading the same file. "
              f"I will set num_workers to {min(num_workers, len(self.file_indices))}")
             num_workers = min(num_workers, len(self.file_indices))        # 2 is a safe number, tested
 
+        if num_workers > 0:
+            warnings.warn(f"You are using num_workers > 0, which might cause memory increasing throughput "
+                          f"the training process due to caching and multi-processing."
+                          f"It is recommended to set num_workers to 0. ")
+            time.sleep(3)
+
+        assert num_workers == 0 and self.max_files_in_memory > 0,\
+            f"it is recommended that num_workers = 0, but max_files_in_memory > 0"
+
         return DataLoader(
             self,
-            batch_sampler=self.get_batch_indices(batch_size, shuffle, num_workers),
+            batch_sampler=self.get_batch_indices(batch_size, shuffle, self.max_files_in_memory),
             collate_fn=self.collate_fn,
             num_workers=num_workers,
-            pin_memory=True,
-            **kwargs
+            pin_memory=False,
+            # **kwargs
         )
 
 
@@ -702,10 +769,12 @@ class LocomotionDataset_tmu(LocomotionDataset):
 
         self.merged_h5_path = merged_h5_path
         self.file = None
+        if merged_h5_path is None:
+            return
         self.num_transitions_each_folder = [0] * len(self.folder_paths)
         for (folder_idx, file_idx), (_, _, steps_per_file, parallel_envs) in self.file_indices.items():
             self.num_transitions_each_folder[folder_idx] += steps_per_file * parallel_envs
-        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), 'To simply the code, we assume all folders have the same number of transitions'
+        assert max(self.num_transitions_each_folder) == min(self.num_transitions_each_folder), f'To simply the code, we assume all folders have the same number of transitions, max = {max(self.num_transitions_each_folder)}, min = {min(self.num_transitions_each_folder)}'
         self.num_transitions_per_folder = self.num_transitions_each_folder[0]
 
     # def get_batch_indices(self, batch_size, shuffle=True, num_workers=1):
@@ -827,6 +896,49 @@ class LocomotionDataset_tmu(LocomotionDataset):
         }
 
         return out
+    
+    def _transform_sample(self, input_sample, target_sample, metadata):
+        """
+        Transform a single input and target sample into its components.
+
+        Args:
+            input_sample (np.ndarray): The input sample (shape: [D]).
+            target_sample (np.ndarray): The target sample (shape: [T]).
+            metadata (dict): Metadata for this sample.
+
+        Returns:
+            tuple: Transformed components.
+        """
+        state = torch.tensor(input_sample, dtype=torch.float32)  # Shape: (320,)
+        target = torch.tensor(target_sample, dtype=torch.float32)  # Shape: (12,)
+
+        # Dynamic Joint Data Transformation
+        dynamic_joint_observation_length = metadata["dynamic_joint_observation_length"]
+        nr_dynamic_joint_observations = metadata["nr_dynamic_joint_observations"]
+        single_dynamic_joint_observation_length = metadata["single_dynamic_joint_observation_length"]
+        dynamic_joint_description_size = metadata["dynamic_joint_description_size"]
+
+        dynamic_joint_combined_state = state[..., :dynamic_joint_observation_length]  # Focus only on last dim
+        dynamic_joint_combined_state = dynamic_joint_combined_state.view(
+            nr_dynamic_joint_observations, single_dynamic_joint_observation_length
+        )
+        dynamic_joint_description = dynamic_joint_combined_state[..., :dynamic_joint_description_size]
+        dynamic_joint_state = dynamic_joint_combined_state[..., dynamic_joint_description_size:]
+
+        # General Policy State Transformation
+        trunk_angular_vel_update_obs_idx = metadata["trunk_angular_vel_update_obs_idx"]
+        goal_velocity_update_obs_idx = metadata["goal_velocity_update_obs_idx"]
+        projected_gravity_update_obs_idx = metadata["projected_gravity_update_obs_idx"]
+        general_policy_state = state[..., trunk_angular_vel_update_obs_idx+goal_velocity_update_obs_idx+projected_gravity_update_obs_idx]
+        general_policy_state = torch.cat((general_policy_state, state[..., -7:]), dim=-1) # gains_and_action_scaling_factor; mass; robot_dimensions
+
+        # Return transformed inputs and target
+        return (
+            dynamic_joint_description,  # Shape: (nr_dynamic_joint_observations, dynamic_joint_description_size)
+            dynamic_joint_state,  # Shape: (nr_dynamic_joint_observations, remaining_length)
+            general_policy_state,  # Shape: (<concatenated_dim>)
+            target  # Shape: (12,)
+        )
 
     # def collate_fn(self, batch):
     #     """

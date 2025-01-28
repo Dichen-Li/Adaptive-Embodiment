@@ -27,10 +27,11 @@ class LocomotionEnv(DirectRLEnv):
         self.all_joints_cfg.resolve(self.scene)
         self.trunk_cfg = self.cfg.trunk_cfg
         self.trunk_cfg.resolve(self.scene)
-        self.trunk_contact_cfg = self.cfg.trunk_contact_cfg
-        self.trunk_contact_cfg.resolve(self.scene)
+        self.all_contact_cfg = self.cfg.all_contact_cfg
+        self.all_contact_cfg.resolve(self.scene)
         self.feet_contact_cfg = self.cfg.feet_contact_cfg
         self.feet_contact_cfg.resolve(self.scene)
+        self.all_body_ids_besides_feet = [body_id for body_id in self.all_contact_cfg.body_ids if body_id not in self.feet_contact_cfg.body_ids]
 
         self.nr_joints = self.robot.data.default_joint_pos.shape[1]
         self.nr_feet = self.cfg.nr_feet
@@ -65,7 +66,14 @@ class LocomotionEnv(DirectRLEnv):
         self.pitch_roll_vel_coeff = self.cfg.pitch_roll_vel_coeff
         self.pitch_roll_pos_coeff = self.cfg.pitch_roll_pos_coeff
         self.actuator_joint_nominal_diff_coeff = self.cfg.actuator_joint_nominal_diff_coeff
-        self.actuator_joint_nominal_diff_joints = self.cfg.actuator_joint_nominal_diff_joints
+        actuator_joint_nominal_diff_joints_cfg = self.cfg.actuator_joint_nominal_diff_joints_cfg
+        if actuator_joint_nominal_diff_joints_cfg is not None:
+            actuator_joint_nominal_diff_joints_cfg.resolve(self.scene)
+            self.actuator_joint_nominal_diff_joints = actuator_joint_nominal_diff_joints_cfg.joint_ids
+        else:
+            # dummy to first joint to avoid tensor indexing error -> in that case make sure the coeff is 0.0
+            self.actuator_joint_nominal_diff_joints = [0,]  
+            self.actuator_joint_nominal_diff_coeff = 0.0
         self.joint_position_limit_coeff = self.cfg.joint_position_limit_coeff
         self.joint_acceleration_coeff = self.cfg.joint_acceleration_coeff
         self.joint_torque_coeff = self.cfg.joint_torque_coeff
@@ -505,10 +513,10 @@ class LocomotionEnv(DirectRLEnv):
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         self.handle_domain_randomization()
 
-        trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
-        trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
-        terminated = trunk_contact
-        # terminated = torch.tensor([False] * self.num_envs, dtype=torch.bool, device=self.sim.device)  # for debugging
+        all_contact_sensor = self.scene.sensors[self.all_contact_cfg.name]
+        contacts_besides_feet = torch.any(torch.norm(all_contact_sensor.data.net_forces_w[:, self.all_body_ids_besides_feet], dim=-1) > 1.0, dim=1)
+        trunk_too_low = self.robot.data.root_state_w[:, 2] < self.nominal_trunk_z * 0.8
+        terminated = contacts_besides_feet | trunk_too_low
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
 
@@ -568,7 +576,7 @@ class LocomotionEnv(DirectRLEnv):
             self.feet_y_distance_target
         )
 
-        self.extras = {"log": extras}  # sum(extras.values()) is reward
+        self.extras = {"log": extras}
 
         self.previous_actions = self.actions.clone()
         self.previous_feet_air_times = feet_contact_sensors.data.current_air_time[:, self.feet_contact_cfg.body_ids].clone()
@@ -919,8 +927,7 @@ def compute_rewards(
     angular_position_reward = curriculum_coeff * pitch_roll_pos_coeff * -pitch_roll_position_norm
 
     # Joint nominal position difference reward
-    # actuator_joint_nominal_diff_norm = torch.sum(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
-    actuator_joint_nominal_diff_norm = torch.zeros_like(joint_positions[:, 0])
+    actuator_joint_nominal_diff_norm = torch.mean(torch.square(joint_positions[:, actuator_joint_nominal_diff_joints] - joint_nominal_positions[:, actuator_joint_nominal_diff_joints]), dim=1)
     actuator_joint_nominal_diff_reward = curriculum_coeff * actuator_joint_nominal_diff_coeff * -actuator_joint_nominal_diff_norm
 
     # Joint position limit reward
@@ -980,6 +987,18 @@ def compute_rewards(
         "reward/air_time": air_time_reward.mean(),
         "reward/symmetry_air": symmetry_air_reward.mean(),
         "reward/feet_y_distance": feet_y_distance_reward.mean(),
+        "reward_info/xy_velocity_difference_norm": xy_velocity_difference_norm.mean(),
+        "reward_info/yaw_velocity_difference_norm": yaw_velocity_difference_norm.mean(),
+        "reward_info/z_velocity_squared": z_velocity_squared.mean(),
+        "reward_info/angular_velocity_norm": angular_velocity_norm.mean(),
+        "reward_info/pitch_roll_position_norm": pitch_roll_position_norm.mean(),
+        "reward_info/actuator_joint_nominal_diff_norm": actuator_joint_nominal_diff_norm.mean(),
+        "reward_info/limit_penalty": lower_limit_penalty.mean() + upper_limit_penalty.mean(),
+        "reward_info/acceleration_norm": acceleration_norm.mean(),
+        "reward_info/torque_norm": torque_norm.mean(),
+        "reward_info/action_rate_norm": action_rate_norm.mean(),
+        "reward_info/height_difference_squared": height_difference_squared.mean(),
+        "reward_info/feet_y_distance_from_target_norm": feet_y_distance_from_target_norm.mean(),
     }
 
     return reward, extras

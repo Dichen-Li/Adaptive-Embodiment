@@ -1,11 +1,17 @@
-import os
 import torch
+import numpy as np
 from torch.cuda.amp import GradScaler, autocast
-torch.backends.cudnn.benchmark = True
+import random
+import gc
+import os
+# pid = os.getpid()
+# with open(f"/proc/{pid}/oom_score_adj", "w") as f:
+#     f.write("-1000")        # set high priority for OOM killer
 
 from torch.utils.tensorboard import SummaryWriter
 import time
-from utils import get_most_recent_h5py_record_path, save_checkpoint, AverageMeter, save_args_to_yaml, compute_gradient_norm, get_ram_usage
+from utils import (get_most_recent_h5py_record_path, save_checkpoint, AverageMeter,
+                   save_args_to_yaml, compute_gradient_norm, get_process_ram_usage, get_system_ram_usage)
 from dataset import LocomotionDataset
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), '..'), '..')))
@@ -13,6 +19,16 @@ import tqdm
 import argparse
 import yaml
 
+def set_seed(seed):
+    random.seed(seed)  # Set Python's random seed
+    np.random.seed(seed)  # Set NumPy's random seed
+    torch.manual_seed(seed)  # Set PyTorch's CPU seed
+    torch.cuda.manual_seed(seed)  # Set PyTorch's GPU seed (if using CUDA)
+    torch.cuda.manual_seed_all(seed)  # Set the seed for all GPUs (if using multiple GPUs)
+    torch.backends.cudnn.deterministic = True  # Ensure deterministic behavior
+    torch.backends.cudnn.benchmark = False  # Disable optimizations for reproducibility
+
+set_seed(0)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train an agent using supervised learning.")
@@ -30,13 +46,15 @@ def parse_arguments():
     parser.add_argument("--checkpoint_interval", type=int, default=1, help="Save checkpoint every N epochs.")
     parser.add_argument("--log_dir", type=str, default="log_dir", help="Base directory for logs and checkpoints.")
     parser.add_argument("--lr", type=float, default=3e-4, help="Unit learning rate (for a batch size of 512)")
-    parser.add_argument("--num_workers", type=int, default=16, help="Number of workers for torch data loader.")
+    parser.add_argument("--num_workers", type=int, default=0, help="Number of workers for torch data loader.")
     parser.add_argument("--max_files_in_memory", type=int, default=1, help="Max number of data files in memory.")
     parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation set size.")
     parser.add_argument("--gradient_acc_steps", type=int, default=1,
                         help="Number of batches before one gradient update.")
     parser.add_argument("--h5_repeat_factor", type=int, default=1, help="Number of times we repeat one h5 file consecutively in one epoch.")
     parser.add_argument("--use_amp", type=int, default=0, help="Whether to use automatic mixed precision.")
+    parser.add_argument("--max_parallel_envs_per_file", type=int, default=4096,
+                        help="Number of parallel envs per file.")
     parser.add_argument(
         "--model",
         type=str,
@@ -46,7 +64,9 @@ def parse_arguments():
     )
     # Add argument for YAML configuration
     parser.add_argument("--config", type=str, help="Path to YAML configuration file.")
-    parser.add_argument("--dataset_dir", type=str, default="/media/t7-ssd/Data/logs/rsl_rl", help="Directory containing the dataset.")
+    parser.add_argument("--dataset_dir", type=str,
+                        default="/mnt/hdd_0/expert_data/decompressed/gendog/logs/rsl_rl",
+                        help="Directory containing the dataset.")
 
     args = parser.parse_args()
 
@@ -90,6 +110,9 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
     print("[INFO] Starting supervised training.")
     for epoch in range(num_epochs):
+        # clean up memory
+        gc.collect()
+
         # Training phase
         policy.train()
         for meter in train_loss_meters.values():
@@ -169,7 +192,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
                 writer.add_scalar("Train/times/backward", backward_time, iteration)
 
                 # Log memory
-                writer.add_scalar("Train/memory", get_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-system-used", get_system_ram_usage(), iteration)
+                writer.add_scalar("Train/ram-process-used", get_process_ram_usage(), iteration)
 
                 # Log loss and lr by iteration
                 writer.add_scalar("Train/loss-iter/avg", loss.item(), iteration)
@@ -179,9 +203,15 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
 
                 # Step the LR scheduler by iteration
                 if scheduler is not None:
-                    scheduler.step()
+                    scheduler.step(iteration)
 
                 iteration_start_time = time.time()  # start time of next iteration
+
+                if index % 100000 == 99999:
+                    collected = gc.collect()
+                    print(f"Garbage collector: collected {collected} objects.")
+
+        del train_dataloader
 
         # Log training loss to TensorBoard
         for robot_name, meter in train_loss_meters.items():
@@ -233,6 +263,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             writer.add_scalar(f"Val/loss/{robot_name}", meter.avg, epoch + 1)
         writer.add_scalar("Val/loss/avg", get_meter_dict_avg(val_loss_meters), epoch + 1)
 
+        del val_dataloader
+
         if len(test_dataset) > 0:
             # Test phase
             for meter in test_loss_meters.values():
@@ -276,6 +308,8 @@ def train(policy, criterion, optimizer, scheduler, train_dataset, val_dataset, t
             for robot_name, meter in test_loss_meters.items():
                 writer.add_scalar(f"Test/loss/{robot_name}", meter.avg, epoch + 1)
             writer.add_scalar("Test/loss/avg", get_meter_dict_avg(test_loss_meters), epoch + 1)
+
+            del test_dataloader
 
         # Save checkpoints periodically
         if (epoch + 1) % checkpoint_interval == 0:
@@ -321,7 +355,8 @@ def main():
         train_mode=True,
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=args_cli.h5_repeat_factor
+        h5_repeat_factor=args_cli.h5_repeat_factor,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     # Validation dataset
@@ -330,7 +365,8 @@ def main():
         train_mode=False,
         val_ratio=args_cli.val_ratio,
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=1
+        h5_repeat_factor=1,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     # Test dataset
@@ -339,7 +375,8 @@ def main():
         train_mode=False,
         val_ratio=args_cli.val_ratio,       # only use a proportion of the data as the test set
         max_files_in_memory=args_cli.max_files_in_memory,
-        h5_repeat_factor=1
+        h5_repeat_factor=1,
+        max_parallel_envs_per_file=args_cli.max_parallel_envs_per_file,
     )
 
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -350,7 +387,7 @@ def main():
         policy = get_policy(model_device)
 
         # # load checkpoint if needed
-        # checkpoint_path = "/home/albert/github/embodiment-scaling-law-sim2real/log_dir/scaling_factor_0.3_v3_modelscale3_attempt2_bs256_acc1_clipv5.0_configv2_scratch_e10/checkpoint_epoch_10.pt"
+        # checkpoint_path = "log_dir/scaling_factor_0.8_v3_2/checkpoint_epoch_7.pt"
         # checkpoint = torch.load(checkpoint_path, map_location=model_device)
         # policy.load_state_dict(checkpoint["state_dict"], strict=True)
         # print(f'[INFO] Policy loaded from {checkpoint_path}\n\n')

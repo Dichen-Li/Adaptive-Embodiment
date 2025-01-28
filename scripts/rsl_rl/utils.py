@@ -189,15 +189,23 @@ def get_most_recent_h5py_record_path(base_path, task_name):
     if not os.path.exists(task_path):
         raise FileNotFoundError(f"Task folder '{task_name}' not found at {base_path}")
 
-    subdirectories = [
-        d for d in os.listdir(task_path)
-        if os.path.isdir(os.path.join(task_path, d)) and d.replace("_", "-").replace("-", "").isdigit()
-    ]
+    if "genhumanoid" in task_name:
+        subdirectories = [
+            d for d in os.listdir(task_path)
+            if os.path.isdir(os.path.join(task_path, d)) and d[:-5].replace("_", "-").replace("-", "").isdigit()
+        ]
+        subdirectories.sort(key=lambda d: datetime.strptime(d[:-5], "%Y-%m-%d_%H-%M-%S"), reverse=True)
+    else:
+        subdirectories = [
+            d for d in os.listdir(task_path)
+            if os.path.isdir(os.path.join(task_path, d)) and d.replace("_", "-").replace("-", "").isdigit()
+        ]
+        subdirectories.sort(key=lambda d: datetime.strptime(d, "%Y-%m-%d_%H-%M-%S"), reverse=True)
+
 
     if not subdirectories:
         raise FileNotFoundError(f"No subfolders found for task '{task_name}' in {task_path}")
 
-    subdirectories.sort(key=lambda d: datetime.strptime(d, "%Y-%m-%d_%H-%M-%S"), reverse=True)
     most_recent_folder = subdirectories[0]
 
     h5py_record_path = os.path.join(task_path, most_recent_folder, "h5py_record")
@@ -318,11 +326,31 @@ def compute_gradient_norm(model):
     return total_norm
 
 
-def get_ram_usage():
-    import psutil
+import psutil
+
+# Function to get memory usage of the current process
+def get_process_ram_usage():
+    """
+    Returns the RAM usage of the current process in MB.
+    """
     process = psutil.Process()
-    ram_usage = process.memory_info().rss / (1024 ** 2)  # Convert bytes to MB
+    ram_usage = process.memory_info().rss / (1024 ** 3)  # Convert bytes to GB
     return ram_usage
+
+# Function to get system-wide memory information
+def get_system_ram_usage():
+    """
+    Returns system-wide memory usage statistics.
+    Returns:
+        total (float): Total system memory in MB.
+        used (float): Used system memory in MB.
+        available (float): Available system memory in MB.
+    """
+    memory = psutil.virtual_memory()
+    total = memory.total / (1024 ** 2)  # Convert bytes to MB
+    used = memory.used / (1024 ** 3)    # Convert bytes to GB
+    available = memory.available / (1024 ** 3)  # Convert bytes to GB
+    return used
 
 # Get the epoch number from the logs/rsl_rl/Gendog... checkpoint directory
 def extract_epoch(file_path):
