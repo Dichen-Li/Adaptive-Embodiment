@@ -181,8 +181,8 @@ def main():
             dones = dones.bool()
 
             if curr_timestep == 0:
-                reward_extras = {key: torch.zeros(args_cli.num_envs, device=model_device) for key in extra["log"].keys()}
-            for key, value in extra["log"].items():
+                reward_extras = {key: torch.zeros(args_cli.num_envs, device=model_device) for key in extra["log_detailed"].keys()}
+            for key, value in extra["log_detailed"].items():
                 reward_extras[key] += value
 
             one_policy_observation = extra["observations"]["urma_obs"]
@@ -220,10 +220,9 @@ def main():
             log_data = json.load(f)
         log_data[args_cli.task] = {"average_return": avg_return, "average_steps": avg_steps,
                                    "returns": returns.tolist(), "steps": termination_steps.tolist()}
-        log_data[args_cli.task].update(avg_reward_extras)
+        log_data[args_cli.task].update({"reward_extras": {key: value.tolist() for key, value in reward_extras.items()}})
         with open(args_cli.log_file, 'w') as f:
             json.dump(log_data, f)
-
 
 if __name__ == "__main__":
     main()
