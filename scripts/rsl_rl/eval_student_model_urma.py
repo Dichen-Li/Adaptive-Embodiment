@@ -15,6 +15,7 @@ parser.add_argument("--model_is_actor", action="store_true", default=False,
                     help="Indicate if the supervised model is actor=True/one_policy=False.")
 parser.add_argument("--ckpt_path", type=str, default=None, help="Store the specified policy file directory.")
 parser.add_argument("--log_file", type=str, default=None, help="Store average return in this file.")
+parser.add_argument("--export_onnx", action="store_true", default=False, help="Export the policy to ONNX format.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -165,6 +166,24 @@ def main():
     obs, observations = env.get_observations()
     one_policy_observation = observations["observations"]["urma_obs"]
     curr_timestep = 0
+
+    # export policy to onnx
+    if args_cli.export_onnx:
+        export_model_dir = os.path.join(os.path.dirname(policy_file_path), "exported")
+        if not os.path.exists(export_model_dir):
+            os.makedirs(export_model_dir)
+        torch.onnx.export(
+            one_policy_runner.policy,
+            one_policy_observation_to_inputs(one_policy_observation, env.unwrapped, model_device),
+            os.path.join(export_model_dir, "policy.onnx"),
+            export_params=True,
+            opset_version=11,
+            verbose=False,
+            input_names=["obs"],
+            output_names=["actions"],
+            dynamic_axes={},
+        )
+        print(f"[INFO] Policy exported to ONNX format at: {export_model_dir}/policy.onnx")
 
     termination_steps = torch.zeros(args_cli.num_envs, device=model_device)
     returns = torch.zeros(args_cli.num_envs, device=model_device)
