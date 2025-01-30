@@ -58,7 +58,7 @@ class Go2EnvCfg(DirectRLEnvCfg):
 
     # robot-specific config
     trunk_cfg = SceneEntityCfg("robot", body_names="base")
-    trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*base.*', '.*hip.*', '.*thigh.*'])
+    all_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
 
     step_sampling_probability = 0.002
