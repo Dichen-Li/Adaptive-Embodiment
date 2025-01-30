@@ -60,6 +60,7 @@ class H1EnvCfg(DirectRLEnvCfg):
     trunk_cfg = SceneEntityCfg("robot", body_names="pelvis")
     all_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*ankle.*")
+    trunk_too_low_percentage = 0.8
 
     step_sampling_probability = 0.002
 

@@ -53,6 +53,8 @@ class LocomotionEnv(DirectRLEnv):
         else:
             raise NotImplementedError()
 
+        self.trunk_too_low_percentage = self.cfg.trunk_too_low_percentage
+
         self.step_sampling_probability = self.cfg.step_sampling_probability
 
         self.goal_velocities = torch.rand((self.num_envs, 3), device=self.sim.device).uniform_(-1.0, 1.0)
@@ -515,7 +517,7 @@ class LocomotionEnv(DirectRLEnv):
 
         all_contact_sensor = self.scene.sensors[self.all_contact_cfg.name]
         contacts_besides_feet = torch.any(torch.norm(all_contact_sensor.data.net_forces_w[:, self.all_body_ids_besides_feet], dim=-1) > 1.0, dim=1)
-        trunk_too_low = self.robot.data.root_state_w[:, 2] < self.nominal_trunk_z * 0.8
+        trunk_too_low = self.robot.data.root_state_w[:, 2] < self.nominal_trunk_z * self.trunk_too_low_percentage
         terminated = contacts_besides_feet | trunk_too_low
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
