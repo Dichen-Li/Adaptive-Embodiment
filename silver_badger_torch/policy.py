@@ -3,18 +3,20 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os
+import json
 # import ipdb
 
 class Policy(nn.Module):
     def __init__(self, initial_softmax_temperature,
                  softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip,
-                 policy_std_max_clip):
+                 policy_std_max_clip, args_cli=None):
         super(Policy, self).__init__()
         self.softmax_temperature_min = softmax_temperature_min
         self.stability_epsilon = stability_epsilon
         self.policy_mean_abs_clip = policy_mean_abs_clip
         self.policy_std_min_clip = policy_std_min_clip
         self.policy_std_max_clip = policy_std_max_clip
+        self.args_cli = args_cli
 
         # Constants
         dynamic_joint_des_dim = 18
@@ -56,6 +58,7 @@ class Policy(nn.Module):
         dynamic_joint_state_mask = self.dynamic_joint_state_mask1(dynamic_joint_description)
         dynamic_joint_state_mask = F.elu(self.dynamic_joint_layer_norm(dynamic_joint_state_mask))
         dynamic_joint_state_mask = torch.tanh(self.dynamic_joint_state_mask2(dynamic_joint_state_mask))
+        dynamic_joint_state_mask1_node = dynamic_joint_state_mask.clone()
         dynamic_joint_state_mask = torch.clamp(dynamic_joint_state_mask,
                                                -1.0 + self.stability_epsilon, 1.0 - self.stability_epsilon)
 
@@ -63,6 +66,7 @@ class Policy(nn.Module):
 
         joint_e_x = torch.exp(dynamic_joint_state_mask / (torch.exp(self.joint_log_softmax_temperature) + self.softmax_temperature_min))
         dynamic_joint_state_mask = joint_e_x / (joint_e_x.sum(dim=-1, keepdim=True) + self.stability_epsilon)
+        dynamic_joint_state_mask2_node = dynamic_joint_state_mask.clone()
         dynamic_joint_state_mask = dynamic_joint_state_mask.unsqueeze(-1).repeat(1, 1, 1, latent_dynamic_joint_state.size(-1))
         masked_dynamic_joint_state = dynamic_joint_state_mask * latent_dynamic_joint_state.unsqueeze(-2)
         masked_dynamic_joint_state = masked_dynamic_joint_state.view(masked_dynamic_joint_state.shape[:-2] + (masked_dynamic_joint_state.shape[-2] * masked_dynamic_joint_state.shape[-1],))
@@ -87,10 +91,38 @@ class Policy(nn.Module):
         policy_mean = self.policy_mean_layer2(policy_mean)
         policy_mean = torch.clamp(policy_mean, -self.policy_mean_abs_clip, self.policy_mean_abs_clip)
 
+        if self.args_cli is not None:
+            if self.args_cli.description_log_file is not None:
+
+                # 1. Ensure the file exists and is a valid JSON file
+                if not os.path.exists(self.args_cli.description_log_file):
+                    with open(self.args_cli.description_log_file, 'w') as f:
+                        json.dump({}, f)  # create an empty JSON object
+
+                with open(self.args_cli.description_log_file, 'r') as f:
+                    log_data = json.load(f)  # load existing content
+
+                # 2. Build the info you want to store
+                #    For example, just storing shapes (as lists) plus first slice of dynamic_joint_description
+                log_data[self.args_cli.task] = {
+                    "dynamic_joint_description": dynamic_joint_description[0].squeeze(0).tolist(),
+                    "dynamic_joint_state_mask1_node": dynamic_joint_state_mask1_node[0].squeeze(0).tolist(),
+                    "dynamic_joint_state_mask2_node": dynamic_joint_state_mask2_node[0].squeeze(0).tolist(),
+                    "dynamic_joint_latent": dynamic_joint_latent[0].squeeze(0).tolist(),
+                    "action_description_latent": action_description_latent[0].squeeze(0).tolist(),
+                    "action_latent": action_latent[0].squeeze(0).tolist(),
+                    "combined_action_latent": combined_action_latent[0].squeeze(0).tolist(),
+                    "policy_mean": policy_mean[0].squeeze(0).squeeze(-1).tolist()
+                }
+
+                # 3. Write the updated log_data back to the file
+                with open(self.args_cli.description_log_file, 'w') as f:
+                    print(f"[INFO] Log description of {self.args_cli.task} to {self.args_cli.description_log_file}")
+                    json.dump(log_data, f, indent=2)
         return policy_mean.squeeze(-1)
 
 
-def get_policy(model_device: str):
+def get_policy(model_device: str, args_cli=None):
     initial_softmax_temperature = 1.0
     softmax_temperature_min = 0.015
     stability_epsilon = 0.00000001
@@ -98,7 +130,7 @@ def get_policy(model_device: str):
     policy_std_min_clip = 0.00000001
     policy_std_max_clip = 2.0
 
-    policy = Policy(initial_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip)
+    policy = Policy(initial_softmax_temperature, softmax_temperature_min, stability_epsilon, policy_mean_abs_clip, policy_std_min_clip, policy_std_max_clip, args_cli)
     # policy = torch.jit.script(policy)
     policy.to(model_device)
 
@@ -159,7 +191,7 @@ if __name__ == "__main__":
 
     import time
 
-    nr_evals = 1_000
+    nr_evals = 1
     start = time.time()
     for i in range(nr_evals):
         with torch.no_grad():
