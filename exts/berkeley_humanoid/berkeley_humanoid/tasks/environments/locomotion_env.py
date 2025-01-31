@@ -545,7 +545,7 @@ class LocomotionEnv(DirectRLEnv):
         global_feet_pos = self.robot.data.body_pos_w[:, feet_indices]
         local_feet_pos = math_utils.quat_rotate_inverse(self.robot.data.root_quat_w[:, None, :], global_feet_pos - self.robot.data.root_state_w[:, None, :3])
 
-        reward, extras = compute_rewards(
+        reward, extras, extras_detailed = compute_rewards(
             curriculum_coeff,
             self.tracking_xy_velocity_command_coeff,
             self.tracking_yaw_velocity_command_coeff,
@@ -583,7 +583,7 @@ class LocomotionEnv(DirectRLEnv):
             self.feet_y_distance_target
         )
 
-        self.extras = {"log": extras}
+        self.extras = {"log": extras, "log_detailed": extras_detailed}
 
         self.previous_actions = self.actions.clone()
         self.previous_feet_air_times = feet_contact_sensors.data.current_air_time[:, self.feet_contact_cfg.body_ids].clone()
@@ -906,7 +906,7 @@ def compute_rewards(
     feet_symmetry_pairs: torch.Tensor,
     local_feet_pos: torch.Tensor,
     feet_y_distance_target: float,
-) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+) -> tuple[torch.Tensor, dict[str, torch.Tensor], dict[str, torch.Tensor]]:
     
     # Tracking xy velocity command reward
     current_local_linear_velocity_xy = current_local_linear_velocity[:, :2]
@@ -979,33 +979,33 @@ def compute_rewards(
     reward = tracking_reward + reward_penalty
     reward = torch.maximum(reward, torch.tensor(0.0, device=reward.device))
 
-    extras = {
-        "reward/track_xy_vel_cmd": tracking_xy_velocity_command_reward.mean(),
-        "reward/track_yaw_vel_cmd": tracking_yaw_velocity_command_reward.mean(),
-        "reward/linear_velocity": linear_velocity_reward.mean(),
-        "reward/angular_velocity": angular_velocity_reward.mean(),
-        "reward/angular_position": angular_position_reward.mean(),
-        "reward/joint_nominal_diff": actuator_joint_nominal_diff_reward.mean(),
-        "reward/joint_position_limit": joint_position_limit_reward.mean(),
-        "reward/joint_acceleration": acceleration_reward.mean(),
-        "reward/joint_torque": torque_reward.mean(),
-        "reward/action_rate": action_rate_reward.mean(),
-        "reward/base_height": base_height_reward.mean(),
-        "reward/air_time": air_time_reward.mean(),
-        "reward/symmetry_air": symmetry_air_reward.mean(),
-        "reward/feet_y_distance": feet_y_distance_reward.mean(),
-        "reward_info/xy_velocity_difference_norm": xy_velocity_difference_norm.mean(),
-        "reward_info/yaw_velocity_difference_norm": yaw_velocity_difference_norm.mean(),
-        "reward_info/z_velocity_squared": z_velocity_squared.mean(),
-        "reward_info/angular_velocity_norm": angular_velocity_norm.mean(),
-        "reward_info/pitch_roll_position_norm": pitch_roll_position_norm.mean(),
-        "reward_info/actuator_joint_nominal_diff_norm": actuator_joint_nominal_diff_norm.mean(),
-        "reward_info/limit_penalty": lower_limit_penalty.mean() + upper_limit_penalty.mean(),
-        "reward_info/acceleration_norm": acceleration_norm.mean(),
-        "reward_info/torque_norm": torque_norm.mean(),
-        "reward_info/action_rate_norm": action_rate_norm.mean(),
-        "reward_info/height_difference_squared": height_difference_squared.mean(),
-        "reward_info/feet_y_distance_from_target_norm": feet_y_distance_from_target_norm.mean(),
+    extras_detailed = {
+        "reward/track_xy_vel_cmd": tracking_xy_velocity_command_reward,
+        "reward/track_yaw_vel_cmd": tracking_yaw_velocity_command_reward,
+        "reward/linear_velocity": linear_velocity_reward,
+        "reward/angular_velocity": angular_velocity_reward,
+        "reward/angular_position": angular_position_reward,
+        "reward/joint_nominal_diff": actuator_joint_nominal_diff_reward,
+        "reward/joint_position_limit": joint_position_limit_reward,
+        "reward/joint_acceleration": acceleration_reward,
+        "reward/joint_torque": torque_reward,
+        "reward/action_rate": action_rate_reward,
+        "reward/base_height": base_height_reward,
+        "reward/air_time": air_time_reward,
+        "reward/symmetry_air": symmetry_air_reward,
+        "reward/feet_y_distance": feet_y_distance_reward,
+        "reward_info/xy_velocity_difference_norm": xy_velocity_difference_norm,
+        "reward_info/yaw_velocity_difference_norm": yaw_velocity_difference_norm,
+        "reward_info/z_velocity_squared": z_velocity_squared,
+        "reward_info/angular_velocity_norm": angular_velocity_norm,
+        "reward_info/pitch_roll_position_norm": pitch_roll_position_norm,
+        "reward_info/actuator_joint_nominal_diff_norm": actuator_joint_nominal_diff_norm,
+        "reward_info/limit_penalty": lower_limit_penalty + upper_limit_penalty,
+        "reward_info/acceleration_norm": acceleration_norm,
+        "reward_info/torque_norm": torque_norm,
+        "reward_info/action_rate_norm": action_rate_norm,
+        "reward_info/height_difference_squared": height_difference_squared,
+        "reward_info/feet_y_distance_from_target_norm": feet_y_distance_from_target_norm,
     }
 
-    return reward, extras
+    return reward, {k: v.mean() for k, v in extras_detailed.items()}, extras_detailed
