@@ -58,7 +58,9 @@ class Policy(nn.Module):
         dynamic_joint_state_mask = self.dynamic_joint_state_mask1(dynamic_joint_description)
         dynamic_joint_state_mask = F.elu(self.dynamic_joint_layer_norm(dynamic_joint_state_mask))
         dynamic_joint_state_mask = torch.tanh(self.dynamic_joint_state_mask2(dynamic_joint_state_mask))
-        dynamic_joint_state_mask1_node = dynamic_joint_state_mask.clone()
+        if self.args_cli is not None:
+            if self.args_cli.description_log_file is not None:
+                dynamic_joint_state_mask1_node = dynamic_joint_state_mask.clone()
         dynamic_joint_state_mask = torch.clamp(dynamic_joint_state_mask,
                                                -1.0 + self.stability_epsilon, 1.0 - self.stability_epsilon)
 
@@ -66,9 +68,13 @@ class Policy(nn.Module):
 
         joint_e_x = torch.exp(dynamic_joint_state_mask / (torch.exp(self.joint_log_softmax_temperature) + self.softmax_temperature_min))
         dynamic_joint_state_mask = joint_e_x / (joint_e_x.sum(dim=-1, keepdim=True) + self.stability_epsilon)
-        dynamic_joint_state_mask2_node = dynamic_joint_state_mask.clone()
+        if self.args_cli is not None:
+            if self.args_cli.description_log_file is not None:
+                dynamic_joint_state_mask2_node = dynamic_joint_state_mask.clone()
         dynamic_joint_state_mask = dynamic_joint_state_mask.unsqueeze(-1).repeat(1, 1, 1, latent_dynamic_joint_state.size(-1))
-        dynamic_joint_state_mask3_node = dynamic_joint_state_mask.clone()
+        if self.args_cli is not None:
+            if self.args_cli.description_log_file is not None:
+                dynamic_joint_state_mask3_node = dynamic_joint_state_mask.clone()
         masked_dynamic_joint_state = dynamic_joint_state_mask * latent_dynamic_joint_state.unsqueeze(-2)
         masked_dynamic_joint_state = masked_dynamic_joint_state.view(masked_dynamic_joint_state.shape[:-2] + (masked_dynamic_joint_state.shape[-2] * masked_dynamic_joint_state.shape[-1],))
         dynamic_joint_latent = masked_dynamic_joint_state.sum(dim=-2)
