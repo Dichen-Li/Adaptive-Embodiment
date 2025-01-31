@@ -68,6 +68,7 @@ class Policy(nn.Module):
         dynamic_joint_state_mask = joint_e_x / (joint_e_x.sum(dim=-1, keepdim=True) + self.stability_epsilon)
         dynamic_joint_state_mask2_node = dynamic_joint_state_mask.clone()
         dynamic_joint_state_mask = dynamic_joint_state_mask.unsqueeze(-1).repeat(1, 1, 1, latent_dynamic_joint_state.size(-1))
+        dynamic_joint_state_mask3_node = dynamic_joint_state_mask.clone()
         masked_dynamic_joint_state = dynamic_joint_state_mask * latent_dynamic_joint_state.unsqueeze(-2)
         masked_dynamic_joint_state = masked_dynamic_joint_state.view(masked_dynamic_joint_state.shape[:-2] + (masked_dynamic_joint_state.shape[-2] * masked_dynamic_joint_state.shape[-1],))
         dynamic_joint_latent = masked_dynamic_joint_state.sum(dim=-2)
@@ -105,14 +106,16 @@ class Policy(nn.Module):
                 # 2. Build the info you want to store
                 #    For example, just storing shapes (as lists) plus first slice of dynamic_joint_description
                 log_data[self.args_cli.task] = {
-                    "dynamic_joint_description": dynamic_joint_description[0].squeeze(0).tolist(),
-                    "dynamic_joint_state_mask1_node": dynamic_joint_state_mask1_node[0].squeeze(0).tolist(),
-                    "dynamic_joint_state_mask2_node": dynamic_joint_state_mask2_node[0].squeeze(0).tolist(),
-                    "dynamic_joint_latent": dynamic_joint_latent[0].squeeze(0).tolist(),
-                    "action_description_latent": action_description_latent[0].squeeze(0).tolist(),
-                    "action_latent": action_latent[0].squeeze(0).tolist(),
-                    "combined_action_latent": combined_action_latent[0].squeeze(0).tolist(),
-                    "policy_mean": policy_mean[0].squeeze(0).squeeze(-1).tolist()
+                    "dynamic_joint_description": dynamic_joint_description.mean(dim=0).tolist(),
+                    "dynamic_joint_state_mask1_node": dynamic_joint_state_mask1_node.mean(dim=0).tolist(),
+                    "latent_dynamic_joint_state": latent_dynamic_joint_state.mean(dim=0).tolist(),
+                    "dynamic_joint_state_mask2_node": dynamic_joint_state_mask2_node.mean(dim=0).tolist(),
+                    "dynamic_joint_state_mask3_node": dynamic_joint_state_mask3_node.mean(dim=0).tolist(),
+                    "dynamic_joint_latent": dynamic_joint_latent.mean(dim=0).tolist(),
+                    "action_description_latent": action_description_latent.mean(dim=0).tolist(),
+                    "action_latent": action_latent.mean(dim=0).tolist(),
+                    "combined_action_latent": combined_action_latent.mean(dim=0).tolist(),
+                    "policy_mean": policy_mean.mean(dim=0).squeeze(-1).tolist()
                 }
 
                 # 3. Write the updated log_data back to the file
