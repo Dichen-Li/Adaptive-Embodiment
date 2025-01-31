@@ -283,6 +283,20 @@ If you wish to store videos, which might slow down simulation, add `--video --vi
 
 Reward values will be printed out. You may note down the rewards for full trajectories to compare between teacher and student model. The teacher model can be run with `scripts/rsl_rl/play.py`, and you will see a simlar printout from the program. Note that the rewards here are likely higher than the one logged by tensorboard during training, because now we are in evaluation mode, i.e., using the mean value predicted by the model as the action, while the action was sampled from a gaussian (predicted mean + a std), which encourages exploration but causes worse reward returns. 
 
+## Robot description analysis
+### 1. Generate description file
+For Gendog, run,
+```angular2html
+bash scripts/rsl_rl/eval_urma_description_multi.sh   --checkpoint_path "log_dir/urma_3robot/urma_3robot_10epoch_jan29.pt"   --description_log_file "log_dir/urma_3robot/Gendog0_307_averageEnv_policy_description.json" --robot_name "Gendog" --start_index 0 --end_index 307
+```
+Output stored to  `log_dir/urma_3robot/Gendog0_307_averageEnv_policy_description.json`
+You can download it from https://drive.google.com/drive/folders/1ply5_WjY7E79-YPmdtJDdk4ruNuJwvGp?usp=sharing
+### 2. Analyze description using t-sne
+Check,
+```angular2html
+analysis/t-sne.ipynb
+```
+
 
 ## Common errors
 1. Initial state values are integers

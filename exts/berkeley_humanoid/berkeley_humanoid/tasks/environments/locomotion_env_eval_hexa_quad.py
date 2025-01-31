@@ -28,15 +28,9 @@ class LocomotionEnv(DirectRLEnv):
         self.trunk_cfg = self.cfg.trunk_cfg
         self.trunk_cfg.resolve(self.scene)
         self.trunk_contact_cfg = self.cfg.trunk_contact_cfg
-        self.all_contact_cfg = self.cfg.all_contact_cfg
-        self.all_contact_cfg.resolve(self.scene)
+        self.trunk_contact_cfg.resolve(self.scene)
         self.feet_contact_cfg = self.cfg.feet_contact_cfg
         self.feet_contact_cfg.resolve(self.scene)
-        if self.trunk_contact_cfg is None:
-            self.all_body_ids_for_contact_termination = [body_id for body_id in self.all_contact_cfg.body_ids if body_id not in self.feet_contact_cfg.body_ids]
-        else:
-            self.trunk_contact_cfg.resolve(self.scene)
-            self.all_body_ids_for_contact_termination = self.trunk_contact_cfg.body_ids
 
         self.nr_joints = self.robot.data.default_joint_pos.shape[1]
         self.nr_feet = self.cfg.nr_feet
@@ -57,8 +51,6 @@ class LocomotionEnv(DirectRLEnv):
             self.d_gains = robot_actuators.damping
         else:
             raise NotImplementedError()
-
-        self.trunk_too_low_percentage = self.cfg.trunk_too_low_percentage
 
         self.step_sampling_probability = self.cfg.step_sampling_probability
 
@@ -520,10 +512,10 @@ class LocomotionEnv(DirectRLEnv):
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         self.handle_domain_randomization()
 
-        all_contact_sensor = self.scene.sensors[self.all_contact_cfg.name]
-        contact_for_termination = torch.any(torch.norm(all_contact_sensor.data.net_forces_w[:, self.all_body_ids_for_contact_termination], dim=-1) > 1.0, dim=1)
-        trunk_too_low = self.robot.data.root_state_w[:, 2] < self.nominal_trunk_z * self.trunk_too_low_percentage
-        terminated = contact_for_termination | trunk_too_low
+        trunk_contact_sensor = self.scene.sensors[self.trunk_contact_cfg.name]
+        trunk_contact = torch.any(torch.norm(trunk_contact_sensor.data.net_forces_w[:, self.trunk_contact_cfg.body_ids], dim=-1) > 1.0, dim=1)
+        terminated = trunk_contact
+        # terminated = torch.tensor([False] * self.num_envs, dtype=torch.bool, device=self.sim.device)  # for debugging
 
         truncated = self.episode_length_buf >= self.max_episode_length - 1
 
@@ -1008,4 +1000,4 @@ def compute_rewards(
         "reward_info/feet_y_distance_from_target_norm": feet_y_distance_from_target_norm,
     }
 
-    return reward, {k: v.mean() for k, v in extras_detailed.items()}, extras_detailed
+    return reward, {k:v.mean() for k, v in extras_detailed.items()}, extras_detailed

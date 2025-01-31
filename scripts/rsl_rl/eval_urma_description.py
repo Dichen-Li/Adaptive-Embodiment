@@ -15,7 +15,7 @@ parser.add_argument("--model_is_actor", action="store_true", default=False,
                     help="Indicate if the supervised model is actor=True/one_policy=False.")
 parser.add_argument("--ckpt_path", type=str, default=None, help="Store the specified policy file directory.")
 parser.add_argument("--log_file", type=str, default=None, help="Store average return in this file.")
-parser.add_argument("--export_onnx", action="store_true", default=False, help="Export the policy to ONNX format.")
+parser.add_argument("--description_log_file", type=str, default=None, help="Store dynamic_joint_description in this file.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -55,7 +55,7 @@ from utils import one_policy_observation_to_inputs
 class InferenceOnePolicyRunner:
     """A simple runner to handle inference using the one policy."""
 
-    def __init__(self, env: VecEnv, device: str = "cpu", model_is_actor: bool = False):
+    def __init__(self, env: VecEnv, device: str = "cpu", model_is_actor: bool = False, args_cli = None):
         """
         Initialize the one policy runner.
 
@@ -67,7 +67,7 @@ class InferenceOnePolicyRunner:
             policy = get_policy(env.unwrapped.nr_dynamic_joint_observations, device)
         else:
             from silver_badger_torch.policy import get_policy
-            policy = get_policy(device)
+            policy = get_policy(device, args_cli)
 
         self.policy = policy
         self.device = device
@@ -159,90 +159,19 @@ def main():
     model_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # load previously trained model
-    one_policy_runner = InferenceOnePolicyRunner(env, device=model_device, model_is_actor=args_cli.model_is_actor)
+    one_policy_runner = InferenceOnePolicyRunner(env, device=model_device, model_is_actor=args_cli.model_is_actor, args_cli = args_cli)
     one_policy_runner.load(policy_file_path)
 
     # Reset environment and start simulation
-    obs, observations = env.get_observations()
+    _, observations = env.get_observations()
     one_policy_observation = observations["observations"]["urma_obs"]
-    curr_timestep = 0
 
-    # export policy to onnx
-    if args_cli.export_onnx:
-        export_model_dir = os.path.join(os.path.dirname(policy_file_path), "exported")
-        if not os.path.exists(export_model_dir):
-            os.makedirs(export_model_dir)
-        torch.onnx.export(
-            one_policy_runner.policy,
-            one_policy_observation_to_inputs(one_policy_observation, env.unwrapped, model_device),
-            os.path.join(export_model_dir, "policy.onnx"),
-            export_params=True,
-            opset_version=11,
-            verbose=False,
-            input_names=["obs"],
-            output_names=["actions"],
-            dynamic_axes={},
-        )
-        print(f"[INFO] Policy exported to ONNX format at: {export_model_dir}/policy.onnx")
-
-    termination_steps = torch.zeros(args_cli.num_envs, device=model_device)
-    returns = torch.zeros(args_cli.num_envs, device=model_device)
-    seen_dones = torch.zeros(args_cli.num_envs, dtype=torch.bool, device=model_device)
-
-    # Main simulation loop
-    while simulation_app.is_running():
-        with torch.inference_mode():
-            # Agent stepping
-            actions = one_policy_runner.infer(one_policy_observation)
-
-            # Environment stepping
-            obs, rewards, dones, extra = env.step(actions)
-            dones = dones.bool()
-
-            if curr_timestep == 0:
-                reward_extras = {key: torch.zeros(args_cli.num_envs, device=model_device) for key in extra["log_detailed"].keys()}
-            for key, value in extra["log_detailed"].items():
-                reward_extras[key] += value
-
-            one_policy_observation = extra["observations"]["urma_obs"]
-
-            # Update the returns
-            returns += rewards * (1 - seen_dones.float())
-            termination_steps[(~seen_dones) & dones] = curr_timestep + 1
-
-            seen_dones = seen_dones | dones
-
-            curr_timestep += 1
-            if curr_timestep % 100 == 0:
-                print(f"[INFO] Timestep: {curr_timestep}")
-            
-            if seen_dones.all():
-                break
+    _ = one_policy_runner.infer(one_policy_observation)
 
     env.close()
     del env
 
-    avg_return = returns.mean().item()
-    avg_steps = termination_steps.mean().item()
-    avg_reward_extras = {key: value.mean().item() for key, value in reward_extras.items()}
-    print(f"[INFO] Average return: {avg_return}, average steps: {avg_steps}")
 
-    # log average return to file
-    import json
-    if args_cli.log_file is not None:
-        if not os.path.exists(args_cli.log_file):
-            with open(args_cli.log_file, 'w') as f:
-                json.dump({}, f)
-        
-        # update the log file
-        with open(args_cli.log_file, 'r') as f:
-            log_data = json.load(f)
-        log_data[args_cli.task] = {"average_return": avg_return, "average_steps": avg_steps,
-                                   "returns": returns.tolist(), "steps": termination_steps.tolist()}
-        log_data[args_cli.task].update({"reward_extras": {key: value.tolist() for key, value in reward_extras.items()}})
-        with open(args_cli.log_file, 'w') as f:
-            json.dump(log_data, f)
-            print(f"[INFO] Save reward information of {args_cli.task} into {args_cli.log_file}")
 
 if __name__ == "__main__":
     main()

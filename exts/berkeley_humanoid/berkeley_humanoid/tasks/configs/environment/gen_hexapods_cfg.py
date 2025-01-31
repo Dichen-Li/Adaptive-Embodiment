@@ -55,7 +55,9 @@ class GenHexapodEnvCfg(DirectRLEnvCfg):
     # robot-specific config
     trunk_cfg = SceneEntityCfg("robot", body_names="base")
     trunk_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*base.*")
+    all_contact_cfg = SceneEntityCfg("contact_sensor", body_names=['.*'])
     feet_contact_cfg = SceneEntityCfg("contact_sensor", body_names=".*foot")
+    trunk_too_low_percentage = 0.0
 
     step_sampling_probability = 0.002
 
