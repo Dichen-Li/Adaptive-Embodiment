@@ -4,18 +4,23 @@ def extract_indices(robot_names, indices):
     # Extract indices from the robot_names argument
     robot_names_indices = []
     for item in robot_names.split():
-        if "Gendog" in item:
+        if "Genhumanoid" in item:
             parts = item.split("_")
             for part in parts:
-                if part.startswith("Gendog"):
-                    index = part[len("Gendog"):]
+                if part.startswith("Genhumanoid"):
+                    index = part[len("Genhumanoid"):]
                     if index.isdigit():
                         robot_names_indices.append(int(index))
 
     # Extract indices from the indices argument
-    indices_list = [int(x.split(',')[0]) for x in indices]
+    indices_list = sorted([int(x.split(',')[0]) for x in indices])
 
-    return sorted(robot_names_indices), sorted(indices_list)
+    return sorted(robot_names_indices), indices_list
+
+def format_bash_array(indices):
+    """Format the indices into a Bash-compatible array string with the 'Genhumanoid' prefix."""
+    formatted = " ".join(f"\"Genhumanoid{i}\"" for i in indices)
+    return f"tasks=({formatted})"
 
 def main():
     # Argument parser setup
@@ -36,10 +41,14 @@ def main():
 
     # Print results
     print("Sorted indices from robot_names:", robot_names_indices)
-    print("Sorted Gendog names from robot_names:", str([f"Gendog{i}" for i in robot_names_indices]))
-    print("Sorted indices from indices:", indices_list)
+    # print("Sorted Gendog names from robot_names:", str([f"Gendog{i}" for i in robot_names_indices]))
+    print("Sorted indices from indices (Ground Truth):", indices_list)
     print("Indices in robot_names but missing from indices:", missing_in_indices)
     print("Indices in indices but missing from robot_names:", missing_in_robot_names)
+
+    # Print Bash-formatted array using ground truth indices
+    print("\nGround Truth Bash-formatted array:")
+    print(format_bash_array(indices_list))
 
 if __name__ == "__main__":
     main()
