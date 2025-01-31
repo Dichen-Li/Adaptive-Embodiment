@@ -223,6 +223,7 @@ def main():
         log_data[args_cli.task].update(avg_reward_extras)
         with open(args_cli.log_file, 'w') as f:
             json.dump(log_data, f)
+            print(f"[INFO] Save reward information of {args_cli.task} into {args_cli.log_file}")
 
 
 if __name__ == "__main__":
