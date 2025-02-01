@@ -22,6 +22,7 @@ parser.add_argument("--seed", type=int, default=0, help="Seed used for the envir
 parser.add_argument("--min_ckpt_iter", type=int, default=None, help="The minimum checkpoint pt iteration for collecting data")
 parser.add_argument("--steps", type=int, default=2000, help="Number of steps per environment")
 parser.add_argument("--reward_log_file", type=str, default=None, help="Indicator and directory for storing expert reward")
+parser.add_argument("--resume_path", type=str, default=None, help="Additionally specify the wanted policy. If set, ignore task set policy path.")
 
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -56,17 +57,25 @@ def main():
     )
     agent_cfg: RslRlOnPolicyRunnerCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
-    # specify directory for logging experiments
-    log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
-    log_root_path = os.path.abspath(log_root_path)
-    print(f"[INFO] Loading experiment from directory: {log_root_path}")
-    resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
-    if args_cli.min_ckpt_iter != None:
-        from utils import extract_epoch
-        epoch_number = extract_epoch(resume_path)
-        if epoch_number < args_cli.min_ckpt_iter:
-            print(f"[WARNING] {agent_cfg.experiment_name} maximum checkpoint epoch is {epoch_number}. Does not satisfy the required min_ckpt_iter of {args_cli.min_ckpt_iter}.")
-            return
+    # specify resume_path for loading customized policy
+    # [INFO]: The args_cli.task still decides which environment to make
+    if args_cli.resume_path != parser.get_default("resume_path"):
+        resume_path = args_cli.resume_path
+        print(f"[INFO] Loading policy file from directory: {resume_path}")
+    else:
+        # specify directory for logging experiments
+        log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
+        log_root_path = os.path.abspath(log_root_path)
+        print(f"[INFO] Loading experiment from directory: {log_root_path}")
+        resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
+        # If use  policy corresponding to the task, then check the epoch number to be at least args_cli.min_ckpt_iter
+        # otherwise, directly exit
+        if args_cli.min_ckpt_iter != None:
+            from utils import extract_epoch
+            epoch_number = extract_epoch(resume_path)
+            if epoch_number < args_cli.min_ckpt_iter:
+                print(f"[WARNING] {agent_cfg.experiment_name} maximum checkpoint epoch is {epoch_number}. Does not satisfy the required min_ckpt_iter of {args_cli.min_ckpt_iter}.")
+                return
     log_dir = os.path.dirname(resume_path)
 
     # create isaac environment
