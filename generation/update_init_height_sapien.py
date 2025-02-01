@@ -145,14 +145,15 @@ def update_height(robot_urdf_path, train_cfg_path, save_path, root_name):
 
 
 if __name__ == '__main__':
-    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods'
+    # root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v0/gen_hexapods'
+    root_dir = "exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec"
     asset_dirs = [os.path.join(root_dir, name) for name in os.listdir(root_dir) if
                   os.path.isdir(os.path.join(root_dir, name))]
 
     for asset_dir in tqdm(asset_dirs):
         update_height(
-            robot_urdf_path=f'{asset_dir}/robot.urdf',
+            robot_urdf_path=f'{asset_dir}/urdf/go2_description.urdf',
             train_cfg_path=f'{asset_dir}/train_cfg.json',
             save_path=f'{asset_dir}/train_cfg_v2.json',  # modify it to whatever you want
-            root_name="trunk",  # trunk for dogs and hexapods, pelvis for humanoids
+            root_name="base",  # trunk for dogs and hexapods, pelvis for humanoids
         )

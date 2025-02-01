@@ -207,14 +207,14 @@ def extract_info(robot_urdf_path, train_cfg_path, save_path, root_name):
 if __name__ == '__main__':
     # root_dir = '/home/albert/Data/gen_embodiments_0110_no_usd/gen_dogs'
     # root_link_name = 'trunk'        # quadruped and hexapods
-    root_dir = '/home/albert/Data/gen_embodiments_0110_no_usd/gen_humanoids'
-    root_link_name = 'pelvis'     # humanoid
+    root_dir = 'exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec'
+    root_link_name = 'base'     # base for quadruped, and pelvis for humanoid
     asset_dirs = sorted([os.path.join(root_dir, name) for name in os.listdir(root_dir) if
                   os.path.isdir(os.path.join(root_dir, name))])
 
     for asset_dir in tqdm(asset_dirs):
         extract_info(
-            robot_urdf_path=f'{asset_dir}/robot.urdf',
+            robot_urdf_path=f'{asset_dir}/urdf/go2_description.urdf',
             train_cfg_path=f'{asset_dir}/train_cfg.json',
             save_path=f'{asset_dir}/robot_description_vec.json',  # modify it to whatever you want
             root_name=root_link_name,

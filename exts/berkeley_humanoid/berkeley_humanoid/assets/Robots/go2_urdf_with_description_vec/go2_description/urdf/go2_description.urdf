@@ -27,7 +27,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/base.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/base.dae" />
       </geometry>
       <material
         name="">
@@ -139,7 +139,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/hip.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/hip.dae" />
       </geometry>
       <material
         name="">
@@ -205,7 +205,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/thigh.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/thigh.dae" />
       </geometry>
       <material
         name="">
@@ -271,7 +271,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/calf.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/calf.dae" />
       </geometry>
       <material
         name="">
@@ -381,7 +381,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/foot.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/foot.dae" />
       </geometry>
       <material
         name="">
@@ -430,7 +430,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="3.1415 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/hip.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/hip.dae" />
       </geometry>
       <material
         name="">
@@ -496,7 +496,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/thigh_mirror.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/thigh_mirror.dae" />
       </geometry>
       <material
         name="">
@@ -562,7 +562,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/calf_mirror.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/calf_mirror.dae" />
       </geometry>
       <material
         name="">
@@ -672,7 +672,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/foot.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/foot.dae" />
       </geometry>
       <material
         name="">
@@ -721,7 +721,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 3.1415 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/hip.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/hip.dae" />
       </geometry>
       <material
         name="">
@@ -787,7 +787,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/thigh.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/thigh.dae" />
       </geometry>
       <material
         name="">
@@ -853,7 +853,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/calf.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/calf.dae" />
       </geometry>
       <material
         name="">
@@ -963,7 +963,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/foot.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/foot.dae" />
       </geometry>
       <material
         name="">
@@ -1012,7 +1012,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="3.1415 3.1415 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/hip.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/hip.dae" />
       </geometry>
       <material
         name="">
@@ -1078,7 +1078,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/thigh_mirror.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/thigh_mirror.dae" />
       </geometry>
       <material
         name="">
@@ -1144,7 +1144,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/calf_mirror.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/calf_mirror.dae" />
       </geometry>
       <material
         name="">
@@ -1254,7 +1254,7 @@ Stephen Brawner (brawner@gmail.com)
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="/home/dichen/Documents/dichen/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/go2_nico_required/go2_description/dae/foot.dae" />
+          filename="/home/research/Documents/ldc/practice/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/test_go2_urdf_with_description_vec/go2_description/dae/foot.dae" />
       </geometry>
       <material
         name="">
