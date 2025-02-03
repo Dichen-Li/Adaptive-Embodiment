@@ -297,6 +297,21 @@ Check,
 analysis/t-sne.ipynb
 ```
 
+## Adaptive Configure Learning
+The goal is to take in inputs, actions and get configure.
+
+
+You have to download inputs actions pair h5py file either from trained nautilus folder or from local machine. For each robot, only one h5py file is needed.
+
+You can download the configure files still from https://drive.google.com/drive/folders/1ply5_WjY7E79-YPmdtJDdk4ruNuJwvGp?usp=sharing
+
+
+For Genhexapod1 and Genhexapod2,
+run
+```angular2html
+python scripts/rsl_rl/train_adaptive_configure.py
+```
+
 
 ## Common errors
 1. Initial state values are integers
