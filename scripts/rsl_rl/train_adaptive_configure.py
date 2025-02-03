@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from adaptive_network import AdaptiveConfigureNet, train_model
 
-def load_robot_data(obs_actions_path, configure_path):
+def load_robot_data(name, obs_actions_path, configure_path):
     """Load observation, action, and configuration data for a robot"""
     # Load observations and actions
     with h5py.File(obs_actions_path, "r") as data_file:
@@ -15,7 +15,7 @@ def load_robot_data(obs_actions_path, configure_path):
     # Load configuration
     with open(configure_path, 'r') as f:
         data_file = json.load(f)
-        configure = np.array(data_file['dynamic_joint_description'])
+        configure = np.array(data_file[name]['dynamic_joint_description'])
     
     return inputs, targets, configure
 
@@ -28,13 +28,13 @@ def main():
     robot_data = [
         {
             'name': 'Genhexapod1',
-            'obs_actions': 'path/to/genhexapod1/obs_actions_00000.h5',
-            'configure': 'path/to/genhexapod1/configure.json'
+            'obs_actions': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/logs/rsl_rl/Genhexapod1_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_1_2/2024-12-18_01-17-38/h5py_record/obs_actions_00000.h5',
+            'configure': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/configure/Genhexapod0_307_averageEnv_policy_description.json'
         },
         {
             'name': 'Genhexapod2',
-            'obs_actions': 'path/to/genhexapod2/obs_actions_00000.h5',
-            'configure': 'path/to/genhexapod2/configure.json'
+            'obs_actions': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/logs/rsl_rl/Genhexapod2_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_0_8/2024-12-18_10-38-06/h5py_record/obs_actions_00000.h5',
+            'configure': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/configure/Genhexapod0_307_averageEnv_policy_description.json'
         }
     ]
     
@@ -46,6 +46,7 @@ def main():
     for robot in robot_data:
         print(f"Loading data for {robot['name']}...")
         obs, actions, config = load_robot_data(
+            robot['name'],
             robot['obs_actions'],
             robot['configure']
         )

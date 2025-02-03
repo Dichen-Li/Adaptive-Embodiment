@@ -19,7 +19,7 @@ class AdaptiveConfigureNet(nn.Module):
         # Temporal attention to focus on important timesteps
         self.temporal_attention = nn.MultiheadAttention(hidden_dim, num_heads=8, batch_first=True)
         
-        # Configuration predictor
+        # Configuration predictor for each joint
         self.config_predictor = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
@@ -27,7 +27,7 @@ class AdaptiveConfigureNet(nn.Module):
             nn.Linear(hidden_dim, hidden_dim // 2),
             nn.LayerNorm(hidden_dim // 2),
             nn.ReLU(),
-            nn.Linear(hidden_dim // 2, config_dim)
+            nn.Linear(hidden_dim // 2, 12 * config_dim)  # 12 joints, each with config_dim parameters
         )
 
     def forward(self, obs, actions):
@@ -45,8 +45,11 @@ class AdaptiveConfigureNet(nn.Module):
         # Pool across temporal dimension using mean
         x = attn_out.mean(dim=1)
         
-        # Predict configuration
+        # Predict configuration for all joints
         config = self.config_predictor(x)
+        
+        # Reshape to match target shape [batch_size, 12, config_dim]
+        config = config.view(batch_size, 12, -1)
         
         return config
 
@@ -87,9 +90,10 @@ def prepare_batch(obs, actions, config, device):
     obs = torch.FloatTensor(obs).to(device)
     actions = torch.FloatTensor(actions).to(device)
     
-    # Expand config to match batch size
+    # Convert config to tensor and ensure correct shape [batch_size, 12, 18]
     config = torch.FloatTensor(config).to(device)
-    config = config.expand(obs.shape[0], -1, -1)
+    if len(config.shape) == 2:  # If config is [12, 18]
+        config = config.unsqueeze(0).expand(obs.shape[0], -1, -1)
     
     return obs, actions, config
 
@@ -147,6 +151,8 @@ if __name__ == "__main__":
         action_dim=12,  # From the data shape
         config_dim=18,  # From the data shape
     ).to(device)
+    print("AdaptiveConfigureNet Structure:")
+    print(model)
     
     # Training would be done by:
     # train_model(model, [robot1_obs, robot2_obs], 
