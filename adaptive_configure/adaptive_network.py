@@ -111,10 +111,14 @@ def train_model(model, train_obs, train_actions, train_configs,
         batch_size: Batch size for training
         device: Device to train on
     """
+    from tqdm.auto import tqdm
     trainer = ConfigureTrainer(model)
     model.train()
     
-    for epoch in range(num_epochs):
+    # Create epoch progress bar without position specification
+    epoch_iterator = tqdm(range(num_epochs), desc='Training Progress', leave=True)
+    
+    for epoch in epoch_iterator:
         total_loss = 0
         num_batches = 0
         
@@ -136,8 +140,8 @@ def train_model(model, train_obs, train_actions, train_configs,
                 num_batches += 1
         
         avg_loss = total_loss / num_batches
-        if (epoch + 1) % 10 == 0:
-            print(f"Epoch {epoch+1}, Average Loss: {avg_loss:.6f}")
+        # Print epoch results on a new line
+        print(f'Epoch {epoch+1}/{num_epochs}, Average Loss: {avg_loss:.6f}')
     
     return model
 

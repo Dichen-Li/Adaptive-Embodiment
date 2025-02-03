@@ -69,13 +69,17 @@ def main():
         train_obs=train_obs,
         train_actions=train_actions,
         train_configs=train_configs,
-        num_epochs=100,
+        num_epochs=3,
         batch_size=4,
         device=device
     )
     
     # Save trained model
-    save_path = "adaptive_configure_model.pth"
+    # Save trained model
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    save_dir = os.path.join(current_dir, "saved_models")
+    os.makedirs(save_dir, exist_ok=True)
+    save_path = os.path.join(save_dir, "adaptive_configure_model.pth")
     torch.save(trained_model.state_dict(), save_path)
     print(f"Model saved to {save_path}")
 
