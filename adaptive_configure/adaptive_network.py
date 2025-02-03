@@ -35,21 +35,26 @@ class AdaptiveConfigureNet(nn.Module):
         
         # Concatenate observations and actions
         x = torch.cat([obs, actions], dim=-1)
-        
+        print(f"[INFO] The shape of [obs, actions] input is {x.shape}")
         # Encode each timestep
         x = self.encoder(x)
+        print(f"[INFO] The shape of encoder output is {x.shape}")
         
         # Apply temporal attention
         attn_out, _ = self.temporal_attention(x, x, x)
+        print(f"[INFO] The shape of temporal_attention output is {x.shape}")
         
         # Pool across temporal dimension using mean
         x = attn_out.mean(dim=1)
-        
+        print(f"[INFO] The shape of pooling output is {x.shape}")
+
         # Predict configuration for all joints
         config = self.config_predictor(x)
-        
+        print(f"[INFO] The shape of config_predictor is {x.shape}")
+
         # Reshape to match target shape [batch_size, 12, config_dim]
         config = config.view(batch_size, 12, -1)
+        print(f"[INFO] The shape of configure output is {x.shape}")
         
         return config
 
