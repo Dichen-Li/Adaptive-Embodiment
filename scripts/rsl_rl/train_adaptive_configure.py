@@ -70,7 +70,7 @@ def main():
         train_actions=train_actions,
         train_configs=train_configs,
         num_epochs=100,
-        batch_size=32,
+        batch_size=4,
         device=device
     )
     
