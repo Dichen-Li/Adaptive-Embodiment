@@ -1,169 +1,166 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import DataLoader, TensorDataset
+import numpy as np
+import os
+import sys
+import json
+import h5py
+from tqdm.auto import tqdm
+sys.path.append(os.path.dirname(os.getcwd())+"/scripts/rsl_rl")
+from torch.utils.tensorboard import SummaryWriter
 
-class AdaptiveConfigureNet(nn.Module):
-    def __init__(self, obs_dim=268, action_dim=12, config_dim=18, hidden_dim=256):
+class AdaptiveMLP(nn.Module):
+    def __init__(self, input_dim=12*3 + 12, hidden_dim=512, output_dim=12*18 + 16):
+        """
+        Adaptive MLP model for estimating dynamic joint descriptions & general policy state.
+        
+        Args:
+            input_dim: Flattened input dimension (12 joints * 3 states + 12 targets)
+            hidden_dim: Hidden layer size
+            output_dim: Flattened output dimension (12 joints * 18 descriptions + 16 policy state)
+        """
         super().__init__()
-        
-        # Encoder for processing observation-action pairs
-        self.encoder = nn.Sequential(
-            nn.Linear(obs_dim + action_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),
+
+        self.mlp = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),
             nn.ReLU(),
-        )
-        
-        # Temporal attention to focus on important timesteps
-        self.temporal_attention = nn.MultiheadAttention(hidden_dim, num_heads=8, batch_first=True)
-        
-        # Configuration predictor for each joint
-        self.config_predictor = nn.Sequential(
-            nn.Linear(hidden_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, hidden_dim // 2),
-            nn.LayerNorm(hidden_dim // 2),
-            nn.ReLU(),
-            nn.Linear(hidden_dim // 2, 12 * config_dim)  # 12 joints, each with config_dim parameters
+            nn.Linear(hidden_dim, output_dim)
         )
 
-    def forward(self, obs, actions):
-        batch_size, seq_len, _ = obs.shape
+    def forward(self, joint_states, targets):
+        """
+        Forward pass of the model.
         
-        # Concatenate observations and actions
-        x = torch.cat([obs, actions], dim=-1)
-        print(f"[INFO] The shape of [obs, actions] input is {x.shape}")
-        # Encode each timestep
-        x = self.encoder(x)
-        print(f"[INFO] The shape of encoder output is {x.shape}")
+        Args:
+            joint_states: Tensor of shape [batch_size, 200, 12, 3]
+            targets: Tensor of shape [batch_size, 200, 12]
         
-        # Apply temporal attention
-        attn_out, _ = self.temporal_attention(x, x, x)
-        print(f"[INFO] The shape of temporal_attention output is {x.shape}")
-        
-        # Pool across temporal dimension using mean
-        x = attn_out.mean(dim=1)
-        print(f"[INFO] The shape of pooling output is {x.shape}")
+        Returns:
+            dynamic_joint_description: Tensor of shape [batch_size, 200, 12, 18]
+            general_policy_state: Tensor of shape [batch_size, 200, 16]
+        """
+        batch_size = joint_states.shape[0]
 
-        # Predict configuration for all joints
-        config = self.config_predictor(x)
-        print(f"[INFO] The shape of config_predictor is {x.shape}")
+        # Flatten inputs along the joint dimension
+        x = torch.cat([joint_states.view(batch_size, 200, -1), targets.view(batch_size, 200, -1)], dim=-1)
+        
+        # Pass through MLP
+        x = self.mlp(x)
 
-        # Reshape to match target shape [batch_size, 12, config_dim]
-        config = config.view(batch_size, 12, -1)
-        print(f"[INFO] The shape of configure output is {x.shape}")
-        
-        return config
+        # Reshape outputs
+        dynamic_joint_description = x[:, :, :12*18].view(batch_size, 200, 12, 18)
+        general_policy_state = x[:, :, 12*18:].view(batch_size, 200, 16)
 
-class ConfigureTrainer:
-    def __init__(self, model, learning_rate=1e-4):
-        self.model = model
-        self.optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-        
-    def train_step(self, obs, actions, target_config):
-        self.optimizer.zero_grad()
-        
-        # Forward pass
-        pred_config = self.model(obs, actions)
-        
-        # Compute MSE loss
-        loss = F.mse_loss(pred_config, target_config)
-        
-        # Backward pass
-        loss.backward()
-        self.optimizer.step()
-        
-        return loss.item()
+        return dynamic_joint_description, general_policy_state
 
-def prepare_batch(obs, actions, config, device):
+def data_loader(dynamic_joint_state, targets, dynamic_joint_description, general_policy_state, batch_size=4, device='cuda'):
     """
-    Prepare a batch of data for training
+    Prepare and batch the dataset.
     
     Args:
-        obs: numpy array of shape (num_episodes, seq_len, obs_dim)
-        actions: numpy array of shape (num_episodes, seq_len, action_dim)
-        config: numpy array of shape (config_joints, config_dim)
-        device: torch device
+        dynamic_joint_state: Numpy array [200, 4096, 12, 3]
+        targets: Numpy array [200, 4096, 12]
+        dynamic_joint_description: Numpy array [200, 4096, 12, 18] (Ground Truth)
+        general_policy_state: Numpy array [200, 4096, 16] (Ground Truth)
+        device: Torch device ('cuda' or 'cpu')
     
     Returns:
-        Tuple of tensors ready for training
+        DataLoader for training
     """
-    # Convert to torch tensors
-    obs = torch.FloatTensor(obs).to(device)
-    actions = torch.FloatTensor(actions).to(device)
-    
-    # Convert config to tensor and ensure correct shape [batch_size, 12, 18]
-    config = torch.FloatTensor(config).to(device)
-    if len(config.shape) == 2:  # If config is [12, 18]
-        config = config.unsqueeze(0).expand(obs.shape[0], -1, -1)
-    
-    return obs, actions, config
+    # Convert to PyTorch tensors
+    dynamic_joint_state = torch.FloatTensor(dynamic_joint_state).permute(1, 0, 2, 3).to(device)  # [4096, 200, 12, 3]
+    targets = torch.FloatTensor(targets).permute(1, 0, 2).to(device)  # [4096, 200, 12]
+    dynamic_joint_description = torch.FloatTensor(dynamic_joint_description).permute(1, 0, 2, 3).to(device)  # [4096, 200, 12, 18]
+    general_policy_state = torch.FloatTensor(general_policy_state).permute(1, 0, 2).to(device)  # [4096, 200, 16]
 
-def train_model(model, train_obs, train_actions, train_configs, 
-                num_epochs=100, batch_size=32, device='cuda'):
+    # Create dataset and dataloader
+    dataset = TensorDataset(dynamic_joint_state, targets, dynamic_joint_description, general_policy_state)
+    dataloader = DataLoader(dataset, batch_size, shuffle=True)  # Small batch size to avoid VRAM issues
+
+    return dataloader
+
+def train_model(model, train_loader, num_epochs=5, device='cuda', log_dir='logs'):
     """
-    Train the adaptive configure network
+    Train the AdaptiveMLP model.
     
     Args:
-        model: AdaptiveConfigureNet instance
-        train_obs: List of observation arrays for different robots
-        train_actions: List of action arrays for different robots
-        train_configs: List of configuration arrays for different robots
-        num_epochs: Number of training epochs
-        batch_size: Batch size for training
-        device: Device to train on
+        model: Instance of AdaptiveMLP
+        train_loader: DataLoader for training
+        num_epochs: Number of epochs
+        device: 'cuda' or 'cpu'
+    
+    Returns:
+        Trained model
     """
-    from tqdm.auto import tqdm
-    trainer = ConfigureTrainer(model)
     model.train()
+    model.to(device)
     
-    # Create epoch progress bar without position specification
-    epoch_iterator = tqdm(range(num_epochs), desc='Training Progress', leave=True)
-    
-    for epoch in epoch_iterator:
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
+    criterion = nn.MSELoss()
+
+    # Create directory for logging both training loss and model parameters
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    model_dir = os.path.join(current_dir, log_dir)
+    if not os.path.isdir(model_dir):
+        os.makedirs(model_dir, exist_ok=True)
+
+    # Tensorboard logger writer
+    writer = SummaryWriter(log_dir=log_dir)
+
+    for epoch in tqdm(range(num_epochs), desc="Training Progress"):
         total_loss = 0
         num_batches = 0
-        
-        # Train on each robot's data
-        for obs, actions, config in zip(train_obs, train_actions, train_configs):
-            # Prepare data
-            obs_tensor, actions_tensor, config_tensor = prepare_batch(
-                obs, actions, config, device
-            )
-            
-            # Train in batches
-            for i in range(0, len(obs), batch_size):
-                batch_obs = obs_tensor[i:i+batch_size]
-                batch_actions = actions_tensor[i:i+batch_size]
-                batch_config = config_tensor[i:i+batch_size]
-                
-                loss = trainer.train_step(batch_obs, batch_actions, batch_config)
-                total_loss += loss
-                num_batches += 1
+
+        for joint_states, targets, gt_dynamic_joint_description, gt_general_policy_state in train_loader:
+            optimizer.zero_grad()
+
+            # Forward pass
+            dynamic_joint_description, general_policy_state = model(joint_states, targets)
+
+            # Compute loss
+            loss = criterion(dynamic_joint_description, gt_dynamic_joint_description) + \
+                   criterion(general_policy_state, gt_general_policy_state)
+
+            # Backward pass
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+            num_batches += 1
         
         avg_loss = total_loss / num_batches
-        # Print epoch results on a new line
-        print(f'Epoch {epoch+1}/{num_epochs}, Average Loss: {avg_loss:.6f}')
+        print(f"Epoch {epoch+1}/{num_epochs}, Loss: {avg_loss:.6f}")
+
+        # Log loss to TensorBoard
+        writer.add_scalar("Training Loss", avg_loss, epoch)
     
+    # Close TensorBoard writer
+    writer.close()
+
+    # Save trained model
+    model_file = os.path.join(model_dir, "adaptive_configure_model.pth")
+    torch.save(model.state_dict(), model_file)
+    print(f"Model saved to {model_file}")
+
     return model
 
 if __name__ == "__main__":
-    # Example usage
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
-    # Initialize model
-    model = AdaptiveConfigureNet(
-        obs_dim=268,  # From the data shape
-        action_dim=12,  # From the data shape
-        config_dim=18,  # From the data shape
-    ).to(device)
-    print("AdaptiveConfigureNet Structure:")
-    print(model)
-    
-    # Training would be done by:
-    # train_model(model, [robot1_obs, robot2_obs], 
-    #                   [robot1_actions, robot2_actions],
-    #                   [robot1_config, robot2_config])
+    # Initialize device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Example data generation (replace with actual data)
+    dynamic_joint_state = torch.randn(200, 4096, 12, 3).numpy()
+    targets = torch.randn(200, 4096, 12).numpy()
+    dynamic_joint_description = torch.randn(200, 4096, 12, 18).numpy()
+    general_policy_state = torch.randn(200, 4096, 16).numpy()
+
+    # Prepare data
+    train_loader = data_loader(dynamic_joint_state, targets, dynamic_joint_description, general_policy_state, device)
+
+    # Initialize and train the model
+    model = AdaptiveMLP().to(device)
+    model = train_model(model, train_loader, num_epochs=5, device=device)

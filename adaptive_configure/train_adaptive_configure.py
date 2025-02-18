@@ -1,87 +1,95 @@
-import os
-import h5py
-import json
-import numpy as np
 import torch
-from adaptive_network import AdaptiveConfigureNet, train_model
+import torch.nn as nn
+import torch.nn.functional as F
+import numpy as np
+import os
+import sys
+import json
+import h5py
+from tqdm.auto import tqdm
+sys.path.append(os.path.dirname(os.getcwd())+"/scripts/rsl_rl")
+from utils import one_policy_observation_to_inputs
+from adaptive_network import AdaptiveMLP, data_loader, train_model
 
-def load_robot_data(name, obs_actions_path, configure_path):
-    """Load observation, action, and configuration data for a robot"""
-    # Load observations and actions
-    with h5py.File(obs_actions_path, "r") as data_file:
-        inputs = np.array(data_file["one_policy_observation"][:, :4096])
-        targets = np.array(data_file["actions"][:, :4096])
+class Metadata:
+    def __init__(self, nr_dynamic_joint_observations, single_dynamic_joint_observation_length,
+                 dynamic_joint_observation_length, dynamic_joint_description_size,
+                 trunk_angular_vel_update_obs_idx, goal_velocity_update_obs_idx,
+                 projected_gravity_update_obs_idx):
+        self.nr_dynamic_joint_observations = nr_dynamic_joint_observations
+        self.single_dynamic_joint_observation_length = single_dynamic_joint_observation_length
+        self.dynamic_joint_observation_length = dynamic_joint_observation_length
+        self.dynamic_joint_description_size = dynamic_joint_description_size
+        self.trunk_angular_vel_update_obs_idx = trunk_angular_vel_update_obs_idx
+        self.goal_velocity_update_obs_idx = goal_velocity_update_obs_idx
+        self.projected_gravity_update_obs_idx = projected_gravity_update_obs_idx
+
+def load_robot_data(h5py_path, device='cuda'):
+    """
+    Load urma observation data and parse data for one robot.
+    Input: h5py_path
+    Output: dynamic_joint_state, targets; dynamic_joint_description, general_policy_state
+    """
+    # Load h5py file
+    h5py_dir = os.path.join(os.path.dirname(os.getcwd()), h5py_path)
+    max_parallel_envs_per_file = 4096
+    with h5py.File(h5py_dir, "r") as data_file:
+        inputs = np.array(data_file["one_policy_observation"][:, :max_parallel_envs_per_file])
+        targets = np.array(data_file["actions"][:, :max_parallel_envs_per_file])
+
+    # Define the metadata parameters for urma observation
+    metadata = Metadata(
+        nr_dynamic_joint_observations=12,
+        single_dynamic_joint_observation_length=21,
+        dynamic_joint_observation_length=252,
+        dynamic_joint_description_size=18,
+        trunk_angular_vel_update_obs_idx= [252, 253, 254],  # Example indices
+        goal_velocity_update_obs_idx=[255, 256, 257],
+        projected_gravity_update_obs_idx=[258, 259, 260]
+    )
+
+    # Parse urma observation
+    inputs_tensor = torch.tensor(inputs)
+    dynamic_joint_description = []
+    dynamic_joint_state = []
+    general_policy_state = []
+    for i in range(inputs.shape[0]):
+        (
+            dynamic_joint_description_i,
+            dynamic_joint_state_i,
+            general_policy_state_i
+        ) = one_policy_observation_to_inputs(inputs_tensor[i], metadata, device)
+        dynamic_joint_description.append(dynamic_joint_description_i)
+        dynamic_joint_state.append(dynamic_joint_state_i)
+        general_policy_state.append(general_policy_state_i)
+
+    dynamic_joint_description = torch.stack((dynamic_joint_description), dim=0)
+    dynamic_joint_state = torch.stack((dynamic_joint_state), dim=0)
+    general_policy_state = torch.stack((general_policy_state), dim=0)
     
-    # Load configuration
-    with open(configure_path, 'r') as f:
-        data_file = json.load(f)
-        configure = np.array(data_file[name]['dynamic_joint_description'])
-    
-    return inputs, targets, configure
+    return dynamic_joint_state, targets, dynamic_joint_description, general_policy_state
 
 def main():
     # Set device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     
-    # Data paths for both robots
-    robot_data = [
-        {
-            'name': 'Genhexapod1',
-            'obs_actions': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/logs/rsl_rl/Genhexapod1_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_1_2/2024-12-18_01-17-38/h5py_record/obs_actions_00000.h5',
-            'configure': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/configure/Genhexapod0_307_averageEnv_policy_description.json'
-        },
-        {
-            'name': 'Genhexapod2',
-            'obs_actions': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/logs/rsl_rl/Genhexapod2_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_0_8/2024-12-18_10-38-06/h5py_record/obs_actions_00000.h5',
-            'configure': '/home/dichen/Documents/dichen/Adaptive-Embodiment/project/version0/embodiment-scaling-law/exts/berkeley_humanoid/berkeley_humanoid/assets/Robots/GenBot1K-v2/configure/Genhexapod0_307_averageEnv_policy_description.json'
-        }
-    ]
+    h5py_file = 'logs/rsl_rl/Genhexapod2_genhexapod__KneeNum_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0__ScaleJointLimit_l1-0_l2-0_l3-0_l4-0_l5-0_l6-0_1_0__Geo_scale_all_0_8/2024-12-18_10-38-06/h5py_record/obs_actions_00000.h5'
+
+    (
+        dynamic_joint_state,
+        targets,
+        dynamic_joint_description,
+        general_policy_state
+    ) = load_robot_data(h5py_file, device)
     
-    # Load data for both robots
-    train_obs = []
-    train_actions = []
-    train_configs = []
-    
-    for robot in robot_data:
-        print(f"Loading data for {robot['name']}...")
-        obs, actions, config = load_robot_data(
-            robot['name'],
-            robot['obs_actions'],
-            robot['configure']
-        )
-        train_obs.append(obs)
-        train_actions.append(actions)
-        train_configs.append(config)
-    
+    # Prepare data
+    train_loader = data_loader(dynamic_joint_state, targets, dynamic_joint_description, general_policy_state, batch_size=16, device=device)
     # Initialize model
-    model = AdaptiveConfigureNet(
-        obs_dim=268,  # From the data shape
-        action_dim=12,  # From the data shape
-        config_dim=18,  # From the data shape
-        hidden_dim=256
-    ).to(device)
-    
+    model = AdaptiveMLP().to(device)
     print("Starting training...")
     # Train model
-    trained_model = train_model(
-        model=model,
-        train_obs=train_obs,
-        train_actions=train_actions,
-        train_configs=train_configs,
-        num_epochs=3,
-        batch_size=4,
-        device=device
-    )
-    
-    # Save trained model
-    # Save trained model
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    save_dir = os.path.join(current_dir, "saved_models")
-    os.makedirs(save_dir, exist_ok=True)
-    save_path = os.path.join(save_dir, "adaptive_configure_model.pth")
-    torch.save(trained_model.state_dict(), save_path)
-    print(f"Model saved to {save_path}")
+    model = train_model(model, train_loader, num_epochs=1000, device=device)
 
 if __name__ == "__main__":
     main()
