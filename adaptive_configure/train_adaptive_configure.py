@@ -7,7 +7,7 @@ import sys
 import json
 import h5py
 from tqdm.auto import tqdm
-sys.path.append(os.path.dirname(os.getcwd())+"/scripts/rsl_rl")
+sys.path.append(os.path.dirname(os.path.dirname(__file__))+"/scripts/rsl_rl")
 from utils import one_policy_observation_to_inputs
 from adaptive_network import AdaptiveMLP, data_loader, train_model
 
@@ -31,7 +31,7 @@ def load_robot_data(h5py_path, device='cuda'):
     Output: dynamic_joint_state, targets; dynamic_joint_description, general_policy_state
     """
     # Load h5py file
-    h5py_dir = os.path.join(os.path.dirname(os.getcwd()), h5py_path)
+    h5py_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), h5py_path)
     max_parallel_envs_per_file = 4096
     with h5py.File(h5py_dir, "r") as data_file:
         inputs = np.array(data_file["one_policy_observation"][:, :max_parallel_envs_per_file])
